@@ -1,0 +1,1 @@
+//Basis for Club model
