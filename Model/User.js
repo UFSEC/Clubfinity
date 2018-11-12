@@ -1,4 +1,4 @@
-function User(lastname_, firstname_, day_, month_, year_, email_, username_, password_){
+exports.createUser = function User(firstname_, lastname_, day_, month_, year_, email_, username_, password_){
     var name = {
         'first': firstname_,
         'last':  lastname_
@@ -12,6 +12,7 @@ function User(lastname_, firstname_, day_, month_, year_, email_, username_, pas
     var email = email_;
     var password = password_;
     return{
+        
         getName: function(){
             return name;
         },
