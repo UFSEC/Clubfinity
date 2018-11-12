@@ -1,50 +1,40 @@
-exports.createUser = function User(firstname_, lastname_, day_, month_, year_, email_, username_, password_){
+function User(firstname_, lastname_, day_, month_, year_, email_, username_, password_){
     var name = {
-        'first': firstname_,
-        'last':  lastname_
+        first: firstname_,
+        last:  lastname_
     };
     var dob = {
-        'day': day_,
-        'month': month_,
-        'year': year_
+        day: day_,
+        month: month_,
+        year: year_
     };
     var username = username_;
     var email = email_;
     var password = password_;
     return{
-        
-        getName: function(){
-            return name;
-        },
-        getDOB: function (){
-            return dob;
-        },
-        getUsername: function (){
-            return username;
-        },
-        getEmail: function (){
-            return email;
-        },
-        getPassword: function (){
-            return password;
-        },
-        setLastName: function(lastName){
+        getName: () => name,
+        getDOB: () => dob,
+        getUsername: () => username,
+        getEmail: () => email,
+        getPassword: () => password,
+        setLastName: (lastName) => {
             name.last = lastName;
         },
-        setFirstName: function(firstName){
+        setFirstName: (firstName) => {
             name.first = firstName;
         },
-        setDOB: function(newDOB){
-          dob = newDOB;
+        setDOB: (newDOB) => {
+            dob = newDOB;
         },
-        setUsername: function(newUsername){
-          username = newUsername;
+        setUsername: (newUsername) => {
+            username = newUsername;
         },
-        setEmail: function(newEmail){
-          email = newEmail;
+        setEmail: (newEmail) => {
+            email = newEmail;
         },
-        setPassword: function(newPassword){
-          password = newPassword;
+        setPassword: (newPassword) => {
+            password = newPassword;
         }
     }
 }
+exports.init = User;

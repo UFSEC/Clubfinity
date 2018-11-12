@@ -1,8 +1,9 @@
 //Test
 function UserDAO(){
+  this.users = [];
   var mysql = require('mysql');
 
-  var con = mysql.createConnection({
+  var conn = mysql.createConnection({
     host: "localhost",
     user: "nodeuser",
     password: "password",
@@ -10,23 +11,56 @@ function UserDAO(){
   });
 
   return{
-    createUser: function(user){
-      con.connect(function(err) {
+    createUser: (user)=>{
+      conn.connect((err) =>{
         if (err) throw error;
         console.log('Connected!');
         let query = `INSERT INTO users(fname,lname,dateOfBirth,email,username,password) VALUES(\'${user.getName().first}\',
         \'${user.getName().last}\',\'${user.getDOB().day.toString()+'/'+user.getDOB().month.toString()+'/'+user.getDOB().year.toString()}\',\'${user.getEmail()}\',\'${user.getUsername()}\',\'${user.getPassword()}\')`;
-        con.query(query,function(err,result){
-          if (err) throw err;
+        conn.query(query,(err,result)=>{
+          if (err) throw error;
           console.log('Result: '+result);
         });
       });
+    },
+    getUsers: (username,callback)=>{
+      var User = require('../Model/User.js');
+      conn.connect((err)=>{
+        if(err) throw error;
+        console.log("Connected!");
+        let query = (username===undefined)?`SELECT * FROM users`:`SELECT * FROM users WHERE username = \'${username}\'`;
+        conn.query(query, (err,result)=>{
+          if(err) throw error;
+          console.log(result);
+          // const [fname,lname,dateOfBirth,email,username,password] = result[0];
+          // callback(User.init(fname,lname,...dateOfBirth.split("/"),email,username,password));
+        });
+      });
+    },
+    updateUser: (username, column, value) =>{
+      conn.connect((err)=>{
+        if(err) throw error;
+        console.log("Connected!");
+        let query = `UPDATE users SET ${column} = \'${value}\' WHERE username = \'${username}\'`;
+        conn.query(query, (err,results)=>{
+          if(err) throw error;
+          console.log(`Successfully updated column \'${column}\' of user \'${username}\' with value \'${value}\'`);
+          console.log(results);
+        });
+      });
+    },
+    deleteUser: (username) =>{
+      conn.connect((err)=>{
+        if(err) throw error;
+        console.log("Connected!");
+        let query = `DELETE FROM users WHERE username = \'${username}\'`;
+        conn.query(query,(err,results) => {
+          if(err) throw error;
+          console.log(`\'${username} successfully deleted from the database`);
+          console.log(results);
+        })
+      })
     }
   }
 }
-
-var user = require('../Model/User.js');
-var user1 = user.createUser('John','Doe',19,19,1999,'JohnDoe@yahoo.com','Jdoe01','DoeJ321');
-// console.log('\''+user1.getDOB()['day']+'/'+user1.getDOB()['month']+'/'+user1.getDOB()['year']+'\'');
-var userDAO = UserDAO();
-userDAO.createUser(user1);
+exports.init = UserDAO;
