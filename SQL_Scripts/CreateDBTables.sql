@@ -6,3 +6,5 @@ CREATE TABLE users_to_events(id SERIAL, username VARCHAR(20), event_id INT, UNIQ
 CREATE TABLE events(id SERIAL, name VARCHAR(20), club_id INT, location VARCHAR(50), moi VARCHAR(20), 
 information VARCHAR(500), eventdate VARCHAR(10), clubname VARCHAR(20), UNIQUE(id));
 CREATE TABLE clubs(id SERIAL, name VARCHAR(20), information VARCHAR(500), presidentName VARCHAR(40), UNIQUE(id, name));
+SELECT * FROM clubs;
+USE clubfinity;

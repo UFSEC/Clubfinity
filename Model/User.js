@@ -1,4 +1,4 @@
-function Users(lastname_, firstname_, day_, month_, year_, email_, username_, password_){
+function User(lastname_, firstname_, day_, month_, year_, email_, username_, password_){
     var name = {
         'first': firstname_,
         'last':  lastname_
@@ -28,6 +28,5 @@ function Users(lastname_, firstname_, day_, month_, year_, email_, username_, pa
             return password;
         }
     }
-
 }
 
