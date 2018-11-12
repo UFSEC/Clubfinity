@@ -11,8 +11,7 @@ function User(lastname_, firstname_, day_, month_, year_, email_, username_, pas
     var username = username_;
     var email = email_;
     var password = password_;
-    return
-    {
+    return{
         getName: function(){
             return name;
         },
@@ -28,25 +27,23 @@ function User(lastname_, firstname_, day_, month_, year_, email_, username_, pas
         getPassword: function (){
             return password;
         },
-        setName: function(newName)
-        {
-          this.name = newName;
+        setLastName: function(lastName){
+            name.last = lastName;
         },
-        setDOB: function(newDOB)
-        {
-          this.dob = newDOB;
+        setFirstName: function(firstName){
+            name.first = firstName;
         },
-        setUsername: function(newUsername)
-        {
-          this.username = newUsername;
+        setDOB: function(newDOB){
+          dob = newDOB;
         },
-        setEmail: function(newEmail)
-        {
-          this.email = newEmail;
+        setUsername: function(newUsername){
+          username = newUsername;
         },
-        setPassword: function(newPassword)
-        {
-          this.password = newPassword;
+        setEmail: function(newEmail){
+          email = newEmail;
+        },
+        setPassword: function(newPassword){
+          password = newPassword;
         }
     }
 }
