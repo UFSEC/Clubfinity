@@ -36,6 +36,35 @@ function Event(name, club_id, location, moi, information,eventdate, clubname)
       getClubName: function()
       {
         return clubname;
+      },
+      setName: function(newName)
+      {
+        this.name = newName;
+      },
+      setClub_Id: function(newClubId)
+      {
+        this.club_id = newClubId;
+      },
+      setLocation: function(newLocation)
+      {
+        this.location = newLocation;
+      },
+      setMoi: function(newMOI)
+      {
+        this.moi = newMOI;
+      },
+      setInformation: function(newInformation)
+      {
+        this.information = newInformation;
+      },
+      setEventDate: function(newEventDate)
+      {
+        this.eventdate = newEventDate;
+      },
+      setClubName: function(newClubName)
+      {
+        this.clubname = newClubName;
       }
+
     }
 }
