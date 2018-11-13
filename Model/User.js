@@ -1,4 +1,4 @@
-function User(firstname_, lastname_, day_, month_, year_, email_, username_, password_){
+exports.init = function User(firstname_, lastname_, day_, month_, year_, email_, username_, password_){
     var name = {
         first: firstname_,
         last:  lastname_
@@ -36,4 +36,3 @@ function User(firstname_, lastname_, day_, month_, year_, email_, username_, pas
     }
 }
 
-exports.init = User;
