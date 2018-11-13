@@ -11,30 +11,29 @@ function User(firstname_, lastname_, day_, month_, year_, email_, username_, pas
     var username = username_;
     var email = email_;
     var password = password_;
-    return{
-        getName: () => name,
-        getDOB: () => dob,
-        getUsername: () => username,
-        getEmail: () => email,
-        getPassword: () => password,
-        setLastName: (lastName) => {
-            name.last = lastName;
-        },
-        setFirstName: (firstName) => {
-            name.first = firstName;
-        },
-        setDOB: (newDOB) => {
-            dob = newDOB;
-        },
-        setUsername: (newUsername) => {
-            username = newUsername;
-        },
-        setEmail: (newEmail) => {
-            email = newEmail;
-        },
-        setPassword: (newPassword) => {
-            password = newPassword;
-        }
+    this.getName = () => name,
+    this.getDOB = () => dob,
+    this.getUsername = () => username,
+    this.getEmail = () => email,
+    this.getPassword = () => password,
+    this.setLastName = (lastName) => {
+        name.last = lastName;
+    },
+    this.setFirstName = (firstName) => {
+        name.first = firstName;
+    },
+    this.setDOB = (newDOB) => {
+        dob = newDOB;
+    },
+    this.setUsername = (newUsername) => {
+        username = newUsername;
+    },
+    this.setEmail = (newEmail) => {
+        email = newEmail;
+    },
+    this.setPassword = (newPassword) => {
+        password = newPassword;
     }
 }
+
 exports.init = User;
