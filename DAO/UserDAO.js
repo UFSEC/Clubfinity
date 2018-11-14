@@ -1,4 +1,5 @@
 var mysql = require('mysql');
+var User = require('../Model/User.js');
 
 var conn = mysql.createConnection({
   host: "localhost",
@@ -20,9 +21,16 @@ exports.createUser = (firstname_,lastname_,dob_,email_,username_,password_)=>{
     console.log(`Successfully added ${username_} to the database`);
   });
 },
+exports.getAllUsers = (callback)=>{
+  if(!callback) throw(new Error('Second parameter must be a callback function'));
+  let query = 'SELECT * FROM users';
+  conn.query(query,(err, result)=>{
+    if(err) throw (new Error('Syntax error in query'));
+    callback(result);
+  });
+},
 exports.getUser = (username_,callback)=>{
   if(!callback) throw(new Error('Second parameter must be a callback function'));
-  var User = require('../Model/User.js');
   let query = `SELECT * FROM users WHERE username = \'${username_}\'`;
   conn.query(query, (err,result)=>{
     if (err) throw (new Error('Syntax error in query'));
