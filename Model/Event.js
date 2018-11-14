@@ -1,70 +1,38 @@
-function Event(name, club_id, location, moi, information,eventdate, clubname)
+exports.init = function Event(name_, club_id_, location_, major_of_interest_, description_, date_, club_name_)
 {
-    this.name = name;
-    this.club_id = club_id;
-    this.location = location;
-    this.moi = moi;
-    this.information = information;
-    this.eventdate = eventdate;
-    this.clubname = clubname;
-    return
-    {
-      getName: function()
-      {
-        return name;
-      },
-      getClub_Id: function()
-      {
-        return club_id;
-      },
-      getLocation: function()
-      {
-        return location;
-      },
-      getMoi: function()
-      {
-        return moi;
-      },
-      getInformation: function()
-      {
-        return information;
-      },
-      getEventDate: function()
-      {
-        return eventdate;
-      },
-      getClubName: function()
-      {
-        return clubname;
-      },
-      setName: function(newName)
-      {
-        this.name = newName;
-      },
-      setClub_Id: function(newClubId)
-      {
-        this.club_id = newClubId;
-      },
-      setLocation: function(newLocation)
-      {
-        this.location = newLocation;
-      },
-      setMoi: function(newMOI)
-      {
-        this.moi = newMOI;
-      },
-      setInformation: function(newInformation)
-      {
-        this.information = newInformation;
-      },
-      setEventDate: function(newEventDate)
-      {
-        this.eventdate = newEventDate;
-      },
-      setClubName: function(newClubName)
-      {
-        this.clubname = newClubName;
-      }
-
+    var name = name_;
+    var club_id = club_id_;
+    var location = location_;
+    var major_of_interest = major_of_interest_;
+    var description = description_;
+    var date = date_;
+    var club_name = club_name_;
+    this.getName = ()=>name;
+    this.getClubId = ()=>club_id;
+    this.getLocation = ()=>location;
+    this.getMajorOfInterest = ()=>major_of_interest;
+    this.getDescription = ()=>description;
+    this.getDate = ()=>date;
+    this.getClubName = ()=>club_name;
+    this.setName = (newName)=>{
+      name = newName;
+    }
+    this.setClubId = (newId)=>{
+      club_id = newId;
+    }
+    this.setLocation = (newLocation)=>{
+      location = newLocation;
+    }
+    this.setMajorOfInterest = (newInterest)=>{
+      major_of_interest = newInterest;
+    }
+    this.setDescription = (newDescription)=>{
+      description = newDescription;
+    }
+    this.setDate = (newDate)=>{
+      date = newDate;
+    }
+    this.setClubName = (newName)=>{
+      club_name = newName;
     }
 }
