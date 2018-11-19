@@ -37,7 +37,7 @@ exports.getUser = (username_,callback)=>{
     if(result[0]){
       console.log(`Successfully retrieved ${username_} from the database`);
       const {fname,lname,dateOfBirth,email,username,password} = result[0];
-      callback(new User.init(fname,lname,...dateOfBirth.split("/"),email,username,password),result);
+      callback(result,new User.init(fname,lname,...dateOfBirth.split("/"),email,username,password));
     }
     else{
       console.log(`Failed to retrieve ${username_} from database; User does not exist`)

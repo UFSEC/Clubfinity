@@ -7,7 +7,7 @@ exports.getAll = (req,res)=>{
 };
 exports.get = (req,res)=>{
     console.log(`API GET request called for ${req.params.id}`);
-    userDAO.getUser(req.params.id,(object,result)=>{
+    userDAO.getUser(req.params.id,(result)=>{
         if(result){
             res.json(result);
         }
@@ -20,7 +20,7 @@ exports.update = (req,res)=>{
     const params = req.query;
     if(Object.keys(params).length!=0){
         console.log(`API PUT request called for ${req.params.id}`);
-        userDAO.getUser(req.params.id,(object,result)=>{
+        userDAO.getUser(req.params.id,(result)=>{
             if(result){
                 for(var entry in params){
                     if(!Object.keys(result[0]).includes(entry)){
