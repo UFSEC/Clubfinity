@@ -10,3 +10,4 @@ npm-debug.*
 *config*
 package-lock.json
 package.json
+*.vscode
