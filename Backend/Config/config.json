@@ -1,0 +1,19 @@
+{
+  "development": {
+    "database": {
+      "host": "localhost",
+      "port": 27017,
+      "database": "test",
+      "url": "mongodb://localhost:27017/"
+    },
+    "users": {
+      "collection": "users"
+    }
+  },
+  "testing": {
+
+  },
+  "production": {
+
+  }
+}

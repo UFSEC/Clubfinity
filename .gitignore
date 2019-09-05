@@ -7,7 +7,4 @@ npm-debug.*
 *.key
 *.env
 *.mobileprovision
-*config*
-package-lock.json
-package.json
 *.vscode
