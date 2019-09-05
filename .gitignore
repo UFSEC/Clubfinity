@@ -1,1 +1,13 @@
-.vscode
+node_modules/**/*
+.expo/*
+.vscode/*
+npm-debug.*
+*.jks
+*.p12
+*.key
+*.env
+*.mobileprovision
+*config*
+package-lock.json
+package.json
+*.vscode
