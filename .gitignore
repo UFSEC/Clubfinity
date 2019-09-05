@@ -8,3 +8,5 @@ npm-debug.*
 *.env
 *.mobileprovision
 *.vscode
+*.DS_STORE
+Backend/node_modules
