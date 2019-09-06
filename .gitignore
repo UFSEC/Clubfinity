@@ -8,6 +8,5 @@ npm-debug.*
 *.env
 *.mobileprovision
 *config*
-package-lock.json
-package.json
 *.vscode
+./Frontend/a/*

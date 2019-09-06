@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {WillComponent} from '../components/WillComponent';
+
 export default class DiscoverScr extends React.Component {
   static navigationOptions = {
     title: 'Clubfinity',
@@ -20,7 +20,6 @@ export default class DiscoverScr extends React.Component {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text>Discoverrr</Text>
-        <WillComponent text='this is text from a prop'/>
       </View>
     );
   }
