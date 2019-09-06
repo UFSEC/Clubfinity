@@ -20,38 +20,44 @@ class EventFeed extends Component {
     const eventData = [
       {
         id: 1,
-        name: "Event Name",
-        place: "Event Location",
-        description: "Dank Descritpion"
+        name: "SEC GBM #2",
+        place: "CSE A101 6:15pm",
+        icon: "sec-icon.jpg",
+        description: "Join us for another GBM and see what we have in store! Clubfinity is in full motion and we are more excited than ever to bring this game-changing project to our members. Opportunities like this don’t come too often, so join us and add this to your resume!"
       },
       {
         id: 2,
-        name: "Event Name",
-        place: "Event Location",
-        description: "Dank Descritpion"
+        name: "SGP and BSU Present: 21 Savage",
+        place: "Stephen O'Connell Center",
+        icon: "21-savage.jpg",
+        description: "SGP is excited to bring 21 SAVAGE to Exactech Arena at the Stephen C. O'Connell Center on April 15th! Doors open at 6:30 PM and the show will begin at 7:30 PM. "
       },
       {
         id: 3,
         name: "Event Name",
         place: "Event Location",
+        icon: "sec-icon.jpg",
         description: "Dank Descritpion"
       },
       {
         id: 4,
         name: "Event Name",
         place: "Event Location",
+        icon: "sec-icon.jpg",
         description: "Dank Descritpion"
       },
       {
         id: 5,
         name: "Event Name",
         place: "Event Location",
+        icon: "sec-icon.jpg",
         description: "Dank Descritpion"
       },
       {
         id: 6,
         name: "Event Name",
         place: "Event Location",
+        icon: "sec-icon.jpg",
         description: "Dank Descritpion"
       }
     ];

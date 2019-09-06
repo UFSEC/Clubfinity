@@ -77,7 +77,8 @@ const card = StyleSheet.create({
         resizeMode: 'center',
         borderRadius: 50,
         marginRight: 10,
-        height: 50
+        height: 50,
+        width: 50
     },
     body: {
         flex: 5,

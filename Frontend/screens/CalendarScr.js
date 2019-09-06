@@ -24,34 +24,34 @@ export default class CalendarScr extends React.Component {
       eventsData : [
         {
           id: 1,
-          title: 'GBM #3: Interviews',
+          title: 'GBM #2: Clubfinity',
           club: 'Software Engineering Club',
-          time: '5:10 pm',
-          date: '2019-02-21',
+          time: '6:15 pm',
+          date: '2019-03-13',
           location: 'CSE E114'
         },
         {
           id: 2,
-          title: 'Startup Hour',
-          club: 'gnvInnovate',
-          time: '8:30 pm',
-          date: '2019-02-21',
-          location: 'Gaston Pub'
+          title: 'Election Night',
+          club: 'ACM',
+          time: '6:30 pm',
+          date: '2019-03-13',
+          location: 'Fishbowl'
         },
         {
           id: 3,
-          title: 'Gator Tank',
-          club: 'Gator Innovators',
+          title: 'Botanicon',
+          club: 'Gator Botanics',
           time: '3:00 pm',
-          date: '2019-02-25',
+          date: '2019-03-12',
           location: 'Reitz Union'
         },
         {
           id: 4,
-          title: 'GBM #2',
-          club: 'ACE',
+          title: 'AC/DC 101',
+          club: 'WECE',
           time: '4:25 pm',
-          date: '2019-02-22',
+          date: '2019-03-14',
           location: 'CAB 214'
         }
       ],
@@ -100,6 +100,7 @@ const style = StyleSheet.create({
   agendaContainer: {
     flex: 2,
     paddingHorizontal: 10,
+    marginTop: 20
   },
 
   agendaHeader: {

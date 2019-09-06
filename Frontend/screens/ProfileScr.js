@@ -53,63 +53,63 @@ export default class ProfileScr extends React.Component {
             >Logout</Icon.Button>
           </View>
         </View>
-        </View>
-        );
-      }
-    }
-    
+      </View>
+    );
+  }
+}
+
 const style = StyleSheet.create({
-          container: {
-          display: 'flex',
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        backgroundColor: '#fff'
-      },
-    
+  container: {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    backgroundColor: '#fff'
+  },
+
   profileHeader: {
-          alignSelf: 'center',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flex: 1,
-        flexDirection: 'row',
-        backgroundColor: '#fff',
-        margin: 10,
-      },
-    
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    margin: 10,
+  },
+
   profileTitle: {
-          fontSize: 20,
-        // alignSelf: 'center',
-        fontWeight: 'bold',
-        color: '#636e72',
-        flex: 5
-      },
-    
+    fontSize: 20,
+    // alignSelf: 'center',
+    fontWeight: 'bold',
+    color: '#636e72',
+    flex: 5
+  },
+
   settingsContainer: {
-          flex: 4,
-        // justifyContent: 'space-evenly',
-      },
-    
+    flex: 4,
+    // justifyContent: 'space-evenly',
+  },
+
   settingTile: {
-          margin: 0,
-        elevation: 0,
-        backgroundColor: '#f5f6fa',
-        padding: 15,
-        margin: 1,
-        borderWidth: 1,
-        borderColor: "#f5f6fa",
-        flexDirection: 'row',
-        justifyContent: 'flex-start'
-      },
-    
+    margin: 0,
+    elevation: 0,
+    backgroundColor: '#f5f6fa',
+    padding: 15,
+    margin: 1,
+    borderWidth: 1,
+    borderColor: "#f5f6fa",
+    flexDirection: 'row',
+    justifyContent: 'flex-start'
+  },
+
   settingsText: {
-          flex: 11,
-        color: '#636e72',
-        fontSize: 15,
-      },
-    
+    flex: 11,
+    color: '#636e72',
+    fontSize: 15,
+  },
+
   settingsIcon: {
-          flex: 1,
-        marginRight: 5,
-      }
-    })
+    flex: 1,
+    marginRight: 5,
+  }
+})
