@@ -9,4 +9,4 @@ npm-debug.*
 *.mobileprovision
 *config*
 *.vscode
-./Frontend/a/*
+/Frontend/a/*
