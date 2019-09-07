@@ -7,7 +7,6 @@ npm-debug.*
 *.key
 *.env
 *.mobileprovision
+*config*
 *.vscode
-*.DS_STORE
-Backend/node_modules
 /Frontend/a/*
