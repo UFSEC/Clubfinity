@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
 const Schema = new mongoose.Schema({
   name: String,
@@ -7,7 +7,7 @@ const Schema = new mongoose.Schema({
   location: String,
   major_of_interest: String,
   description: String,
-  date: String,
+  date: String
 });
 
-exports.Model = mongoose.model('Event', Schema)
+exports.Model = mongoose.model("Event", Schema);
