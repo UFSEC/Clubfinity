@@ -5,7 +5,11 @@ const Schema = new mongoose.Schema({
   dob: String,
   username: String,
   email: String,
-  password: String
+  password: String,
+  clubs: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Club'
+  }]
 });
 
 exports.Model = mongoose.model("User", Schema);
