@@ -9,4 +9,7 @@ npm-debug.*
 *.mobileprovision
 *config*
 *.vscode
+Backend/node_modules
+Frontend/node_modules
 /Frontend/a/*
+
