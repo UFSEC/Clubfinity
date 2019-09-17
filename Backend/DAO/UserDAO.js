@@ -1,61 +1,82 @@
-var mysql = require('mysql');
-var User = require('../Model/User.js');
+const User = require("../Model/User.js").Model;
 
-var conn = mysql.createConnection({
-  host: "localhost",
-  user: "nodeuser",
-  password: "password",
-  database: "clubfinity"
-});
+// TODO
+// 1. Add support for a prod/dev config without hardcoded vars
+// 2. Implement Mongoose (schema migrations, api, model strictness)
+// 3. Get rid of nulls in callbacks
+// 4. Clean up a lot of the code
+// 5. Possible memoization of db connection
+// 6. Return error codes instead of throw exception
 
-conn.connect((err) =>{
-  if(err) throw (new Error(err));
-  console.log('Connected!');
-});
-
-exports.createUser = (firstname_,lastname_,dob_,email_,username_,password_)=>{
-  let query = `INSERT INTO users(fname,lname,dateOfBirth,email,username,password) VALUES(\'${firstname_}\',
-  \'${lastname_}\',\'${dob_}\',\'${email_}\',\'${username_}\',\'${password_}\')`;
-  conn.query(query,(err,result)=>{
-    if (err) throw (new Error('Syntax error in query'));
-    console.log(`Successfully added ${username_} to the database`);
+exports.createUser = (
+  firstname_,
+  lastname_,
+  dob_,
+  email_,
+  username_,
+  password_
+) => {
+  const newUser = new User({
+    name: { first: firstname_, last: lastname_ },
+    dob: dob_,
+    username: username_,
+    email: email_,
+    password: password_
   });
-},
-exports.getAllUsers = (callback)=>{
-  if(!callback) throw(new Error('Second parameter must be a callback function'));
-  let query = 'SELECT * FROM users';
-  conn.query(query,(err, result)=>{
-    if(err) throw (new Error('Syntax error in query'));
-    callback(result);
-  });
-},
-exports.getUser = (username_,callback)=>{
-  if(!callback) throw(new Error('Second parameter must be a callback function'));
-  let query = `SELECT * FROM users WHERE username = \'${username_}\'`;
-  conn.query(query, (err,result)=>{
-    if (err) throw (new Error('Syntax error in query'));
-    if(result[0]){
-      console.log(`Successfully retrieved ${username_} from the database`);
-      const {fname,lname,dateOfBirth,email,username,password} = result[0];
-      callback(result,new User.init(fname,lname,...dateOfBirth.split("/"),email,username,password));
+  newUser.save(function(error, document) {
+    if (error) {
+      throw error;
+    } else {
+      console.log("Successfully added user " + username_);
     }
-    else{
-      console.log(`Failed to retrieve ${username_} from database; User does not exist`)
+  });
+};
+exports.getAllUsers = callback => {
+  if (!callback) {
+    throw new Error("Must have a callback function");
+  }
+  User.find({}, function(error, users) {
+    if (error) {
+      throw error;
+    }
+    callback(users);
+  });
+};
+exports.getUser = (username_, callback) => {
+  if (!callback) {
+    throw new Error("Second parameter must be a callback function");
+  }
+  User.findOne({ username: username_ }, function(error, user) {
+    if (error) {
+      throw error;
+    }
+    if (user) {
+      console.log(`Successfully retrieved ${username_} from the database`);
+      callback(user);
+    } else {
+      console.log(
+        `Failed to retrieve ${username_} from database; User does not exist`
+      );
       callback(null);
     }
   });
-},
-exports.updateUser = (username_, column, value) =>{
-  let query = `UPDATE users SET ${column} = \'${value}\' WHERE username = \'${username_}\'`;
-  conn.query(query, (err,results)=>{
-    if (err) throw (new Error('Syntax error in query'));
-    console.log(`Successfully updated column \'${column}\' of user \'${username_}\' with value \'${value}\'`);
+};
+exports.updateUser = (username_, updatedInfo) => {
+  User.findOneAndUpdate(
+    { username: username_ },
+    updatedInfo,
+    { upsert: true },
+    function(error, document) {
+      if (error) throw error;
+      console.log(`Successfully updated ${username_} info`);
+    }
+  );
+};
+
+exports.deleteUser = username_ => {
+  User.remove({ username: username_ }, function(error) {
+    if (error) {
+      console.log(`Failed to remove ${username_}`);
+    }
   });
-},
-exports.deleteUser = (username_) =>{
-  let query = `DELETE FROM users WHERE username = \'${username_}\'`;
-  conn.query(query,(err,results) => {
-    if (err) throw (new Error('Syntax error in query'));
-    console.log(`\'${username_} successfully deleted from the database`);
-  });
-}
+};
