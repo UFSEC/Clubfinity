@@ -10,4 +10,7 @@ npm-debug.*
 *.vscode
 *node_modules
 *.DS_Store
+Backend/node_modules
+Frontend/node_modules
 /Frontend/a/*
+
