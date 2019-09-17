@@ -11,3 +11,4 @@ npm-debug.*
 *node_modules
 *.DS_Store
 /Frontend/a/*
+/Backend/package-lock.json
