@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { Button } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { FontAwesome } from '@expo/vector-icons';
 
 class NotGoingButton extends Component {
 
 	render() {
 		return (
-			<Icon.Button
+			<FontAwesome.Button
 				name="remove"
 				backgroundColor="#ff8080"
 				onPress={this._eventHandler}
-			>Remove</Icon.Button>);
+			>Remove</FontAwesome.Button>);
 	}
 
 	_eventHandler = () => {

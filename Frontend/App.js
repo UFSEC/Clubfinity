@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import {
   ActivityIndicator, View,
-  Platform, StatusBar, StyleSheet, Text
+  Platform, StatusBar, StyleSheet,
 } from 'react-native';
 import AppNavigator from './navigation/TabNavigator';
+import HomeScr from './screens/HomeScr';
+
 
 export default class App extends Component {
   state = {
@@ -21,7 +23,8 @@ export default class App extends Component {
       return (
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <AppNavigator />
+          <AppNavigator />  
+          {/* <HomeScr /> */}
         </View>
       );
     }
