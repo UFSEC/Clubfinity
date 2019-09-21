@@ -1,7 +1,7 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator, createAppContainer } from 'react-navigation';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import  { Ionicons } from '@expo/vector-icons';
 
 import CalendarScr from '../screens/CalendarScr';
 import HomeScr from '../screens/HomeScr';

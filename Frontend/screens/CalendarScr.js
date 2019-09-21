@@ -24,10 +24,10 @@ export default class CalendarScr extends React.Component {
       eventsData : [
         {
           id: 1,
-          title: 'GBM #2: Clubfinity',
+          title: 'GBM #4: Clubfinity',
           club: 'Software Engineering Club',
           time: '6:15 pm',
-          date: '2019-03-13',
+          date: '2019-09-20',
           location: 'CSE E114'
         },
         {
@@ -35,7 +35,7 @@ export default class CalendarScr extends React.Component {
           title: 'Election Night',
           club: 'ACM',
           time: '6:30 pm',
-          date: '2019-03-13',
+          date: '2019-09-20',
           location: 'Fishbowl'
         },
         {
@@ -43,7 +43,7 @@ export default class CalendarScr extends React.Component {
           title: 'Botanicon',
           club: 'Gator Botanics',
           time: '3:00 pm',
-          date: '2019-03-12',
+          date: '2019-09-21',
           location: 'Reitz Union'
         },
         {
@@ -51,7 +51,7 @@ export default class CalendarScr extends React.Component {
           title: 'AC/DC 101',
           club: 'WECE',
           time: '4:25 pm',
-          date: '2019-03-14',
+          date: '2019-09-22',
           location: 'CAB 214'
         }
       ],
