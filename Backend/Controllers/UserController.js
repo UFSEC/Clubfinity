@@ -6,12 +6,12 @@ exports.getAll = (req, res) => {
   });
 };
 exports.get = (req, res) => {
-  console.log(`API GET request called for ${req.params.id}`);
-  userDAO.getUser(req.params.id, result => {
+  console.log(`API GET request called for ${req.params.username}`);
+  userDAO.getUser(req.params.username, result => {
     if (result) {
       res.json(result);
     } else {
-      res.status(404).send(`User with username ${req.params.id} not found`);
+      res.status(404).send(`User with username ${req.params.username} not found`);
     }
   });
 };
@@ -32,7 +32,7 @@ exports.update = (req, res) => {
       props[4] == "username" &&
       props[5] == "password"
     ) {
-      userDAO.updateUser(username.id, {
+      userDAO.updateUser(username.username, {
         name: { first: userInfo.firstName, last: userInfo.lastName },
         dob: userInfo.dob,
         username: userInfo.username,
@@ -70,12 +70,12 @@ exports.create = (req, res) => {
   }
 };
 exports.delete = (req, res) => {
-  userDAO.getUser(req.params.id, result => {
+  userDAO.getUser(req.params.username, result => {
     if (result) {
-      userDAO.deleteUser(req.params.id);
+      userDAO.deleteUser(req.params.username);
       res.status(204).send("User successfully deleted");
     } else {
-      res.status(404).send(`User with username ${req.params.id} not found`);
+      res.status(404).send(`User with username ${req.params.username} not found`);
     }
   });
 };
