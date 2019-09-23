@@ -9,6 +9,8 @@ import {
   View,
 } from 'react-native';
 
+// import DiscoverGrid  from '../components/DiscoverGrid';
+
 export default class DiscoverScr extends React.Component {
   static navigationOptions = {
     title: 'Clubfinity',
@@ -19,7 +21,8 @@ export default class DiscoverScr extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Discoverrr</Text>
+        {/* <DiscoverGrid /> */}
+        <Text>Discover Screen</Text>
       </View>
     );
   }
