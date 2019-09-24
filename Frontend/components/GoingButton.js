@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { FontAwesome } from '@expo/vector-icons';
 
 class GoingButton extends Component {
 
@@ -14,23 +14,23 @@ class GoingButton extends Component {
     render() {
         if (this.state.isChecked) {
             return (
-                <Icon.Button
+                <FontAwesome.Button
                     name="check-square"
                     backgroundColor="#55efc4"
                     onPress={this._eventHandler}
                 >
                     Going
-            </Icon.Button>
+            </FontAwesome.Button>
             );
         }
         return (
-            <Icon.Button
+            <FontAwesome.Button
                     name="check-square-o"
                     backgroundColor="#16a085"
                     onPress={this._eventHandler}
                 >
                     Interested
-            </Icon.Button>
+            </FontAwesome.Button>
 				);
     }
 
