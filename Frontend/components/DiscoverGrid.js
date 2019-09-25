@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
   Text,
-  Image,
   TouchableOpacity,
   TextInput,
   View,
@@ -9,8 +8,8 @@ import {
   StyleSheet,
   Dimensions
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-// import { window } from '../constants/Layout';
 
 // Dummy list of clubs
 const clubList = [
@@ -103,8 +102,9 @@ export default class DiscoverGrid extends Component {
   }
 
   filterClubs = (text) => {
+    searchText = text.toLowerCase();
     newFilterClubs = clubList.filter((club) => {
-      return club.name.includes(text);
+      return club.name.toLowerCase().includes(searchText) || club.category.toLowerCase().includes(searchText);
     });
 
     this.setState({
@@ -117,12 +117,17 @@ export default class DiscoverGrid extends Component {
     return (
       <View style={styles.mainContainer}>
         {/* Search Bar */}
-        <TextInput
-          style={{ height: 50, paddingHorizontal: 20 }}
-          placeholder="Explore clubs"
-          onChangeText={(text) => this.filterClubs(text)}
-          value={this.state.searchText}
-        ></TextInput>
+        <View style={styles.searchBox}>
+          <Ionicons style={styles.searchBoxIcon} color={'#8E8E93'} name={"md-search"} size={24} /> 
+          <TextInput 
+            style={styles.searchBoxText}
+            placeholderTextColor={'#8E8E93'}
+            placeholder="Explore clubs"
+            onChangeText={(text) => this.filterClubs(text)}
+            value={this.state.searchText}
+          ></TextInput>
+        </View>
+
         {/* Grid */}
         <FlatList
           style={styles.scrollContainer}
@@ -155,6 +160,7 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flex: 1,
     margin: 1,
+    paddingHorizontal: 10,
     minWidth: Dimensions.get("screen").width
   },
   gridItem: {
@@ -164,7 +170,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     margin: 3,
-    backgroundColor: '#fcf8de',
+    backgroundColor: '#E5E4EA',
     padding: 10,
     elevation: 2
   },
@@ -173,6 +179,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     minHeight: 200,
   },
+  searchBox: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    backgroundColor: '#E5E4EA',
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: '#E5E4EA',
+    marginHorizontal: 10,
+    marginVertical: 10,
+    height: 50,
+    paddingHorizontal: 20,
+  },
+  searchBoxText: {
+    marginLeft: 7,
+    flex: 11
+  },
+  searchBoxIcon: {
+    flex: 1,
+  }
 
 });
 
