@@ -1,119 +1,108 @@
 import React from 'react'
 import { StyleSheet, Text, View, Dimensions, Switch } from 'react-native'
-import { SearchBar } from 'react-native-elements'
 const { width, height } = Dimensions.get('screen')
 
-export default class App extends React.Component {
-  state = {
-    search: '',
-    switchVal1: false,
-    switchVal2: true,
-    switchVal3: true,
-    switchVal4: true,
-    switchVal5: true,
-    switchVal6: true,
-    switchVal7: true,
-    switchVal8: true
+export default class SettingSrc extends React.Component {
+  static navigationOptions = {
+    title: 'Clubfinity',
+    headerStyle: { backgroundColor: '#7e947f' },
+    headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 }
   }
-
-  updateSearch = search => {
-    this.setState({ search })
+  state = {
+    profieViewSwitch: false,
+    clubViewSwitch: true,
+    freeSpotSwitch: true,
+    soundSwitch: true,
+    notCenterSwitch: true,
+    badgeIconSwitch: true,
+    bannerSwitch: true,
+    lockScreenSwitch: true
   }
 
   render() {
-    const { search } = this.state
-
     return (
       <View style={styles.section}>
-        <SearchBar
-          autoCorrect={false}
-          style={styles.option}
-          placeholder="Search"
-          onChangeText={this.updateSearch}
-          value={search}
-          lightTheme={true}
-          round={true}
-          ref={search => {
-            this.searchBar = search
-          }}
-        />
-        <View>
+        <View style={styles.titleContainer}>
           <Text style={styles.title}>Privacy Settings</Text>
         </View>
         <View>
           <View style={styles.option}>
-            <Text style={{ fontWeight: '500' }}>
+            <Text style={styles.textStyle}>
               Allow students to view my profile
             </Text>
             <Switch
               ios_backgroundColor="#EAEAED"
-              value={this.state.switchVal1}
-              onValueChange={value => this.setState({ switchVal1: value })}
+              value={this.state.profieViewSwitch}
+              onValueChange={value =>
+                this.setState({ profieViewSwitch: value })
+              }
             />
           </View>
           <View style={styles.option}>
-            <Text style={{ fontWeight: '500' }}>
+            <Text style={styles.textStyle}>
               Allow club members to view my profile
             </Text>
             <Switch
               ios_backgroundColor="#EAEAED"
-              value={this.state.switchVal2}
-              onValueChange={value => this.setState({ switchVal2: value })}
+              value={this.state.clubViewSwitch}
+              onValueChange={value => this.setState({ clubViewSwitch: value })}
             />
           </View>
           <View style={styles.option}>
-            <Text style={{ fontWeight: '500' }}>Show only Free Spots</Text>
+            <Text style={styles.textStyle}>Show only Free Spots</Text>
             <Switch
               ios_backgroundColor="#EAEAED"
-              value={this.state.switchVal3}
-              onValueChange={value => this.setState({ switchVal3: value })}
+              value={this.state.freeSpotSwitch}
+              onValueChange={value => this.setState({ freeSpotSwitch: value })}
             />
           </View>
         </View>
 
         {/* Notification Settings */}
-        <View>
+        <View style={styles.titleContainer}>
           <Text style={styles.title}>Notification Settings</Text>
         </View>
         <View>
           <View style={styles.option}>
-            <Text style={{ fontWeight: '500' }}>Sounds</Text>
+            <Text style={styles.textStyle}>Sounds</Text>
             <Switch
               ios_backgroundColor="#EAEAED"
-              value={this.state.switchVal4}
-              onValueChange={value => this.setState({ switchVal4: value })}
+              value={this.state.soundSwitch}
+              onValueChange={value => this.setState({ soundSwitch: value })}
             />
           </View>
           <View style={styles.option}>
-            <Text style={{ fontWeight: '500' }}>Notification Center</Text>
+            <Text style={styles.textStyle}>Notification Center</Text>
             <Switch
               ios_backgroundColor="#EAEAED"
-              value={this.state.switchVal5}
-              onValueChange={value => this.setState({ switchVal5: value })}
+              value={this.state.notCenterSwitch}
+              onValueChange={value => this.setState({ notCenterSwitch: value })}
             />
           </View>
           <View style={styles.option}>
-            <Text style={{ fontWeight: '500' }}>Badge Icons</Text>
+            <Text style={styles.textStyle}>Badge Icons</Text>
             <Switch
               ios_backgroundColor="#EAEAED"
-              value={this.state.switchVal6}
-              onValueChange={value => this.setState({ switchVal6: value })}
+              value={this.state.badgeIconSwitch}
+              onValueChange={value => this.setState({ badgeIconSwitch: value })}
             />
           </View>
           <View style={styles.option}>
-            <Text style={{ fontWeight: '500' }}>Banners</Text>
+            <Text style={styles.textStyle}>Banners</Text>
             <Switch
               ios_backgroundColor="#EAEAED"
-              value={this.state.switchVal7}
-              onValueChange={value => this.setState({ switchVal7: value })}
+              value={this.state.bannerSwitch}
+              onValueChange={value => this.setState({ bannerSwitch: value })}
             />
           </View>
           <View style={styles.option}>
-            <Text style={{ fontWeight: '500' }}>Lock Screen</Text>
+            <Text style={styles.textStyle}>Lock Screen</Text>
             <Switch
               ios_backgroundColor="#EAEAED"
-              value={this.state.switchVal8}
-              onValueChange={value => this.setState({ switchVal8: value })}
+              value={this.state.lockScreenSwitch}
+              onValueChange={value =>
+                this.setState({ lockScreenSwitch: value })
+              }
             />
           </View>
         </View>
@@ -139,11 +128,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     fontSize: 18,
     marginVertical: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
     fontWeight: '800'
   },
-
+  titleContainer: {
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  textStyle: {
+    fontWeight: '500'
+  },
   option: {
     marginBottom: 14,
     flexDirection: 'row',
