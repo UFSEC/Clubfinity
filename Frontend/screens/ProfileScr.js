@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import { card } from '../assets/styles/stylesheet';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { FontAwesome } from '@expo/vector-icons';
 
 
 export default class ProfileScr extends React.Component {
@@ -30,27 +30,27 @@ export default class ProfileScr extends React.Component {
         </View>
         <View style={style.settingsContainer}>
           <TouchableOpacity onPress={this._eventHandler} style={style.settingTile}>
-            <Icon style={style.settingsIcon} name="edit" size={18} color="#4F8EF7" />
+            <FontAwesome style={style.settingsIcon} name="edit" size={18} color="#4F8EF7" />
             <Text style={style.settingsText}>Edit Profile</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this._eventHandler} style={[style.settingTile]}>
-            <Icon style={style.settingsIcon} name="location-arrow" size={18} color="#4F8EF7" />
+            <FontAwesome style={style.settingsIcon} name="location-arrow" size={18} color="#4F8EF7" />
             <Text style={style.settingsText}>Change Location</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this._eventHandler} style={[style.settingTile]}>
-            <Icon style={style.settingsIcon} name="bookmark-o" size={18} color="#4F8EF7" />
+            <FontAwesome style={style.settingsIcon} name="bookmark-o" size={18} color="#4F8EF7" />
             <Text style={style.settingsText}>Pinned Clubs</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this._eventHandler} style={[style.settingTile]}>
-            <Icon style={style.settingsIcon} name="bell-o" size={18} color="#4F8EF7" />
+            <FontAwesome style={style.settingsIcon} name="bell-o" size={18} color="#4F8EF7" />
             <Text style={style.settingsText}>Notification Settings</Text>
           </TouchableOpacity>
           <View style={{ flex: 2, justifyContent: 'center', alignItems: 'center' }}>
-            <Icon.Button
+            <FontAwesome.Button
               name="sign-out"
               backgroundColor="#ff8080"
               onPress={this._eventHandler}
-            >Logout</Icon.Button>
+            >Logout</FontAwesome.Button>
           </View>
         </View>
       </View>

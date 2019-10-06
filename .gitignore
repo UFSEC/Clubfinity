@@ -7,6 +7,14 @@ npm-debug.*
 *.key
 *.env
 *.mobileprovision
-*config*
 *.vscode
+*node_modules
+*.DS_Store
+Backend/node_modules
+Frontend/node_modules
 /Frontend/a/*
+<<<<<<< .gitignore
+/Backend/package-lock.json
+=======
+
+>>>>>>> .gitignore
