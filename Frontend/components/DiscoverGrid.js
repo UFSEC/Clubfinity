@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
   Text,
+  Image,
   TouchableOpacity,
   TextInput,
   View,
@@ -10,81 +11,74 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
+/**
+//  * [img]https://i.ibb.co/FYZbDgV/lacrosse-club-img.jpg[/img]
+[img]https://i.ibb.co/F0hqL1X/puppy-club-img.jpg[/img]
+[img]https://i.ibb.co/wSM1PbB/hammock-club-img.png[/img]
+[img]https://i.ibb.co/hfKBKN9/psych-club-img.jpg[/img]
+[img]https://i.ibb.co/cwJtrNy/ace-club-img.jpg[/img]
+[img]https://i.ibb.co/4TWk5LX/wece-club-img.jpg[/img]
+[img]https://i.ibb.co/4TxXzRZ/gatortech-club-img.png[/img]
+ */
 
 // Dummy list of clubs
 const clubList = [
   {
+    id: 111,
+    name: " Puppy Club",
+    category: "Cute",
+    categoryColor: "#5E5CE6",
+    src: "https://i.ibb.co/F0hqL1X/puppy-club-img.jpg",
+  },
+  {
     id: 0,
     name: "SEC",
-    category: "Computer Science",
-    src: "../assets/images/sec-icon.png",
+    category: " Computer Science",
+    categoryColor: "#FF9F0A",
+    src: "https://i.ibb.co/F4rHdKN/sec-club-img.jpg",
   },
   {
     id: 1,
     name: "ACM",
-    category: "Computer Science",
-    src: "../assets/images/sec-icon.png",
+    category: " Computer Science",
+    categoryColor: "#FF9F0A",
+    src: "https://i.ibb.co/wLMHZHK/acm-club-img.png",
   },
   {
     id: 2,
     name: "ACE",
-    category: "Computer Science",
-    src: "../assets/images/sec-icon.png",
+    category: "Computer Engineering",
+    categoryColor: "#FF9F0A",
+    src: "https://i.ibb.co/cwJtrNy/ace-club-img.jpg",
   },
   {
     id: 3,
     name: "WiCSE",
     category: "Computer Science",
-    src: "../assets/images/sec-icon.png",
+    categoryColor: "#FF9F0A",
+    src: "https://i.ibb.co/fSM2Zxz/wicse-club-img.jpg",
   },
   {
     id: 4,
     name: "WECE",
-    category: "Computer Science",
-    src: "../assets/images/sec-icon.png",
+    category: "Computer Engineering",
+    categoryColor: "#FF9F0A",
+    src: "https://i.ibb.co/4TWk5LX/wece-club-img.jpg",
   },
   {
     id: 5,
     name: "GatorTech",
     category: "Computer Science",
-    src: "../assets/images/sec-icon.png",
+    categoryColor: "#FF9F0A",
+    src: "https://i.ibb.co/4TxXzRZ/gatortech-club-img.png",
   },
   {
     id: 6,
-    name: "SEC",
-    category: "Computer Science",
-    src: "../assets/images/sec-icon.png",
-  },
-  {
-    id: 7,
-    name: "ACM",
-    category: "Computer Science",
-    src: "../assets/images/sec-icon.png",
-  },
-  {
-    id: 8,
-    name: "ACE",
-    category: "Computer Science",
-    src: "../assets/images/sec-icon.png",
-  },
-  {
-    id: 9,
-    name: "WiCSE",
-    category: "Computer Science",
-    src: "../assets/images/sec-icon.png",
-  },
-  {
-    id: 10,
-    name: "WECE",
-    category: "Computer Science",
-    src: "../assets/images/sec-icon.png",
-  },
-  {
-    id: 11,
-    name: "GatorTech",
-    category: "Computer Science",
-    src: "../assets/images/sec-icon.png",
-  },
+    name: "Women's Lacrosse",
+    category: "Sports",
+    categoryColor: "#FF9F0A",
+    src: "https://i.ibb.co/FYZbDgV/lacrosse-club-img.jpg"
+  }
 ]
 
 export default class DiscoverGrid extends Component {
@@ -118,8 +112,8 @@ export default class DiscoverGrid extends Component {
       <View style={styles.mainContainer}>
         {/* Search Bar */}
         <View style={styles.searchBox}>
-          <Ionicons style={styles.searchBoxIcon} color={'#8E8E93'} name={"md-search"} size={24} /> 
-          <TextInput 
+          <Ionicons style={styles.searchBoxIcon} color={'#8E8E93'} name={"md-search"} size={24} />
+          <TextInput
             style={styles.searchBoxText}
             placeholderTextColor={'#8E8E93'}
             placeholder="Explore clubs"
@@ -137,8 +131,22 @@ export default class DiscoverGrid extends Component {
               style={styles.gridItem}
               onPress={this.handleClubSelect}
             >
-              <Text>{item.name}</Text>
-              <Text>{item.category}</Text>
+              <Image
+                source={{
+                  uri: item.src,
+                  method: 'POST',
+                  headers: {
+                    Pragma: 'no-cache'
+                  }
+                }}
+                style={styles.gridImage}
+                resizeMode={"stretch"}
+              />
+              <View style={styles.gridSubheading}>
+                <Text color={item.categoryColor} style={styles.clubName}>{item.name}</Text>
+                <Text style={styles.clubCategory}>{item.category}</Text>
+              </View>
+
             </TouchableOpacity>
           )}
           numColumns={2}
@@ -150,11 +158,15 @@ export default class DiscoverGrid extends Component {
   }
 };
 
+const bgColor = "#F2F2F7";
+const cardColor = "#fff"
+
 // Style definitions
 const styles = StyleSheet.create({
   mainContainer: {
     justifyContent: 'center',
     flex: 1,
+    backgroundColor: bgColor
     // paddingTop: 40,
   },
   scrollContainer: {
@@ -164,20 +176,71 @@ const styles = StyleSheet.create({
     minWidth: Dimensions.get("screen").width
   },
   gridItem: {
+    display: "flex",
+    flexDirection: "column",
     flex: 1,
     minWidth: 150,
     minHeight: 150,
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 3,
-    backgroundColor: '#E5E4EA',
-    padding: 10,
-    elevation: 2
+    margin: 5,
+    borderRadius: 1,
+    borderWidth: 1,
+    borderColor: bgColor,
+    backgroundColor: cardColor,
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 0,
+    elevation: 2,
+
   },
-  imageThumbnail: {
+  gridImage: {
+    flex: 4,
+    margin: 0,
+    height: 100,
+    width: Dimensions.get('screen').width / 2 - 22, // This isn't arbitrary and is instead depends on padding/margin b/w cards. Must be made a constant one design finalized!
+    borderWidth: 1,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
+  },
+  gridSubheading: {
+    flex: 1,
+    display: "flex",
+    backgroundColor: cardColor,
+    justifyContent: "center",
+    alignSelf: 'stretch',
+    alignItems: "center",
+    margin: 0,
+    padding: 10,
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 0,
+    borderWidth: 2,
+    borderColor: cardColor,
+  },
+  clubName: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    margin: 5,
+    color: "#636e72" 
+  },
+  clubCategory: {
+    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    minHeight: 200,
+    backgroundColor: '#5E5CE6',
+    paddingHorizontal: 5,
+    marginTop: 5,
+    paddingVertical: 1,
+    borderRadius: 7,
+    borderWidth: 1,
+    borderColor: '#5E5CE6',
+    fontSize: 10,
+    color: '#fff'
   },
   searchBox: {
     display: 'flex',

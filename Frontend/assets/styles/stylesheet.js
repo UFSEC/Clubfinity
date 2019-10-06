@@ -4,7 +4,7 @@ import { StyleSheet, Dimensions } from 'react-native'
 const primary = StyleSheet.create({
     container: {
         paddingHorizontal: 10,
-        backgroundColor: '#F1F1F1'
+        backgroundColor: '#F2F2F7'
     },
     bodyText: {
         color: '#636e72',
