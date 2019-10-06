@@ -1,13 +1,14 @@
 const Club = require('../Model/Club.js').Model;
 
-exports.createClub = (name_,president_name_,major_of_interest_,email_,password_,events_)=>{
+exports.createClub = (name_,president_name_,admins_,major_of_interest_,email_,password_,events_)=>{
     const newClub = Club({
         name:name_,
         president_name:president_name_,
+        admins: admins_,
         major_of_interest:major_of_interest_,
         email:email_,
         password:password_,
-        events:events_
+        events:(events_)?events_:[]
     });
     newClub.save((err,document)=>{
         if(err) throw err;
@@ -37,7 +38,7 @@ exports.updateClub = (name_, updatedInfo) => {
     );
   };
 
-  exports.deleteUser = (name_) => {
+  exports.deleteClub = (name_) => {
     Club.remove({ name: name_ }, (err)=>{
         if(err) throw err;
     });
