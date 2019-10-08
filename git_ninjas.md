@@ -6,3 +6,4 @@ Add you names under like `* <your name>`
 * Noah Kurrack
 * Norland Batista
 * David Sadowsky
+* Evan Rupert
