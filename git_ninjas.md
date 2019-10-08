@@ -5,3 +5,4 @@ Add you names under like `* <your name>`
 * Dylan Hawley
 * Noah Kurrack
 * Norland Batista
+* David Sadowsky
