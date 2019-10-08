@@ -102,13 +102,48 @@ exports.validate = type => {
       return [
         query("firstName", "First name does not exist").exists(),
         query("lastName", "Last name does not exist").exists(),
-        query("dateOfBirth", "Date of birth does not exist").exists(),
+        query("dateOfBirth", "Date of birth does not exist").exists()
+          .custom(date => validateDate(date)),
         query("email", "Email does not exist/invalid")
           .exists()
           .isEmail(),
-        query("username", "Username does not exist").exists(),
+        query("username", "Username does not exist").exists()
+          .custom(username => validateUser(username)),
         query("password", "Password does not exist").exists()
+          .custom(password => validatePassword(password)),
       ];
     }
   }
 };
+
+// Validating date
+// Format must be able to be parsed into Date class
+function validateDate(date) {
+  if (new Date(date) === "Invalid Date" || isNaN(new Date(date))) {
+    throw new Error('Invalid date string');
+  }
+  return true;
+}
+
+// Username must be within 6 and 20 characters
+// Username must not contain empty spaces
+function validateUser(user) {
+  if (user.length < 6) {
+    throw new Error('Username is too short (less than 6 characters');
+  }
+  if (user.length > 20) {
+    throw new Error('Username is too long (more than 20 characters)');
+  }
+  if (user.indexOf(' ') != -1) {
+    throw new Error('Username contains a space');
+  }
+  return true;
+}
+
+// Password must be longer than 6 characters
+function validatePassword(password) {
+  if (password.length < 6) {
+    throw new Error('Password is too short (less than 6 characters');
+  }
+  return true;
+}
