@@ -7,6 +7,7 @@ Here's a list of tutorials, videos etc to help you get started with the tools an
 
 Git Basics
 ---------------
+- [SEC Git Workshop](./git_guide.md)
 - [Git Crash Course (Youtube)](https://youtu.be/SWYqp7iY_Tc)
 - [Git slide deck](https://docs.google.com/presentation/d/1o7cNmRufEOAl82lYNzpATYbXXQ81iUy2CIHQ33H9BDM/edit?usp=sharing) 
 - [Iteractive tutorial](http://jlord.us/git-it/index.html)
