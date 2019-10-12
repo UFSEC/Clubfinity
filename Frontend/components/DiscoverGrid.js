@@ -11,15 +11,8 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-/**
-//  * [img]https://i.ibb.co/FYZbDgV/lacrosse-club-img.jpg[/img]
-[img]https://i.ibb.co/F0hqL1X/puppy-club-img.jpg[/img]
-[img]https://i.ibb.co/wSM1PbB/hammock-club-img.png[/img]
-[img]https://i.ibb.co/hfKBKN9/psych-club-img.jpg[/img]
-[img]https://i.ibb.co/cwJtrNy/ace-club-img.jpg[/img]
-[img]https://i.ibb.co/4TWk5LX/wece-club-img.jpg[/img]
-[img]https://i.ibb.co/4TxXzRZ/gatortech-club-img.png[/img]
- */
+// This isn't arbitrary and is instead depends on padding/margin b/w cards. Must be made a constant one design finalized!
+const GRID_ITEM_WIDTH = Dimensions.get('screen').width / 2 - 22;
 
 // Dummy list of clubs
 const clubList = [
@@ -167,7 +160,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     backgroundColor: bgColor
-    // paddingTop: 40,
   },
   scrollContainer: {
     flex: 1,
@@ -180,6 +172,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     flex: 1,
     minWidth: 150,
+    maxWidth: GRID_ITEM_WIDTH,
     minHeight: 150,
     alignItems: 'center',
     justifyContent: 'center',
@@ -199,7 +192,7 @@ const styles = StyleSheet.create({
     flex: 4,
     margin: 0,
     height: 100,
-    width: Dimensions.get('screen').width / 2 - 22, // This isn't arbitrary and is instead depends on padding/margin b/w cards. Must be made a constant one design finalized!
+    width: GRID_ITEM_WIDTH, 
     borderWidth: 1,
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
