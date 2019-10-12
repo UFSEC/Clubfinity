@@ -4,7 +4,7 @@ import {
   Platform, StatusBar, StyleSheet,
 } from 'react-native';
 import AppNavigator from './navigation/TabNavigator';
-import HomeScr from './screens/HomeScr';
+console.disableYellowBox = true; // This is to switch off warning
 
 
 export default class App extends Component {
