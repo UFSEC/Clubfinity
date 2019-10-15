@@ -10,3 +10,5 @@ Add you names under like `* <your name>`
 * Matthew Flippen
 * Masen Beliveau
 * Cameron Newborn
+* Matthew Flippen
+* Michel El Chalfoun
