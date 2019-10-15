@@ -12,3 +12,4 @@ Add you names under like `* <your name>`
 * Cameron Newborn
 * Michel El Chalfoun
 * Jacob Bleser
+* Azhar Baig
