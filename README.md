@@ -74,7 +74,21 @@ To add express to your project you need to use the following command:
 ```npm install express```
 which will install all the required dependencies you need for express.
 
-#### Setting up the Frontend (Mobile App)
+**Setup you local environment environment**
+After you locally clone the project from Gitlab, there are a couple initial steps you need to
+take in order to get the server running:
+- Ensure Node.js & NPM are installed (you can enter `node -v` & `npm -v` in a terminal to ensure they installed correctly)
+- Install MongoDB locally or via Docker
+- In a terminal, `cd` into `clubfinity/Backend` and enter the command `npm install`. This will install 
+  the necessary 3rd-party dependancies your local copy of project (this is necessary whenever you clone an NPM package)
+
+**Starting the server**
+Whenever you want to develop or run the server, take the following steps:
+- Start MongoDB
+- Start the server with `npm start`. You can leave this running, any changes you make to the codebase will restart
+  the server automatically for you.
+
+### Setting up the Frontend (Mobile App)
 Your first step would be to make sure you have npm and NodeJS installed on your pc/mac. The
 details on how to do that can be found above in the “Installing NodeJS” section. Once you’re
 done with that, open your terminal and install Expo with the following command:

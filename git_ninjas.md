@@ -8,4 +8,8 @@ Add you names under like `* <your name>`
 * David Sadowsky
 * Evan Rupert
 * Matthew Flippen
-* David DeVore
+* Masen Beliveau
+* Cameron Newborn
+* Michel El Chalfoun
+* Jacob Bleser
+* Azhar Baig
