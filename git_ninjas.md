@@ -9,3 +9,4 @@ Add you names under like `* <your name>`
 * Evan Rupert
 * Matthew Flippen
 * Masen Beliveau
+* Cameron Newborn
