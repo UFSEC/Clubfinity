@@ -16,18 +16,26 @@ exports.createUser = (
   username_,
   password_
 ) => {
-  const newUser = new User({
-    name: { first: firstname_, last: lastname_ },
-    dob: dob_,
-    username: username_,
-    email: email_,
-    password: password_
-  });
-  newUser.save(function(error, document) {
-    if (error) {
-      throw error;
+  // Add this to a custom validator using Express-Validator
+  // Add callback to this function
+  User.exists({ username: username_ }).then(result => {
+    if (result) {
+      console.log("Username " + username_ + " already exists!");
     } else {
-      console.log("Successfully added user " + username_);
+      const newUser = new User({
+        name: { first: firstname_, last: lastname_ },
+        dob: dob_,
+        username: username_,
+        email: email_,
+        password: password_
+      });
+      newUser.save(function(error, document) {
+        if (error) {
+          throw error;
+        } else {
+          console.log("Successfully added user " + username_);
+        }
+      });
     }
   });
 };
