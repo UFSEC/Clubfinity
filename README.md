@@ -87,7 +87,6 @@ Whenever you want to develop or run the server, take the following steps:
 - Start the server with `npm start`. You can leave this running, any changes you make to the codebase will restart
   the server automatically for you.
 
-=======
 **MongoDB**
 User, event, and club information will be stored using MongoDB (non-relation database). For development, you will have to run a local database using MongoDB. Here are some instructions on [installation](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/ "installation") on Windows. If you have a Mac, here are some instructions for [installation](https://treehouse.github.io/installation-guides/mac/mongo-mac.html "installation").
 
@@ -152,4 +151,4 @@ Now that you’ve successfully done everything that we’ve told you to do so fa
 
 Last thing we need for you to do if you haven’t already is join head over to the issues board on Gitlab which can be found on the sidebar to your left Issues -> Boards and selecting "Development"
 
-This is where you'll find all the tasks and user stories to be completed as well as those that are being tested or have already been integrated! If you'd like to learn more about how to contribute to the repo and our general workflow check out [this](#) guide (Under Construction)
+This is where you'll find all the tasks and user stories to be completed as well as those that are being tested or have already been integrated! If you'd like to learn more about how to contribute to the repo and our general workflow check out [this](../clubfinity/Resources.md) guide (Under Construction)
