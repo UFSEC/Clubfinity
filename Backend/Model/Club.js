@@ -3,6 +3,10 @@ const mongoose = require("mongoose");
 const Schema = new mongoose.Schema({
   name: String,
   president_name: String,
+  admins:[{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }],
   major_of_interest: String,
   email: String,
   password: String,

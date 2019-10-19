@@ -13,8 +13,3 @@ npm-debug.*
 Backend/node_modules
 Frontend/node_modules
 /Frontend/a/*
-<<<<<<< .gitignore
-/Backend/package-lock.json
-=======
-
->>>>>>> .gitignore

@@ -3,9 +3,10 @@ import { Image, StyleSheet, Text, TouchableOpacity, View, Button, ScrollView, Fl
 import { primary } from '../assets/styles/stylesheet';
 import { Switch } from '../components/Switch';
 import { FontAwesome, Octicons, Ionicons, Entypo } from '@expo/vector-icons';
-
+import SettingScr from './SettingScr';
 
 export default class ProfileScr extends React.Component {
+  
 	constructor(props) {
 	  super(props);
 	  this.state = {
@@ -39,11 +40,11 @@ export default class ProfileScr extends React.Component {
 						<Image style={[style.profilePicture]} source={require('../assets/images/profile-icon.png')} />
 						<View style={style.profileInfo}>
 							<Text style={style.textHeader}>Christian Sarmiento</Text>
-							<Text>Computer Science</Text>
-							<Text>Victory Lap</Text>
+							<Text style={style.textSubheading}>Computer Science</Text>
+							<Text style={style.textSubheading}>Victory Lap</Text>
 						</View>
 					</View>
-					<View style={style.profileCardRow}>
+					{/* <View style={style.profileCardRow}>
 						<View style={style.profileCardBody}>
 							<Text style={style.textHeader}>Involvement</Text>
 							<Text>Software Engineering Club (SEC)</Text>
@@ -56,12 +57,14 @@ export default class ProfileScr extends React.Component {
 							<Text>(*Hidden unless</Text>
 							<Text>they're an admin)</Text>
 						</View>
-					</View>
+					</View> */}
 				</View>
 
-				<Text style={style.textTitle}>Preferences</Text>
+        <SettingScr />
 
-				<View style={style.settingsCard}>
+				{/* <Text style={style.textTitle}>Preferences</Text> */}
+
+				{/* <View style={style.settingsCard}>
 					<View style={style.settingsCardRow}>
 						<Text style={style.settingsCardText}>Some Setting</Text>
 						<View style={style.settingsCardIcon}>
@@ -101,7 +104,7 @@ export default class ProfileScr extends React.Component {
 							/>
 						</View>
 					</View>
-				</View>
+				</View> */}
 			</ScrollView>
 		);
 	}
@@ -127,6 +130,7 @@ const style = StyleSheet.create({
         elevation: 2
 	},
 	profileCardRow: {
+    display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		// alignContent: 'center',
@@ -152,14 +156,24 @@ const style = StyleSheet.create({
 		flex: 4
 	},
 	profileInfo: {
+    display: 'flex',
+    flexDirection: 'column',
+    marginLeft: 10,
+    // backgroundColor: 'pink',
+    justifyContent: 'center',
 		alignItems: 'center',
 		flex: 6
 	},
 	textHeader: {
+    // justifyContent: 'center',
+    alignSelf: 'center',
 		fontWeight: 'bold',
 		fontSize: 24,
 		paddingBottom: 10
-	},
+  },
+  textSubheading: {
+    alignSelf: 'flex-start'
+  },
 	textTitle: {
 		textAlign: 'center',
 		fontWeight: 'bold',

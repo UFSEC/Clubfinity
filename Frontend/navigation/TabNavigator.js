@@ -7,6 +7,7 @@ import CalendarScr from '../screens/CalendarScr';
 import HomeScr from '../screens/HomeScr';
 import DiscoverScr from '../screens/DiscoverScr';
 import ProfileScr from '../screens/ProfileScr';
+// import SettingScr from '../screens/SettingScr';
 
 const HomeStack = createStackNavigator({
   Home: HomeScr,
