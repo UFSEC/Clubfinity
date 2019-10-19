@@ -1,52 +1,43 @@
-import React from 'react'
-import { StyleSheet, Text, View, Dimensions, Switch } from 'react-native'
-const { width, height } = Dimensions.get('screen')
+import React, { Component } from 'react';
+import { Button } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 
-export default class SettingSrc extends React.Component {
-  state = {
-    profieViewSwitch: false
-  }
+class Switch extends Component {
 
-  render() {
-    return (
-      <View style={styles.section}>
-        <View>
-          <View style={styles.option}>
-            <Text style={styles.textStyle}>{this.props.text}</Text>
-            <Switch
-              ios_backgroundColor="#EAEAED"
-              value={this.state.profieViewSwitch}
-              onValueChange={value =>
-                this.setState({ profieViewSwitch: value })
-              }
+    constructor(props) {
+        super(props);
+        this.state = {
+            toggled: false
+        };
+    }
+
+    render() {
+        if (this.state.toggled) {
+            return (
+                <FontAwesome.Button
+                    name="toggle-on"
+                    color="#16a085"
+                    backgroundColor="white"
+                    onPress={this._eventHandler}
+                />
+            );
+        }
+        return (
+            <FontAwesome.Button
+                name="toggle-off"
+                color="grey"
+                backgroundColor="white"
+                onPress={this._eventHandler}
             />
-          </View>
-        </View>
-      </View>
-    )
-  }
+		);
+    }
+
+    _eventHandler = () => {
+        this.props.clickHandler();
+        this.setState({
+            toggled: !this.state.toggled
+        });
+    }
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff'
-  },
-  section: {
-    flexDirection: 'column',
-    marginBottom: 14,
-    paddingBottom: 2,
-    marginTop: 20,
-    borderBottomColor: '#EAEAED',
-    borderBottomWidth: 1
-  },
-  textStyle: {
-    fontWeight: '500',
-    paddingRight: 5
-  },
-  option: {
-    marginBottom: 14,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  }
-})
+
+export { Switch };
