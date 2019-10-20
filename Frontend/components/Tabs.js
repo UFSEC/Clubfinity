@@ -13,16 +13,19 @@ import { TabView, SceneMap } from 'react-native-tab-view'
 const { width, height } = Dimensions.get('screen')
 
 export default class App extends React.Component {
-  state = {
-    active: 0,
-    xTabOne: 0,
-    xTabTwo: 0,
-    xTabThree: 0,
-    translateX: new Animated.Value(0),
-    translateXTabOne: new Animated.Value(0),
-    translateXTabTwo: new Animated.Value(width),
-    translateXTabThree: new Animated.Value(width * 2),
-    translateY: -1000
+  constructor (props) { 
+    super(props); 
+    this.state = { 
+      active: 0,
+      xTabOne: 0,
+      xTabTwo: 0,
+      xTabThree: 0,
+      translateX: new Animated.Value(0),
+      translateXTabOne: new Animated.Value(0),
+      translateXTabTwo: new Animated.Value(width),
+      translateXTabThree: new Animated.Value(width * 2),
+      translateY: -1000 
+    } 
   }
 
   handleSlide = type => {
