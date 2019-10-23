@@ -1,4 +1,4 @@
-# SEC's Awesome Dev Roster 😤
+﻿# SEC's Awesome Dev Roster 😤
 
 Add you names under like `* <your name>`
 
@@ -13,3 +13,4 @@ Add you names under like `* <your name>`
 * Michel El Chalfoun
 * Jacob Bleser
 * Azhar Baig
+* Americos Perez
