@@ -10,7 +10,7 @@ import ProfileScr from '../screens/ProfileScr';
 import SignupScr from '../screens/SignupScr'
 
 const HomeStack = createStackNavigator({
-  Home: HomeScr,
+  Home: SignupScr,
 }, {
   navigationOptions: {
     title: 'Home',
