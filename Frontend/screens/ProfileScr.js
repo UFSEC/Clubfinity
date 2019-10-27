@@ -4,6 +4,7 @@ import { primary } from '../assets/styles/stylesheet';
 import { Switch } from '../components/Switch';
 import { FontAwesome, Octicons, Ionicons, Entypo } from '@expo/vector-icons';
 import SettingScr from './SettingScr';
+import Tab from '../components/Tabs'
 
 export default class ProfileScr extends React.Component {
   
@@ -64,8 +65,8 @@ export default class ProfileScr extends React.Component {
 						</View>
 					</View> */}
 				</View>
-
-        <SettingScr />
+					<Tab tab1={ <SettingScr />}/>
+       
 
 				{/* <Text style={style.textTitle}>Preferences</Text> */}
 
