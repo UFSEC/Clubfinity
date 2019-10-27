@@ -40,8 +40,13 @@ export default class ProfileScr extends React.Component {
 						<Image style={[style.profilePicture]} source={require('../assets/images/profile-icon.png')} />
 						<View style={style.profileInfo}>
 							<Text style={style.textHeader}>Christian Sarmiento</Text>
-							<Text style={style.textSubheading}>Computer Science</Text>
-							<Text style={style.textSubheading}>Victory Lap</Text>
+							<Text style={style.textSubheading}><Text style={{fontWeight: "bold"}}>Major:</Text> Computer Science</Text>
+							<Text style={style.textSubheading}><Text style={{fontWeight: "bold"}}>Interest:</Text> I love to code! </Text>
+							<Text style={style.textSubheading}><Text style={{fontWeight: "bold"}}>Email:</Text> cs@gmail.com</Text>
+							<Text style={style.textSubheading}><Text style={{fontWeight: "bold"}}>Year:</Text> Senior</Text>
+							<Button  onPress={() => {
+								this.props.navigation.navigate({routeName:'Edit'})
+							}}title={"Edit Profile"}></Button>
 						</View>
 					</View>
 					{/* <View style={style.profileCardRow}>
@@ -172,7 +177,8 @@ const style = StyleSheet.create({
 		paddingBottom: 10
   },
   textSubheading: {
-    alignSelf: 'flex-start'
+	alignSelf: 'flex-start',
+	marginLeft:20
   },
 	textTitle: {
 		textAlign: 'center',
