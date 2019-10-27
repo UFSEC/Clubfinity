@@ -19,6 +19,39 @@ const primary = StyleSheet.create({
     }
 });
 
+const club = StyleSheet.create({
+    title: {
+        fontSize: 26, 
+        fontWeight: '700', 
+        paddingHorizontal: 15,
+        paddingVertical: 10
+    },
+    description: {
+        fontSize: 15, 
+        fontWeight: '200',
+        paddingVertical: 10,
+        paddingHorizontal: 20
+    }
+});
+
+const smCard = StyleSheet.create({
+    container: {
+        backgroundColor: '#f5f6fa',
+        padding: 0,
+        marginRight: 5,
+        marginLeft: 5,
+        marginTop: 0,
+        marginBottom: 10,
+        borderWidth: 1,
+        borderColor: "#f5f6fa",
+        borderRadius: 10,
+        borderWidth: 4,
+        elevation: 2,
+        height: 190,
+        width: 155
+    },
+});
+
 // Style definition for card components
 const card = StyleSheet.create({
     title: {
@@ -34,17 +67,17 @@ const card = StyleSheet.create({
         marginBottom: 5
     },
     container: {
-        backgroundColor: '#fff',
+        backgroundColor: '#f5f6fa',
         padding: 15,
         marginRight: 5,
         marginLeft: 5,
         marginTop: 10,
         marginBottom: 10,
         borderWidth: 1,
-        borderColor: "#fff",
+        borderColor: "#f5f6fa",
         borderRadius: 5,
         borderWidth: 4,
-        elevation: 3
+        elevation: 2
     },
     goingMarked: {
         backgroundColor: '#f5f6fa',
@@ -85,5 +118,21 @@ const card = StyleSheet.create({
     }
 });
 
+const post = StyleSheet.create({
+    container: {
+        flex: 1,
+        flexDirection: 'row',
+        backgroundColor: '#f5f6fa',
+        padding: 0,
+        marginRight: 5,
+        marginLeft: 5,
+        marginBottom: 2,
+        borderWidth: 2,
+        borderColor: "#f5f6fa",
+        borderRadius: 3,
+        elevation: 2,
+        height: 60,
+    },
+});
 
-export { primary, card }
+export { primary, card, club, smCard, post }

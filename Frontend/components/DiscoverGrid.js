@@ -86,6 +86,7 @@ export default class DiscoverGrid extends Component {
 
   handleClubSelect = () => {
     console.log("Clubs tapped boi");
+    // this.props.navigation.navigate('Club');
   }
 
   filterClubs = (text) => {

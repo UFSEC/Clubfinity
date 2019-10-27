@@ -7,6 +7,7 @@ import CalendarScr from '../screens/CalendarScr';
 import HomeScr from '../screens/HomeScr';
 import DiscoverScr from '../screens/DiscoverScr';
 import ProfileScr from '../screens/ProfileScr';
+import ClubScr from '../screens/ClubScr';
 // import SettingScr from '../screens/SettingScr';
 
 const HomeStack = createStackNavigator({
@@ -52,16 +53,22 @@ const ProfileStack = createStackNavigator({
 },);
 
 const DiscoverStack = createStackNavigator({
-  Discover: DiscoverScr,
-},  {
-  navigationOptions: {
-    header: null,
-    tabBarIcon: ({ focused, horizontal, tintColor }) => {
-      let iconName;
-      iconName = Platform.OS === 'ios' ? `ios-search` : 'md-search';
-      return <Ionicons name={iconName} size={horizontal ? 20 : 25} color={tintColor} />;
-    },
+  Discover: {
+    screen: DiscoverScr,
+    navigationOptions: ({ navigation }) => {
+      return {
+        header: null,
+        tabBarIcon: ({ focused, horizontal, tintColor }) => {
+          let iconName = Platform.OS === 'ios' ? `ios-search` : 'md-search';
+          return <Ionicons name={iconName} size={horizontal ? 20 : 25} color={tintColor} />;
+        }
+      };
+    }
   },
+  Club: {
+    screen: ClubScr
+  }
+},{
 },);
 
 export default createAppContainer(createBottomTabNavigator({

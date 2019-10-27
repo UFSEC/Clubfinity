@@ -2,6 +2,8 @@ import React from 'react';
 import {
   StyleSheet,
   View,
+  SafeAreaView,
+  Button,
 } from 'react-native';
 
 
@@ -17,10 +19,11 @@ export default class DiscoverScr extends React.Component {
 
   render() {
     return (
-      <View style={styles.mainContainer}>
+      <SafeAreaView style={styles.mainContainer}>
         <DiscoverGrid />
         {/* <Text>Discover Screen</Text> */}
-      </View>
+        <Button title="Cool Club Ahead" onPress={() => this.props.navigation.navigate('Club')} />
+      </SafeAreaView>
     );
   }
 }
