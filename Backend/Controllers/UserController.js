@@ -3,16 +3,16 @@ const { validationResult, param, query } = require("express-validator/check");
 
 exports.getAll = (req, res) => {
   console.log("API GET request called for all users");
-  userDAO.getAllUsers(result => {
-    res.send(result);
+  userDAO.getAllUsers().then(users => {
+    res.send(users);
   });
 };
 
 exports.get = (req, res) => {
   console.log(`API GET request called for ${req.params.username}`);
-  userDAO.getUser(req.params.username, result => {
-    if (result) {
-      res.json(result);
+  userDAO.getUser(req.params.username).then(user => {
+    if (user) {
+      res.json(user);
     } else {
       res
         .status(404)
@@ -21,8 +21,6 @@ exports.get = (req, res) => {
   });
 };
 
-// Add input validation with external lib
-// Add check for username to match username of userInfo
 exports.update = (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -102,15 +100,18 @@ exports.validate = type => {
       return [
         query("firstName", "First name does not exist").exists(),
         query("lastName", "Last name does not exist").exists(),
-        query("dateOfBirth", "Date of birth does not exist").exists()
+        query("dateOfBirth", "Date of birth does not exist")
+          .exists()
           .custom(date => validateDate(date)),
         query("email", "Email does not exist/invalid")
           .exists()
           .isEmail(),
-        query("username", "Username does not exist").exists()
+        query("username", "Username does not exist")
+          .exists()
           .custom(username => validateUser(username)),
-        query("password", "Password does not exist").exists()
-          .custom(password => validatePassword(password)),
+        query("password", "Password does not exist")
+          .exists()
+          .custom(password => validatePassword(password))
       ];
     }
   }
@@ -120,7 +121,7 @@ exports.validate = type => {
 // Format must be able to be parsed into Date class
 function validateDate(date) {
   if (new Date(date) === "Invalid Date" || isNaN(new Date(date))) {
-    throw new Error('Invalid date string');
+    throw new Error("Invalid date string");
   }
   return true;
 }
@@ -129,13 +130,13 @@ function validateDate(date) {
 // Username must not contain empty spaces
 function validateUser(user) {
   if (user.length < 6) {
-    throw new Error('Username is too short (less than 6 characters');
+    throw new Error("Username is too short (less than 6 characters");
   }
   if (user.length > 20) {
-    throw new Error('Username is too long (more than 20 characters)');
+    throw new Error("Username is too long (more than 20 characters)");
   }
-  if (user.indexOf(' ') != -1) {
-    throw new Error('Username contains a space');
+  if (user.indexOf(" ") != -1) {
+    throw new Error("Username contains a space");
   }
   return true;
 }
@@ -143,7 +144,7 @@ function validateUser(user) {
 // Password must be longer than 6 characters
 function validatePassword(password) {
   if (password.length < 6) {
-    throw new Error('Password is too short (less than 6 characters');
+    throw new Error("Password is too short (less than 6 characters");
   }
   return true;
 }
