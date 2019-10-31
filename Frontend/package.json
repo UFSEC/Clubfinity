@@ -10,10 +10,11 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.1.5",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-35.0.0.tar.gz",
     "expo": "^35.0.0",
     "react": "16.8.3",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-35.0.0.tar.gz",
     "react-native-calendars": "^1.22.0",
+    "react-native-keyboard-aware-scroll-view": "^0.9.1",
     "react-navigation": "^3.0.0"
   },
   "devDependencies": {

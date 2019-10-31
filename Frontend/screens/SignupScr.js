@@ -3,7 +3,6 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  KeyboardAvoidingView,
   Picker,
   View,
   ScrollView,
@@ -14,6 +13,8 @@ import {
 import {
   FontAwesome, MaterialCommunityIcons, Entypo, MaterialIcons
 } from '@expo/vector-icons';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 
 import SignupButton from '../components/SignupButton';
 
@@ -35,6 +36,13 @@ export default class SignupScr extends React.Component {
       password: '',
       verifyPassword: ''
     }
+  }
+
+  // Error text
+  errorText = () => {
+    return (
+      <Text style={styles.error}>Please enter a valid name</Text>
+    );
   }
 
   submitButtonHandler = () => {
@@ -67,7 +75,7 @@ export default class SignupScr extends React.Component {
       password: input
     });
   }
-  
+
   verify2ndPassword = (input) => {
     this.setState({
       password: input
@@ -76,37 +84,37 @@ export default class SignupScr extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }} >
-        <KeyboardAvoidingView style={styles.container} behavior="padding" keyboardVerticalOffset={10}  enabled>
-          {/* <View style={styles.container}> */}
+      <KeyboardAwareScrollView style={{display: 'flex', flex: 1}}>
+        <View style={styles.container}>
           <Text style={styles.header}>Sign Up</Text>
           <View style={styles.formContainer}>
 
-            <View style={{display: 'flex', flex: 1, flexDirection: 'row', justifyContent: 'space-evenly'}}>
-            {/* First Name */}
-            <View style={styles.inputField}>
-              <FontAwesome style={styles.inputFieldIcon} name="user" color={'#2980b9'} size={20} />
-              <TextInput
-                style={styles.inputFieldText}
-                placeholderTextColor={'#8E8E93'}
-                placeholder="First Name"
-                onChangeText={(text) => this.verifyFirstName(text)}
-                value={this.state.firstName}
-              ></TextInput>
-            </View>
+            <View style={{ display: 'flex', flex: 1, flexDirection: 'row', justifyContent: 'space-evenly' }}>
+              {/* First Name */}
+              <View style={styles.inputField}>
+                <FontAwesome style={styles.inputFieldIcon} name="user" color={'#2980b9'} size={20} />
+                <TextInput
+                  style={[styles.inputFieldText, styles.nameField]}
+                  placeholderTextColor={'#8E8E93'}
+                  placeholder="First Name"
+                  onChangeText={(text) => this.verifyFirstName(text)}
+                  value={this.state.firstName}
+                ></TextInput>
+              </View>
 
-            {/* Last Name */}
-            <View style={styles.inputField}>
-              {/* <FontAwesome style={styles.inputFieldIcon} name="user" color={'#2980b9'} size={24} /> */}
-              <TextInput
-                style={styles.inputFieldText}
-                placeholderTextColor={'#8E8E93'}
-                placeholder="Last Name"
-                onChangeText={(text) => this.verifyLastName(text)}
-                value={this.state.lastName}
-              ></TextInput>
+              {/* Last Name */}
+              <View style={styles.inputField}>
+                {/* <FontAwesome style={styles.inputFieldIcon} name="user" color={'#2980b9'} size={24} /> */}
+                <TextInput
+                  style={styles.inputFieldText}
+                  placeholderTextColor={'#8E8E93'}
+                  placeholder="Last Name"
+                  onChangeText={(text) => this.verifyLastName(text)}
+                  value={this.state.lastName}
+                ></TextInput>
+              </View>
             </View>
-            </View>
+            {this.errorText()}
 
 
             {/* Major */}
@@ -169,14 +177,14 @@ export default class SignupScr extends React.Component {
               <TextInput
                 style={styles.inputFieldText}
                 placeholderTextColor={'#8E8E93'}
-                placeholder="Password (minumum length 6)"
+                placeholder="Password (minimum length 6)"
                 onChangeText={(text) => this.verifyPassword(text)}
                 value={this.state.password}
               ></TextInput>
             </View>
 
-              {/* double password */}
-              <View style={styles.inputField}>
+            {/* double password */}
+            <View style={styles.inputField}>
               <MaterialIcons style={styles.inputFieldIcon} name="vpn-key" color={'#2980b9'} size={20} />
               <TextInput
                 style={styles.inputFieldText}
@@ -192,9 +200,8 @@ export default class SignupScr extends React.Component {
             </View>
 
           </View>
-        </KeyboardAvoidingView>
-      </View>
-
+        </View>
+        </KeyboardAwareScrollView>
     );
   }
 }
@@ -210,9 +217,14 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+    // justifyContent: 'flex-end',
+    // alignItems: 'center',
     backgroundColor: bgColor
+  },
+  error: {
+    color: 'red',
+    fontSize: 12,
+    paddingHorizontal: 10,
   },
   pickerDropdown: {
     width: 200
@@ -229,7 +241,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     minWidth: Dimensions.get('screen').width,
     fontSize: 13,
-    flex: 10
+    flex: 12
   },
   inputField: {
     display: 'flex',
@@ -245,6 +257,7 @@ const styles = StyleSheet.create({
     // maxHeight: 50,
     // minWidth: MINIMUM_FIELD_WIDTH,
     paddingHorizontal: 10,
+    paddingVertical: 5,
     flex: 1
   },
   inputFieldText: {
@@ -252,15 +265,19 @@ const styles = StyleSheet.create({
     flex: 10
   },
   inputFieldIcon: {
-    flex: 2
+    flex: 1
   },
   button: {
-    marginVertical: 15,
+    marginVertical: 5,
     marginHorizontal: 10,
     maxWidth: btnWidth,
     maxHeight: 100,
     alignSelf: 'center',
     alignItems: 'center',
     flex: 1,
+  },
+  nameField: {
+    marginLeft: 20,
+
   }
 });
