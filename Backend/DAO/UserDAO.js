@@ -1,5 +1,5 @@
 const User = require("../Model/User.js").Model;
-const { NotFoundError } = require('../util/exceptions');
+const { NotFoundError } = require("../util/exceptions");
 
 // TODO
 // 1. Add support for a prod/dev config without hardcoded vars
@@ -10,22 +10,32 @@ exports.create = async userParams => {
     throw Error("username already taken");
   }
 
-  return await new User(userParams).save()
+  return await new User(userParams).save();
 };
 
 exports.getAll = async () => {
   return await User.find({}).exec();
 };
 
-exports.get = async (id) => {
+exports.get = async id => {
   const user = await User.findById(id);
   if (!user) throw new NotFoundError();
 
   return user;
 };
 
+exports.getByUsername = async username => {
+  const user = await User.findOne({ username: username });
+  if (!user) throw new NotFoundError();
+
+  return user;
+};
+
 exports.update = async (id, updatedData) => {
-  await User.findOneAndUpdate({ _id: id }, updatedData, { upsert: true, useFindAndModify: false });
+  await User.findOneAndUpdate({ _id: id }, updatedData, {
+    upsert: true,
+    useFindAndModify: false
+  });
 
   return exports.get(id);
 };
