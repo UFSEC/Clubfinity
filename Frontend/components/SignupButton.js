@@ -20,7 +20,7 @@ export default class SignupButton extends Component {
         backgroundColor="#0C85FC"
         onPress={this._eventHandler}
       >
-        Submit 
+        Sign Up 
             </MaterialIcons.Button>
     );
   }
