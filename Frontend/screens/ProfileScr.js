@@ -1,25 +1,26 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View, Button, ScrollView, FlatList } from 'react-native';
+import { CreateEvent } from '../components/CreateEvent';
 import { primary } from '../assets/styles/stylesheet';
 import { Switch } from '../components/Switch';
 import { FontAwesome, Octicons, Ionicons, Entypo } from '@expo/vector-icons';
 import SettingScr from './SettingScr';
 
 export default class ProfileScr extends React.Component {
-  
+
 	constructor(props) {
-	  super(props);
-	  this.state = {
-		isToggled: false,
-		hideCard: false
-	  }
+		super(props);
+		this.state = {
+			isToggled: false,
+			hideCard: false
+		}
 	}
-  
-	// Change card style if 'Going' clicked || remove if Not going
+
 	btnHandler = () => {
-	  this.setState({
-		goingChecked: !this.state.isToggled
-	  });
+		this.setState({
+			goingChecked: !this.state.isToggled
+		});
+		console.log('Stuff has been clicked boi!');
 	}
 
 	static navigationOptions = {
@@ -60,7 +61,9 @@ export default class ProfileScr extends React.Component {
 					</View> */}
 				</View>
 
-        <SettingScr />
+				<CreateEvent />
+
+				<SettingScr />
 
 				{/* <Text style={style.textTitle}>Preferences</Text> */}
 
@@ -119,18 +122,18 @@ const style = StyleSheet.create({
 	},
 	profileCard: {
 		padding: 15,
-        backgroundColor: '#ffffff',
-        elevation: 2
+		backgroundColor: '#ffffff',
+		elevation: 2
 	},
 	settingsCard: {
 		// paddingTop: 15,
 		// paddingBottom: 15,
 		// marginBottom: 20,
-        backgroundColor: '#ffffff',
-        elevation: 2
+		backgroundColor: '#ffffff',
+		elevation: 2
 	},
 	profileCardRow: {
-    display: 'flex',
+		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		// alignContent: 'center',
@@ -156,24 +159,24 @@ const style = StyleSheet.create({
 		flex: 4
 	},
 	profileInfo: {
-    display: 'flex',
-    flexDirection: 'column',
-    marginLeft: 10,
-    // backgroundColor: 'pink',
-    justifyContent: 'center',
+		display: 'flex',
+		flexDirection: 'column',
+		marginLeft: 10,
+		// backgroundColor: 'pink',
+		justifyContent: 'center',
 		alignItems: 'center',
 		flex: 6
 	},
 	textHeader: {
-    // justifyContent: 'center',
-    alignSelf: 'center',
+		// justifyContent: 'center',
+		alignSelf: 'center',
 		fontWeight: 'bold',
 		fontSize: 24,
 		paddingBottom: 10
-  },
-  textSubheading: {
-    alignSelf: 'flex-start'
-  },
+	},
+	textSubheading: {
+		alignSelf: 'flex-start'
+	},
 	textTitle: {
 		textAlign: 'center',
 		fontWeight: 'bold',
