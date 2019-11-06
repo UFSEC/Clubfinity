@@ -12,8 +12,11 @@ import {
 
 
 export default class But extends React.Component {
-
-    state = {year: ''}
+  constructor(props){
+    super(props);
+    this.state = {year: ''};
+  }
+    
 
     updateUser = (year) => {
         this.setState({ year: year })

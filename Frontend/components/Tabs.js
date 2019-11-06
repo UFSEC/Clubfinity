@@ -16,6 +16,7 @@ export default class App extends React.Component {
   constructor (props) { 
     super(props); 
     this.state = { 
+      title:['About','Clubs','Settings'],
       active: 0,
       xTabOne: 0,
       xTabTwo: 0,
@@ -54,7 +55,7 @@ export default class App extends React.Component {
           duration: 100
         }).start(),
         Animated.spring(translateXTabThree, {
-          toValue: width * 2,
+          toValue: width ,
           duration: 100
         }).start()
       ])
@@ -69,7 +70,7 @@ export default class App extends React.Component {
           duration: 100
         }).start(),
         Animated.spring(translateXTabThree, {
-          toValue: active === 2 ? 0 : -width * 2,
+          toValue: active === 2 ? 0 : -width ,
           duration: 100
         }).start()
       ])
@@ -117,7 +118,7 @@ export default class App extends React.Component {
                 this.setState({ active: 0 }, () => this.handleSlide(xTabOne))
               }
             >
-              <Text color={{ active: 0 ? '#fff' : '#007aff ' }}>Setting</Text>
+              <Text color={{ active: 0 ? '#fff' : '#007aff ' }}> {this.state.title[0]}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={{
@@ -137,7 +138,7 @@ export default class App extends React.Component {
               }
             >
               <Text Color={{ active: 1 ? '#fff' : '#007aff ' }}>
-                Prefrences
+                {this.state.title[1]}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -160,7 +161,7 @@ export default class App extends React.Component {
               }
             >
               <Text color={{ val: active === 2 ? '#fff' : '#007aff ' }}>
-                Advance
+              {this.state.title[2]}
               </Text>
             </TouchableOpacity>
           </View>
@@ -213,13 +214,13 @@ export default class App extends React.Component {
                       translateX: translateXTabThree
                     },
                     {
-                      translateY: -translateY * 1.1
+                      translateY: -translateY * 10.5
                     }
                   ]
                 }
               }}
             >
-              {this.props.tab3}
+               {this.props.tab3}
             </Animated.View>
           </ScrollView>
         </View>
@@ -232,7 +233,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   tabContainerOuter: {
-    width: '90%',
+    width: '100%',
     marginLeft: 'auto',
     marginRight: 'auto'
   },

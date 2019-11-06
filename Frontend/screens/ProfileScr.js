@@ -4,6 +4,8 @@ import { primary } from '../assets/styles/stylesheet';
 import { Switch } from '../components/Switch';
 import { FontAwesome, Octicons, Ionicons, Entypo } from '@expo/vector-icons';
 import SettingScr from './SettingScr';
+import ProfileInfoScr from './ProfileInfoScr';
+import ClubsFollowScr from './ClubsFollowScr'
 import Tab from '../components/Tabs'
 
 export default class ProfileScr extends React.Component {
@@ -41,13 +43,12 @@ export default class ProfileScr extends React.Component {
 						<Image style={[style.profilePicture]} source={require('../assets/images/profile-icon.png')} />
 						<View style={style.profileInfo}>
 							<Text style={style.textHeader}>Christian Sarmiento</Text>
-							<Text style={style.textSubheading}><Text style={{fontWeight: "bold"}}>Major:</Text> Computer Science</Text>
-							<Text style={style.textSubheading}><Text style={{fontWeight: "bold"}}>Interest:</Text> I love to code! </Text>
-							<Text style={style.textSubheading}><Text style={{fontWeight: "bold"}}>Email:</Text> cs@gmail.com</Text>
-							<Text style={style.textSubheading}><Text style={{fontWeight: "bold"}}>Year:</Text> Senior</Text>
-							<Button  onPress={() => {
+							<FontAwesome.Button  backgroundColor="#2980b9" onPress={() => {
 								this.props.navigation.navigate({routeName:'Edit'})
-							}}title={"Edit Profile"}></Button>
+							}}>
+								<Text style={{color:"#ffffff",paddingRight:5}}>Edit Profile</Text>
+							</FontAwesome.Button>
+							
 						</View>
 					</View>
 					{/* <View style={style.profileCardRow}>
@@ -65,7 +66,7 @@ export default class ProfileScr extends React.Component {
 						</View>
 					</View> */}
 				</View>
-					<Tab tab1={ <SettingScr />}/>
+					<Tab tab1={<ProfileInfoScr/>} tab2={<ClubsFollowScr/>} tab3={ <SettingScr />} />
        
 
 				{/* <Text style={style.textTitle}>Preferences</Text> */}
