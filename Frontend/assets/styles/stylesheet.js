@@ -75,7 +75,7 @@ const card = StyleSheet.create({
     bannerIcon: {
         flex: 1,
         resizeMode: 'center',
-        borderRadius: 50,
+        borderRadius: 25,
         marginRight: 10,
         height: 50,
         width: 50
