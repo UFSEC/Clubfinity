@@ -3,17 +3,24 @@ const userRoute = require("./Routes/UserRoute");
 const authRoute = require("./Routes/AuthRoutes");
 const config = require("./Config/config.json");
 const database = require("./Database/Database.js");
-const bodyParser = require('body-parser');
+const passport = require("passport");
+const bodyParser = require("body-parser");
 
-const app = express();
+require("./Auth/passport");
+
+var app = express();
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use("/api", userRoute);
 app.use("/auth", authRoute);
+
 database.connect();
 
 app.listen(config.port, "localhost", () => {
   console.log(`Now listening on port ${config.port}`);
 });
-
-module.exports = app;
