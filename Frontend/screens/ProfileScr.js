@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  AsyncStorage,
   View,
 } from 'react-native';
 import { card } from '../assets/styles/stylesheet';
@@ -17,8 +18,10 @@ export default class ProfileScr extends React.Component {
     headerTitleStyle: { color: "#ecf0f1", letterSpacing: 2 },
   }
 
-  _eventHandler = () => {
-    console.log('Stuff has been clicked boi');
+  _logoutHandler = async () => {
+    await AsyncStorage.clear(); // Clear out any saved user info
+    console.log('User logged out');
+    this.props.navigation.navigate('Auth');
   }
 
   render() {
@@ -49,7 +52,7 @@ export default class ProfileScr extends React.Component {
             <FontAwesome.Button
               name="sign-out"
               backgroundColor="#ff8080"
-              onPress={this._eventHandler}
+              onPress={this._logoutHandler}
             >Logout</FontAwesome.Button>
           </View>
         </View>
