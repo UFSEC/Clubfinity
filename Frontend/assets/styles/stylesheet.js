@@ -4,7 +4,7 @@ import { StyleSheet, Dimensions } from 'react-native'
 const primary = StyleSheet.create({
     container: {
         paddingHorizontal: 10,
-        backgroundColor: '#fff'
+        backgroundColor: '#F2F2F7'
     },
     bodyText: {
         color: '#636e72',
@@ -34,17 +34,17 @@ const card = StyleSheet.create({
         marginBottom: 5
     },
     container: {
-        backgroundColor: '#f5f6fa',
+        backgroundColor: '#fff',
         padding: 15,
         marginRight: 5,
         marginLeft: 5,
         marginTop: 10,
         marginBottom: 10,
         borderWidth: 1,
-        borderColor: "#f5f6fa",
+        borderColor: "#fff",
         borderRadius: 5,
         borderWidth: 4,
-        elevation: 2
+        elevation: 3
     },
     goingMarked: {
         backgroundColor: '#f5f6fa',
@@ -75,7 +75,7 @@ const card = StyleSheet.create({
     bannerIcon: {
         flex: 1,
         resizeMode: 'center',
-        borderRadius: 50,
+        borderRadius: 25,
         marginRight: 10,
         height: 50,
         width: 50

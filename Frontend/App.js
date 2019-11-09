@@ -6,7 +6,6 @@ import {
 import AppNavigator from './navigation/TabNavigator';
 console.disableYellowBox = true; // This is to switch off warning
 
-
 export default class App extends Component {
   state = {
     isLoadingComplete: true,

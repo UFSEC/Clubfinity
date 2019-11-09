@@ -1,4 +1,4 @@
-# SEC's Awesome Dev Roster 😤
+﻿# SEC's Awesome Dev Roster 😤
 
 Add you names under like `* <your name>`
 
@@ -8,3 +8,9 @@ Add you names under like `* <your name>`
 * David Sadowsky
 * Evan Rupert
 * Matthew Flippen
+* Masen Beliveau
+* Cameron Newborn
+* Michel El Chalfoun
+* Jacob Bleser
+* Azhar Baig
+* Americos Perez

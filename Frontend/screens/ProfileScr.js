@@ -1,4 +1,5 @@
 import React from 'react';
+<<<<<<< HEAD
 import {
   Image,
   StyleSheet,
@@ -10,109 +11,208 @@ import {
 import { card } from '../assets/styles/stylesheet';
 import { FontAwesome } from '@expo/vector-icons';
 
+=======
+import { Image, StyleSheet, Text, TouchableOpacity, View, Button, ScrollView, FlatList } from 'react-native';
+import { primary } from '../assets/styles/stylesheet';
+import { Switch } from '../components/Switch';
+import { FontAwesome, Octicons, Ionicons, Entypo } from '@expo/vector-icons';
+import SettingScr from './SettingScr';
+>>>>>>> master
 
 export default class ProfileScr extends React.Component {
-  static navigationOptions = {
-    title: 'Clubfinity',
-    headerStyle: { backgroundColor: '#7e947f' },
-    headerTitleStyle: { color: "#ecf0f1", letterSpacing: 2 },
-  }
+  
+	constructor(props) {
+	  super(props);
+	  this.state = {
+		isToggled: false,
+		hideCard: false
+	  }
+	}
+  
+	// Change card style if 'Going' clicked || remove if Not going
+	btnHandler = () => {
+	  this.setState({
+		goingChecked: !this.state.isToggled
+	  });
+	}
 
-  _logoutHandler = async () => {
-    await AsyncStorage.clear(); // Clear out any saved user info
-    console.log('User logged out');
-    this.props.navigation.navigate('Auth');
-  }
+	static navigationOptions = {
+		title: 'Clubfinity',
+		headerStyle: { backgroundColor: '#7e947f' },
+		headerTitleStyle: { color: "#ecf0f1", letterSpacing: 2 },
+	}
 
-  render() {
-    return (
-      <View style={style.container}>
-        <View style={style.profileHeader}>
-          <Image style={[card.bannerIcon, { flex: 1 }]} source={require('../assets/images/profile-icon.png')} />
-          <Text style={style.profileTitle}>Flash Gordon</Text>
-        </View>
-        <View style={style.settingsContainer}>
-          <TouchableOpacity onPress={this._eventHandler} style={style.settingTile}>
-            <FontAwesome style={style.settingsIcon} name="edit" size={18} color="#4F8EF7" />
-            <Text style={style.settingsText}>Edit Profile</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this._eventHandler} style={[style.settingTile]}>
-            <FontAwesome style={style.settingsIcon} name="location-arrow" size={18} color="#4F8EF7" />
-            <Text style={style.settingsText}>Change Location</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this._eventHandler} style={[style.settingTile]}>
-            <FontAwesome style={style.settingsIcon} name="bookmark-o" size={18} color="#4F8EF7" />
-            <Text style={style.settingsText}>Pinned Clubs</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this._eventHandler} style={[style.settingTile]}>
-            <FontAwesome style={style.settingsIcon} name="bell-o" size={18} color="#4F8EF7" />
-            <Text style={style.settingsText}>Notification Settings</Text>
-          </TouchableOpacity>
-          <View style={{ flex: 2, justifyContent: 'center', alignItems: 'center' }}>
-            <FontAwesome.Button
-              name="sign-out"
-              backgroundColor="#ff8080"
-              onPress={this._logoutHandler}
-            >Logout</FontAwesome.Button>
-          </View>
-        </View>
-      </View>
-    );
-  }
+	_eventHandler = () => {
+		console.log('Stuff has been clicked boi');
+	}
+
+	render() {
+		return (
+			<ScrollView style={style.container}>
+				<View style={style.profileCard}>
+					<View style={style.profileCardRow}>
+						<Image style={[style.profilePicture]} source={require('../assets/images/profile-icon.png')} />
+						<View style={style.profileInfo}>
+							<Text style={style.textHeader}>Christian Sarmiento</Text>
+							<Text style={style.textSubheading}>Computer Science</Text>
+							<Text style={style.textSubheading}>Victory Lap</Text>
+						</View>
+					</View>
+					{/* <View style={style.profileCardRow}>
+						<View style={style.profileCardBody}>
+							<Text style={style.textHeader}>Involvement</Text>
+							<Text>Software Engineering Club (SEC)</Text>
+							<Text>Some other club</Text>
+							<Text>Yet again, some other club</Text>
+						</View>
+						<View style={style.profileCardBodyAdmin}>
+							<Text style={style.textHeader}>Admin</Text>
+							<Octicons name="check" color='#7e947f' />
+							<Text>(*Hidden unless</Text>
+							<Text>they're an admin)</Text>
+						</View>
+					</View> */}
+				</View>
+
+        <SettingScr />
+
+				{/* <Text style={style.textTitle}>Preferences</Text> */}
+
+				{/* <View style={style.settingsCard}>
+					<View style={style.settingsCardRow}>
+						<Text style={style.settingsCardText}>Some Setting</Text>
+						<View style={style.settingsCardIcon}>
+							<Switch clickHandler={this.btnHandler} size={64} />
+						</View>
+					</View>
+					<View style={style.settingsCardRow}>
+						<Text style={style.settingsCardText}>Some Setting</Text>
+						<View style={style.settingsCardIcon}>
+							<Switch clickHandler={this.btnHandler} size={64} />
+						</View>
+					</View>
+					<View style={style.settingsCardRow}>
+						<Text style={style.settingsCardText}>Some Setting</Text>
+						<View style={style.settingsCardIcon}>
+							<Switch clickHandler={this.btnHandler} size={64} />
+						</View>
+					</View>
+					<View style={style.settingsCardRow}>
+						<Text style={style.settingsCardText}>Some Setting</Text>
+						<View style={style.settingsCardIcon}>
+							<Switch clickHandler={this.btnHandler} size={64} />
+						</View>
+					</View>
+					<View style={style.settingsCardRow}>
+						<Text style={style.settingsCardText}>Some Setting</Text>
+						<View style={style.settingsCardIcon}>
+							<Switch clickHandler={this.btnHandler} size={64} />
+						</View>
+					</View>
+					<View style={style.lastSettingsCardRow}>
+						<Text style={style.settingsCardText}>Advanced Settings</Text>
+						<View style={style.settingsCardIcon}>
+							<Button 
+								onPress={() => console.log("Link to Gio's page here!!")}
+								title=">"
+							/>
+						</View>
+					</View>
+				</View> */}
+			</ScrollView>
+		);
+	}
 }
 
 const style = StyleSheet.create({
-  container: {
+	container: {
+		padding: 10,
+		// marginBottom: 20,
+		// elevation: 2,
+		backgroundColor: '#f5f6fa'
+	},
+	profileCard: {
+		padding: 15,
+        backgroundColor: '#ffffff',
+        elevation: 2
+	},
+	settingsCard: {
+		// paddingTop: 15,
+		// paddingBottom: 15,
+		// marginBottom: 20,
+        backgroundColor: '#ffffff',
+        elevation: 2
+	},
+	profileCardRow: {
     display: 'flex',
-    flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		// alignContent: 'center',
+		alignItems: 'center',
+		paddingBottom: 10
+	},
+	settingsCardRow: {
+		flexDirection: 'row',
+		// justifyContent: 'space-between',
+		// alignContent: 'center',
+		alignItems: 'center',
+		borderBottomWidth: 1
+	},
+	lastSettingsCardRow: {
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	profilePicture: {
+		width: 150,
+		height: 125,
+		resizeMode: 'contain',
+		alignItems: 'center',
+		flex: 4
+	},
+	profileInfo: {
+    display: 'flex',
     flexDirection: 'column',
+    marginLeft: 10,
+    // backgroundColor: 'pink',
     justifyContent: 'center',
-    backgroundColor: '#fff'
-  },
-
-  profileHeader: {
+		alignItems: 'center',
+		flex: 6
+	},
+	textHeader: {
+    // justifyContent: 'center',
     alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: '#fff',
-    margin: 10,
+		fontWeight: 'bold',
+		fontSize: 24,
+		paddingBottom: 10
   },
-
-  profileTitle: {
-    fontSize: 20,
-    // alignSelf: 'center',
-    fontWeight: 'bold',
-    color: '#636e72',
-    flex: 5
+  textSubheading: {
+    alignSelf: 'flex-start'
   },
-
-  settingsContainer: {
-    flex: 4,
-    // justifyContent: 'space-evenly',
-  },
-
-  settingTile: {
-    margin: 0,
-    elevation: 0,
-    backgroundColor: '#f5f6fa',
-    padding: 15,
-    margin: 1,
-    borderWidth: 1,
-    borderColor: "#f5f6fa",
-    flexDirection: 'row',
-    justifyContent: 'flex-start'
-  },
-
-  settingsText: {
-    flex: 11,
-    color: '#636e72',
-    fontSize: 15,
-  },
-
-  settingsIcon: {
-    flex: 1,
-    marginRight: 5,
-  }
-})
+	textTitle: {
+		textAlign: 'center',
+		fontWeight: 'bold',
+		fontSize: 24,
+		paddingTop: 10
+	},
+	profileCardBody: {
+		alignContent: 'flex-start',
+		alignItems: 'center',
+		flex: 6
+	},
+	profileCardBodyAdmin: {
+		borderWidth: 1,
+		borderColor: 'grey',
+		alignItems: 'center',
+		flex: 4
+	},
+	settingsCardText: {
+		flexDirection: 'row',
+		fontSize: 18,
+		paddingHorizontal: 10,
+		flex: 8
+	},
+	settingsCardIcon: {
+		flexDirection: 'row',
+		flex: 2
+	}
+});
