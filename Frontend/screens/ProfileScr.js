@@ -1,23 +1,9 @@
 import React from 'react';
-<<<<<<< HEAD
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  AsyncStorage,
-  View,
-} from 'react-native';
-import { card } from '../assets/styles/stylesheet';
-import { FontAwesome } from '@expo/vector-icons';
-
-=======
 import { Image, StyleSheet, Text, TouchableOpacity, View, Button, ScrollView, FlatList } from 'react-native';
 import { primary } from '../assets/styles/stylesheet';
 import { Switch } from '../components/Switch';
 import { FontAwesome, Octicons, Ionicons, Entypo } from '@expo/vector-icons';
 import SettingScr from './SettingScr';
->>>>>>> master
 
 export default class ProfileScr extends React.Component {
   
