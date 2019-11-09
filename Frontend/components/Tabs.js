@@ -16,6 +16,7 @@ export default class App extends React.Component {
   constructor (props) { 
     super(props); 
     this.state = { 
+      title:['About','Clubs','Settings'],
       active: 0,
       xTabOne: 0,
       xTabTwo: 0,
@@ -54,7 +55,7 @@ export default class App extends React.Component {
           duration: 100
         }).start(),
         Animated.spring(translateXTabThree, {
-          toValue: width * 2,
+          toValue: width ,
           duration: 100
         }).start()
       ])
@@ -69,7 +70,7 @@ export default class App extends React.Component {
           duration: 100
         }).start(),
         Animated.spring(translateXTabThree, {
-          toValue: active === 2 ? 0 : -width * 2,
+          toValue: active === 2 ? 0 : -width ,
           duration: 100
         }).start()
       ])
@@ -101,7 +102,15 @@ export default class App extends React.Component {
               }}
             />
             <TouchableOpacity
-              style={styles.tabStyle}
+              style={{
+                ...styles.tabStyle,
+                ...{
+                    borderRightWidth: 1,
+                    borderTopRightRadius: 0,
+                    borderBottomRightRadius: 0,
+                    borderRadius:8
+                }
+              }}
               onLayout={event =>
                 this.setState({ xTabOne: event.nativeEvent.layout.x })
               }
@@ -109,7 +118,7 @@ export default class App extends React.Component {
                 this.setState({ active: 0 }, () => this.handleSlide(xTabOne))
               }
             >
-              <Text color={{ active: 0 ? '#fff' : '#007aff ' }}>Setting</Text>
+              <Text color={{ active: 0 ? '#fff' : '#007aff ' }}> {this.state.title[0]}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={{
@@ -117,7 +126,8 @@ export default class App extends React.Component {
                 ...{
                   borderLeftWidth: 0,
                   borderTopLeftRadius: 0,
-                  borderBottomLeftRadius: 0
+                  borderBottomLeftRadius: 0,
+                 
                 }
               }}
               onLayout={event =>
@@ -128,18 +138,21 @@ export default class App extends React.Component {
               }
             >
               <Text Color={{ active: 1 ? '#fff' : '#007aff ' }}>
-                Prefrences
+                {this.state.title[1]}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={{
-                ...styles.tabStyle,
-                ...{
-                  borderLeftWidth: 0,
-                  borderTopLeftRadius: 0,
-                  borderBottomLeftRadius: 0
-                }
-              }}
+              style={
+                {
+                    ...styles.tabStyle,
+                    ...{
+                        borderLeftWidth: 0,
+                        borderTopLeftRadius: 0,
+                        borderBottomLeftRadius: 0,
+                        borderRadius:8
+                    }
+                  }
+              }
               onLayout={event =>
                 this.setState({ xTabThree: event.nativeEvent.layout.x })
               }
@@ -148,7 +161,7 @@ export default class App extends React.Component {
               }
             >
               <Text color={{ val: active === 2 ? '#fff' : '#007aff ' }}>
-                Advance
+              {this.state.title[2]}
               </Text>
             </TouchableOpacity>
           </View>
@@ -201,13 +214,13 @@ export default class App extends React.Component {
                       translateX: translateXTabThree
                     },
                     {
-                      translateY: -translateY * 1.1
+                      translateY: -translateY * 10.5
                     }
                   ]
                 }
               }}
             >
-              {this.props.tab3}
+               {this.props.tab3}
             </Animated.View>
           </ScrollView>
         </View>
@@ -220,7 +233,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   tabContainerOuter: {
-    width: '90%',
+    width: '100%',
     marginLeft: 'auto',
     marginRight: 'auto'
   },
@@ -236,22 +249,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#007aff',
-    borderRightWidth: 1,
-    borderTopRightRadius: 0,
-    borderBottomRightRadius: 0,
-    borderRadius: 2,
-    padding: 10
+    borderColor: '#2980b9',
+    padding: 8
   },
   tabOverlay: {
     position: 'absolute',
-    width: '33.3%',
+    width: '34%',
     height: '100%',
     top: 0,
     left: 0,
-    backgroundColor: '#007aff',
+    backgroundColor: '#2980b9',
     color: 'white',
-    borderRadius: 4
+    borderRadius: 3
   },
   tabOneView: {
     justifyContent: 'center',
