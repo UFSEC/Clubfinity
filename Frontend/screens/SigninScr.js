@@ -5,13 +5,12 @@ import {
   Dimensions,
   TouchableOpacity,
   SafeAreaView,
-  Button,
+  StatusBar,
+  Image,
   StyleSheet,
   Text,
   TextInput,
 } from 'react-native';
-
-import { FontAwesome } from '@expo/vector-icons';
 
 export default class SigninScr extends React.Component {
   static navigationOptions = {
@@ -27,10 +26,16 @@ export default class SigninScr extends React.Component {
   }
 
   // Currently logs user without credential auth or validation but will be connected to backend soon
-  _signIn = async () => {
+  signIn = async () => {
     await AsyncStorage.setItem('userToken', 'abc');
     this.props.navigation.navigate('App');
-  };
+  }
+
+  signUp = async () => {
+    this.props.navigation.navigate('SignUp')
+  }
+
+
 
   changeUsername = (input) => {
     this.setState({
@@ -47,42 +52,56 @@ export default class SigninScr extends React.Component {
   render() {
     return (
       <SafeAreaView style={styles.mainContainer}>
-        <View style={{display: 'flex', flex: 1, flexDirection: 'row', alignSelf: 'flex-end'}}>
+        {/* <View style={{flex: 1, flexDirection: 'row', alignSelf: 'flex-end'}}>
           <Text>New here?</Text>
-        </View>
+        </View> */}
 
-        <View style={{flex: 10, justifyContent: 'center', alignItems: 'center'}}>
-        <Text style={styles.title}>Clubfinity</Text>
-        <TextInput 
-        textAlign={'center'}
-        style={styles.field}
-        placeholderTextColor={'#8E8E93'}
-        returnKeyType={"next"}
-        onChangeText={this.changeUsername}
-        autoCapitalize={'none'}
-        value={this.state.username}
-        placeholder="E-mail">
-        </TextInput>
-        <TextInput 
-        textAlign={'center'}
-        style={styles.field}
-        secureTextEntry={true} 
-        autoCapitalize={"none"}
-        placeholderTextColor={'#8E8E93'}
-        onChangeText={this.changePassword}
-        value={this.state.password}
-        placeholder="Password">
-        </TextInput>
+        <View style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
+          {/* <Text style={styles.title}>Clubfinity</Text> */}
+          <Image
+            style={{ width: 200, height: 200, margin: 30, marginBottom: 80 }}
+            source={require('../assets/images/ClubfinityLogo.png')}
+          />
+          <View style={{ flex: 1 }}>
+            <TextInput
+              textAlign={'left'}
+              style={styles.field}
+              placeholderTextColor={'#8E8E93'}
+              returnKeyType={"next"}
+              onChangeText={this.changeUsername}
+              autoCapitalize={'none'}
+              value={this.state.username}
+              placeholder="E-mail">
+            </TextInput>
+            <TextInput
+              style={styles.field}
+              secureTextEntry={true}
+              autoCapitalize={"none"}
+              placeholderTextColor={'#8E8E93'}
+              onChangeText={this.changePassword}
+              value={this.state.password}
+              placeholder="Password">
+            </TextInput>
+          </View>
 
-        <TouchableOpacity
-        style={styles.button}
-        onPress={this._signIn}
-        backgroundColor={'#ACCBAC'}
-        >
-        <Text style={styles.buttonText}>
-        Login
-        </Text>
-        </TouchableOpacity>
+          <View style={{ flex: 1, display: 'flex', justifyContent: 'flex-start' }}>
+            <TouchableOpacity
+              style={styles.loginButton}
+              onPress={this.signIn}
+              backgroundColor={'#ACCBAC'}
+            >
+            <Text style={styles.loginButtonText}>Login</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.signupButton}
+              onPress={this.signUp}
+              backgroundColor={'#D4D4D4'}
+            >
+            <Text style={styles.signupButtonTxt}>
+                New here? Sign up</Text>
+            </TouchableOpacity>
+          </View>
+
         </View>
       </SafeAreaView>
     );
@@ -90,17 +109,18 @@ export default class SigninScr extends React.Component {
 }
 
 const MAX_FIELD_WIDTH = Dimensions.get('screen').width * 3 / 4;
-
+const STATUS_BAR_HEIGHT = StatusBar.currentHeight;
 
 const styles = StyleSheet.create({
   mainContainer: {
     margin: 20,
+    marginTop: STATUS_BAR_HEIGHT,
     flex: 1,
     display: 'flex',
     backgroundColor: '#FFF',
     justifyContent: 'center',
     alignItems: 'center'
-  }, 
+  },
   title: {
     fontSize: 34,
     letterSpacing: 1,
@@ -115,8 +135,8 @@ const styles = StyleSheet.create({
     margin: 5,
     paddingHorizontal: 20,
     paddingVertical: 5,
-  }, 
-  button: {
+  },
+  loginButton: {
     padding: 10,
     minWidth: MAX_FIELD_WIDTH,
     backgroundColor: '#ACCBAC',
@@ -124,10 +144,26 @@ const styles = StyleSheet.create({
     borderColor: '#ACCBAC',
     borderRadius: 100,
     marginHorizontal: 10,
-    marginVertical: 30,
+    marginVertical: 10,
     elevation: 3,
-  }, 
-  buttonText: {
+  },
+  signupButton: {
+    padding: 10,
+    minWidth: MAX_FIELD_WIDTH,
+    backgroundColor: '#FFF',
+    borderWidth: 1,
+    borderColor: '#ACCBAC',
+    borderRadius: 100,
+    marginHorizontal: 10,
+    marginVertical: 10,
+
+  },
+  signupButtonTxt: {
+    fontSize: 15,
+    alignSelf: 'center',
+    color: '#ACCBAC'
+  },
+  loginButtonText: {
     // flex: 1,
     fontSize: 15,
     alignSelf: 'center',

@@ -84,7 +84,7 @@ const AppStack = createBottomTabNavigator({
 // This stack holds Auth screens like Sign in, Sign up, Forgot pass etc
 const AuthStack = createStackNavigator({
   SignIn: SigninScr,
-  SignupScr: SignupScr,
+  SignUp: SignupScr,
 },
   {
     initialRouteName: 'SignIn'
