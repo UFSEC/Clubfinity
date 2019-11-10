@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View, Button, ScrollView, FlatList } from 'react-native';
+import { CreateEvent } from '../components/CreateEvent';
 import { primary } from '../assets/styles/stylesheet';
 import { Switch } from '../components/Switch';
 import { FontAwesome, Octicons, Ionicons, Entypo } from '@expo/vector-icons';
@@ -11,39 +12,24 @@ import { CreateEvent } from '../components/CreateEvent';
 
 export default class ProfileScr extends React.Component {
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			isToggled: false,
-			hideCard: false
-		}
-	}
-
-	// Change card style if 'Going' clicked || remove if Not going
-	btnHandler = () => {
-		this.setState({
-			goingChecked: !this.state.isToggled
-		});
-	}
-
 	static navigationOptions = {
 		title: 'Clubfinity',
 		headerStyle: { backgroundColor: '#7e947f' },
 		headerTitleStyle: { color: "#ecf0f1", letterSpacing: 2 },
 	}
 
-	_eventHandler = () => {
-		console.log('Stuff has been clicked boi');
-	}
 
 	render() {
+		const userProfilePicture = {
+			ProfilePic: require('../assets/images/profile-icon.png')
+		}
 		return (
 			<ScrollView style={style.container}>
 				<View style={style.Card}>
 					<View style={style.profileCardRow}>
-						<Image style={[style.profilePicture]} source={require('../assets/images/profile-icon.png')} />
+						<Image style={[style.profilePicture]} source={userProfilePicture.ProfilePic} />
 						<View style={style.profileInfo}>
-							<Text style={style.textHeader}>Christian Sarmiento</Text>
+							<Text adjustsFontSizeToFit numberOfLines={1} style={style.textHeader}>Christian Sarmiento</Text>
 							<FontAwesome.Button backgroundColor="#2980b9" onPress={() => {
 								this.props.navigation.navigate({ routeName: 'Edit' })
 							}}>
