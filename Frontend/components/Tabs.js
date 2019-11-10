@@ -239,9 +239,7 @@ const styles = StyleSheet.create({
   },
   tabContainerInner: {
     flexDirection: 'row',
-    marginTop: 40,
     alignItems: 'center',
-    height: 36,
     position: 'relative'
   },
   tabStyle: {
