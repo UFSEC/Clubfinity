@@ -3,7 +3,7 @@ process.env.NODE_ENV = 'test';
 const userDAO = require('../DAO/UserDAO');
 const chai = require('chai');
 let chaiHttp = require('chai-http');
-const should = chai.should();
+chai.should();
 const app = require('../app');
 
 chai.use(chaiHttp);
