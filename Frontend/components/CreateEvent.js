@@ -3,12 +3,16 @@ import { Dimensions, TextInput, View, Modal, Button, Text, TouchableHighlight, A
 import { FontAwesome } from '@expo/vector-icons';
 
 class CreateEvent extends Component {
-    state = {
-        modalVisible: false,
-        eventName: '',
-        eventLocation: '',
-        eventDescription: ''
-    };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            modalVisible: false,
+            eventName: '',
+            eventLocation: '',
+            eventDescription: ''
+        };
+    }
 
     setModalVisible = () => {
         this.setState({
@@ -46,26 +50,26 @@ class CreateEvent extends Component {
                     }}>
                     <View>
                         <View style={styles.modalContainer}>
-                            <View style={{marginBottom: 10, borderBottomWidth: 0.5, borderBottomColor: 'gray'}}>
+                            <View style={{ marginBottom: 10, borderBottomWidth: 0.5, borderBottomColor: 'gray' }}>
                                 <Text style={styles.textTitle}>Create an Event</Text>
                             </View>
                             <TextInput
                                 style={styles.modalTextInput}
                                 placeholder="Event Name"
                                 value={this.state.eventName}
-                                onChangeText={(text) => this.setState({eventName: text})}
+                                onChangeText={(text) => this.setState({ eventName: text })}
                             />
                             <TextInput
                                 style={styles.modalTextInput}
                                 placeholder="Location"
                                 value={this.state.eventLocation}
-                                onChangeText={(text) => this.setState({eventLocation: text})}
+                                onChangeText={(text) => this.setState({ eventLocation: text })}
                             />
                             <TextInput
                                 style={styles.modalTextInput}
                                 placeholder="Description"
                                 value={this.state.eventDescription}
-                                onChangeText={(text) => this.setState({eventDescription: text})}
+                                onChangeText={(text) => this.setState({ eventDescription: text })}
                             />
                             <View style={styles.modalRow}>
                                 <FontAwesome.Button
@@ -97,7 +101,6 @@ const styles = StyleSheet.create({
     createEventBtn: {
         display: 'flex',
         flexDirection: 'row-reverse',
-        // justifyContent: 'space-between',
         alignItems: 'center'
     },
     modalContainer: {
@@ -127,13 +130,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row'
     },
-	textTitle: {
-		textAlign: 'center',
-		fontWeight: 'bold',
-		fontSize: 24,
+    textTitle: {
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontSize: 24,
         padding: 10,
         borderBottomWidth: 1,
-	},
+    },
     modalTextInput: {
         display: 'flex',
         flexDirection: 'row',

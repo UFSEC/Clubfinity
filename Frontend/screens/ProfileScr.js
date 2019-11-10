@@ -8,106 +8,34 @@ import SettingScr from './SettingScr';
 
 export default class ProfileScr extends React.Component {
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			isToggled: false,
-			hideCard: false
-		}
-	}
-
-	btnHandler = () => {
-		this.setState({
-			goingChecked: !this.state.isToggled
-		});
-		console.log('Stuff has been clicked boi!');
-	}
-
 	static navigationOptions = {
 		title: 'Clubfinity',
 		headerStyle: { backgroundColor: '#7e947f' },
 		headerTitleStyle: { color: "#ecf0f1", letterSpacing: 2 },
 	}
 
-	_eventHandler = () => {
-		console.log('Stuff has been clicked boi');
-	}
 
 	render() {
+		const userProfilePicture = {
+			ProfilePic: require('../assets/images/profile-icon.png')
+		}
 		return (
 			<ScrollView style={style.container}>
 				<View style={style.profileCard}>
 					<View style={style.profileCardRow}>
-						<Image style={[style.profilePicture]} source={require('../assets/images/profile-icon.png')} />
+						<Image style={[style.profilePicture]} source={userProfilePicture.ProfilePic} />
 						<View style={style.profileInfo}>
-							<Text style={style.textHeader}>Christian Sarmiento</Text>
+							<Text adjustsFontSizeToFit numberOfLines={1} style={style.textHeader}>Christian Sarmiento</Text>
 							<Text style={style.textSubheading}>Computer Science</Text>
 							<Text style={style.textSubheading}>Victory Lap</Text>
 						</View>
 					</View>
-					{/* <View style={style.profileCardRow}>
-						<View style={style.profileCardBody}>
-							<Text style={style.textHeader}>Involvement</Text>
-							<Text>Software Engineering Club (SEC)</Text>
-							<Text>Some other club</Text>
-							<Text>Yet again, some other club</Text>
-						</View>
-						<View style={style.profileCardBodyAdmin}>
-							<Text style={style.textHeader}>Admin</Text>
-							<Octicons name="check" color='#7e947f' />
-							<Text>(*Hidden unless</Text>
-							<Text>they're an admin)</Text>
-						</View>
-					</View> */}
 				</View>
 
 				<CreateEvent />
 
 				<SettingScr />
 
-				{/* <Text style={style.textTitle}>Preferences</Text> */}
-
-				{/* <View style={style.settingsCard}>
-					<View style={style.settingsCardRow}>
-						<Text style={style.settingsCardText}>Some Setting</Text>
-						<View style={style.settingsCardIcon}>
-							<Switch clickHandler={this.btnHandler} size={64} />
-						</View>
-					</View>
-					<View style={style.settingsCardRow}>
-						<Text style={style.settingsCardText}>Some Setting</Text>
-						<View style={style.settingsCardIcon}>
-							<Switch clickHandler={this.btnHandler} size={64} />
-						</View>
-					</View>
-					<View style={style.settingsCardRow}>
-						<Text style={style.settingsCardText}>Some Setting</Text>
-						<View style={style.settingsCardIcon}>
-							<Switch clickHandler={this.btnHandler} size={64} />
-						</View>
-					</View>
-					<View style={style.settingsCardRow}>
-						<Text style={style.settingsCardText}>Some Setting</Text>
-						<View style={style.settingsCardIcon}>
-							<Switch clickHandler={this.btnHandler} size={64} />
-						</View>
-					</View>
-					<View style={style.settingsCardRow}>
-						<Text style={style.settingsCardText}>Some Setting</Text>
-						<View style={style.settingsCardIcon}>
-							<Switch clickHandler={this.btnHandler} size={64} />
-						</View>
-					</View>
-					<View style={style.lastSettingsCardRow}>
-						<Text style={style.settingsCardText}>Advanced Settings</Text>
-						<View style={style.settingsCardIcon}>
-							<Button 
-								onPress={() => console.log("Link to Gio's page here!!")}
-								title=">"
-							/>
-						</View>
-					</View>
-				</View> */}
 			</ScrollView>
 		);
 	}
@@ -116,8 +44,6 @@ export default class ProfileScr extends React.Component {
 const style = StyleSheet.create({
 	container: {
 		padding: 10,
-		// marginBottom: 20,
-		// elevation: 2,
 		backgroundColor: '#f5f6fa'
 	},
 	profileCard: {
@@ -126,9 +52,6 @@ const style = StyleSheet.create({
 		elevation: 2
 	},
 	settingsCard: {
-		// paddingTop: 15,
-		// paddingBottom: 15,
-		// marginBottom: 20,
 		backgroundColor: '#ffffff',
 		elevation: 2
 	},
@@ -136,14 +59,11 @@ const style = StyleSheet.create({
 		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		// alignContent: 'center',
 		alignItems: 'center',
 		paddingBottom: 10
 	},
 	settingsCardRow: {
 		flexDirection: 'row',
-		// justifyContent: 'space-between',
-		// alignContent: 'center',
 		alignItems: 'center',
 		borderBottomWidth: 1
 	},
@@ -159,23 +79,20 @@ const style = StyleSheet.create({
 		flex: 4
 	},
 	profileInfo: {
-		display: 'flex',
 		flexDirection: 'column',
+		display: 'flex',
 		marginLeft: 10,
-		// backgroundColor: 'pink',
-		justifyContent: 'center',
-		alignItems: 'center',
 		flex: 6
 	},
 	textHeader: {
-		// justifyContent: 'center',
 		alignSelf: 'center',
 		fontWeight: 'bold',
 		fontSize: 24,
 		paddingBottom: 10
 	},
 	textSubheading: {
-		alignSelf: 'flex-start'
+		display: 'flex',
+		justifyContent: 'flex-end'
 	},
 	textTitle: {
 		textAlign: 'center',
