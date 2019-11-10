@@ -8,7 +8,6 @@ import SettingScr from './SettingScr';
 import ProfileInfoScr from './ProfileInfoScr';
 import ClubsFollowScr from './ClubsFollowScr'
 import Tab from '../components/Tabs'
-import { CreateEvent } from '../components/CreateEvent';
 
 export default class ProfileScr extends React.Component {
 
