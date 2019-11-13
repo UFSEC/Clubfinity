@@ -53,23 +53,20 @@ const ProfileStack = createStackNavigator({
 },);
 
 const DiscoverStack = createStackNavigator({
-  Discover: {
-    screen: DiscoverScr,
-    navigationOptions: ({ navigation }) => {
-      return {
-        header: null,
-        tabBarIcon: ({ focused, horizontal, tintColor }) => {
-          let iconName = Platform.OS === 'ios' ? `ios-search` : 'md-search';
-          return <Ionicons name={iconName} size={horizontal ? 20 : 25} color={tintColor} />;
-        }
-      };
-    }
+  Discover: DiscoverScr,
+  Club: ClubScr
+}, {
+  initialRouteName: 'Discover',
+  navigationOptions: {
+    header: null,
+    tabBarIcon: ({ focused, horizontal, tintColor }) => {
+      let iconName;
+      iconName = Platform.OS === 'ios' ? `ios-search` : 'md-search';
+      return <Ionicons name={iconName} size={horizontal ? 20 : 25} color={tintColor} />;
+    },
   },
-  Club: {
-    screen: ClubScr
-  }
-},{
 },);
+
 
 export default createAppContainer(createBottomTabNavigator({
   Home: HomeStack,

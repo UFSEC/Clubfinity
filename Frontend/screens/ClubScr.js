@@ -71,9 +71,9 @@ export default class ClubScr extends React.Component {
 
       return (
         <SafeAreaView style={{ flex: 1, alignItems: 'center' }}>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView showsVerticalScrollIndicator={true}>
           <View style={{ width: width, height: 175 }}>
-              <Image style={{ flex: 1, height: undefined, width: undefined, resizeMode: 'contain' }} source={require('../assets/images/clubLogo.jpg')} />
+              <Image style={{ flex: 1, height: undefined, width: undefined, resizeMode: 'cover' }} source={require('../assets/images/clubLogo.jpg')} />
           </View>
           <View style={{ width: width, height: 100}}>
             <Text style={club.title}>Software Engineering Club</Text>

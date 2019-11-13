@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, Image } from 'react-native';
 import { smCard } from '../assets/styles/stylesheet';
+import { FontAwesome, Octicons, Ionicons, Entypo } from '@expo/vector-icons';
 
 export default class SmallEventCard extends Component {
     constructor(props) {
@@ -22,9 +23,13 @@ export default class SmallEventCard extends Component {
                     <Text style={{ fontSize: 17, fontWeight: 'bold', paddingHorizontal: 0 }}>{data.time}</Text>
                     <Text style={{fontSize: 15, fontWeight: '400', paddingHorizontal: 10}}>{data.location}</Text>
                 </View>
+                <View style={{ flexDirection: 'row-reverse', marginStart: 10, marginTop: 5 }}>
+                    <Octicons name="chevron-right" size={24}/>
+                </View>
             </View>
         </View>
     </View>
-    );
+
+);
   }
 }

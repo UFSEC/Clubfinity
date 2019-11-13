@@ -93,7 +93,7 @@ export default class DiscoverGrid extends Component {
     searchText = text.toLowerCase();
     newFilterClubs = clubList.filter((club) => {
       return club.name.toLowerCase().includes(searchText) || club.category.toLowerCase().includes(searchText);
-    });
+    }); 
 
     this.setState({
       searchText: text,
