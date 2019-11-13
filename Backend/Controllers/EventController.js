@@ -1,8 +1,8 @@
-const userDAO = require("../DAO/UserDAO");
+const eventDAO = require("../DAO/EventDAO");
 const { validationResult, body } = require("express-validator");
 const { ValidationError, NotFoundError } = require( '../util/exceptions');
 
-const validateUserData = req => {
+const validateEventData = req => {
   const errors = validationResult(req);
   if (!errors.isEmpty())
     throw new ValidationError(errors.array());
@@ -24,47 +24,40 @@ const catchErrors = async (res, f) => {
 };
 
 exports.getAll = async (req, res) => catchErrors(res, async () => {
-  return userDAO.getAll();
+  return eventDAO.getAll();
 });
 
 exports.get = async (req, res) => catchErrors(res, async () => {
-  return userDAO.get(req.params['id']);
+  return eventDAO.get(req.params['id']);
 });
 
 exports.update = async (req, res) => catchErrors(res, async () => {
-  validateUserData(req);
+  validateEventData(req);
 
-  return userDAO.update(req.params['id'], req.body);
+  return eventDAO.update(req.params['id'], req.body);
 });
 
 exports.create = async (req, res) => catchErrors(res, async () => {
-  validateUserData(req);
+  validateEventData(req);
 
-  return userDAO.create(req.body);
+  return eventDAO.create(req.body);
 });
 
 exports.delete = async (req, res) => catchErrors(res, async () => {
-  return userDAO.delete(req.params['id']);
+  return eventDAO.delete(req.params['id']);
 });
 
 exports.validate = type => {
   switch (type) {
-    case "validateUserInfo": {
+    case "validateEventInfo": {
       return [
-        body("name.first", "First name does not exist").exists(),
-        body("name.last", "Last name does not exist").exists(),
-        body("dob", "Date of birth does not exist")
-          .exists()
-          .custom(date => validateDate(date)),
+        body("name", "Event name does not exist").exists(),
+        body("location", "Location does not exist").exists(),
+        body("major_of_interest", "Major of interest does not exist").exists(),
         body("email", "Email does not exist or is invalid")
           .exists()
           .isEmail(),
-        body("username", "Username does not exist")
-          .exists()
-          .custom(username => validateUser(username)),
-        body("password", "Password does not exist")
-          .exists()
-          .custom(password => validatePassword(password))
+        body("description", "description does not exist").exists()
       ];
     }
   }
@@ -75,29 +68,6 @@ exports.validate = type => {
 function validateDate(date) {
   if (new Date(date) === "Invalid Date" || isNaN(new Date(date))) {
     throw new Error("Invalid date string");
-  }
-  return true;
-}
-
-// Username must be within 6 and 20 characters
-// Username must not contain empty spaces
-function validateUser(user) {
-  if (user.length < 6) {
-    throw new Error("Username is too short (less than 6 characters)");
-  }
-  if (user.length > 20) {
-    throw new Error("Username is too long (more than 20 characters)");
-  }
-  if (user.indexOf(" ") !== -1) {
-    throw new Error("Username contains a space");
-  }
-  return true;
-}
-
-// Password must be longer than 6 characters
-function validatePassword(password) {
-  if (password.length < 6) {
-    throw new Error("Password is too short (less than 6 characters)");
   }
   return true;
 }

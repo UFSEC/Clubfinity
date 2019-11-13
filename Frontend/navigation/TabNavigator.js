@@ -42,6 +42,7 @@ const CalendarStack = createStackNavigator({
 
 const ProfileStack = createStackNavigator({
   Profile: ProfileScr,
+  Edit: EditProfile
 }, {
   navigationOptions: {
     header: null,

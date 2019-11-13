@@ -4,6 +4,9 @@ import { primary } from '../assets/styles/stylesheet';
 import { Switch } from '../components/Switch';
 import { FontAwesome, Octicons, Ionicons, Entypo } from '@expo/vector-icons';
 import SettingScr from './SettingScr';
+import ProfileInfoScr from './ProfileInfoScr';
+import ClubsFollowScr from './ClubsFollowScr'
+import Tab from '../components/Tabs'
 
 export default class ProfileScr extends React.Component {
   
@@ -40,8 +43,12 @@ export default class ProfileScr extends React.Component {
 						<Image style={[style.profilePicture]} source={require('../assets/images/profile-icon.png')} />
 						<View style={style.profileInfo}>
 							<Text style={style.textHeader}>Christian Sarmiento</Text>
-							<Text style={style.textSubheading}>Computer Science</Text>
-							<Text style={style.textSubheading}>Victory Lap</Text>
+							<FontAwesome.Button  backgroundColor="#2980b9" onPress={() => {
+								this.props.navigation.navigate({routeName:'Edit'})
+							}}>
+								<Text style={{color:"#ffffff",paddingRight:5}}>Edit Profile</Text>
+							</FontAwesome.Button>
+							
 						</View>
 					</View>
 					{/* <View style={style.profileCardRow}>
@@ -59,8 +66,8 @@ export default class ProfileScr extends React.Component {
 						</View>
 					</View> */}
 				</View>
-
-        <SettingScr />
+					<Tab tab1={<ProfileInfoScr/>} tab2={<ClubsFollowScr/>} tab3={ <SettingScr />} />
+       
 
 				{/* <Text style={style.textTitle}>Preferences</Text> */}
 
@@ -172,7 +179,8 @@ const style = StyleSheet.create({
 		paddingBottom: 10
   },
   textSubheading: {
-    alignSelf: 'flex-start'
+	alignSelf: 'flex-start',
+	marginLeft:20
   },
 	textTitle: {
 		textAlign: 'center',
