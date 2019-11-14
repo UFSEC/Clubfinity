@@ -7,10 +7,13 @@ import CalendarScr from '../screens/CalendarScr';
 import HomeScr from '../screens/HomeScr';
 import DiscoverScr from '../screens/DiscoverScr';
 import ProfileScr from '../screens/ProfileScr';
+import ClubScr from '../screens/ClubScr';
 import SignupScr from '../screens/SignupScr';
 import SigninScr from '../screens/SigninScr';
 import AuthScr from '../screens/AuthScr';
 import EditProfile from '../screens/EditProfile';
+
+// import SettingScr from '../screens/SettingScr';
 
 const HomeStack = createStackNavigator({
   Home: HomeScr,
@@ -57,7 +60,13 @@ const ProfileStack = createStackNavigator({
 
 const DiscoverStack = createStackNavigator({
   Discover: DiscoverScr,
+<<<<<<< HEAD
 }, {
+=======
+  Club: ClubScr
+}, {
+  initialRouteName: 'Discover',
+>>>>>>> AV_clubScr
   navigationOptions: {
     header: null,
     tabBarIcon: ({ focused, horizontal, tintColor }) => {
@@ -68,8 +77,13 @@ const DiscoverStack = createStackNavigator({
   },
 });
 
+<<<<<<< HEAD
 // This stack holds all the App screens/sub views like Home, Discover Profile etc
 const AppStack = createBottomTabNavigator({
+=======
+
+export default createAppContainer(createBottomTabNavigator({
+>>>>>>> AV_clubScr
   Home: HomeStack,
   Discover: DiscoverStack,
   Calendar: CalendarStack,

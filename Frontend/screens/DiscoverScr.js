@@ -2,9 +2,9 @@ import React from 'react';
 import {
   StyleSheet,
   View,
+  SafeAreaView,
+  Button,
 } from 'react-native';
-
-
 
 import DiscoverGrid from '../components/DiscoverGrid';
 
@@ -17,10 +17,9 @@ export default class DiscoverScr extends React.Component {
 
   render() {
     return (
-      <View style={styles.mainContainer}>
-        <DiscoverGrid />
-        {/* <Text>Discover Screen</Text> */}
-      </View>
+      <SafeAreaView style={styles.mainContainer}>
+        <DiscoverGrid navigation={this.props.navigation}/>
+      </SafeAreaView>
     );
   }
 }
