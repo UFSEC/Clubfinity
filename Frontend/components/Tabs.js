@@ -137,7 +137,7 @@ export default class App extends React.Component {
                 this.setState({ active: 1 }, () => this.handleSlide(xTabTwo))
               }
             >
-              <Text Color={{ active: 1 ? '#fff' : '#007aff ' }}>
+              <Text Color={() => { active === 1 ? '#fff' : '#007aff ' }}>
                 {this.state.title[1]}
               </Text>
             </TouchableOpacity>
@@ -239,9 +239,7 @@ const styles = StyleSheet.create({
   },
   tabContainerInner: {
     flexDirection: 'row',
-    marginTop: 40,
     alignItems: 'center',
-    height: 36,
     position: 'relative'
   },
   tabStyle: {
@@ -249,7 +247,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#2980b9',
+    borderColor: '#20638f',
     padding: 8
   },
   tabOverlay: {
@@ -258,9 +256,9 @@ const styles = StyleSheet.create({
     height: '100%',
     top: 0,
     left: 0,
-    backgroundColor: '#2980b9',
+    backgroundColor: '#54aae3',
     color: 'white',
-    borderRadius: 3
+    borderRadius: 6
   },
   tabOneView: {
     justifyContent: 'center',
