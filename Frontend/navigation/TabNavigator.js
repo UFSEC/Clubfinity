@@ -60,13 +60,9 @@ const ProfileStack = createStackNavigator({
 
 const DiscoverStack = createStackNavigator({
   Discover: DiscoverScr,
-<<<<<<< HEAD
-}, {
-=======
   Club: ClubScr
 }, {
   initialRouteName: 'Discover',
->>>>>>> AV_clubScr
   navigationOptions: {
     header: null,
     tabBarIcon: ({ focused, horizontal, tintColor }) => {
@@ -77,13 +73,8 @@ const DiscoverStack = createStackNavigator({
   },
 });
 
-<<<<<<< HEAD
 // This stack holds all the App screens/sub views like Home, Discover Profile etc
 const AppStack = createBottomTabNavigator({
-=======
-
-export default createAppContainer(createBottomTabNavigator({
->>>>>>> AV_clubScr
   Home: HomeStack,
   Discover: DiscoverStack,
   Calendar: CalendarStack,
