@@ -10,6 +10,7 @@ import ProfileScr from '../screens/ProfileScr';
 import SignupScr from '../screens/SignupScr';
 import SigninScr from '../screens/SigninScr';
 import AuthScr from '../screens/AuthScr';
+import EditProfile from '../screens/EditProfile';
 
 const HomeStack = createStackNavigator({
   Home: HomeScr,
