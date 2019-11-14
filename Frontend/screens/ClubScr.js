@@ -49,17 +49,17 @@ export default class ClubScr extends React.Component {
         const postData = [
             {
                 id: 1,
-                header: 'We Cool',
+                header: "Hey guys! Get ready for our final GBM!",
                 description: 'Its a me a Mario!',
               },
               {
                 id: 2,
-                header: 'We Cool',
+                header: 'See you all at the CS Picnic today :)',
                 description: 'Its a me a Mario!',
               },
               {
                 id: 3,
-                header: 'We Cool',
+                header: 'Its a me a Mario!',
                 description: 'Its a me a Mario!',
               },
               {

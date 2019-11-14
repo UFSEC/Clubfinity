@@ -126,7 +126,7 @@ const post = StyleSheet.create({
         padding: 0,
         marginRight: 5,
         marginLeft: 5,
-        marginBottom: 2,
+        marginBottom: 10,
         borderWidth: 2,
         borderColor: "#f5f6fa",
         borderRadius: 3,

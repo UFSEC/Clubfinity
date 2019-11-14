@@ -6,8 +6,6 @@ import {
   Button,
 } from 'react-native';
 
-
-
 import DiscoverGrid from '../components/DiscoverGrid';
 
 export default class DiscoverScr extends React.Component {
@@ -20,9 +18,7 @@ export default class DiscoverScr extends React.Component {
   render() {
     return (
       <SafeAreaView style={styles.mainContainer}>
-        <DiscoverGrid />
-        {/* <Text>Discover Screen</Text> */}
-        {/* <Button title="Cool Club Ahead" onPress={() => this.props.navigation.navigate('Club')} /> */}
+        <DiscoverGrid navigation={this.props.navigation}/>
       </SafeAreaView>
     );
   }
