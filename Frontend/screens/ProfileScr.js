@@ -28,11 +28,11 @@ export default class ProfileScr extends React.Component {
 					<View style={style.profileCardRow}>
 						<Image style={[style.profilePicture]} source={userProfilePicture.ProfilePic} />
 						<View style={style.profileInfo}>
-							<Text adjustsFontSizeToFit numberOfLines={1} style={style.textHeader}>Christian Sarmiento</Text>
-							<FontAwesome.Button backgroundColor="#2980b9" onPress={() => {
+							<Text adjustsFontSizeToFit numberOfLines={2} style={style.textHeader}>Christian Sarmiento</Text>
+							<FontAwesome.Button name="edit" color="#2980b9" backgroundColor="#fff" style={{alignSelf: 'center'}} onPress={() => {
 								this.props.navigation.navigate({ routeName: 'Edit' })
 							}}>
-								<Text style={{ color: "#ffffff", paddingRight: 5 }}>Edit Profile</Text>
+								<Text style={{ color: "#2980b9", paddingRight: 5 }}>Edit Profile</Text>
 							</FontAwesome.Button>
 						</View>
 					</View>

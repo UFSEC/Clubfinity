@@ -56,17 +56,21 @@ class CreateEvent extends Component {
                             <TextInput
                                 style={styles.modalTextInput}
                                 placeholder="Event Name"
+                                placeholderTextColor={'#8E8E93'}
                                 value={this.state.eventName}
                                 onChangeText={(text) => this.setState({ eventName: text })}
                             />
                             <TextInput
                                 style={styles.modalTextInput}
+                                placeholderTextColor={'#8E8E93'}
                                 placeholder="Location"
                                 value={this.state.eventLocation}
                                 onChangeText={(text) => this.setState({ eventLocation: text })}
                             />
                             <TextInput
-                                style={styles.modalTextInput}
+                                style={[styles.modalTextInput, {height: 100}]}
+                                numberOfLines={5}
+                                placeholderTextColor={'#8E8E93'}
                                 placeholder="Description"
                                 value={this.state.eventDescription}
                                 onChangeText={(text) => this.setState({ eventDescription: text })}
@@ -140,7 +144,7 @@ const styles = StyleSheet.create({
     modalTextInput: {
         display: 'flex',
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         justifyContent: 'flex-start',
         backgroundColor: '#E5E4EA',
         borderWidth: 1,
