@@ -15,7 +15,7 @@ export default class But extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      language: 'java',
+      tnterest: 'Food',
       year: '',
       user: '',
       
@@ -41,10 +41,10 @@ export default class But extends React.Component {
      <TextInput style={styles.textinput} placeholder="Email"  maxLength={30} underlineColorAndroid={'transparent'}/>
       <Text style={styles.textinput}>Interest</Text>
      <Picker
-        selectedValue={this.state.language}
+        selectedValue={this.state.interest}
         style={{height: 50, width: 200}}
         onValueChange={(itemValue, itemIndex) =>
-          this.setState({language: itemValue})
+          this.setState({interest: itemValue})
         }>
           <Picker.Item label="Food" value="food" />
           <Picker.Item label="Arts & Crafts" value="arts" />
