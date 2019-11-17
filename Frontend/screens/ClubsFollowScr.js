@@ -11,7 +11,7 @@ import {
 
 import ClubsFollowGrid from '../components/ClubsFollowGrid'
 
-export default class CLubsFollowScr extends React.Component {
+export default class ClubsFollowScr extends React.Component {
   constructor(props){
     super(props);
    

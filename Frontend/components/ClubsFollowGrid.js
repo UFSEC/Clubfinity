@@ -21,35 +21,35 @@ const clubList = [
     name: " Puppy Club",
     category: "Cute",
     categoryColor: "#5E5CE6",
-    src: "https://i.ibb.co/F0hqL1X/puppy-club-img.jpg",
+   
   },
   {
     id: 0,
     name: "SEC",
     category: " Computer Science",
     categoryColor: "#FF9F0A",
-    src: "https://i.ibb.co/F4rHdKN/sec-club-img.jpg",
+   
   },
   {
     id: 1,
     name: "ACM",
     category: " Computer Science",
     categoryColor: "#FF9F0A",
-    src: "https://i.ibb.co/wLMHZHK/acm-club-img.png",
+   
   },
   {
     id: 2,
     name: "ACE",
     category: "Computer Engineering",
     categoryColor: "#FF9F0A",
-    src: "https://i.ibb.co/cwJtrNy/ace-club-img.jpg",
+   
   },
   {
     id: 3,
     name: "WiCSE",
     category: "Computer Science",
     categoryColor: "#FF9F0A",
-    src: "https://i.ibb.co/fSM2Zxz/wicse-club-img.jpg",
+  
   }
 ]
 
@@ -103,17 +103,7 @@ export default class DiscoverGrid extends Component {
               style={styles.gridItem}
               onPress={this.handleClubSelect}
             >
-              <Image
-                source={{
-                  uri: item.src,
-                  method: 'POST',
-                  headers: {
-                    Pragma: 'no-cache'
-                  }
-                }}
-                style={styles.gridImage}
-                resizeMode={"stretch"}
-              />
+             
               <View style={styles.gridSubheading}>
                 <Text color={item.categoryColor} style={styles.clubName}>{item.name}</Text>
                 <Text style={styles.clubCategory}>{item.category}</Text>
@@ -121,7 +111,7 @@ export default class DiscoverGrid extends Component {
 
             </TouchableOpacity>
           )}
-          numColumns={2}
+          numColumns={1}
           keyExtractor={(item) => item.id.toString()}
         />
       </View>
@@ -150,9 +140,9 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     flex: 1,
-    minWidth: 150,
-    maxWidth: GRID_ITEM_WIDTH,
-    minHeight: 150,
+    minWidth: Dimensions.get("screen").width,
+    maxWidth: Dimensions.get("screen").width,
+    minHeight: 100,
     alignItems: 'center',
     justifyContent: 'center',
     margin: 5,
@@ -167,17 +157,7 @@ const styles = StyleSheet.create({
     elevation: 2,
 
   },
-  gridImage: {
-    flex: 4,
-    margin: 0,
-    height: 100,
-    width: GRID_ITEM_WIDTH, 
-    borderWidth: 1,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
-    borderTopLeftRadius: 5,
-    borderTopRightRadius: 5,
-  },
+
   gridSubheading: {
     flex: 1,
     display: "flex",

@@ -14,7 +14,13 @@ import {
 export default class But extends React.Component {
   constructor(props){
     super(props);
-    this.state = {year: ''};
+    this.state = {
+      language: 'java',
+      year: '',
+      user: '',
+      
+    };
+
   }
     
 
@@ -23,6 +29,7 @@ export default class But extends React.Component {
      }
    
   render() {
+    
   
     return (
    <View styles={styles.formVal}>
@@ -31,15 +38,23 @@ export default class But extends React.Component {
      
      <TextInput style={styles.textinput} placeholder="Major"  maxLength={30} underlineColorAndroid={'transparent'}/>
 
-     <TextInput multiline style={styles.textinput} placeholder="Interest"  maxLength={250} underlineColorAndroid={'transparent'}/>
-
      <TextInput style={styles.textinput} placeholder="Email"  maxLength={30} underlineColorAndroid={'transparent'}/>
+      <Text style={styles.textinput}>Interest</Text>
+     <Picker
+        selectedValue={this.state.language}
+        style={{height: 50, width: 200}}
+        onValueChange={(itemValue, itemIndex) =>
+          this.setState({language: itemValue})
+        }>
+          <Picker.Item label="Food" value="food" />
+          <Picker.Item label="Arts & Crafts" value="arts" />
+          <Picker.Item label="Technology" value="tech" />
+          <Picker.Item label="Fitness" value="fitness" />
+      </Picker>
 
- 
-
-        <TouchableOpacity style={styles.button}>
+        {/* <TouchableOpacity style={styles.button}>
         <Text style={styles.btnText}>Save Changes</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
      
 
    </View>
