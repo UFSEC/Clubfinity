@@ -9,6 +9,8 @@ import {
   StyleSheet,
   Dimensions
 } from 'react-native';
+const { width, height } = Dimensions.get('screen')
+import { NotGoingButton } from './NotGoingButton';
 import { Ionicons } from '@expo/vector-icons';
 
 // This isn't arbitrary and is instead depends on padding/margin b/w cards. Must be made a constant one design finalized!
@@ -21,6 +23,7 @@ const clubList = [
     name: " Puppy Club",
     category: "Cute",
     categoryColor: "#5E5CE6",
+    src: "https://i.ibb.co/F0hqL1X/puppy-club-img.jpg",
    
   },
   {
@@ -28,6 +31,7 @@ const clubList = [
     name: "SEC",
     category: " Computer Science",
     categoryColor: "#FF9F0A",
+    src: "https://i.ibb.co/F4rHdKN/sec-club-img.jpg",
    
   },
   {
@@ -35,6 +39,7 @@ const clubList = [
     name: "ACM",
     category: " Computer Science",
     categoryColor: "#FF9F0A",
+    src: "https://i.ibb.co/wLMHZHK/acm-club-img.png",
    
   },
   {
@@ -42,6 +47,7 @@ const clubList = [
     name: "ACE",
     category: "Computer Engineering",
     categoryColor: "#FF9F0A",
+    src: "https://i.ibb.co/cwJtrNy/ace-club-img.jpg",
    
   },
   {
@@ -49,6 +55,7 @@ const clubList = [
     name: "WiCSE",
     category: "Computer Science",
     categoryColor: "#FF9F0A",
+    src: "https://i.ibb.co/fSM2Zxz/wicse-club-img.jpg",
   
   }
 ]
@@ -65,6 +72,8 @@ export default class DiscoverGrid extends Component {
 
   handleClubSelect = () => {
     console.log("Clubs tapped boi");
+  }
+  notGoingHandler = () => {
   }
 
   filterClubs = (text) => {
@@ -103,12 +112,22 @@ export default class DiscoverGrid extends Component {
               style={styles.gridItem}
               onPress={this.handleClubSelect}
             >
-             
+                <Image
+                source={{
+                  uri: item.src,
+                  method: 'POST',
+                  headers: {
+                    Pragma: 'no-cache'
+                  }
+                }}
+                style={styles.photo}
+                resizeMode={"cover"}
+              />
               <View style={styles.gridSubheading}>
                 <Text color={item.categoryColor} style={styles.clubName}>{item.name}</Text>
                 <Text style={styles.clubCategory}>{item.category}</Text>
               </View>
-
+              
             </TouchableOpacity>
           )}
           numColumns={1}
@@ -126,26 +145,34 @@ const cardColor = "#fff"
 // Style definitions
 const styles = StyleSheet.create({
   mainContainer: {
-    justifyContent: 'center',
+    alignItems: 'center',
     flex: 1,
     backgroundColor: bgColor
+  },
+  photo: {
+    height: '70%',
+    width: '30%',
+    borderRadius: 53,
+    marginLeft:10
+    
   },
   scrollContainer: {
     flex: 1,
     margin: 1,
     paddingHorizontal: 10,
+    
     minWidth: Dimensions.get("screen").width
   },
   gridItem: {
     display: "flex",
-    flexDirection: "column",
-    flex: 1,
+    flexDirection: "row",
+    flex: 0.30,
     minWidth: Dimensions.get("screen").width,
     maxWidth: Dimensions.get("screen").width,
-    minHeight: 100,
+    minHeight: 150,
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 5,
+    margin: 1,
     borderRadius: 1,
     borderWidth: 1,
     borderColor: bgColor,

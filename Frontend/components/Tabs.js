@@ -16,7 +16,7 @@ export default class App extends React.Component {
   constructor (props) { 
     super(props); 
     this.state = { 
-      title:['About','Clubs','Settings'],
+      title:['About','Following','Settings'],
       active: 0,
       xTabOne: 0,
       xTabTwo: 0,
@@ -214,7 +214,7 @@ export default class App extends React.Component {
                       translateX: translateXTabThree
                     },
                     {
-                      translateY: -translateY * 10.5
+                      translateY: -translateY *6.5
                     }
                   ]
                 }

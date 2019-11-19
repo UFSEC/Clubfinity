@@ -4,13 +4,16 @@ import {
   Text,
   View,
   TouchableOpacity,
+  Dimensions,
   TextInput,
-  Picker
+  Picker,
+  SafeAreaView,
+  ScrollView
  
 } from 'react-native'
 
 
-
+const { width, height } = Dimensions.get('screen')
 export default class But extends React.Component {
   constructor(props){
     super(props);
@@ -27,38 +30,57 @@ export default class But extends React.Component {
     updateUser = (year) => {
         this.setState({ year: year })
      }
-   
+    updateInterest =  (itemValue, itemIndex) => {
+     if (itemIndex !== 0) {
+       this.setState({interest: itemValue})
+     }
+    }
   render() {
     
   
     return (
-   <View styles={styles.formVal}>
+      <SafeAreaView style={styles.formVal}>
+        <ScrollView>
      <Text style={styles.header}>Edit Profile</Text>
 
      
      <TextInput style={styles.textinput} placeholder="Major"  maxLength={30} underlineColorAndroid={'transparent'}/>
 
      <TextInput style={styles.textinput} placeholder="Email"  maxLength={30} underlineColorAndroid={'transparent'}/>
-      <Text style={styles.textinput}>Interest</Text>
+   
      <Picker
         selectedValue={this.state.interest}
-        style={{height: 50, width: 200}}
-        onValueChange={(itemValue, itemIndex) =>
-          this.setState({interest: itemValue})
-        }>
+        style={{height:height*0.35 , width: width}}
+        prompt='Options'
+        onValueChange={(itemValue, itemIndex) => {
+          if (itemIndex !== 0) {
+            this.setState({interest: itemValue})
+          }}}>
+          <Picker.Item label='Please select an option...' value='0' />
           <Picker.Item label="Food" value="food" />
           <Picker.Item label="Arts & Crafts" value="arts" />
           <Picker.Item label="Technology" value="tech" />
           <Picker.Item label="Fitness" value="fitness" />
       </Picker>
+      <View style={{ flex: 1, display: 'flex', justifyContent: 'flex-start' }}>
+            <TouchableOpacity
+              style={styles.loginButton}
+              
+              backgroundColor={'#ACCBAC'}
+            >
+              <Text style={styles.loginButtonText}>Login</Text>
+            </TouchableOpacity>
 
-        {/* <TouchableOpacity style={styles.button}>
+          </View>
+
+
+        <TouchableOpacity style={styles.button}>
         <Text style={styles.btnText}>Save Changes</Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
      
-
-   </View>
-    
+        </ScrollView>
+ 
+   </SafeAreaView>
       
     
     )
@@ -81,6 +103,14 @@ const styles = StyleSheet.create({
     borderBottomColor:'#199187',
     borderBottomWidth: 5
   },
+  subHead:{
+    alignSelf: 'center',
+    height:40,
+    marginBottom:30,
+    color: '#636e72',
+    fontSize: 13,
+    paddingBottom:0
+  },
   textinput:{
       
     height:40,
@@ -94,11 +124,32 @@ const styles = StyleSheet.create({
     alignItems:'center',
     padding:20,
     backgroundColor:'#59cbbd',
-    marginTop:30
+    marginBottom:50
   },
   btnText:{
     color:'#fff',
     fontWeight:'bold',
       
+  },
+  saveButton: {
+    padding: 10,
+    minWidth: width,
+    backgroundColor: '#ACCBAC',
+    borderWidth: 1,
+    borderColor: '#ACCBAC',
+    borderRadius: 100,
+    marginHorizontal: 10,
+    marginVertical: 10,
+    elevation: 3,
+
+
+  },
+  loginButtonText: {
+    // flex: 1,
+    fontSize: 15,
+    alignSelf: 'center',
+    color: '#fff'
   }
+
+
 })
