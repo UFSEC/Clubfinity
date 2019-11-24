@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#2980b9',
+    borderColor: '#7e947f',
     padding: 8
   },
   tabOverlay: {
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
     height: '100%',
     top: 0,
     left: 0,
-    backgroundColor: '#2980b9',
+    backgroundColor: '#7e947f',
     color: 'white',
     borderRadius: 3
   },

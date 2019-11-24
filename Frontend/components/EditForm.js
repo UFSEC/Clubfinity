@@ -8,7 +8,9 @@ import {
   TextInput,
   Picker,
   SafeAreaView,
-  ScrollView
+  ScrollView,
+  StatusBar,
+  KeyboardAvoidingView
  
 } from 'react-native'
 
@@ -18,66 +20,98 @@ export default class But extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      tnterest: 'Food',
+      interest: 'Food',
       year: '',
       user: '',
-      
-    };
+      classYear:'',
+      major:'',
+    
 
   }
-    
+}
 
     updateUser = (year) => {
         this.setState({ year: year })
      }
-    updateInterest =  (itemValue, itemIndex) => {
+    updateYear =  (itemValue, itemIndex) => {
      if (itemIndex !== 0) {
-       this.setState({interest: itemValue})
+       this.setState({year: itemValue})
      }
     }
+    handleChangeMajor= (itemValue,itemIndex) =>{
+      if (itemIndex !== 0) {
+        this.setState({major: itemValue})
+      }
+    }
+
+    saveHandler = () => {
+    
+      
+    }
+  
   render() {
     
   
     return (
       <SafeAreaView style={styles.formVal}>
-        <ScrollView>
+        <ScrollView contentContainerStyle={{ flex: 1, display: 'flex' }}>
      <Text style={styles.header}>Edit Profile</Text>
 
-     
-     <TextInput style={styles.textinput} placeholder="Major"  maxLength={30} underlineColorAndroid={'transparent'}/>
+     <KeyboardAvoidingView style={styles.formContainer} behavior='padding' keyboardVerticalOffset={50}>
+    
 
-     <TextInput style={styles.textinput} placeholder="Email"  maxLength={30} underlineColorAndroid={'transparent'}/>
-   
-     <Picker
-        selectedValue={this.state.interest}
-        style={{height:height*0.35 , width: width}}
-        prompt='Options'
-        onValueChange={(itemValue, itemIndex) => {
-          if (itemIndex !== 0) {
-            this.setState({interest: itemValue})
-          }}}>
-          <Picker.Item label='Please select an option...' value='0' />
-          <Picker.Item label="Food" value="food" />
-          <Picker.Item label="Arts & Crafts" value="arts" />
-          <Picker.Item label="Technology" value="tech" />
-          <Picker.Item label="Fitness" value="fitness" />
-      </Picker>
-      <View style={{ flex: 1, display: 'flex', justifyContent: 'flex-start' }}>
-            <TouchableOpacity
-              style={styles.loginButton}
+     
+
+     <View style={styles.inputPicker}>
+              <Picker
+                selectedValue={this.state.major}
+                style={{ flex: 1 }}
+                itemStyle={styles.pickerDropdown}
+                mode={'dialog'}
+                onValueChange={
+                  this.handleChangeMajor
+                }>
+                 
+               
+                <Picker.Item label='Select Major to Change....' value='0' />
+                <Picker.Item label="Computer Science" value="computer science" />
+                <Picker.Item label="Business Administration" value="business administration" />
+                <Picker.Item label="Mechanical Engineering" value="mech engineering" />
+                <Picker.Item label="Architecture" value="architecture" />
+                <Picker.Item label="Anthropology" value="anthropology" />
+                <Picker.Item label="Chemical Engineering" value="chem engineering" />
+              </Picker>
+            </View>
+
+     <View style={styles.inputPicker}>
+              <Picker
+                style={{ flex: 1 }}
+                selectedValue={this.state.classYear}
+                itemStyle={styles.pickerDropdown}
+                mode={'dialog'}
+                onValueChange={this.updateYear}>
               
-              backgroundColor={'#ACCBAC'}
-            >
-              <Text style={styles.loginButtonText}>Login</Text>
-            </TouchableOpacity>
+                <Picker.Item label='Select Year to Change....' value='0' />
+                <Picker.Item label="2019" value="2019" />
+                <Picker.Item label="2020" value="2020" />
+                <Picker.Item label="2021" value="2021" />
+                <Picker.Item label="2022" value="2022" />
+                <Picker.Item label="2023" value="2023" />
+                <Picker.Item label="2024" value="2024" />
+              </Picker>
+            </View>
 
-          </View>
 
 
-        <TouchableOpacity style={styles.button}>
-        <Text style={styles.btnText}>Save Changes</Text>
-        </TouchableOpacity>
-     
+            </KeyboardAvoidingView>
+            <TouchableOpacity
+            style={styles.saveButton}
+            onPress={this.saveHandler}
+          >
+               <Text style={styles.saveButtonText}>Save Changes</Text>
+          </TouchableOpacity>
+
+
         </ScrollView>
  
    </SafeAreaView>
@@ -86,22 +120,37 @@ export default class But extends React.Component {
     )
 }
 }
+const txtFieldBgColor = "#F4F4F4";
+const bgColor = "#FFF";
+
 const styles = StyleSheet.create({
   formVal: {
-   
-   backgroundColor:'#F2F2F7'
+    flex: 1,
+    display: 'flex',
+    padding: 20,
+    justifyContent: 'center',
+    marginTop: StatusBar.currentHeight,
+    backgroundColor: bgColor,
+    flexDirection: 'column',
+   backgroundColor:txtFieldBgColor,
+   width:width/1.5
    
   },
   header:{
-    fontSize: 24,
-    fontWeight: '500',
-    margin: 10,
-    alignSelf: 'center',
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginVertical: 5,
     color: '#636e72',
-    paddingBottom:10,
-    marginBottom:40,
-    borderBottomColor:'#199187',
-    borderBottomWidth: 5
+    flex: 1,
+   
+    alignSelf: "center"
+
+  },
+  formContainer: {
+   
+    marginVertical: 5,
+    fontSize: 13,
+    flex: 6
   },
   subHead:{
     alignSelf: 'center',
@@ -112,13 +161,16 @@ const styles = StyleSheet.create({
     paddingBottom:0
   },
   textinput:{
-      
-    height:40,
-    marginBottom:30,
-    color: '#636e72',
-    fontSize: 13,
-    borderBottomColor:'#f8f8f8',
-    borderBottomWidth:1
+    backgroundColor: txtFieldBgColor,
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: txtFieldBgColor,
+    margin: 5,
+    paddingHorizontal: 20,
+    paddingVertical: 5,
+    alignSelf: 'center',
+    width:width/2
+
   },
   button:{
     alignItems:'center',
@@ -133,7 +185,7 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     padding: 10,
-    minWidth: width,
+    minWidth:width/2,
     backgroundColor: '#ACCBAC',
     borderWidth: 1,
     borderColor: '#ACCBAC',
@@ -141,15 +193,29 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginVertical: 10,
     elevation: 3,
-
+    alignSelf: 'center'
+  },
+  saveButtonText:{
+    fontSize: 15,
+    color: '#FFF',
+    alignSelf: 'center',
 
   },
-  loginButtonText: {
-    // flex: 1,
-    fontSize: 15,
+  
+  inputPicker: {
+    color: txtFieldBgColor,
+    backgroundColor: txtFieldBgColor,
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: txtFieldBgColor,
+    margin: 5,
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    flex:1,
     alignSelf: 'center',
-    color: '#fff'
-  }
+    width:width/2
+  },
+
 
 
 })
