@@ -43,7 +43,7 @@ export default class ProfileScr extends React.Component {
 						<Image style={[style.profilePicture]} source={require('../assets/images/profile-icon.png')} />
 						<View style={style.profileInfo}>
 							<Text style={style.textHeader}>Christian Sarmiento</Text>
-							<FontAwesome.Button  backgroundColor="#2980b9" onPress={() => {
+							<FontAwesome.Button  backgroundColor="#7e947f" onPress={() => {
 								this.props.navigation.navigate({routeName:'Edit'})
 							}}>
 								<Text style={{color:"#ffffff",paddingRight:5}}>Edit Profile</Text>

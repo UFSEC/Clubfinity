@@ -7,14 +7,16 @@ import {
   View,
   FlatList,
   StyleSheet,
-  Dimensions
+  Dimensions,
+  Button
+
 } from 'react-native';
-const { width, height } = Dimensions.get('screen')
-import { NotGoingButton } from './NotGoingButton';
+
 import { Ionicons } from '@expo/vector-icons';
 
-// This isn't arbitrary and is instead depends on padding/margin b/w cards. Must be made a constant one design finalized!
-const GRID_ITEM_WIDTH = Dimensions.get('screen').width / 2 - 22;
+
+const GRID_ITEM_WIDTH = Dimensions.get('screen').width / 1.1
+
 
 // Dummy list of clubs
 const clubList = [
@@ -60,22 +62,37 @@ const clubList = [
   }
 ]
 
+ 
+
 export default class DiscoverGrid extends Component {
   constructor(props) {
     super(props);
     this.state = {
       searchText: "",
-      filteredClubs: clubList
+      filteredClubs: clubList,
+      editButton: true
     }
+    // this.editButtonHandler = this.editButtonHandler.bind(this);
   }
 
-
+  
   handleClubSelect = () => {
     console.log("Clubs tapped boi");
   }
   notGoingHandler = () => {
   }
-
+  removeHandler = () => {
+    console.log("Clicked")
+    console.log(this.state.editButton)
+  }
+  editButtonHandler = () => {
+    if(this.state.editButton){
+      this.setState({editButton:false});
+    }else{
+      this.setState({editButton:true});
+    }
+    console.log(this.state.editButton)
+  }
   filterClubs = (text) => {
     searchText = text.toLowerCase();
     newFilterClubs = clubList.filter((club) => {
@@ -91,6 +108,11 @@ export default class DiscoverGrid extends Component {
   render() {
     return (
       <View style={styles.mainContainer}>
+           <View >
+              <Button 	style={styles.button}
+				      onPress={this.editButtonHandler}  title="Edit" />
+                
+          </View>
         {/* Search Bar */}
         <View style={styles.searchBox}>
           <Ionicons style={styles.searchBoxIcon} color={'#8E8E93'} name={"md-search"} size={24} />
@@ -102,7 +124,6 @@ export default class DiscoverGrid extends Component {
             value={this.state.searchText}
           ></TextInput>
         </View>
-
         {/* Grid */}
         <FlatList
           style={styles.scrollContainer}
@@ -127,12 +148,19 @@ export default class DiscoverGrid extends Component {
                 <Text color={item.categoryColor} style={styles.clubName}>{item.name}</Text>
                 <Text style={styles.clubCategory}>{item.category}</Text>
               </View>
-              
+           
+              <View >
+              {this.state.editButton && <Button 	style={styles.button}
+              onPress={this.removeHandler} color={'red'} title="Remove" /> }
+           
+            
+          </View>
             </TouchableOpacity>
           )}
           numColumns={1}
           keyExtractor={(item) => item.id.toString()}
         />
+       
       </View>
 
     );
@@ -161,14 +189,14 @@ const styles = StyleSheet.create({
     margin: 1,
     paddingHorizontal: 10,
     
-    minWidth: Dimensions.get("screen").width
+    minWidth: GRID_ITEM_WIDTH
   },
   gridItem: {
     display: "flex",
     flexDirection: "row",
     flex: 0.30,
-    minWidth: Dimensions.get("screen").width,
-    maxWidth: Dimensions.get("screen").width,
+    minWidth: GRID_ITEM_WIDTH,
+    maxWidth: GRID_ITEM_WIDTH,
     minHeight: 150,
     alignItems: 'center',
     justifyContent: 'center',
@@ -241,7 +269,13 @@ const styles = StyleSheet.create({
   },
   searchBoxIcon: {
     flex: 1,
-  }
+  },
+  button: {
+    backgroundColor: '#FFFF',
+    borderColor: 'red',
+    borderWidth: 5,
+    borderRadius: 15       
+ }
 
 });
 

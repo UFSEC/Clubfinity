@@ -118,7 +118,7 @@ export default class App extends React.Component {
                 this.setState({ active: 0 }, () => this.handleSlide(xTabOne))
               }
             >
-              <Text color={{ active: 0 ? '#fff' : '#007aff ' }}> {this.state.title[0]}</Text>
+              <Text > {this.state.title[0]}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={{
@@ -137,7 +137,7 @@ export default class App extends React.Component {
                 this.setState({ active: 1 }, () => this.handleSlide(xTabTwo))
               }
             >
-              <Text Color={{ active: 1 ? '#fff' : '#007aff ' }}>
+              <Text >
                 {this.state.title[1]}
               </Text>
             </TouchableOpacity>
@@ -160,7 +160,7 @@ export default class App extends React.Component {
                 this.setState({ active: 2 }, () => this.handleSlide(xTabThree))
               }
             >
-              <Text color={{ val: active === 2 ? '#fff' : '#007aff ' }}>
+              <Text >
               {this.state.title[2]}
               </Text>
             </TouchableOpacity>
@@ -250,6 +250,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#7e947f',
+    color:'white',
     padding: 8
   },
   tabOverlay: {
