@@ -16,6 +16,10 @@ exports.get = async (id) => {
     return club;
 };
 
+exports.exists = async (id) => {
+  return await Club.exists({ _id: id })
+}
+
 exports.update = async (id, updateData) => {
     await Club.findOneAndUpdate({ _id: id}, updateData, {
         upsert: true,

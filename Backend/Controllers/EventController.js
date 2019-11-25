@@ -54,10 +54,9 @@ exports.validate = type => {
         body("name", "Event name does not exist").exists(),
         body("location", "Location does not exist").exists(),
         body("major_of_interest", "Major of interest does not exist").exists(),
-        body("email", "Email does not exist or is invalid")
-          .exists()
-          .isEmail(),
-        body("description", "description does not exist").exists()
+        body("description", "Description does not exist").exists(),
+        body("date", "Date does not exist").exists(),
+        body("club", "Club id does not exist").exists()
       ];
     }
   }
