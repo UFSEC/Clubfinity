@@ -4,7 +4,7 @@ const userDAO = require("../DAO/UserDAO");
 const passportJWT = require('passport-jwt');
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
-const config = require("../Config/config.json");
+const config = require("../Config/config");
 
 passport.use('login',
         new LocalStrategy({
