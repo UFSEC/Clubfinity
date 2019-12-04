@@ -2,16 +2,30 @@ process.env.NODE_ENV = 'test';
 
 const userDAO = require('../DAO/UserDAO');
 const chai = require('chai');
+const authUtil = require('../util/authUtil');
 let chaiHttp = require('chai-http');
-const should = chai.should();
+chai.should();
 const app = require('../app');
 
 chai.use(chaiHttp);
+
+const currentUserParams = {
+  name: { first: 'Current', last: 'User' },
+  dob: '2019-01-01',
+  email: 'current@user.com',
+  username: 'currentuser',
+  password: 'password'
+};
+
+let currentUserToken = null;
 
 describe('Users', () => {
 
   beforeEach(async () => {
     await userDAO.deleteAll();
+
+    const currentUser = await userDAO.create(currentUserParams);
+    currentUserToken = authUtil.tokanizeUser(currentUser)
   });
 
   describe('GET /user', async () => {
@@ -36,6 +50,7 @@ describe('Users', () => {
 
       const resp = await chai.request(app)
         .get('/api/user')
+        .auth(currentUserToken, {type: 'bearer'})
         .send();
 
       resp.should.have.status(200);
@@ -43,13 +58,13 @@ describe('Users', () => {
 
       const data = resp.body.data;
 
-      data.should.have.length(2);
+      data.should.have.length(3);
 
-      const first = data[0];
+      const first = data[1];
       first.should.deep.include(firstUser);
       first.should.include.all.keys('_id', 'clubs');
 
-      const second = data[1];
+      const second = data[2];
       second.should.deep.include(secondUser);
       second.should.include.all.keys('_id', 'clubs');
     });
@@ -69,6 +84,7 @@ describe('Users', () => {
 
       const resp = await chai.request(app)
         .get(`/api/user/${user._id}`)
+        .auth(currentUserToken, {type: 'bearer'})
         .send();
 
       resp.should.have.status(200);
@@ -80,6 +96,7 @@ describe('Users', () => {
     it('returns an error when the id is not found', async () => {
       const resp = await chai.request(app)
         .get('/api/user/5dba404f70edd5146e98492b')
+        .auth(currentUserToken, {type: 'bearer'})
         .send();
 
       resp.should.have.status(404);
@@ -100,6 +117,7 @@ describe('Users', () => {
 
       const resp = await chai.request(app)
         .post('/api/user')
+        .auth(currentUserToken, {type: 'bearer'})
         .send(newUserData);
       resp.should.have.status(200);
 
@@ -123,6 +141,7 @@ describe('Users', () => {
 
       const resp = await chai.request(app)
         .post('/api/user')
+        .auth(currentUserToken, {type: 'bearer'})
         .send(userData);
 
       resp.should.have.status(400);
@@ -135,6 +154,7 @@ describe('Users', () => {
 
       const resp = await chai.request(app)
         .post('/api/user')
+        .auth(currentUserToken, {type: 'bearer'})
         .send(incompleteUserData);
 
       resp.should.have.status(422);
@@ -164,6 +184,7 @@ describe('Users', () => {
 
       const resp = await chai.request(app)
         .post('/api/user')
+        .auth(currentUserToken, {type: 'bearer'})
         .send(shortUsernameAndPassword);
 
       resp.should.have.status(422);
@@ -188,6 +209,7 @@ describe('Users', () => {
 
       const resp = await chai.request(app)
         .post('/api/user')
+        .auth(currentUserToken, {type: 'bearer'})
         .send(longUsername);
 
       resp.should.have.status(422);
@@ -208,6 +230,7 @@ describe('Users', () => {
 
       const resp = await chai.request(app)
         .post('/api/user')
+        .auth(currentUserToken, {type: 'bearer'})
         .send(spacedUsername);
 
       resp.should.have.status(422);
@@ -228,6 +251,7 @@ describe('Users', () => {
 
       const resp = await chai.request(app)
         .post('/api/user')
+        .auth(currentUserToken, {type: 'bearer'})
         .send(incorrectDateFormat);
 
       resp.should.have.status(422);
@@ -259,6 +283,7 @@ describe('Users', () => {
 
       const resp = await chai.request(app)
         .put(`/api/user/${oldUser._id}`)
+        .auth(currentUserToken, {type: 'bearer'})
         .send(newUserData);
 
       resp.should.have.status(200);
@@ -282,6 +307,7 @@ describe('Users', () => {
 
       const resp = await chai.request(app)
         .delete(`/api/user/${user._id}`)
+        .auth(currentUserToken, {type: 'bearer'})
         .send();
 
       resp.should.have.status(200);
@@ -293,6 +319,7 @@ describe('Users', () => {
     it('should return an error when the id does not exist', async () => {
       const resp = await chai.request(app)
         .delete('/api/user/5dba44f05b88ed1602589e84')
+        .auth(currentUserToken, {type: 'bearer'})
         .send();
 
       resp.should.have.status(404);
