@@ -70,12 +70,20 @@ export default class DiscoverGrid extends Component {
     this.state = {
       searchText: "",
       filteredClubs: clubList,
-      editButton: true
+      editButton: true,
+      isVisible:true
     }
     // this.editButtonHandler = this.editButtonHandler.bind(this);
   }
 
-  
+  ToggleFunction = () => {
+
+    this.setState(state => ({
+
+      isVisible: !state.isVisible
+
+    }));
+  }
   handleClubSelect = () => {
     console.log("Clubs tapped boi");
   }
@@ -108,11 +116,12 @@ export default class DiscoverGrid extends Component {
   render() {
     return (
       <View style={styles.mainContainer}>
-           <View >
+        {/* Toggle Not working for some reason */}
+           {/* <View >
               <Button 	style={styles.button}
 				      onPress={this.editButtonHandler}  title="Edit" />
                 
-          </View>
+          </View> */}
         {/* Search Bar */}
         <View style={styles.searchBox}>
           <Ionicons style={styles.searchBoxIcon} color={'#8E8E93'} name={"md-search"} size={24} />
@@ -160,7 +169,7 @@ export default class DiscoverGrid extends Component {
           numColumns={1}
           keyExtractor={(item) => item.id.toString()}
         />
-       
+
       </View>
 
     );
@@ -274,8 +283,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFF',
     borderColor: 'red',
     borderWidth: 5,
-    borderRadius: 15       
- }
+    borderRadius: 15,
+   
+ },
+ 
 
 });
 
