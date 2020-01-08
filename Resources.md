@@ -10,7 +10,7 @@ Git Basics
 - [SEC Git Workshop](./git_guide.md)
 - [Git Crash Course (Youtube)](https://youtu.be/SWYqp7iY_Tc)
 - [Git slide deck](https://docs.google.com/presentation/d/1o7cNmRufEOAl82lYNzpATYbXXQ81iUy2CIHQ33H9BDM/edit?usp=sharing) 
-- [Iteractive tutorial](http://jlord.us/git-it/index.html)
+- [Interactive tutorial](http://jlord.us/git-it/index.html)
 
 Front End Development (HTML5, CSS3, Bootstrap)
 ---------------
