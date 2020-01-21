@@ -8,6 +8,7 @@ import SettingScr from './SettingScr';
 import ProfileInfoScr from './ProfileInfoScr';
 import ClubsFollowScr from './ClubsFollowScr'
 import Tab from '../components/Tabs'
+import CreateClubButton from '../components/CreateClubButton'
 
 export default class ProfileScr extends React.Component {
 
@@ -37,8 +38,16 @@ export default class ProfileScr extends React.Component {
 						</View>
 					</View>
 				</View>
-				<View style={style.Card}>
+				<View style={style.ButCard}>
 					<CreateEvent/>
+					<FontAwesome.Button  style={{ borderWidth: 1, borderColor: 'green' }}
+                        backgroundColor="transparent"
+                        name="plus-circle"
+                        color="green" onPress={() => {
+								this.props.navigation.navigate({ routeName: 'ClubCreationScr' })
+							}}>
+								Create Club
+							</FontAwesome.Button>
 				</View>
 				<Tab tab1={<ProfileInfoScr />} tab2={<ClubsFollowScr />} tab3={<SettingScr />} />
 			</ScrollView>
@@ -55,7 +64,16 @@ const style = StyleSheet.create({
 		padding: 15,
 		backgroundColor: '#ffffff',
 		marginBottom: 10,
-		elevation: 2
+		elevation: 2,
+		
+	},
+	ButCard: {
+		padding: 15,
+		backgroundColor: '#ffffff',
+		marginBottom: 10,
+		elevation: 2,
+		flexDirection: 'row',
+		justifyContent: 'space-between'
 	},
 	settingsCard: {
 		backgroundColor: '#ffffff',
