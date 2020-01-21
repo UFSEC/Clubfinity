@@ -6,6 +6,7 @@ interface User {
   email: string;
   username: string;
   password: string;
+  clubs: Types.ObjectId[];
   _id: Types.ObjectId
 }
 
@@ -16,6 +17,7 @@ const usersData: User[] = [
     email: "pablo@gmail.com",
     username: "pablo",
     password: "123456",
+    clubs: [ new Types.ObjectId('16cb91bdc3464f14678934ca') ],
     _id: new Types.ObjectId('16cb91bdc3464f14678934ca')
   },
   {
@@ -24,6 +26,7 @@ const usersData: User[] = [
     email: "jake@gmail.com",
     username: "jake",
     password: "123456",
+    clubs: [],
     _id: new Types.ObjectId('26cb91bdc3464f14678934ca')
   },
   {
@@ -32,6 +35,7 @@ const usersData: User[] = [
     email: "jerry@gmail.com",
     username: "jerry",
     password: "123456",
+    clubs: [],
     _id: new Types.ObjectId('36cb91bdc3464f14678934ca')
   },
   {
@@ -40,6 +44,7 @@ const usersData: User[] = [
     email: "a.stake@gmail.com",
     username: "amy",
     password: "p@ssw0rd",
+    clubs: [],
     _id: new Types.ObjectId('46cb91bdc3464f14678934ca')
   },
   {
@@ -48,6 +53,7 @@ const usersData: User[] = [
     email: "anitabraig@gmail.com",
     username: "anita",
     password: "Pets2000",
+    clubs: [],
     _id: new Types.ObjectId('56cb91bdc3464f14678934ca')
   },
   {
@@ -56,6 +62,7 @@ const usersData: User[] = [
     email: "dan@gmail.com",
     username: "dan",
     password: "notMyP@ssword",
+    clubs: [],
     _id: new Types.ObjectId('66cb91bdc3464f14678934ca')
   },
   {
@@ -64,6 +71,7 @@ const usersData: User[] = [
     email: "eve@gmail.com",
     username: "eve",
     password: "Eve1998",
+    clubs: [],
     _id: new Types.ObjectId('76cb91bdc3464f14678934ca')
   },
   {
@@ -72,6 +80,7 @@ const usersData: User[] = [
     email: "faye@gmail.com",
     username: "faye",
     password: "ClubFinity15",
+    clubs: [],
     _id: new Types.ObjectId('86cb91bdc3464f14678934ca')
   },
   {
@@ -80,6 +89,7 @@ const usersData: User[] = [
     email: "hayden@gmail.com",
     username: "hayden",
     password: "se56523",
+    clubs: [],
     _id: new Types.ObjectId('96cb91bdc3464f14678934ca')
   },
   {
@@ -88,6 +98,7 @@ const usersData: User[] = [
     email: "holin@gmail.com",
     username: "holin",
     password: "865542d",
+    clubs: [],
     _id: new Types.ObjectId('07cb91bdc3464f14678934ca')
   },
   {
@@ -96,6 +107,7 @@ const usersData: User[] = [
     email: "hope@gmail.com",
     username: "hope",
     password: "sd5f45a631",
+    clubs: [],
     _id: new Types.ObjectId('17cb91bdc3464f14678934ca')
   },
   {
@@ -104,6 +116,7 @@ const usersData: User[] = [
     email: "hugh@gmail.com",
     username: "hugh",
     password: "ghf65hf",
+    clubs: [],
     _id: new Types.ObjectId('27cb91bdc3464f14678934ca')
   },
   {
@@ -112,6 +125,7 @@ const usersData: User[] = [
     email: "hugh.M@gmail.com",
     username: "hugh53",
     password: "PowerRangers36",
+    clubs: [],
     _id: new Types.ObjectId('37cb91bdc3464f14678934ca')
   },
   {
@@ -120,6 +134,7 @@ const usersData: User[] = [
     email: "ira@gmail.com",
     username: "ira",
     password: "CareBear1532",
+    clubs: [],
     _id: new Types.ObjectId('47cb91bdc3464f14678934ca')
   },
   {
@@ -128,6 +143,7 @@ const usersData: User[] = [
     email: "jay@gmail.com",
     username: "jay",
     password: "Jif321f",
+    clubs: [],
     _id: new Types.ObjectId('57cb91bdc3464f14678934ca')
   },
   {
@@ -136,6 +152,7 @@ const usersData: User[] = [
     email: "milly@gmail.com",
     username: "milly",
     password: "sdkljfaj5",
+    clubs: [],
     _id: new Types.ObjectId('67cb91bdc3464f14678934ca')
   },
   {
@@ -144,6 +161,7 @@ const usersData: User[] = [
     email: "sabina@gmail.com",
     username: "sabina",
     password: "asdfghjkl123",
+    clubs: [],
     _id: new Types.ObjectId('77cb91bdc3464f14678934ca')
   },
   {
@@ -152,6 +170,7 @@ const usersData: User[] = [
     email: "sally@gmail.com",
     username: "sally",
     password: "qwert123",
+    clubs: [],
     _id: new Types.ObjectId('87cb91bdc3464f14678934ca')
   },
   {
@@ -160,6 +179,7 @@ const usersData: User[] = [
     email: "shirley@gmail.com",
     username: "shirley",
     password: "poiu987",
+    clubs: [],
     _id: new Types.ObjectId('97cb91bdc3464f14678934ca')
   },
   {
@@ -168,6 +188,7 @@ const usersData: User[] = [
     email: "sue@gmail.com",
     username: "sue",
     password: "SUe99f",
+    clubs: [],
     _id: new Types.ObjectId('08cb91bdc3464f14678934ca')
   },
   {
@@ -176,6 +197,7 @@ const usersData: User[] = [
     email: "tina@gmail.com",
     username: "tina",
     password: "TBeense658",
+    clubs: [],
     _id: new Types.ObjectId('18cb91bdc3464f14678934ca')
   },
   {
@@ -184,6 +206,7 @@ const usersData: User[] = [
     email: "tom@gmail.com",
     username: "tom",
     password: "lastMawtow5",
+    clubs: [],
     _id: new Types.ObjectId('28cb91bdc3464f14678934ca')
   },
   {
@@ -192,9 +215,9 @@ const usersData: User[] = [
     email: "wanda@gmail.com",
     username: "wanda",
     password: "WonderfulIsMyName",
+    clubs: [],
     _id: new Types.ObjectId('38cb91bdc3464f14678934ca')
   }
-
 ];
 
 export = usersData;
