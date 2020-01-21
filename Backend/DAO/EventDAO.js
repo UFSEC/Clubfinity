@@ -1,9 +1,14 @@
 const Event = require("../Model/Event.js").Model;
+const clubDAO = require("../DAO/ClubDAO");
 
 exports.create = async eventParams => {
-  if (await Event.exists({ id: eventParams.id })) {
+  if (await Event.exists({ name: eventParams.name })) {
     throw Error("Event already exists!");
   }
+  if (!(await clubDAO.exists(eventParams.club))) {
+    throw Error("Club does not exist");
+  }
+  eventParams.club = (await clubDAO.get(eventParams.club))._id
 
   return await new Event(eventParams).save()
 }
@@ -22,7 +27,7 @@ exports.get = async (id) => {
 exports.getByName = async name => {
   const event = await Event.findOne({name: name});
   if (!event) throw new NotFoundError();
-  
+
   return event;
 };
 
