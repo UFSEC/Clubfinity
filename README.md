@@ -45,14 +45,18 @@ provides.
 If you’re doing front end skip this first page, otherwise keep reading. So you wanna do backend
 huh? Well I don’t think you got what it TAKES, at least not until you setup your environment.
 
-**Installing NodeJS**
+**Installing Node**<br>
+*Windows & Linux*<br>
 After you choose your text editor, the next thing you need to do is install NodeJS which is the
-Javascript interpreter we will be using for the backend. NodeJS can be installed here:
-https://nodejs.org/en/, the version we will be using will be 10.13.0 LTS so be sure to install the
-correct version.
+Javascript runtime we will be using for the backend. NodeJS can be installed here:
+https://nodejs.org/download/release/v12.9.0/, the version we will be using will be **v12.9.0** so click on the installation file according to your OS.
+For eg. if you are running Windows, select 
+`node-v12.9.0-x64.msi` from the list. Once you download it, run the file to complete installation.
+<br>To check if Node is properly installed, open your command prompt/terminal and type:
+`node --version` You should see **v12.9.0**
 
-**NodeJS in MacOS:**
-Homebrew is a great package installer you can download here: https://brew.sh/
+*MacOS*
+<br>Homebrew is a great package installer you can download here: https://brew.sh/
 You may also type this into terminal:
 ```/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"```
 
