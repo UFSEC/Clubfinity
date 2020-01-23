@@ -1,29 +1,169 @@
 import React, { Component } from 'react'
-import { Text, View,StyleSheet } from 'react-native'
+import { Text, View,StyleSheet,ScrollView,Dimensions,TouchableOpacity,TextInput,Picker } from 'react-native'
 import EditForm from '../components/EditForm'
-
+const { width, height } = Dimensions.get('screen')
 export default class ClubCreation extends Component {
     static navigationOptions = {
 		title: 'Clubfinity',
 		headerStyle: { backgroundColor: '#7e947f' },
 		headerTitleStyle: { color: "#ecf0f1", letterSpacing: 2 },
-	}
+    }
+    constructor(props){
+        super(props)
+        this.state = {
+            clubName:'',
+            clubLocation:'',
+            clubDescription: '',
+            clubPosition:'',
+            clubCategory:'',
+            admin:false
+        }
+
+    }
+    handleChangeMajor= (itemValue,itemIndex) =>{
+        if (itemIndex !== 0) {
+          this.setState({clubCategory: itemValue})
+        }
+      }
+    saveHandler = () => {
+        console.log(this.state)
+        this.setState({  
+            clubName:'',
+            clubLocation:'',
+            clubDescription: '',
+            clubPosition:'',
+            clubCategory:'',
+            admin:false
+        })
+        console.log(this.state)
+    }
     render() {
+        
         return (
-            <View style={styles.container}>
-             <Text>yrrre</Text>
+            <ScrollView contentContainerStyle={styles.container}>
+            <View >
+           
+                        <TextInput
+                                style={styles.modalTextInput}
+                                placeholder="Club Name"
+                                placeholderTextColor={'#8E8E93'}
+                                value={this.state.clubName}
+                                onChangeText={(text) => this.setState({ clubName: text })}
+                            />
+                            <TextInput
+                                style={styles.modalTextInput}
+                                placeholderTextColor={'#8E8E93'}
+                                placeholder="Position"
+                                value={this.state.clubPosition}
+                                onChangeText={(text) => this.setState({ clubPosition: text })}
+                            />
+                               <TextInput
+                                style={styles.modalTextInput}
+                                placeholderTextColor={'#8E8E93'}
+                                placeholder="Location"
+                                value={this.state.clubLocation}
+                                onChangeText={(text) => this.setState({ clubLocation: text })}
+                            />
+                            <TextInput
+                                style={[styles.modalTextInput, {height: 100}]}
+                                numberOfLines={5}
+                                placeholderTextColor={'#8E8E93'}
+                                placeholder="Description"
+                                value={this.state.clubDescription}
+                                onChangeText={(text) => this.setState({ clubDescription: text })}
+                            />
+                            <View style={styles.inputPicker}>
+                            <Picker
+                                selectedValue={this.state.clubCategory}
+                                style={{ flex: 1 }}
+                                itemStyle={styles.pickerDropdown}
+                                mode={'dialog'}
+                                onValueChange={
+                                this.handleChangeMajor
+                                }>
+                                
+                            
+                                <Picker.Item label='Choose Club Category' value='0' />
+                                <Picker.Item label="Art" value="cart" />
+                                <Picker.Item label="Technology" value="technology" />
+                                <Picker.Item label="Business" value="business" />
+                                
+                            </Picker>
+                            </View>
+
+                        <TouchableOpacity
+                            style={styles.saveButton}
+                            onPress={this.saveHandler}
+                        >
+                            <Text style={styles.saveButtonText}>
+                                Save Changes
+                            </Text>
+                    </TouchableOpacity>
+              
+
             </View>
+            </ScrollView>
         )
+        
     }
 
   
 
 }
+const txtFieldBgColor = "#F4F4F4";
+const bgColor = "#FFF";
 const styles = StyleSheet.create({
     container: {
     flex:1,  
     alignItems:'center',
-     backgroundColor: '#F2F2F7'
+     backgroundColor: '#F2F2F7',
+     paddingTop: '20%'
      
-    }
+    },
+    saveButtonText:{
+        fontSize: 15,
+        color: '#FFF',
+        alignSelf: 'center',
+    
+      },
+      saveButton: {
+        padding: 10,
+        minWidth:width/2,
+        backgroundColor: '#ACCBAC',
+        borderWidth: 1,
+        borderColor: '#ACCBAC',
+        borderRadius: 100,
+        marginHorizontal: 10,
+        marginVertical: 10,
+        elevation: 3,
+        alignSelf: 'center'
+      },
+      modalTextInput: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        backgroundColor: '#E5E4EA',
+        borderWidth: 1,
+        borderRadius: 10,
+        borderColor: '#E5E4EA',
+        marginHorizontal: 10,
+        marginVertical: 10,
+        height: 50,
+        paddingHorizontal: 20,
+    },
+    inputPicker: {
+      
+       
+        borderWidth: 1,
+        borderRadius: 10,
+        borderColor: txtFieldBgColor,
+        margin: 5,
+        paddingVertical: 4,
+        paddingHorizontal: 10,
+     
+        flex:1,
+        alignSelf: 'center',
+        width:width/2
+      }
 })

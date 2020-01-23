@@ -17,7 +17,12 @@ export default class ProfileScr extends React.Component {
 		headerStyle: { backgroundColor: '#7e947f' },
 		headerTitleStyle: { color: "#ecf0f1", letterSpacing: 2 },
 	}
-
+	constructor(props){
+		super(props)
+		this.state = {
+			admin: false
+		}
+	}
 
 	render() {
 		const userProfilePicture = {
