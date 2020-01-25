@@ -80,6 +80,7 @@ data back to the client.
 To add express to your project you need to use the following command:
 ```npm install express```
 which will install all the required dependencies you need for express.
+
 **Setup you local environment environment**
 After you locally clone the project from Gitlab, there are a couple initial steps you need to
 take in order to get the server running:
@@ -88,12 +89,6 @@ take in order to get the server running:
 - In a terminal, `cd` into `clubfinity/Backend` and enter the command `npm install`. This will install
   the necessary 3rd-party dependancies your local copy of project (this is necessary whenever you clone an NPM package)
 
-**Starting the server**
-Whenever you want to develop or run the server, take the following steps:
-- Start MongoDB
-- Start the server with `npm start`. You can leave this running, any changes you make to the codebase will restart
-  the server automatically for you.
-
 **MongoDB**
 User, event, and club information will be stored using MongoDB (non-relation database). For development, you will have to run a local database using MongoDB. Here are some instructions on [installation](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/ "installation") on Windows. If you have a Mac, here are some instructions for [installation](https://treehouse.github.io/installation-guides/mac/mongo-mac.html "installation").
 
@@ -101,9 +96,9 @@ By default, the backend is configured interact with a MongoDB local database run
 
 **Running the Backend**
 
-Once you have installed Node.js, NPM, ExpressJS, and are running a local MongoDB database, you are ready to run the project.
+Once you have installed Node.js, NPM, ExpressJS, and are running a local MongoDB database, you are ready to run the project server.
 
-First, install all the dependencies by running ```npm install``` and then run the app.js file by running ```node app.js``` from the Backend folder. You should get something resembling this output:
+*cd* in to the `/clubfinity/Backend` directory and run the following in your terminal to start the server ```npm start``` . You should get something resembling this output:
 
 ```
 express-session deprecated undefined resave option; provide resave option Routes/AuthRoutes.js:9:12
@@ -113,7 +108,12 @@ express-session deprecated undefined saveUninitialized option; provide saveUnini
 Now listening on port 8080
 Mongoose default connection open to mongodb://localhost:27017/test
 ```
-The backend should be running at http://localhost:8080
+The backend should be running at http://localhost:8080 
+
+Whenever you want to develop or run the server, take the following steps:
+- Start MongoDB
+- Start the server with `npm start`. You can leave this running, any changes you make to the codebase will restart
+  the server automatically for you.
 
 #### Setting up the Frontend (Mobile App)
 Your first step would be to make sure you have npm and NodeJS installed on your pc/mac. The
