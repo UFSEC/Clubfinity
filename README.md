@@ -5,11 +5,14 @@
 ![clubfinity](/Frontend/assets/images/clubfinity.png)
 
 #### Table of Contents
-- [The Premise](#the-premise)
-- [Getting Setup](#getting-setup)
-  - [Setting up the Backend (Server and Database)](#setting-up-the-backend-server-and-database)
-  - [Setting up the Frontend (Mobile App)](#setting-up-the-frontend-mobile-app)
-- [What now?](#what-now)
+- [Clubfinity](#clubfinity)
+      - [Table of Contents](#table-of-contents)
+    - [The Premise](#the-premise)
+          - [Ok so where does clubfinity come in?](#ok-so-where-does-clubfinity-come-in)
+  - [Getting Setup](#getting-setup)
+    - [Setting up the Backend (Server and Database)](#setting-up-the-backend-server-and-database)
+      - [Setting up the Frontend (Mobile App)](#setting-up-the-frontend-mobile-app)
+    - [What now?](#what-now)
 
 
 ### The Premise
@@ -96,13 +99,17 @@ By default, the backend is configured interact with a MongoDB local database run
 
 Once you have installed Node.js, NPM, ExpressJS, and are running a local MongoDB database, you are ready to run the project.
 
-First, install all the dependencies by running ```npm install``` and then run the app.js file by running ```node app.js``` from the Backend folder. You should get something resembling this output:
+First, install all the dependencies by running ```npm install``` and then run the app.js file by running ```npm start``` from the Backend folder. You should get something resembling this output:
 
 ```
-express-session deprecated undefined resave option; provide resave option Routes/AuthRoutes.js:9:12
-express-session deprecated undefined saveUninitialized option; provide saveUninitialized option Routes/AuthRoutes.js:9:12
-(node:1548) DeprecationWarning: current URL string parser is deprecated, and will be removed in a future version. To use the new parser, pass option { useNewUrlParser: true } to MongoClient.connect.
-(node:1548) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+> clubfinity@1.0.0 start C:\Users\zeesh\Desktop\UFSEC\clubfinity\Backend
+> nodemon ./app
+
+[nodemon] 1.19.3
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching dir(s): *.*
+[nodemon] watching extensions: js,mjs,json
+[nodemon] starting `node ./app.js`
 Now listening on port 8080
 Mongoose default connection open to mongodb://localhost:27017/test
 ```
