@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
-const config = require("../Config/config.json");
+const config = require("../Config/config");
 
 const url =
   "mongodb://" +
-  config.development.database.host +
+  config.database.host +
   ":" +
-  config.development.database.port +
+  config.database.port +
   "/" +
-  config.development.database.database;
+  config.database.database;
 
 // Events
 mongoose.connection.on("connected", function() {
