@@ -12,6 +12,8 @@ import {
   TextInput,
 } from 'react-native';
 
+import API from '../util/API';
+
 export default class SigninScr extends React.Component {
   static navigationOptions = {
     header: null
@@ -26,15 +28,25 @@ export default class SigninScr extends React.Component {
   }
 
   // Currently logs user without credential auth or validation but will be connected to backend soon
-  signIn = async () => {
-    await AsyncStorage.setItem('userToken', 'abc');
-    this.props.navigation.navigate('App');
+  signIn = async (event) => {
+    event.preventDefault();
+
+    let userToken = await API.post('/auth/login', {
+      username: this.state.username,
+      password: this.state.password
+    })
+    .then((response) => {
+      console.log(response.data);
+    })
+    .catch(function (error) {
+      console.log(error.response.data.error);
+    });
+
   }
 
   signUp = async () => {
     this.props.navigation.navigate('SignUp')
   }
-
 
 
   changeUsername = (input) => {
@@ -66,6 +78,7 @@ export default class SigninScr extends React.Component {
             <TextInput
               textAlign={'left'}
               style={styles.field}
+              name='username'
               placeholderTextColor={'#8E8E93'}
               returnKeyType={"next"}
               onChangeText={this.changeUsername}
@@ -75,6 +88,7 @@ export default class SigninScr extends React.Component {
             </TextInput>
             <TextInput
               style={styles.field}
+              name='password'
               secureTextEntry={true}
               autoCapitalize={"none"}
               placeholderTextColor={'#8E8E93'}
@@ -90,14 +104,14 @@ export default class SigninScr extends React.Component {
               onPress={this.signIn}
               backgroundColor={'#ACCBAC'}
             >
-            <Text style={styles.loginButtonText}>Login</Text>
+              <Text style={styles.loginButtonText}>Login</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.signupButton}
               onPress={this.signUp}
               backgroundColor={'#D4D4D4'}
             >
-            <Text style={styles.signupButtonTxt}>
+              <Text style={styles.signupButtonTxt}>
                 New here? Sign up</Text>
             </TouchableOpacity>
           </View>
