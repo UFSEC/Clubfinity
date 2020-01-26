@@ -7,9 +7,9 @@ const passport = require("passport");
 // Authorization
 
 router.get("/user", passport.authenticate("loggedIn", { session: false }), userController.getAll);
-router.get("/user/:username", passport.authenticate("loggedIn", { session: false }), userController.get);
-router.put("/user/:username", passport.authenticate("loggedIn", { session: false }), userController.validate("validateUserInfo"), userController.update);
+router.get("/user/:id", passport.authenticate("loggedIn", { session: false }), userController.get);
+router.put("/user/:id", passport.authenticate("loggedIn", { session: false }), userController.validate("validateUserInfo"), userController.update);
 router.post("/user", passport.authenticate("loggedIn", { session: false }), userController.validate("validateUserInfo"), userController.create);
-router.delete("/user/:username", passport.authenticate("loggedIn", { session: false }), userController.delete);
+router.delete("/user/:id", passport.authenticate("loggedIn", { session: false }), userController.delete);
 
 module.exports = router;

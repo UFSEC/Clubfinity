@@ -41,18 +41,22 @@ For this project you’re allowed to use any text editor of your choice, however
 recommend Visual Studio Code because of the nice interface and wide variety of extensions it
 provides.
 
-### Setting up the Backend (Server and Database)
+#### Setting up the Backend (Server and Database)
 If you’re doing front end skip this first page, otherwise keep reading. So you wanna do backend
 huh? Well I don’t think you got what it TAKES, at least not until you setup your environment.
 
-**Installing NodeJS**
+**Installing Node**<br>
+*Windows & Linux*<br>
 After you choose your text editor, the next thing you need to do is install NodeJS which is the
-Javascript interpreter we will be using for the backend. NodeJS can be installed here:
-https://nodejs.org/en/, the version we will be using will be 10.13.0 LTS so be sure to install the
-correct version.
+Javascript runtime we will be using for the backend. NodeJS can be installed here:
+https://nodejs.org/download/release/v12.9.0/, the version we will be using will be **v12.9.0** so click on the installation file according to your OS.
+For eg. if you are running Windows, select 
+`node-v12.9.0-x64.msi` from the list. Once you download it, run the file to complete installation.
+<br>To check if Node is properly installed, open your command prompt/terminal and type:
+`node --version` You should see **v12.9.0**
 
-**NodeJS in MacOS:**
-Homebrew is a great package installer you can download here: https://brew.sh/
+*MacOS*
+<br>Homebrew is a great package installer you can download here: https://brew.sh/
 You may also type this into terminal:
 ```/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"```
 
@@ -76,6 +80,7 @@ data back to the client.
 To add express to your project you need to use the following command:
 ```npm install express```
 which will install all the required dependencies you need for express.
+
 **Setup you local environment environment**
 After you locally clone the project from Gitlab, there are a couple initial steps you need to
 take in order to get the server running:
@@ -97,23 +102,24 @@ By default, the backend is configured interact with a MongoDB local database run
 
 **Running the Backend**
 
-Once you have installed Node.js, NPM, ExpressJS, and are running a local MongoDB database, you are ready to run the project.
+Once you have installed Node.js, NPM, ExpressJS, and are running a local MongoDB database, you are ready to run the project server.
 
-First, install all the dependencies by running ```npm install``` and then run the app.js file by running ```npm start``` from the Backend folder. You should get something resembling this output:
+*cd* in to the `/clubfinity/Backend` directory, install dependencies by running ```npm install```, and run the following in your terminal to start the server ```npm start``` . You should get something resembling this output:
 
 ```
-> clubfinity@1.0.0 start C:\Users\zeesh\Desktop\UFSEC\clubfinity\Backend
-> nodemon ./app
-
-[nodemon] 1.19.3
-[nodemon] to restart at any time, enter `rs`
-[nodemon] watching dir(s): *.*
-[nodemon] watching extensions: js,mjs,json
-[nodemon] starting `node ./app.js`
+express-session deprecated undefined resave option; provide resave option Routes/AuthRoutes.js:9:12
+express-session deprecated undefined saveUninitialized option; provide saveUninitialized option Routes/AuthRoutes.js:9:12
+(node:1548) DeprecationWarning: current URL string parser is deprecated, and will be removed in a future version. To use the new parser, pass option { useNewUrlParser: true } to MongoClient.connect.
+(node:1548) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
 Now listening on port 8080
 Mongoose default connection open to mongodb://localhost:27017/test
 ```
-The backend should be running at http://localhost:8080
+The backend should be running at http://localhost:8080 
+
+Whenever you want to develop or run the server, take the following steps:
+- Start MongoDB
+- Start the server with `npm start`. You can leave this running, any changes you make to the codebase will restart
+  the server automatically for you.
 
 #### Setting up the Frontend (Mobile App)
 Your first step would be to make sure you have npm and NodeJS installed on your pc/mac. The
@@ -122,17 +128,25 @@ done with that, open your terminal and install Expo with the following command:
 ```npm install -g expo-cli```
 
 This will install Expo globally on your computer. Expo will allow you to easily build and run any
-React Native app on your phone. Once you’re done with that, cd into the root Clubfinity
-directory and run the app by typing the following on your terminal:
-```expo start```
+React Native app on your phone. Once you’re done with that, *cd* into `/clubfinitiy/Frontend`
+directory and install other dependencies by running ```npm install```
 
-Your terminal should update with a generated barcode. In order to run the app on your phone,
+In order to run the app on your phone,
 you’ll need to install the Expo client app available on Play Store / App store.
 * Android: https://play.google.com/store/apps/details?id=host.exp.exponent
 * Apple: https://itunes.apple.com/us/app/expo-client/id982107779?mt=8
 
 Once you have installed the expo client on your phone, make sure it is connected to the same
-WiFi as your computer. Tap “Scan QR code” and scan the QR code generated by your terminal.
+WiFi as your computer.
+
+**Running the Frontend**
+
+Make sure your terminal/command prompt is in the `/clubfinity/Frontend` directory, you can run 
+the app by typing the following on your terminal:
+```expo start```
+
+Your terminal should update with a generated barcode and a new webpage will startup showing the Metro Bundler.
+Open the Expo app that you installed on your phone and Tap “Scan QR code”, scan the QR code generated by your terminal/new webpage openened.
 The app will be built on your phone and it will be recompiled every time you make changes
 within your code!
 
@@ -158,4 +172,4 @@ Now that you’ve successfully done everything that we’ve told you to do so fa
 
 Last thing we need for you to do if you haven’t already is join head over to the issues board on Gitlab which can be found on the sidebar to your left Issues -> Boards and selecting "Development"
 
-This is where you'll find all the tasks and user stories to be completed as well as those that are being tested or have already been integrated! If you'd like to learn more about how to contribute to the repo and our general workflow check out [this](../clubfinity/Resources.md) guide (Under Construction)
+This is where you'll find all the tasks and user stories to be completed as well as those that are being tested or have already been integrated! If you'd like to learn more about how to contribute to the repo and our general workflow check out [this](../clubfinity/Resources.md) guide

@@ -1,6 +1,7 @@
 const express = require('express');
 const router  = express.Router();
 const jwt = require('jsonwebtoken');
+const authUtil = require('../util/authUtil');
 const passport = require("passport");
 const config = require("../Config/config");
 
@@ -16,7 +17,7 @@ exports.authenticate = (req, res, next) => {
            if (err) {
                res.send(err);
            }
-           const token = jwt.sign({id: user.id}, config.jwtSecret);
+           const token = authUtil.tokanizeUser(user);
            return res.json({token: token});
         });
     })(req, res);
