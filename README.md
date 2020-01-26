@@ -10,7 +10,7 @@
     - [The Premise](#the-premise)
           - [Ok so where does clubfinity come in?](#ok-so-where-does-clubfinity-come-in)
   - [Getting Setup](#getting-setup)
-      - [Setting up the Backend (Server and Database)](#setting-up-the-backend-server-and-database)
+    - [Setting up the Backend (Server and Database)](#setting-up-the-backend-server-and-database)
       - [Setting up the Frontend (Mobile App)](#setting-up-the-frontend-mobile-app)
     - [What now?](#what-now)
 
@@ -89,6 +89,12 @@ take in order to get the server running:
 - In a terminal, `cd` into `clubfinity/Backend` and enter the command `npm install`. This will install
   the necessary 3rd-party dependancies your local copy of project (this is necessary whenever you clone an NPM package)
 
+**Starting the server**
+Whenever you want to develop or run the server, take the following steps:
+- Start MongoDB
+- Start the server with `npm start`. You can leave this running, any changes you make to the codebase will restart
+  the server automatically for you.
+
 **MongoDB**
 User, event, and club information will be stored using MongoDB (non-relation database). For development, you will have to run a local database using MongoDB. Here are some instructions on [installation](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/ "installation") on Windows. If you have a Mac, here are some instructions for [installation](https://treehouse.github.io/installation-guides/mac/mongo-mac.html "installation").
 
@@ -98,7 +104,7 @@ By default, the backend is configured interact with a MongoDB local database run
 
 Once you have installed Node.js, NPM, ExpressJS, and are running a local MongoDB database, you are ready to run the project server.
 
-*cd* in to the `/clubfinity/Backend` directory and run the following in your terminal to start the server ```npm start``` . You should get something resembling this output:
+*cd* in to the `/clubfinity/Backend` directory, install dependencies by running ```npm install```, and run the following in your terminal to start the server ```npm start``` . You should get something resembling this output:
 
 ```
 express-session deprecated undefined resave option; provide resave option Routes/AuthRoutes.js:9:12
