@@ -1,7 +1,7 @@
 import React from 'react'
-import { StyleSheet, Text, View, Dimensions, Switch } from 'react-native'
+import { StyleSheet, Text, View, Dimensions } from 'react-native'
 const { width, height } = Dimensions.get('screen')
-import { primary,card } from '../assets/styles/stylesheet';
+
 
 export default class SettingScr extends React.Component {
   static navigationOptions = {
@@ -14,7 +14,7 @@ export default class SettingScr extends React.Component {
     this.state = {
       Name: 'Christian Sarmiento',
       Major: 'Computer Science',
-      Interests: 'I love to code',
+      Interests: 'I love to codes lla accusamus sunt consequatur repellat tenetur numquam porro.',
       Email: 'cs@gmail.com',
       Year: 'Senior'
 
@@ -23,7 +23,8 @@ export default class SettingScr extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>{this.state.Name}</Text>
+       
+        {/* <Text style={styles.title}>{this.state.Name}</Text> */}
         <Text style={styles.textSubheading}><Text style={{fontWeight: "bold"}}>Major:</Text> {this.state.Major}</Text>
         <Text style={styles.textSubheading}><Text style={{fontWeight: "bold"}}>Interest:</Text> {this.state.Interests} </Text>
         <Text style={styles.textSubheading}><Text style={{fontWeight: "bold"}}>Email:</Text> {this.state.Email}</Text>
@@ -36,9 +37,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: 50,
+  
+    alignItems: 'center',
+    position: 'relative',
+    marginLeft: width/5,
     marginRight: 5,
-    marginLeft: 5,
+    
     marginTop: 10,
     marginBottom: 10,
     borderWidth: 1,

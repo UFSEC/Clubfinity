@@ -12,7 +12,10 @@ import SignupScr from '../screens/SignupScr';
 import SigninScr from '../screens/SigninScr';
 import AuthScr from '../screens/AuthScr';
 import EditProfile from '../screens/EditProfile';
-import ClubCreation from '../screens/ClubCreation'
+import ClubCreation from '../screens/ClubCreation';
+import SettingScr from '../screens/SettingScr';
+
+
 
 // import SettingScr from '../screens/SettingScr';
 
@@ -48,6 +51,7 @@ const CalendarStack = createStackNavigator({
 const ProfileStack = createStackNavigator({
   Profile: ProfileScr,
   Edit: EditProfile,
+  Setting: SettingScr,
   ClubCreationScr: ClubCreation
 }, {
   navigationOptions: {
