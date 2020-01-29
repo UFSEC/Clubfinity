@@ -2,10 +2,12 @@ import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View, Button, ScrollView, FlatList, AsyncStorage } from 'react-native';
 import { CreateEvent } from '../components/CreateEvent';
 import { FontAwesome } from '@expo/vector-icons';
+
 import SettingScr from './SettingScr';
 import ProfileInfoScr from './ProfileInfoScr';
 import ClubsFollowScr from './ClubsFollowScr'
 import Tab from '../components/Tabs'
+import { API } from '../util/API';
 
 export default class ProfileScr extends React.Component {
 
@@ -41,6 +43,7 @@ export default class ProfileScr extends React.Component {
 							}}>
 								<Text style={{ color: "#2980b9", paddingRight: 5 }}>Edit Profile</Text>
 							</FontAwesome.Button>
+
 							<FontAwesome.Button name="sign-out" color="#F40" backgroundColor="#fff" style={{ alignSelf: 'center' }} onPress={this.signOut}>
 							<Text style={{ color: "#F40", paddingRight: 5 }}>Logout</Text>
 							</FontAwesome.Button>
