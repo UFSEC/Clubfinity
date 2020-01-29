@@ -39,8 +39,10 @@ export default class ProfileScr extends React.Component {
 							<FontAwesome.Button name="edit" color="#2980b9" backgroundColor="#fff" style={{ alignSelf: 'center' }} onPress={() => {
 								this.props.navigation.navigate({ routeName: 'Edit' })
 							}}>
-							<FontAwesome.Button name="sign-out" color="#F40" backgroundColor="#fff" style={{ alignSelf: 'center' }} onPress={this.signOut}></FontAwesome.Button>
 								<Text style={{ color: "#2980b9", paddingRight: 5 }}>Edit Profile</Text>
+							</FontAwesome.Button>
+							<FontAwesome.Button name="sign-out" color="#F40" backgroundColor="#fff" style={{ alignSelf: 'center' }} onPress={this.signOut}>
+							<Text style={{ color: "#F40", paddingRight: 5 }}>Logout</Text>
 							</FontAwesome.Button>
 						</View>
 					</View>

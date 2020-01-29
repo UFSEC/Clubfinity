@@ -12,7 +12,7 @@ import {
   TextInput,
 } from 'react-native';
 
-import API from '../util/API';
+import { API } from '../util/API';
 
 export default class SigninScr extends React.Component {
   static navigationOptions = {
@@ -27,16 +27,17 @@ export default class SigninScr extends React.Component {
     }
   }
 
-  // Currently logs user without credential auth or validation but will be connected to backend soon
+  // Make Auth request to backend and save token if correct credentials
   signIn = async (event) => {
     event.preventDefault();
 
-    let userToken = await API.post('/auth/login', {
+    await API.post('/auth/login', {
       username: this.state.username,
       password: this.state.password
     })
-    .then((response) => {
-      console.log(response.data);
+    .then( async (response) => {
+      await AsyncStorage.setItem('userToken', response.data.token);
+      this.props.navigation.navigate('App');
     })
     .catch(function (error) {
       console.log(error.response.data.error);
