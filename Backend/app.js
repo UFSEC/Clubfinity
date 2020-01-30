@@ -1,6 +1,7 @@
 const express = require("express");
 const userRoute = require("./Routes/UserRoute");
 const eventRoute = require("./Routes/EventRoute");
+const clubRoute = require("./Routes/ClubRoute");
 const authRoute = require("./Routes/AuthRoutes");
 const config = require("./Config/config.json");
 const database = require("./Database/Database.js");
@@ -22,6 +23,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use("/api", userRoute);
 app.use("/api", eventRoute);
+app.use("/api", clubRoute);
 app.use("/auth", authRoute);
 
 database.connect();
