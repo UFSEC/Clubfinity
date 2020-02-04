@@ -50,7 +50,7 @@ huh? Well I don’t think you got what it TAKES, at least not until you setup yo
 After you choose your text editor, the next thing you need to do is install NodeJS which is the
 Javascript runtime we will be using for the backend. NodeJS can be installed here:
 https://nodejs.org/download/release/v12.9.0/, the version we will be using will be **v12.9.0** so click on the installation file according to your OS.
-For eg. if you are running Windows, select 
+For eg. if you are running Windows, select
 `node-v12.9.0-x64.msi` from the list. Once you download it, run the file to complete installation.
 <br>To check if Node is properly installed, open your command prompt/terminal and type:
 `node --version` You should see **v12.9.0**
@@ -114,7 +114,7 @@ express-session deprecated undefined saveUninitialized option; provide saveUnini
 Now listening on port 8080
 Mongoose default connection open to mongodb://localhost:27017/test
 ```
-The backend should be running at http://localhost:8080 
+The backend should be running at http://localhost:8080
 
 Whenever you want to develop or run the server, take the following steps:
 - Start MongoDB
@@ -141,7 +141,7 @@ WiFi as your computer.
 
 **Running the Frontend**
 
-Make sure your terminal/command prompt is in the `/clubfinity/Frontend` directory, you can run 
+Make sure your terminal/command prompt is in the `/clubfinity/Frontend` directory, you can run
 the app by typing the following on your terminal:
 ```expo start```
 
@@ -165,6 +165,9 @@ Windows:
 - In the bottom half of the dialog you should be able to see System Variables listed. Find
   out if there’s a Path variable, select it and click Edit. If there’s no Path variable click New.
 - If there are other paths already in your Path variable, you can click New to add a new one. Just paste the path to your npm installation `(C:\Users\<USERNAME>\AppData\Roaming\npm)` in the field here. Click Ok and now try running your command again in a new terminal. This should be resolved.
+
+If you receive an error about python like "can't find python executable" then you need to install Python and run the following command:
+``npm --add-python-to-path=‘true’ --debug install --global windows-build-tools```
 
 
 ### What now?
