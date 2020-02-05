@@ -32,7 +32,6 @@ class EventFeed extends Component {
         }
       });
       let { data } = response.data;
-      console.log(data);
       this.setState({
         events: data,
         isLoading: false
@@ -51,6 +50,7 @@ class EventFeed extends Component {
         </View>
       );
     }
+
     return (
       <View style={[primary.container, primary.bodyText]}>
         <Text style={primary.headerText}>Upcoming Events <Octicons name="megaphone" color={'teal'} size={24} />   </Text>
