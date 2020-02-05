@@ -26,6 +26,18 @@ export default class ClubCreation extends Component {
         }
       }
     saveHandler = () => {
+        //Checks that all fields includes data
+        //It could be more in depth but input needed
+        if (this.state.clubName != '' && 
+            this.state.clubPosition != '' && 
+            this.state.clubCategory != '' &&
+            this.state.clubLocation != '') {
+           
+              alert('Success')
+            } else {
+              alert('Please fill in all fields ');
+            }
+        //Checks if data is retrieved and Resets state after its sent  
         console.log(this.state)
         this.setState({  
             clubName:'',
@@ -33,8 +45,9 @@ export default class ClubCreation extends Component {
             clubDescription: '',
             clubPosition:'',
             clubCategory:'',
-            admin:false
+            
         })
+        //Checks that its empty
         console.log(this.state)
     }
     render() {
@@ -44,6 +57,7 @@ export default class ClubCreation extends Component {
             <View >
            
                         <TextInput
+                                maxLength={20}
                                 style={styles.modalTextInput}
                                 placeholder="Club Name"
                                 placeholderTextColor={'#8E8E93'}
@@ -51,6 +65,7 @@ export default class ClubCreation extends Component {
                                 onChangeText={(text) => this.setState({ clubName: text })}
                             />
                             <TextInput
+                                maxLength={20}
                                 style={styles.modalTextInput}
                                 placeholderTextColor={'#8E8E93'}
                                 placeholder="Position"
@@ -58,6 +73,8 @@ export default class ClubCreation extends Component {
                                 onChangeText={(text) => this.setState({ clubPosition: text })}
                             />
                                <TextInput
+                                
+                                maxLength={20}
                                 style={styles.modalTextInput}
                                 placeholderTextColor={'#8E8E93'}
                                 placeholder="Location"
@@ -65,8 +82,10 @@ export default class ClubCreation extends Component {
                                 onChangeText={(text) => this.setState({ clubLocation: text })}
                             />
                             <TextInput
+                                maxLength={120}
                                 style={[styles.modalTextInput, {height: 100}]}
                                 numberOfLines={5}
+                                multiline={true}
                                 placeholderTextColor={'#8E8E93'}
                                 placeholder="Description"
                                 value={this.state.clubDescription}
@@ -84,7 +103,7 @@ export default class ClubCreation extends Component {
                                 
                             
                                 <Picker.Item label='Choose Club Category' value='0' />
-                                <Picker.Item label="Art" value="cart" />
+                                <Picker.Item label="Art" value="art" />
                                 <Picker.Item label="Technology" value="technology" />
                                 <Picker.Item label="Business" value="business" />
                                 

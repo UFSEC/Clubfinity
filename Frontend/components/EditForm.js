@@ -1,221 +1,191 @@
-import React from 'react'
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Dimensions,
-  TextInput,
-  Picker,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  KeyboardAvoidingView
- 
-} from 'react-native'
-
-
+import React, { Component } from 'react'
+import { Text, View,StyleSheet,ScrollView,Dimensions,TouchableOpacity,TextInput,Picker } from 'react-native'
 const { width, height } = Dimensions.get('screen')
-export default class But extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      interest: 'Food',
-      year: '',
-      user: '',
-      classYear:'',
-      major:'',
-    
+
+export default class EditForm extends Component {
+    static navigationOptions = {
+		title: 'Edit Profile Information',
+		headerStyle: { backgroundColor: '#7e947f' },
+		headerTitleStyle: { color: "#ecf0f1", letterSpacing: 2 },
+    }
+    constructor(props){
+        super(props)
+        //You can prepopulate state with previous values the individual has
+          this.state = {
+            interest: '',
+            year: '',
+            user: '',
+            classYear:'',
+            major:''
+          
+      
+        
+
+    }
+  }
+    handleChangeMajor= (itemValue,itemIndex) =>{
+        if (itemIndex !== 0) {
+          this.setState({clubCategory: itemValue})
+        }
+      }
+    saveHandler = () => {
+      
+        //Checks if data is retrieved and Resets state after its sent  
+        console.log(this.state)
+        this.setState({  
+          interest: '',
+          year: '',
+          user: '',
+          classYear:'',
+          major:'',
+            
+        })
+        //Checks that its empty
+        console.log(this.state)
+    }
+    render() {
+      return (
+        <ScrollView contentContainerStyle={styles.container}>
+          <View >
+          
+                <TextInput
+                    maxLength={20}
+                    style={styles.modalTextInput}
+                    placeholder="Major"
+                    placeholderTextColor={'#8E8E93'}
+                    value={this.state.clubName}
+                    onChangeText={(text) => this.setState({ major: text })}
+                />
+                {/* <TextInput
+                    maxLength={20}
+                    style={styles.modalTextInput}
+                    placeholderTextColor={'#8E8E93'}
+                    placeholder="Position"
+                    value={this.state.clubPosition}
+                    onChangeText={(text) => this.setState({ clubPosition: text })}
+                />
+                    <TextInput
+                    
+                    maxLength={20}
+                    style={styles.modalTextInput}
+                    placeholderTextColor={'#8E8E93'}
+                    placeholder="Location"
+                    value={this.state.clubLocation}
+                    onChangeText={(text) => this.setState({ clubLocation: text })}
+                /> */}
+                <TextInput
+                    maxLength={120}
+                    style={[styles.modalTextInput, {height: 200}]}
+                    numberOfLines={5}
+                    multiline={true}
+                    placeholderTextColor={'#8E8E93'}
+                    placeholder="Interest"
+                    value={this.state.interest}
+                    onChangeText={(text) => this.setState({ interest: text })}
+                />
+                <View style={styles.inputPicker}>
+                  <Picker
+                      selectedValue={this.state.clubCategory}
+                      style={{ flex: 1,height:400 }}
+                      itemStyle={styles.pickerDropdown}
+                      mode={'dialog'}
+                      onValueChange={
+                      this.handleChangeMajor
+                      }>
+                          
+                      
+                          <Picker.Item label='Select a Year ' value='0' />
+                        
+                          <Picker.Item label="2020" value="2020" />
+                          <Picker.Item label="2021" value="2021" />
+                          <Picker.Item label="2022" value="2022" />
+                          <Picker.Item label="2023" value="2023" />
+                          <Picker.Item label="2024" value="2024" />
+                          
+                    </Picker>
+                      </View>
+
+                      <TouchableOpacity
+                          style={styles.saveButton}
+                          onPress={this.saveHandler}
+                      >
+                          <Text style={styles.saveButtonText}>
+                              Save Changes
+                          </Text>
+                  </TouchableOpacity>
+            
+
+          </View>
+        </ScrollView>
+      )
+        
+        
+    }
+
+  
 
   }
-}
-
-    updateUser = (year) => {
-        this.setState({ year: year })
-     }
-    updateYear =  (itemValue, itemIndex) => {
-     if (itemIndex !== 0) {
-       this.setState({year: itemValue})
-     }
-    }
-    handleChangeMajor= (itemValue,itemIndex) =>{
-      if (itemIndex !== 0) {
-        this.setState({major: itemValue})
-      }
-    }
-
-    saveHandler = () => {
-    
-      
-    }
-  
-  render() {
-    
-  
-    return (
-      <SafeAreaView style={styles.formVal}>
-        <ScrollView contentContainerStyle={{ flex: 1, display: 'flex' }}>
-     <Text style={styles.header}>Edit Profile</Text>
-
-     <KeyboardAvoidingView style={styles.formContainer} behavior='padding' keyboardVerticalOffset={50}>
-    
-
-     
-
-     <View style={styles.inputPicker}>
-              <Picker
-                selectedValue={this.state.major}
-                style={{ flex: 1 }}
-                itemStyle={styles.pickerDropdown}
-                mode={'dialog'}
-                onValueChange={
-                  this.handleChangeMajor
-                }>
-                 
-               
-                <Picker.Item label='Select Major to Change....' value='0' />
-                <Picker.Item label="Computer Science" value="computer science" />
-                <Picker.Item label="Business Administration" value="business administration" />
-                <Picker.Item label="Mechanical Engineering" value="mech engineering" />
-                <Picker.Item label="Architecture" value="architecture" />
-                <Picker.Item label="Anthropology" value="anthropology" />
-                <Picker.Item label="Chemical Engineering" value="chem engineering" />
-              </Picker>
-            </View>
-
-     <View style={styles.inputPicker}>
-              <Picker
-                style={{ flex: 1 }}
-                selectedValue={this.state.classYear}
-                itemStyle={styles.pickerDropdown}
-                mode={'dialog'}
-                onValueChange={this.updateYear}>
-              
-                <Picker.Item label='Select Year to Change....' value='0' />
-                <Picker.Item label="2019" value="2019" />
-                <Picker.Item label="2020" value="2020" />
-                <Picker.Item label="2021" value="2021" />
-                <Picker.Item label="2022" value="2022" />
-                <Picker.Item label="2023" value="2023" />
-                <Picker.Item label="2024" value="2024" />
-              </Picker>
-            </View>
-
-
-
-            </KeyboardAvoidingView>
-            <TouchableOpacity
-            style={styles.saveButton}
-            onPress={this.saveHandler}
-          >
-               <Text style={styles.saveButtonText}>Save Changes</Text>
-          </TouchableOpacity>
-
-
-        </ScrollView>
- 
-   </SafeAreaView>
-      
-    
-    )
-}
-}
 const txtFieldBgColor = "#F4F4F4";
 const bgColor = "#FFF";
-
 const styles = StyleSheet.create({
-  formVal: {
-    flex: 1,
-    display: 'flex',
-    padding: 20,
-    justifyContent: 'center',
-    marginTop: StatusBar.currentHeight,
-    backgroundColor: bgColor,
-    flexDirection: 'column',
-   backgroundColor:txtFieldBgColor,
-   width:width/1.5
-   
-  },
-  header:{
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginVertical: 5,
-    color: '#636e72',
-    flex: 1,
-   
-    alignSelf: "center"
-
-  },
-  formContainer: {
-   
-    marginVertical: 5,
-    fontSize: 13,
-    flex: 6
-  },
-  subHead:{
-    alignSelf: 'center',
-    height:40,
-    marginBottom:30,
-    color: '#636e72',
-    fontSize: 13,
-    paddingBottom:0
-  },
-  textinput:{
-    backgroundColor: txtFieldBgColor,
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: txtFieldBgColor,
-    margin: 5,
-    paddingHorizontal: 20,
-    paddingVertical: 5,
-    alignSelf: 'center',
-    width:width/2
-
-  },
-  button:{
+    container: {
+    flex:1,  
     alignItems:'center',
-    padding:20,
-    backgroundColor:'#59cbbd',
-    marginBottom:50
-  },
-  btnText:{
-    color:'#fff',
-    fontWeight:'bold',
+     backgroundColor: '#F2F2F7',
+     paddingTop: '20%'
+     
+    },
+    saveButtonText:{
+        fontSize: 15,
+        color: '#FFF',
+        alignSelf: 'center',
+    
+      },
+      saveButton: {
+        padding: 10,
+        minWidth:width/2,
+        backgroundColor: '#ACCBAC',
+        borderWidth: 1,
+        borderColor: '#ACCBAC',
+        borderRadius: 100,
+        marginHorizontal: 10,
+        marginVertical: 10,
+        elevation: 3,
+        alignSelf: 'center'
+      },
+      modalTextInput: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        backgroundColor: '#E5E4EA',
+        borderWidth: 1,
+        borderRadius: 10,
+        borderColor: '#E5E4EA',
+        marginHorizontal: 10,
+        marginVertical: 10,
+        height: 50,
+        paddingHorizontal: 20,
+    },
+    inputPicker: {
       
-  },
-  saveButton: {
-    padding: 10,
-    minWidth:width/2,
-    backgroundColor: '#ACCBAC',
-    borderWidth: 1,
-    borderColor: '#ACCBAC',
-    borderRadius: 100,
-    marginHorizontal: 10,
-    marginVertical: 10,
-    elevation: 3,
-    alignSelf: 'center'
-  },
-  saveButtonText:{
-    fontSize: 15,
-    color: '#FFF',
-    alignSelf: 'center',
-
-  },
-  
-  inputPicker: {
-    color: txtFieldBgColor,
-    backgroundColor: txtFieldBgColor,
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: txtFieldBgColor,
-    margin: 5,
-    paddingVertical: 4,
-    paddingHorizontal: 10,
-    flex:1,
-    alignSelf: 'center',
-    width:width/2
-  },
-
-
-
+       
+        borderWidth: 1,
+        borderRadius: 10,
+        borderColor: txtFieldBgColor,
+        margin: 5,
+        paddingVertical: 4,
+        paddingHorizontal: 10,
+     
+        flex:1,
+        alignSelf: 'center',
+        width:width/2
+      },
+      textTitle: {
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontSize: 24,
+        padding: 10,
+        borderBottomWidth: 1,
+    }
 })

@@ -6,7 +6,10 @@ import { withNavigation } from 'react-navigation';
  class Prefrences extends Component {
    
     constructor(props){
-		super(props)
+        super(props)
+        this.state = {
+            admin:false
+        }
 		
 	}
     render() {
