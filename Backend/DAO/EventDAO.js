@@ -31,6 +31,15 @@ exports.getByName = async name => {
   return event;
 };
 
+exports.getByClubs = async (clubs) => {
+  const events = await Event.find({
+    club: { $in: clubs}
+  });
+
+  if (!events) throw NotFoundError();
+  return events
+}
+
 exports.update = async (id, updatedData) => {
   await Event.findOneAndUpdate({ _id: id   }, updatedData, { upsert: true, useFindAndModify: false });
 
