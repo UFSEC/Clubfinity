@@ -39,6 +39,9 @@ exports.update = async (req, res) => catchErrors(res, async () => {
 
 exports.create = async (req, res) => catchErrors(res, async () => {
   validateClubData(req);
+  const newClubData = req.body
+  newClubData['admins'] = [req.body.admin]
+  delete newClubData.admin
 
   return clubDAO.create(req.body);
 });
@@ -49,13 +52,21 @@ exports.delete = async (req, res) => catchErrors(res, async () => {
 
 exports.validate = type => {
   switch (type) {
-    case "validateClubInfo": {
+    case "validateBaseClubInfo": {
       return [
         body("name", "Club name does not exist").exists(),
         body("category", "Club category does not exist").exists(),
-        body("facebook_link", "Facebook link does not exist").exists(),
-        body("admins", "Admin does not exist or is invalid").exists(),
         body("description", "Description does not exist or is invalid").exists()
+      ];
+    }
+    case "validateCreateClubInfo": {
+      return [
+        body("admin", "Club admin does not exist").exists(),
+      ];
+    }
+    case "validateUpdateClubInfo": {
+      return [
+        body("admins", "Club admins does not exist").exists(),
       ];
     }
   }
