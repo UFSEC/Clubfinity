@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use("/api", userRoute);
 app.use("/api", eventRoute);
-app.use("/api", clubRoute);
+app.use("/api/club", clubRoute);
 app.use("/auth", authRoute);
 
 database.connect();
