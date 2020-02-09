@@ -98,6 +98,14 @@ Whenever you want to develop or run the server, take the following steps:
 **MongoDB**
 User, event, and club information will be stored using MongoDB (non-relation database). For development, you will have to run a local database using MongoDB. Here are some instructions on [installation](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/ "installation") on Windows. If you have a Mac, here are some instructions for [installation](https://treehouse.github.io/installation-guides/mac/mongo-mac.html "installation").
 
+If you have a Mac and want to install MongoDB using homebrew, type this into your terminal
+
+``
+brew tap mongodb/brew
+brew install mongodb-community
+brew services start mongodb-community
+```
+
 By default, the backend is configured interact with a MongoDB local database running on port 8080 to a database named *test*. You can change these default values at *Backend/Config/config.json*.
 
 **Running the Backend**
