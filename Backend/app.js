@@ -1,4 +1,5 @@
 require('dotenv').config()
+require("./Auth/passport");
 const express = require("express");
 const userRoute = require("./Routes/UserRoute");
 const eventRoute = require("./Routes/EventRoute");
@@ -8,9 +9,7 @@ const database = require("./Database/Database.js");
 const passport = require("passport");
 const bodyParser = require("body-parser");
 
-require("./Auth/passport");
-
-var app = express();
+const app = express();
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -21,8 +20,8 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use("/api", userRoute);
-app.use("/api", eventRoute);
+app.use("/api/user", userRoute);
+app.use("/api/event", eventRoute);
 app.use("/auth", authRoute);
 
 database.connect();
