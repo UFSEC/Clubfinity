@@ -18,7 +18,7 @@ exports.authenticate = (req, res, next) => {
                res.send(err);
            }
            const token = authUtil.tokanizeUser(user);
-           return res.json({token: token});
+           return res.json({token: token, user: user});
         });
     })(req, res);
 };
