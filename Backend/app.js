@@ -16,13 +16,14 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(bodyParser.urlencoded({
-    extended: true
+  extended: true
 }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use("/api/user", userRoute);
 app.use("/api/event", eventRoute);
+app.use("/api/club", clubRoute);
 app.use("/auth", authRoute);
 
 database.connect();
