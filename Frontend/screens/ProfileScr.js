@@ -1,13 +1,13 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View, Button, ScrollView, FlatList } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View, Button, ScrollView, FlatList, AsyncStorage } from 'react-native';
 import { CreateEvent } from '../components/CreateEvent';
-import { primary } from '../assets/styles/stylesheet';
-import { Switch } from '../components/Switch';
-import { FontAwesome, Octicons, Ionicons, Entypo } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
+
 import SettingScr from './SettingScr';
 import ProfileInfoScr from './ProfileInfoScr';
 import ClubsFollowScr from './ClubsFollowScr'
 import Tab from '../components/Tabs'
+import { API } from '../util/API';
 
 export default class ProfileScr extends React.Component {
 
@@ -15,6 +15,15 @@ export default class ProfileScr extends React.Component {
 		title: 'Clubfinity',
 		headerStyle: { backgroundColor: '#7e947f' },
 		headerTitleStyle: { color: "#ecf0f1", letterSpacing: 2 },
+	}
+
+	constructor(props) {
+		super(props);
+	}
+
+	signOut = async () => {
+		await AsyncStorage.removeItem('userToken');
+		this.props.navigation.navigate('Auth');
 	}
 
 
@@ -29,16 +38,20 @@ export default class ProfileScr extends React.Component {
 						<Image style={[style.profilePicture]} source={userProfilePicture.ProfilePic} />
 						<View style={style.profileInfo}>
 							<Text adjustsFontSizeToFit numberOfLines={2} style={style.textHeader}>Christian Sarmiento</Text>
-							<FontAwesome.Button name="edit" color="#2980b9" backgroundColor="#fff" style={{alignSelf: 'center'}} onPress={() => {
+							<FontAwesome.Button name="edit" color="#2980b9" backgroundColor="#fff" style={{ alignSelf: 'center' }} onPress={() => {
 								this.props.navigation.navigate({ routeName: 'Edit' })
 							}}>
 								<Text style={{ color: "#2980b9", paddingRight: 5 }}>Edit Profile</Text>
+							</FontAwesome.Button>
+
+							<FontAwesome.Button name="sign-out" color="#F40" backgroundColor="#fff" style={{ alignSelf: 'center' }} onPress={this.signOut}>
+							<Text style={{ color: "#F40", paddingRight: 5 }}>Logout</Text>
 							</FontAwesome.Button>
 						</View>
 					</View>
 				</View>
 				<View style={style.Card}>
-					<CreateEvent/>
+					<CreateEvent />
 				</View>
 				<Tab tab1={<ProfileInfoScr />} tab2={<ClubsFollowScr />} tab3={<SettingScr />} />
 			</ScrollView>

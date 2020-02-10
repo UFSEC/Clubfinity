@@ -1,29 +1,29 @@
 const mongoose = require("mongoose");
-const config = require("../Config/config.json");
+const config = require("../Config/config");
 
 const url =
   "mongodb://" +
-  config.development.database.host +
+  config.database.host +
   ":" +
-  config.development.database.port +
+  config.database.port +
   "/" +
-  config.development.database.database;
+  config.database.database;
 
 // Events
-mongoose.connection.on("connected", function() {
+mongoose.connection.on("connected", function () {
   console.log("Mongoose default connection open to " + url);
 });
 
-mongoose.connection.on("error", function(err) {
+mongoose.connection.on("error", function (err) {
   console.log("Mongoose default connection error: " + err);
 });
 
-mongoose.connection.on("disconnected", function() {
+mongoose.connection.on("disconnected", function () {
   console.log("Mongoose default connection disconnected");
 });
 
-process.on("SIGINT", function() {
-  mongoose.connection.close(function() {
+process.on("SIGINT", function () {
+  mongoose.connection.close(function () {
     console.log(
       "Mongoose default connection disconnected through app termination"
     );
@@ -32,5 +32,5 @@ process.on("SIGINT", function() {
 });
 
 exports.connect = () => {
-  mongoose.connect(url);
+  mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
 };
