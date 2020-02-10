@@ -3,6 +3,7 @@ require("./Auth/passport");
 const express = require("express");
 const userRoute = require("./Routes/UserRoute");
 const eventRoute = require("./Routes/EventRoute");
+const clubRoute = require("./Routes/ClubRoute");
 const authRoute = require("./Routes/AuthRoutes");
 const config = require("./Config/config.js");
 const database = require("./Database/Database.js");
