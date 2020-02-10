@@ -28,13 +28,13 @@ exports.getAll = async (req, res) => catchErrors(res, async () => {
 });
 
 exports.get = async (req, res) => catchErrors(res, async () => {
-  return userDAO.get(req.params['id']);
+  return userDAO.get(req.userId);
 });
 
 exports.update = async (req, res) => catchErrors(res, async () => {
   validateUserData(req);
 
-  return userDAO.update(req.params['id'], req.body);
+  return userDAO.update(req.userId, req.body);
 });
 
 exports.create = async (req, res) => catchErrors(res, async () => {
@@ -44,7 +44,7 @@ exports.create = async (req, res) => catchErrors(res, async () => {
 });
 
 exports.delete = async (req, res) => catchErrors(res, async () => {
-  return userDAO.delete(req.params['id']);
+  return userDAO.delete(req.userId);
 });
 
 exports.validate = type => {
