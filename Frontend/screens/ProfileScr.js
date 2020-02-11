@@ -7,7 +7,7 @@ import SettingScr from './SettingScr';
 import ProfileInfoScr from './ProfileInfoScr';
 import ClubsFollowScr from './ClubsFollowScr'
 import Tab from '../components/Tabs'
-import { API } from '../util/API';
+// Add User API
 
 export default class ProfileScr extends React.Component {
 

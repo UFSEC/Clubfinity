@@ -4,5 +4,3 @@ exports.API = axios.create({
     baseURL: 'https://clubfinitybackend.azurewebsites.net',
     responseType: "json",
 });
-
-
