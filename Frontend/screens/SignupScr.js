@@ -188,10 +188,6 @@ export default class SignupScr extends React.Component {
               value={this.state.verifyPassword}
             ></TextInput>
             {this.state.triedSubmitting && this.errorPassword()}
-
-
-         {/* </KeyboardAvoidingView> */}
-
           <TouchableOpacity
             style={styles.signupButton}
             onPress={this.signupHandler}
