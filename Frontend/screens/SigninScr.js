@@ -12,7 +12,7 @@ import {
   TextInput,
 } from 'react-native';
 
-import { API } from '../util/API';
+import AuthApi from '../api/AuthApi';
 import ErrorText from '../components/ErrorText';
 
 export default class SigninScr extends React.Component {
@@ -34,26 +34,20 @@ export default class SigninScr extends React.Component {
   signIn = async (event) => {
     event.preventDefault();
 
-    await API.post('/auth/login', {
-      username: this.state.username,
-      password: this.state.password
-    })
-    .then( async (response) => {
-      await AsyncStorage.setItem('userToken', response.data.token);
+    let authResponse = await AuthApi.authenticate(this.state.username, this.state.password);
+    if (authResponse.token) {
+      await AsyncStorage.setItem('userToken', authResponse.token);
       this.setState({
         showError: false,
         errorMessage: ''
       });
       this.props.navigation.navigate('App');
-    })
-    .catch((error) => {
-      this.setState({
-        showError: true,
-        errorMessage: error.response.data.error || "Invalid Credentials. Try again."
-      });
-      // console.log(error.response.data.error);
-    });
-
+    } else {
+        this.setState({
+          showError: true,
+          errorMessage: authResponse.errors
+        });
+    }
   }
 
   signUp = async () => {
