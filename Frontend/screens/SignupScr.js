@@ -28,6 +28,7 @@ export default class SignupScr extends React.Component {
       major: '',
       classYear: '',
       username: '',
+      email: '',
       password: '',
       verifyPassword: '',
       triedSubmitting: false
@@ -45,7 +46,7 @@ export default class SignupScr extends React.Component {
   }
 
   // Validates username otherwise renders error
-  errorUsername = () => {
+  errorEmail = () => {
     if (this.state.username == '' || !(this.state.username.endsWith('@ufl.edu'))) {
       return (
         <Text style={styles.error}>Please enter a valid username</Text>
@@ -157,15 +158,25 @@ export default class SignupScr extends React.Component {
             </View>
             {this.state.triedSubmitting && this.errorYear()}
 
-            {/* username */}
+            {/* email */}
             <TextInput
               style={styles.inputFieldText}
               placeholderTextColor={'#8E8E93'}
               placeholder="UFL Email Address"
+              onChangeText={(text) => this.setState({ email: text })}
+              value={this.state.email}
+            ></TextInput>
+            {this.state.triedSubmitting && this.errorEmail()}
+
+            {/* username */}
+            <TextInput
+              style={styles.inputFieldText}
+              placeholderTextColor={'#8E8E93'}
+              placeholder="Username"
               onChangeText={(text) => this.setState({ username: text })}
               value={this.state.username}
             ></TextInput>
-            {this.state.triedSubmitting && this.errorUsername()}
+            {this.state.triedSubmitting && this.errorName(this.state.username)}
 
             {/* password */}
             <TextInput
