@@ -3,14 +3,13 @@ import {TouchableOpacity,Text,View,StyleSheet,Dimensions} from 'react-native'
 import { FontAwesome } from '@expo/vector-icons';
 import { withNavigation } from 'react-navigation';
 
- class Prefrences extends Component {
+ class Preferences extends Component {
    
     constructor(props){
         super(props)
         this.state = {
             admin:false
-        }
-		
+        }	
 	}
     render() {
        
@@ -84,4 +83,4 @@ const styles = StyleSheet.create({
         
     }
 })
-export default withNavigation(Prefrences);
+export default withNavigation(Preferences);

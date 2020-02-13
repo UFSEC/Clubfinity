@@ -23,8 +23,6 @@ export default class SettingScr extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-       
-        {/* <Text style={styles.title}>{this.state.Name}</Text> */}
         <Text style={styles.textSubheading}><Text style={{fontWeight: "bold"}}>Major:</Text> {this.state.Major}</Text>
         <Text style={styles.textSubheading}><Text style={{fontWeight: "bold"}}>Interest:</Text> {this.state.Interests} </Text>
         <Text style={styles.textSubheading}><Text style={{fontWeight: "bold"}}>Email:</Text> {this.state.Email}</Text>

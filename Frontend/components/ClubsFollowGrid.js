@@ -7,17 +7,14 @@ import {
   View,
   FlatList,
   StyleSheet,
-  Dimensions,
-  Button
-
+  Dimensions
 } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 
 import { Ionicons } from '@expo/vector-icons';
 
 
-const GRID_ITEM_WIDTH = Dimensions.get('screen').width / 1.1
-
-
+const GRID_ITEM_WIDTH = Dimensions.get('screen').width
 // Dummy list of clubs
 const clubList = [
   {
@@ -62,8 +59,6 @@ const clubList = [
   }
 ]
 
- 
-
 export default class DiscoverGrid extends Component {
   constructor(props) {
     super(props);
@@ -73,26 +68,26 @@ export default class DiscoverGrid extends Component {
       editButton: true,
       isVisible:true
     }
-    // this.editButtonHandler = this.editButtonHandler.bind(this);
   }
 
   ToggleFunction = () => {
-
     this.setState(state => ({
-
       isVisible: !state.isVisible
-
     }));
   }
+
   handleClubSelect = () => {
     console.log("Clubs tapped boi");
   }
+
   notGoingHandler = () => {
   }
+
   removeHandler = () => {
     console.log("Clicked")
     console.log(this.state.editButton)
   }
+
   editButtonHandler = () => {
     if(this.state.editButton){
       this.setState({editButton:false});
@@ -101,6 +96,7 @@ export default class DiscoverGrid extends Component {
     }
     console.log(this.state.editButton)
   }
+
   filterClubs = (text) => {
     searchText = text.toLowerCase();
     newFilterClubs = clubList.filter((club) => {
@@ -116,12 +112,6 @@ export default class DiscoverGrid extends Component {
   render() {
     return (
       <View style={styles.mainContainer}>
-        {/* Toggle Not working for some reason */}
-           {/* <View >
-              <Button 	style={styles.button}
-				      onPress={this.editButtonHandler}  title="Edit" />
-                
-          </View> */}
         {/* Search Bar */}
         <View style={styles.searchBox}>
           <Ionicons style={styles.searchBoxIcon} color={'#8E8E93'} name={"md-search"} size={24} />
@@ -159,8 +149,7 @@ export default class DiscoverGrid extends Component {
               </View>
            
               <View >
-              {this.state.editButton && <Button 	style={styles.button}
-              onPress={this.removeHandler} color={'red'} title="Remove" /> }
+              <FontAwesome size={24} name="trash" />
            
             
           </View>
@@ -190,7 +179,7 @@ const styles = StyleSheet.create({
     height: '70%',
     width: '30%',
     borderRadius: 53,
-    marginLeft:10
+    marginLeft:5
     
   },
   scrollContainer: {
@@ -230,7 +219,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     alignItems: "center",
     margin: 0,
-    padding: 10,
+    padding: 5,
     borderBottomLeftRadius: 5,
     borderBottomRightRadius: 5,
     borderTopLeftRadius: 0,

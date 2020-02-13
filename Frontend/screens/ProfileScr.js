@@ -1,13 +1,10 @@
 import React from 'react';
 import { Image, StyleSheet, TextView, Button, ScrollView,View ,Text} from 'react-native';
 import { CreateEvent } from '../components/CreateEvent';
-
-import { FontAwesome,} from '@expo/vector-icons';
-import SettingScr from './SettingScr';
 import ProfileInfoScr from './ProfileInfoScr';
 import ClubsFollowScr from './ClubsFollowScr'
 import Tab from '../components/Tabs'
-import Prefrences from './Prefrences';
+import Preferences from './Preferences';
 
 export default class ProfileScr extends React.Component {
 
@@ -34,30 +31,13 @@ export default class ProfileScr extends React.Component {
 						<Image style={[style.profilePicture]} source={userProfilePicture.ProfilePic} />
 						<View style={style.profileInfo}>
 							<Text adjustsFontSizeToFit numberOfLines={2} style={style.textHeader}>Christian Sarmiento</Text>
-							{/* <FontAwesome.Button name="edit" color="#2980b9" backgroundColor="#fff" style={{alignSelf: 'center'}} onPress={() => {
-								this.props.navigation.navigate({ routeName: 'Edit' })
-							}}>
-								<Text style={{ color: "#2980b9", paddingRight: 5 }}>Edit Profile</Text>
-							</FontAwesome.Button> */}
+							
 							<CreateEvent/>
 						</View>
 					</View>
 					<ProfileInfoScr/>
 				</View>
-			
-				{/* <View style={style.ButCard}>
-					
-					<CreateEvent/>
-					<FontAwesome.Button  style={{ borderWidth: 1, borderColor: 'green' }}
-                        backgroundColor="transparent"
-                        name="plus-circle"
-                        color="green" onPress={() => {
-								this.props.navigation.navigate({ routeName: 'ClubCreationScr' })
-							}}>
-								Create Club
-							</FontAwesome.Button>
-				</View> */}
-				<Tab tab1={<Prefrences/>} tab2={<ClubsFollowScr />}  />
+				<Tab tab1={<Preferences/>} tab2={<ClubsFollowScr />}  />
 			</ScrollView>
 		);
 	}
