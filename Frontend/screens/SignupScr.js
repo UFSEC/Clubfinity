@@ -1,18 +1,19 @@
 import React from 'react';
 import {
+  AsyncStorage,
+  Dimensions,
+  KeyboardAvoidingView,
+  Picker,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   TextInput,
-  Picker,
-  AsyncStorage,
-  View,
   TouchableOpacity,
-  ScrollView,
-  SafeAreaView,
-  Dimensions,
-  KeyboardAvoidingView,
-  StatusBar
+  View
 } from 'react-native';
+import {API} from '../util/API'
 
 export default class SignupScr extends React.Component {
   static navigationOptions = {
@@ -69,9 +70,27 @@ export default class SignupScr extends React.Component {
     this.setState({
       triedSubmitting: true
     });
-    // await AsyncStorage.setItem('userToken', 'abc');
-    // console.log("New user added");
-    // this.props.navigation.navigate('App');
+
+    await API.post('/api/user', {
+      name: {
+        first: this.state.firstName,
+        last: this.state.lastName
+      },
+      dob: '2000-01-01',
+      email: this.state.username,
+      username: this.state.username,
+      password: this.state.password
+    });
+
+    const resp = await API.post('/auth/login', {
+      username: this.state.username,
+      password: this.state.password
+    });
+    const token = resp.data.token;
+
+    await AsyncStorage.setItem('userToken', token);
+    console.log('New user added');
+    await this.props.navigation.navigate('App');
   }
 
 
