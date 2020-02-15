@@ -13,6 +13,7 @@ import {
   KeyboardAvoidingView,
   StatusBar
 } from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
 
 export default class SignupScr extends React.Component {
   static navigationOptions = {
@@ -27,6 +28,7 @@ export default class SignupScr extends React.Component {
       major: '',
       classYear: '',
       username: '',
+      email: '',
       password: '',
       verifyPassword: '',
       triedSubmitting: false
@@ -44,7 +46,7 @@ export default class SignupScr extends React.Component {
   }
 
   // Validates username otherwise renders error
-  errorUsername = () => {
+  errorEmail = () => {
     if (this.state.username == '' || !(this.state.username.endsWith('@ufl.edu'))) {
       return (
         <Text style={styles.error}>Please enter a valid username</Text>
@@ -65,6 +67,22 @@ export default class SignupScr extends React.Component {
     }
   }
 
+  // Validates picker menu otherwise renders error
+  errorMajor = () => {
+    if(this.state.major === '' || this.state.major === null) {
+      return (
+        <Text style={styles.error}>Please select a major</Text>
+      )
+    }
+  }
+
+  errorYear = () => {
+    if(this.state.classYear === '' || this.state.classYear === null) {
+      return (
+        <Text style={styles.error}>Please select your class year</Text>
+      )
+    }
+  }
   signupHandler = async () => {
     this.setState({
       triedSubmitting: true
@@ -77,11 +95,10 @@ export default class SignupScr extends React.Component {
 
   render() {
     return (
+      <ScrollView contentContainerStyle={{flex: 1, display: 'flex', flexDirection: 'row', marginBottom: 0, marginTop: '30%'}}>
       <SafeAreaView style={styles.container}>
-        <ScrollView contentContainerStyle={{ flex: 1, display: 'flex' }}>
           <Text style={styles.header}>Sign Up</Text>
-          <KeyboardAvoidingView style={styles.formContainer} behavior='padding' keyboardVerticalOffset={50}>
-
+          <KeyboardAvoidingView style={styles.formContainer} behavior='padding' keyboardVerticalOffset={30}>
             {/* First Name */}
             <TextInput
               style={styles.inputFieldText}
@@ -104,53 +121,62 @@ export default class SignupScr extends React.Component {
 
             {/* Major */}
             <View style={styles.inputPicker}>
-              <Picker
-                selectedValue={this.state.major}
-                style={{ flex: 1 }}
-                itemStyle={styles.pickerDropdown}
-                mode={'dialog'}
-                onValueChange={(itemValue, itemIndex) =>
-                  this.setState({ major: itemValue })
-                }>
-                {/* Need to replace this with a separate major select view */}
-                <Picker.Item label="Computer Science" value="computer science" />
-                <Picker.Item label="Business Administration" value="business administration" />
-                <Picker.Item label="Mechanical Engineering" value="mech engineering" />
-                <Picker.Item label="Architecture" value="architecture" />
-                <Picker.Item label="Anthropology" value="anthropology" />
-                <Picker.Item label="Chemical Engineering" value="chem engineering" />
-              </Picker>
+            <RNPickerSelect
+            onValueChange={(value) => this.setState({ major: value })}
+            items={[
+                { label: 'Computer Science', value: 'Computer Science' },
+                { label: 'Finance', value: 'Finance' },
+                { label: 'Industrial Engineering', value: 'Industrial Engineering' },
+            ]}
+            placeholder={{ label: 'Select major...'}}
+            style={{
+              placeholder: { color: '#8E8E93' },
+              inputIOS: { color: 'black'},
+              inputAndroid: { color: 'black'},
+            }}
+            />
             </View>
+            {this.state.triedSubmitting && this.errorMajor()}
 
             {/* Class Year */}
             <View style={styles.inputPicker}>
-              <Picker
-                style={{ flex: 1 }}
-                selectedValue={this.state.classYear}
-                itemStyle={styles.pickerDropdown}
-                mode={'dialog'}
-                onValueChange={(itemValue, itemIndex) =>
-                  this.setState({ classYear: itemValue })
-                }>
-                {/* Need to change this so that years are calculated dynamically */}
-                <Picker.Item label="2019" value="2019" />
-                <Picker.Item label="2020" value="2020" />
-                <Picker.Item label="2021" value="2021" />
-                <Picker.Item label="2022" value="2022" />
-                <Picker.Item label="2023" value="2023" />
-                <Picker.Item label="2024" value="2024" />
-              </Picker>
+            <RNPickerSelect
+            onValueChange={(value) => this.setState({ classYear: value })}
+            items={[
+                { label: '2023', value: '2023' },
+                { label: '2022', value: '2022' },
+                { label: '2021', value: '2021' },
+                { label: '2020', value: '2020' },
+            ]}
+            placeholder={{ label: 'Select year...'}}
+            style={{
+              placeholder: { color: '#8E8E93' },
+              inputIOS: { color: 'black'},
+              inputAndroid: { color: 'black'},
+            }}
+            />
             </View>
+            {this.state.triedSubmitting && this.errorYear()}
+
+            {/* email */}
+            <TextInput
+              style={styles.inputFieldText}
+              placeholderTextColor={'#8E8E93'}
+              placeholder="UFL Email Address"
+              onChangeText={(text) => this.setState({ email: text })}
+              value={this.state.email}
+            ></TextInput>
+            {this.state.triedSubmitting && this.errorEmail()}
 
             {/* username */}
             <TextInput
               style={styles.inputFieldText}
               placeholderTextColor={'#8E8E93'}
-              placeholder="Username (UF email)"
+              placeholder="Username"
               onChangeText={(text) => this.setState({ username: text })}
               value={this.state.username}
             ></TextInput>
-            {this.state.triedSubmitting && this.errorUsername()}
+            {this.state.triedSubmitting && this.errorName(this.state.username)}
 
             {/* password */}
             <TextInput
@@ -168,24 +194,21 @@ export default class SignupScr extends React.Component {
               style={styles.inputFieldText}
               placeholderTextColor={'#8E8E93'}
               secureTextEntry={true}
-              placeholder="Reenter Password"
+              placeholder="Confirm Password"
               onChangeText={(text) => this.setState({ verifyPassword: text })}
               value={this.state.verifyPassword}
             ></TextInput>
             {this.state.triedSubmitting && this.errorPassword()}
-
-
-          </KeyboardAvoidingView>
-
           <TouchableOpacity
             style={styles.signupButton}
             onPress={this.signupHandler}
           >
             <Text style={styles.signupButtonTxt}>Sign Up</Text>
           </TouchableOpacity>
-        </ScrollView>
+          </KeyboardAvoidingView>
       </SafeAreaView>
-
+      </ScrollView>
+     
     );
   }
 }
@@ -200,9 +223,10 @@ const styles = StyleSheet.create({
     display: 'flex',
     padding: 20,
     justifyContent: 'center',
+    alignItems: 'center',
     marginTop: StatusBar.currentHeight,
     backgroundColor: bgColor,
-    flexDirection: 'column'
+    flexDirection:'column',
   },
   error: {
     color: 'red',
@@ -230,19 +254,21 @@ const styles = StyleSheet.create({
     borderColor: txtFieldBgColor,
     margin: 5,
     paddingHorizontal: 20,
-    paddingVertical: 5,
+    paddingVertical: 10,
     flex: 1
   },
   inputPicker: {
-    color: txtFieldBgColor,
     backgroundColor: txtFieldBgColor,
     borderWidth: 1,
     borderRadius: 10,
     borderColor: txtFieldBgColor,
     margin: 5,
-    paddingVertical: 4,
+    paddingVertical: 11,
     paddingHorizontal: 10,
-    flex: 1
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   signupButton: {
     padding: 10,
