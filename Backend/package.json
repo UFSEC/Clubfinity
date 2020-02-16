@@ -19,7 +19,8 @@
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "dotenv": "^8.2.0"
   },
   "devDependencies": {
     "ts-node": "^8.3.0",

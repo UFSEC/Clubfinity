@@ -12,6 +12,9 @@ import {
   TextInput,
 } from 'react-native';
 
+import { API } from '../util/API';
+import ErrorText from '../components/ErrorText';
+
 export default class SigninScr extends React.Component {
   static navigationOptions = {
     header: null
@@ -21,21 +24,41 @@ export default class SigninScr extends React.Component {
     super(props);
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      showError: false,
+      errorMessage: ''
     }
   }
 
-  // Currently logs user without credential auth or validation but will be connected to backend soon
-  signIn = async () => {
-    await AsyncStorage.setItem('userToken', 'abc');
-    this.props.navigation.navigate('App');
+  // Make Auth request to backend and save token if correct credentials
+  signIn = async (event) => {
+    event.preventDefault();
+
+    await API.post('/auth/login', {
+      username: this.state.username,
+      password: this.state.password
+    })
+    .then( async (response) => {
+      await AsyncStorage.setItem('userToken', response.data.token);
+      this.setState({
+        showError: false,
+        errorMessage: ''
+      });
+      this.props.navigation.navigate('App');
+    })
+    .catch((error) => {
+      this.setState({
+        showError: true,
+        errorMessage: error.response.data.error || "Invalid Credentials. Try again."
+      });
+      // console.log(error.response.data.error);
+    });
+
   }
 
   signUp = async () => {
     this.props.navigation.navigate('SignUp')
   }
-
-
 
   changeUsername = (input) => {
     this.setState({
@@ -52,12 +75,8 @@ export default class SigninScr extends React.Component {
   render() {
     return (
       <SafeAreaView style={styles.mainContainer}>
-        {/* <View style={{flex: 1, flexDirection: 'row', alignSelf: 'flex-end'}}>
-          <Text>New here?</Text>
-        </View> */}
 
         <View style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
-          {/* <Text style={styles.title}>Clubfinity</Text> */}
           <Image
             style={{ width: 200, height: 200, margin: 30, marginBottom: 80 }}
             source={require('../assets/images/ClubfinityLogo.png')}
@@ -66,6 +85,7 @@ export default class SigninScr extends React.Component {
             <TextInput
               textAlign={'left'}
               style={styles.field}
+              name='username'
               placeholderTextColor={'#8E8E93'}
               returnKeyType={"next"}
               onChangeText={this.changeUsername}
@@ -75,6 +95,7 @@ export default class SigninScr extends React.Component {
             </TextInput>
             <TextInput
               style={styles.field}
+              name='password'
               secureTextEntry={true}
               autoCapitalize={"none"}
               placeholderTextColor={'#8E8E93'}
@@ -82,6 +103,7 @@ export default class SigninScr extends React.Component {
               value={this.state.password}
               placeholder="Password">
             </TextInput>
+            {this.state.showError && <ErrorText errorMessage={this.state.errorMessage} />}
           </View>
 
           <View style={{ flex: 1, display: 'flex', justifyContent: 'flex-start' }}>
@@ -90,14 +112,14 @@ export default class SigninScr extends React.Component {
               onPress={this.signIn}
               backgroundColor={'#ACCBAC'}
             >
-            <Text style={styles.loginButtonText}>Login</Text>
+              <Text style={styles.loginButtonText}>Login</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.signupButton}
               onPress={this.signUp}
               backgroundColor={'#D4D4D4'}
             >
-            <Text style={styles.signupButtonTxt}>
+              <Text style={styles.signupButtonTxt}>
                 New here? Sign up</Text>
             </TouchableOpacity>
           </View>

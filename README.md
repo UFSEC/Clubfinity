@@ -41,18 +41,22 @@ For this project you’re allowed to use any text editor of your choice, however
 recommend Visual Studio Code because of the nice interface and wide variety of extensions it
 provides.
 
-### Setting up the Backend (Server and Database)
+#### Setting up the Backend (Server and Database)
 If you’re doing front end skip this first page, otherwise keep reading. So you wanna do backend
 huh? Well I don’t think you got what it TAKES, at least not until you setup your environment.
 
-**Installing NodeJS**
+**Installing Node**<br>
+*Windows & Linux*<br>
 After you choose your text editor, the next thing you need to do is install NodeJS which is the
-Javascript interpreter we will be using for the backend. NodeJS can be installed here:
-https://nodejs.org/en/, the version we will be using will be 10.13.0 LTS so be sure to install the
-correct version.
+Javascript runtime we will be using for the backend. NodeJS can be installed here:
+https://nodejs.org/download/release/v12.9.0/, the version we will be using will be **v12.9.0** so click on the installation file according to your OS.
+For eg. if you are running Windows, select
+`node-v12.9.0-x64.msi` from the list. Once you download it, run the file to complete installation.
+<br>To check if Node is properly installed, open your command prompt/terminal and type:
+`node --version` You should see **v12.9.0**
 
-**NodeJS in MacOS:**
-Homebrew is a great package installer you can download here: https://brew.sh/
+*MacOS*
+<br>Homebrew is a great package installer you can download here: https://brew.sh/
 You may also type this into terminal:
 ```/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"```
 
@@ -76,6 +80,7 @@ data back to the client.
 To add express to your project you need to use the following command:
 ```npm install express```
 which will install all the required dependencies you need for express.
+
 **Setup you local environment environment**
 After you locally clone the project from Gitlab, there are a couple initial steps you need to
 take in order to get the server running:
@@ -93,13 +98,21 @@ Whenever you want to develop or run the server, take the following steps:
 **MongoDB**
 User, event, and club information will be stored using MongoDB (non-relation database). For development, you will have to run a local database using MongoDB. Here are some instructions on [installation](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/ "installation") on Windows. If you have a Mac, here are some instructions for [installation](https://treehouse.github.io/installation-guides/mac/mongo-mac.html "installation").
 
+If you have a Mac and want to install MongoDB using homebrew, type this into your terminal
+
+``
+brew tap mongodb/brew
+brew install mongodb-community
+brew services start mongodb-community
+```
+
 By default, the backend is configured interact with a MongoDB local database running on port 8080 to a database named *test*. You can change these default values at *Backend/Config/config.json*.
 
 **Running the Backend**
 
-Once you have installed Node.js, NPM, ExpressJS, and are running a local MongoDB database, you are ready to run the project.
+Once you have installed Node.js, NPM, ExpressJS, and are running a local MongoDB database, you are ready to run the project server.
 
-First, install all the dependencies by running ```npm install``` and then run the app.js file by running ```node app.js``` from the Backend folder. You should get something resembling this output:
+*cd* in to the `/clubfinity/Backend` directory, install dependencies by running ```npm install```, and run the following in your terminal to start the server ```npm start``` . You should get something resembling this output:
 
 ```
 express-session deprecated undefined resave option; provide resave option Routes/AuthRoutes.js:9:12
@@ -111,6 +124,11 @@ Mongoose default connection open to mongodb://localhost:27017/test
 ```
 The backend should be running at http://localhost:8080
 
+Whenever you want to develop or run the server, take the following steps:
+- Start MongoDB
+- Start the server with `npm start`. You can leave this running, any changes you make to the codebase will restart
+  the server automatically for you.
+
 #### Setting up the Frontend (Mobile App)
 Your first step would be to make sure you have npm and NodeJS installed on your pc/mac. The
 details on how to do that can be found above in the “Installing NodeJS” section. Once you’re
@@ -119,16 +137,24 @@ done with that, open your terminal and install Expo with the following command:
 
 This will install Expo globally on your computer. Expo will allow you to easily build and run any
 React Native app on your phone. Once you’re done with that, *cd* into `/clubfinitiy/Frontend`
-directory and run the app by typing the following on your terminal:
-```expo start```
+directory and install other dependencies by running ```npm install```
 
-Your terminal should update with a generated barcode. In order to run the app on your phone,
+In order to run the app on your phone,
 you’ll need to install the Expo client app available on Play Store / App store.
 * Android: https://play.google.com/store/apps/details?id=host.exp.exponent
 * Apple: https://itunes.apple.com/us/app/expo-client/id982107779?mt=8
 
 Once you have installed the expo client on your phone, make sure it is connected to the same
-WiFi as your computer. Tap “Scan QR code” and scan the QR code generated by your terminal/new webpage openened.
+WiFi as your computer.
+
+**Running the Frontend**
+
+Make sure your terminal/command prompt is in the `/clubfinity/Frontend` directory, you can run
+the app by typing the following on your terminal:
+```expo start```
+
+Your terminal should update with a generated barcode and a new webpage will startup showing the Metro Bundler.
+Open the Expo app that you installed on your phone and Tap “Scan QR code”, scan the QR code generated by your terminal/new webpage openened.
 The app will be built on your phone and it will be recompiled every time you make changes
 within your code!
 
@@ -147,6 +173,9 @@ Windows:
 - In the bottom half of the dialog you should be able to see System Variables listed. Find
   out if there’s a Path variable, select it and click Edit. If there’s no Path variable click New.
 - If there are other paths already in your Path variable, you can click New to add a new one. Just paste the path to your npm installation `(C:\Users\<USERNAME>\AppData\Roaming\npm)` in the field here. Click Ok and now try running your command again in a new terminal. This should be resolved.
+
+If you receive an error about python like "can't find python executable" then you need to install Python and run the following command:
+``npm --add-python-to-path=‘true’ --debug install --global windows-build-tools```
 
 
 ### What now?
