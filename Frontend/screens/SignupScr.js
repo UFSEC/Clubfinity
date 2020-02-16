@@ -92,12 +92,6 @@ export default class SignupScr extends React.Component {
     // console.log("New user added");
     // this.props.navigation.navigate('App');
   }
-  // {/* <ScrollView contentContainerStyle={{flex: 1, display: 'flex', flexDirection: 'row', marginBottom: 0, marginTop: '30%'}}>
-  // <SafeAreaView style={styles.container}> */}
-  // {/* </SafeAreaView>
-  // </ScrollView> */}
-  // {/* <KeyboardAvoidingView style={styles.formContainer} behavior='padding' keyboardVerticalOffset={30}> */}
-
 
   render() {
     return (
