@@ -3,6 +3,7 @@ import {
   Text,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
   TextInput,
   View,
   FlatList,
@@ -10,79 +11,38 @@ import {
   Dimensions
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { API } from '../util/API';
 
 // This isn't arbitrary and is instead depends on padding/margin b/w cards. Must be made a constant one design finalized!
 const GRID_ITEM_WIDTH = Dimensions.get('screen').width / 2 - 22;
 
-// Dummy list of clubs
-const clubList = [
-  {
-    id: 111,
-    name: " Puppy Club",
-    category: "Cute",
-    categoryColor: "#5E5CE6",
-    src: "https://i.ibb.co/F0hqL1X/puppy-club-img.jpg",
-  },
-  {
-    id: 0,
-    name: "SEC",
-    category: " Computer Science",
-    categoryColor: "#FF9F0A",
-    src: "https://i.ibb.co/F4rHdKN/sec-club-img.jpg",
-  },
-  {
-    id: 1,
-    name: "ACM",
-    category: " Computer Science",
-    categoryColor: "#FF9F0A",
-    src: "https://i.ibb.co/wLMHZHK/acm-club-img.png",
-  },
-  {
-    id: 2,
-    name: "ACE",
-    category: "Computer Engineering",
-    categoryColor: "#FF9F0A",
-    src: "https://i.ibb.co/cwJtrNy/ace-club-img.jpg",
-  },
-  {
-    id: 3,
-    name: "WiCSE",
-    category: "Computer Science",
-    categoryColor: "#FF9F0A",
-    src: "https://i.ibb.co/fSM2Zxz/wicse-club-img.jpg",
-  },
-  {
-    id: 4,
-    name: "WECE",
-    category: "Computer Engineering",
-    categoryColor: "#FF9F0A",
-    src: "https://i.ibb.co/4TWk5LX/wece-club-img.jpg",
-  },
-  {
-    id: 5,
-    name: "GatorTech",
-    category: "Computer Science",
-    categoryColor: "#FF9F0A",
-    src: "https://i.ibb.co/4TxXzRZ/gatortech-club-img.png",
-  },
-  {
-    id: 6,
-    name: "Women's Lacrosse",
-    category: "Sports",
-    categoryColor: "#FF9F0A",
-    src: "https://i.ibb.co/FYZbDgV/lacrosse-club-img.jpg"
-  }
-]
 
 export default class DiscoverGrid extends Component {
   constructor(props) {
     super(props);
     this.state = {
       searchText: "",
-      filteredClubs: clubList
+      filteredClubs: '',
+      errorMessage:'',
+      isLoading: true
     }
   }
+  async componentDidMount(){
+    // event.preventDefault();
+  
+    try {
+      let response = await API.get('/api/club');
+      let { data } = response.data;
+      this.setState({
+        filteredClubs: data,
+        isLoading: false
+      });
+    } catch (error) {
+      console.error(error);
+    }
 
+  
+  };
 
   handleClubSelect = () => {
     console.log("Clubs tapped boi");
@@ -91,8 +51,8 @@ export default class DiscoverGrid extends Component {
 
   filterClubs = (text) => {
     searchText = text.toLowerCase();
-    newFilterClubs = clubList.filter((club) => {
-      return club.name.toLowerCase().includes(searchText) || club.category.toLowerCase().includes(searchText);
+    newFilterClubs = this.state.filteredClubs.filter((club) => {
+      return club.name.toLowerCase().includes(searchText);
     }); 
 
     this.setState({
@@ -102,8 +62,17 @@ export default class DiscoverGrid extends Component {
   }
 
   render() {
+    if (this.state.isLoading) {
+      return (
+        <View style={{ flex: 1, padding: 20 }}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
     return (
+
       <View style={styles.mainContainer}>
+        {console.log(this.state.filteredClubs)}
         {/* Search Bar */}
         <View style={styles.searchBox}>
           <Ionicons style={styles.searchBoxIcon} color={'#8E8E93'} name={"md-search"} size={24} />
@@ -115,6 +84,7 @@ export default class DiscoverGrid extends Component {
             value={this.state.searchText}
           ></TextInput>
         </View>
+
 
         {/* Grid */}
         <FlatList
@@ -144,7 +114,7 @@ export default class DiscoverGrid extends Component {
             </TouchableOpacity>
           )}
           numColumns={2}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item._id.toString()}
         />
       </View>
 
