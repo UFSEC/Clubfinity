@@ -1,7 +1,9 @@
 import React from 'react';
 import {
+  AsyncStorage,
   Dimensions,
   KeyboardAvoidingView,
+  Picker,
   SafeAreaView,
   ScrollView,
   StatusBar,
