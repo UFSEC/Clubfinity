@@ -7,10 +7,13 @@ exports.authenticate = async (username, password) => {
       password: password
     })
     .then(async response => {
-      await AsyncStorage.setItem('userToken', authResponse.token);
+      console.log("Cat?")
+      await AsyncStorage.setItem('userToken', response.data.token);
       return { token: response.data.token };
     })
     .catch(error => {
+      console.log("???")
+      console.log(error);
       if (error.response) {
         return { error: error.response.data.error }
       }
@@ -18,5 +21,7 @@ exports.authenticate = async (username, password) => {
         error: "Invalid user/password!"
       };
     });
+  console.log("Mega cat");
+  console.log(axiosResponse);
   return axiosResponse;
 };
