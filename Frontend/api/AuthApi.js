@@ -1,17 +1,21 @@
 import { API } from "./BaseApi";
+import { AsyncStorage } from 'react-native';
 
 exports.authenticate = async (username, password) => {
   let axiosResponse = await API.post("/auth/login", {
-    username: username,
-    password: password
-  })
+      username: username,
+      password: password
+    })
     .then(async response => {
+      await AsyncStorage.setItem('userToken', authResponse.token);
       return { token: response.data.token };
     })
     .catch(error => {
-      console.log(error);
+      if (error.response) {
+        return { error: error.response.data.error }
+      }
       return {
-        errors: error.response.data.error || "Invalid Credentials. Try again"
+        error: "Invalid user/password!"
       };
     });
   return axiosResponse;

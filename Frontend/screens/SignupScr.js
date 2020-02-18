@@ -1,20 +1,20 @@
 import React from 'react';
 import {
+  AsyncStorage,
+  Dimensions,
+  KeyboardAvoidingView,
+  Picker,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   TextInput,
-  Picker,
-  AsyncStorage,
-  View,
   TouchableOpacity,
-  ScrollView,
-  SafeAreaView,
-  Dimensions,
-  KeyboardAvoidingView,
-  StatusBar
-} from 'react-native';
-import {API} from '../util/API'
-import RNPickerSelect from 'react-native-picker-select';
+  View
+} from "react-native";
+import AuthApi from "../api/AuthApi";
+import UserApi from "../api/UserApi";
 
 export default class SignupScr extends React.Component {
   static navigationOptions = {
@@ -88,29 +88,21 @@ export default class SignupScr extends React.Component {
     this.setState({
       triedSubmitting: true
     });
-
-    await API.post('/api/user', {
-      name: {
-        first: this.state.firstName,
-        last: this.state.lastName
-      },
-      dob: '2000-01-01',
-      email: this.state.username,
-      username: this.state.username,
-      password: this.state.password
-    });
-
-    const resp = await API.post('/auth/login', {
-      username: this.state.username,
-      password: this.state.password
-    });
-    const token = resp.data.token;
-
-    await AsyncStorage.setItem('userToken', token);
-    console.log('New user added');
-    await this.props.navigation.navigate('App');
-  }
-
+    await UserApi.createUser(
+      { first: this.state.firstName, last: this.state.lastName },
+      this.state.username,
+      this.state.password
+    );
+    let authResponse = await AuthApi.authenticate(
+      this.state.username,
+      this.state.password
+    );
+    if (authResponse.token) {
+      await this.props.navigation.navigate("App");
+    } else {
+      console.log("Unable to add new user");
+    }
+  };
 
   render() {
     return (
