@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { API } from '../util/API';
+import clubList from '../assets/images/clubimages/FetchImage'
 
 // This isn't arbitrary and is instead depends on padding/margin b/w cards. Must be made a constant one design finalized!
 const GRID_ITEM_WIDTH = Dimensions.get('screen').width / 2 - 22;
@@ -24,6 +25,7 @@ export default class DiscoverGrid extends Component {
       searchText: "",
       filteredClubs: '',
       errorMessage:'',
+      clubList:clubList,
       isLoading: true
     }
   }
@@ -69,10 +71,11 @@ export default class DiscoverGrid extends Component {
         </View>
       );
     }
+    const clubFilterImage = this.state.clubList;
+   
     return (
-
+      
       <View style={styles.mainContainer}>
-        {console.log(this.state.filteredClubs)}
         {/* Search Bar */}
         <View style={styles.searchBox}>
           <Ionicons style={styles.searchBoxIcon} color={'#8E8E93'} name={"md-search"} size={24} />
@@ -96,12 +99,12 @@ export default class DiscoverGrid extends Component {
               onPress={this.handleClubSelect}
             >
               <Image
+              // This retrieves the first instance of the club based on name if in Image File
                 source={{
-                  uri: item.src,
-                  method: 'POST',
-                  headers: {
-                    Pragma: 'no-cache'
-                  }
+                  uri: clubFilterImage.filter(user => {
+                    return user.name == item.name
+                    })[0].src,
+                 
                 }}
                 style={styles.gridImage}
                 resizeMode={"stretch"}
