@@ -98,7 +98,7 @@ export default class SignupScr extends React.Component {
       <ScrollView contentContainerStyle={{flex: 1, display: 'flex', flexDirection: 'row', marginBottom: 0, marginTop: '30%'}}>
       <SafeAreaView style={styles.container}>
           <Text style={styles.header}>Sign Up</Text>
-          <KeyboardAvoidingView style={styles.formContainer} behavior='padding' keyboardVerticalOffset={50}>
+          <KeyboardAvoidingView style={styles.formContainer} behavior='padding' keyboardVerticalOffset={30}>
             {/* First Name */}
             <TextInput
               style={styles.inputFieldText}
@@ -255,8 +255,7 @@ const styles = StyleSheet.create({
     margin: 5,
     paddingHorizontal: 20,
     paddingVertical: 10,
-    flex: 1,
-    fontSize: 13
+    flex: 1
   },
   inputPicker: {
     backgroundColor: txtFieldBgColor,
