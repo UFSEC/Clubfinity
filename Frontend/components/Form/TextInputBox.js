@@ -32,4 +32,7 @@ const styles = StyleSheet.create({
             paddingVertical: 10,
             maxHeight: 60,
     },
+    android: {
+        
+    }
 })

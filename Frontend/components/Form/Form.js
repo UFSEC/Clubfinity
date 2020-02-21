@@ -25,5 +25,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: bgColor,
     paddingHorizontal: '5%',
+  },
+  androidContainer: {
+      
   }
 })

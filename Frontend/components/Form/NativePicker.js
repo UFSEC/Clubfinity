@@ -38,4 +38,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         maxHeight: 60,
       },
+    android: {
+      
+    }
 })
