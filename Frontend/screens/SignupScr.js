@@ -95,7 +95,7 @@ export default class SignupScr extends React.Component {
 
   render() {
     return (
-      <KeyboardAwareScrollView extraScrollHeight={100} enableOnAndroid={true}>
+      <KeyboardAwareScrollView extraScrollHeight={100} enableOnAndroid={true} contentContainerStyle={{justifyContent: 'center', display: 'flex', flex: 1, flexDirection: 'column'}}>
         <View style={styles.container}>
           <Text style={styles.header}>Sign Up</Text>
           {/* First Name */}
@@ -130,7 +130,7 @@ export default class SignupScr extends React.Component {
               placeholder={{ label: 'Select major...' }}
               style={{
                 placeholder: { color: '#8E8E93' },
-                inputIOS: { color: 'black' },
+                inputIOS: { color: 'black', minHeight: 30 },
                 inputAndroid: { color: 'black' },
               }}
             />
@@ -150,7 +150,7 @@ export default class SignupScr extends React.Component {
               placeholder={{ label: 'Select year...' }}
               style={{
                 placeholder: { color: '#8E8E93' },
-                inputIOS: { color: 'black' },
+                inputIOS: { color: 'black', minHeight: 30 },
                 inputAndroid: { color: 'black' },
               }}
             />
@@ -223,8 +223,11 @@ const styles = StyleSheet.create({
     padding: 20,
     justifyContent: 'center',
     // alignItems: 'center',
-    marginTop: StatusBar.currentHeight,
     backgroundColor: bgColor,
+    alignSelf: 'center',
+    flexDirection: 'column',
+    paddingTop: '25%',
+    paddingBottom: '10%',
   },
   error: {
     color: 'red',
@@ -261,6 +264,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: txtFieldBgColor,
     margin: 5,
+    minHeight: 20,
     // paddingVertical: 11,
     paddingHorizontal: 10,
     flex: 1,
