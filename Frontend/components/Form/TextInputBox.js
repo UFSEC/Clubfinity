@@ -22,13 +22,14 @@ export default class TextInputBox extends React.Component {
 const txtFieldBgColor = "#F4F4F4";
 const styles = StyleSheet.create({
     iOS: {
+            flex: 1,
             backgroundColor: txtFieldBgColor,
+            borderColor: txtFieldBgColor,
             borderWidth: 1,
             borderRadius: 10,
-            borderColor: txtFieldBgColor,
             margin: 5,
             paddingHorizontal: 20,
             paddingVertical: 10,
-            flex: 1,
+            maxHeight: 60,
     },
 })

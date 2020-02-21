@@ -213,7 +213,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginVertical: 5,
     color: '#636e72',
-    flex: 1,
     alignSelf: "center"
   },
   formContainer: {

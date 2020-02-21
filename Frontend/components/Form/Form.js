@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, SafeAreaView, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export default class Form extends React.Component {
@@ -8,11 +8,10 @@ export default class Form extends React.Component {
     }
     render(){
         return (
-
-            <KeyboardAwareScrollView extraScrollHeight={100} enableOnAndroid={true} contentContainerStyle={{justifyContent: 'center', display: 'flex', flex: 1, flexDirection: 'column'}}>
-                <SafeAreaView style={styles.iOScontainer}>
+            <KeyboardAwareScrollView extraScrollHeight={100} enableOnAndroid={true} contentContainerStyle={{flex: 1, justifyContent: 'center'}}>
+                <View style={styles.iOScontainer}>
                     {this.props.children}
-                </SafeAreaView>
+                </View>
             </KeyboardAwareScrollView>
         );
     }
@@ -22,11 +21,9 @@ const bgColor = "#FFF";
 const styles = StyleSheet.create({
   iOScontainer: {
     flex: 1,
-    display: 'flex',
-    marginTop: '20%',
+    flexDirection: 'column',
     justifyContent: 'center',
     backgroundColor: bgColor,
-    alignSelf: 'center',
-    flexDirection: 'column',
+    paddingHorizontal: '5%',
   }
 })

@@ -28,17 +28,14 @@ export default class NativePicker extends React.Component {
 const txtFieldBgColor = "#F4F4F4";
 const styles = StyleSheet.create({
     iOS: {
+        flex: 1,
         backgroundColor: txtFieldBgColor,
         borderWidth: 1,
         borderRadius: 10,
         borderColor: txtFieldBgColor,
         margin: 5,
-        minHeight: 20,
-        // paddingVertical: 11,
         paddingHorizontal: 10,
-        flex: 1,
-        flexDirection: 'column',
-        alignItems: 'center',
         justifyContent: 'center',
+        maxHeight: 60,
       },
 })
