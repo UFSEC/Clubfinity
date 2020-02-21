@@ -2,19 +2,12 @@ import React from 'react';
 import {
   StyleSheet,
   Text,
-  TextInput,
-  Picker,
-  AsyncStorage,
-  View,
   TouchableOpacity,
-  ScrollView,
-  SafeAreaView,
   Dimensions,
-  KeyboardAvoidingView,
-  StatusBar
 } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import Form from '../components/Form/Form';
+import TextInputBox from '../components/Form/TextInputBox'
+import NativePicker from '../components/Form/NativePicker'
 
 export default class SignupScr extends React.Component {
   static navigationOptions = {
@@ -36,9 +29,10 @@ export default class SignupScr extends React.Component {
     }
   }
 
-
   // Renders Error text if name field input is incorrect
   errorName = (input) => {
+    console.log("---------------");
+    console.log(input);
     if (input == '' || !(/^[a-zA-Z()]+$/.test(input))) {
       return (
         <Text style={styles.error}>Please enter a valid name</Text>
@@ -48,9 +42,9 @@ export default class SignupScr extends React.Component {
 
   // Validates username otherwise renders error
   errorEmail = () => {
-    if (this.state.username == '' || !(this.state.username.endsWith('@ufl.edu'))) {
+    if (this.state.email == '' || !(this.state.email.endsWith('@ufl.edu'))) {
       return (
-        <Text style={styles.error}>Please enter a valid username</Text>
+        <Text style={styles.error}>Please enter a valid email address</Text>
       );
     }
   }
@@ -76,7 +70,8 @@ export default class SignupScr extends React.Component {
       )
     }
   }
-
+  
+  // Validates year picker
   errorYear = () => {
     if (this.state.classYear === '' || this.state.classYear === null) {
       return (
@@ -84,151 +79,130 @@ export default class SignupScr extends React.Component {
       )
     }
   }
+
   signupHandler = async () => {
     this.setState({
       triedSubmitting: true
     });
-    // await AsyncStorage.setItem('userToken', 'abc');
-    // console.log("New user added");
-    // this.props.navigation.navigate('App');
+  }
+
+  setFirstName = (name) => {
+    console.log(name);
+    this.setState({ firstName: name });
+  }
+
+  setLastName = (name) => {
+    console.log(name);
+    this.setState({ lastName: name });
+  }
+
+  setMajor = (major) => {
+    console.log(major);
+    this.setState({ major: major });
+  }
+
+  setYear = (year) => {
+    console.log(year);
+    this.setState({ classYear: year });
+  }
+
+  setEmail = (email) => {
+    console.log(email);
+    this.setState({ email: email});
+  }
+
+  setUserName = (username) => {
+    console.log(username);
+    this.setState({ username: username})
+  }
+
+  setPassWord = (password) => {
+    console.log(password);
+    this.setState({ password: password})
+  }
+
+  setConfirmPassword = (password) => {
+    console.log(password);
+    this.setState({ verifyPassword: password})
   }
 
   render() {
     return (
-      <KeyboardAwareScrollView extraScrollHeight={100} enableOnAndroid={true} contentContainerStyle={{justifyContent: 'center', display: 'flex', flex: 1, flexDirection: 'column'}}>
-        <View style={styles.container}>
-          <Text style={styles.header}>Sign Up</Text>
-          {/* First Name */}
-          <TextInput
-            style={styles.inputFieldText}
-            placeholderTextColor={'#8E8E93'}
-            placeholder="First Name"
-            onChangeText={(text) => this.setState({ firstName: text })}
-            value={this.state.firstName}
-          ></TextInput>
+      <Form>
+        <Text style={styles.header}>Sign Up</Text>
+          <TextInputBox 
+            placeholder={"First Name"}
+            setValue={this.setFirstName}
+          />
           {this.state.triedSubmitting && this.errorName(this.state.firstName)}
 
-          {/* Last Name */}
-          <TextInput
-            style={styles.inputFieldText}
-            placeholderTextColor={'#8E8E93'}
-            placeholder="Last Name"
-            onChangeText={(text) => this.setState({ lastName: text })}
-            value={this.state.lastName}
-          ></TextInput>
+          <TextInputBox 
+            placeholder={"Last Name"}
+            setValue={this.setLastName}
+          />
           {this.state.triedSubmitting && this.errorName(this.state.lastName)}
 
-          {/* Major */}
-          <View style={styles.inputPicker}>
-            <RNPickerSelect
-              onValueChange={(value) => this.setState({ major: value })}
-              items={[
-                { label: 'Computer Science', value: 'Computer Science' },
-                { label: 'Finance', value: 'Finance' },
-                { label: 'Industrial Engineering', value: 'Industrial Engineering' },
-              ]}
-              placeholder={{ label: 'Select major...' }}
-              style={{
-                placeholder: { color: '#8E8E93' },
-                inputIOS: { color: 'black', minHeight: 30 },
-                inputAndroid: { color: 'black' },
-              }}
-            />
-          </View>
+          <NativePicker 
+            items={[
+              { label: 'Computer Science', value: 'Computer Science' },
+              { label: 'Finance', value: 'Finance' },
+              { label: 'Industrial Engineering', value: 'Industrial Engineering' },
+            ]}
+            placeholder={{ label: 'Select major...' }}
+            setValue={this.setMajor}
+          />
           {this.state.triedSubmitting && this.errorMajor()}
 
-          {/* Class Year */}
-          <View style={styles.inputPicker}>
-            <RNPickerSelect
-              onValueChange={(value) => this.setState({ classYear: value })}
-              items={[
-                { label: '2023', value: '2023' },
-                { label: '2022', value: '2022' },
-                { label: '2021', value: '2021' },
-                { label: '2020', value: '2020' },
-              ]}
-              placeholder={{ label: 'Select year...' }}
-              style={{
-                placeholder: { color: '#8E8E93' },
-                inputIOS: { color: 'black', minHeight: 30 },
-                inputAndroid: { color: 'black' },
-              }}
-            />
-          </View>
+          <NativePicker
+            items={[
+              { label: '2023', value: '2023' },
+              { label: '2022', value: '2022' },
+              { label: '2021', value: '2021' },
+              { label: '2020', value: '2020' },
+            ]}
+            placeholder={{ label: 'Select year...' }}
+            setValue={this.setYear}
+          />
           {this.state.triedSubmitting && this.errorYear()}
 
-          {/* email */}
-          <TextInput
-            style={styles.inputFieldText}
-            placeholderTextColor={'#8E8E93'}
-            placeholder="UFL Email Address"
-            onChangeText={(text) => this.setState({ email: text })}
-            value={this.state.email}
-          ></TextInput>
+          <TextInputBox 
+            placeholder={"UFL Email Address"}
+            setValue={this.setEmail}
+          />
           {this.state.triedSubmitting && this.errorEmail()}
 
-          {/* username */}
-          <TextInput
-            style={styles.inputFieldText}
-            placeholderTextColor={'#8E8E93'}
-            placeholder="Username"
-            onChangeText={(text) => this.setState({ username: text })}
-            value={this.state.username}
-          ></TextInput>
+          <TextInputBox 
+            placeholder={"Username"}
+            setValue={this.setUserName}
+          />
           {this.state.triedSubmitting && this.errorName(this.state.username)}
 
-          {/* password */}
-          <TextInput
-            style={styles.inputFieldText}
-            secureTextEntry={true}
-            placeholderTextColor={'#8E8E93'}
-            placeholder="Password (minimum length 6)"
-            onChangeText={(text) => this.setState({ password: text })}
-            value={this.state.password}
-          ></TextInput>
+          <TextInputBox 
+            placeholder={"Password"}
+            setValue={this.setPassWord}
+          />
           {this.state.triedSubmitting && this.errorPassword()}
 
-          {/* double password */}
-          <TextInput
-            style={styles.inputFieldText}
-            placeholderTextColor={'#8E8E93'}
-            secureTextEntry={true}
-            placeholder="Confirm Password"
-            onChangeText={(text) => this.setState({ verifyPassword: text })}
-            value={this.state.verifyPassword}
-          ></TextInput>
+          <TextInputBox 
+            placeholder={"Confirm Password"}
+            setValue={this.setConfirmPassword}
+          />
           {this.state.triedSubmitting && this.errorPassword()}
+
           <TouchableOpacity
             style={styles.signupButton}
             onPress={this.signupHandler}
           >
-            <Text style={styles.signupButtonTxt}>Sign Up</Text>
-          </TouchableOpacity>
-        </View>
-      </KeyboardAwareScrollView>
 
-
+          <Text style={styles.signupButtonTxt}>Sign Up</Text>
+        </TouchableOpacity>
+    </Form>
     );
   }
 }
 
 const MAX_FIELD_WIDTH = Dimensions.get('screen').width * 3 / 4;
-const bgColor = "#FFF";
-const txtFieldBgColor = "#F4F4F4";
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    display: 'flex',
-    padding: 20,
-    justifyContent: 'center',
-    // alignItems: 'center',
-    backgroundColor: bgColor,
-    alignSelf: 'center',
-    flexDirection: 'column',
-    paddingTop: '25%',
-    paddingBottom: '10%',
-  },
   error: {
     color: 'red',
     fontSize: 12,
@@ -247,30 +221,6 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     fontSize: 13,
     flex: 10
-  },
-  inputFieldText: {
-    backgroundColor: txtFieldBgColor,
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: txtFieldBgColor,
-    margin: 5,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    flex: 1
-  },
-  inputPicker: {
-    backgroundColor: txtFieldBgColor,
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: txtFieldBgColor,
-    margin: 5,
-    minHeight: 20,
-    // paddingVertical: 11,
-    paddingHorizontal: 10,
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   signupButton: {
     padding: 10,
