@@ -2,7 +2,6 @@ import React from 'react';
 import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator, createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { Ionicons } from '@expo/vector-icons';
-
 import CalendarScr from '../screens/CalendarScr';
 import HomeScr from '../screens/HomeScr';
 import DiscoverScr from '../screens/DiscoverScr';
@@ -12,8 +11,11 @@ import SignupScr from '../screens/SignupScr';
 import SigninScr from '../screens/SigninScr';
 import AuthScr from '../screens/AuthScr';
 import EditProfile from '../screens/EditProfile';
+import ClubCreation from '../screens/ClubCreation';
+import SettingScr from '../screens/SettingScr';
 
-// import SettingScr from '../screens/SettingScr';
+
+
 
 const HomeStack = createStackNavigator({
   Home: HomeScr,
@@ -46,7 +48,9 @@ const CalendarStack = createStackNavigator({
 
 const ProfileStack = createStackNavigator({
   Profile: ProfileScr,
-  Edit: EditProfile
+  Edit: EditProfile,
+  Setting: SettingScr,
+  ClubCreationScr: ClubCreation
 }, {
   navigationOptions: {
     header: null,
