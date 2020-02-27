@@ -84,7 +84,6 @@ exports.validate = type => {
     }
 
     case "validateFollow": {
-      console.log("here");
       return [
         query("clubId", "Club Id does not exist").exists()
       ];
