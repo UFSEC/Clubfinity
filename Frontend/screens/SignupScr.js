@@ -70,7 +70,7 @@ export default class SignupScr extends React.Component {
       )
     }
   }
-  
+
   // Validates year picker
   errorYear = () => {
     if (this.state.classYear === '' || this.state.classYear === null) {
@@ -108,95 +108,97 @@ export default class SignupScr extends React.Component {
 
   setEmail = (email) => {
     console.log(email);
-    this.setState({ email: email});
+    this.setState({ email: email });
   }
 
   setUserName = (username) => {
     console.log(username);
-    this.setState({ username: username})
+    this.setState({ username: username })
   }
 
   setPassWord = (password) => {
     console.log(password);
-    this.setState({ password: password})
+    this.setState({ password: password })
   }
 
   setConfirmPassword = (password) => {
     console.log(password);
-    this.setState({ verifyPassword: password})
+    this.setState({ verifyPassword: password })
   }
 
   render() {
     return (
       <Form>
         <Text style={styles.header}>Sign Up</Text>
-          <TextInputBox 
-            placeholder={"First Name"}
-            setValue={this.setFirstName}
-          />
-          {this.state.triedSubmitting && this.errorName(this.state.firstName)}
+        <TextInputBox
+          placeholder={"First Name"}
+          setValue={this.setFirstName}
+        />
+        {this.state.triedSubmitting && this.errorName(this.state.firstName)}
 
-          <TextInputBox 
-            placeholder={"Last Name"}
-            setValue={this.setLastName}
-          />
-          {this.state.triedSubmitting && this.errorName(this.state.lastName)}
+        <TextInputBox
+          placeholder={"Last Name"}
+          setValue={this.setLastName}
+        />
+        {this.state.triedSubmitting && this.errorName(this.state.lastName)}
 
-          <NativePicker 
-            items={[
-              { label: 'Computer Science', value: 'Computer Science' },
-              { label: 'Finance', value: 'Finance' },
-              { label: 'Industrial Engineering', value: 'Industrial Engineering' },
-            ]}
-            placeholder={{ label: 'Select major...' }}
-            setValue={this.setMajor}
-          />
-          {this.state.triedSubmitting && this.errorMajor()}
+        <NativePicker
+          items={[
+            { label: 'Computer Science', value: 'Computer Science' },
+            { label: 'Finance', value: 'Finance' },
+            { label: 'Industrial Engineering', value: 'Industrial Engineering' },
+          ]}
+          placeholder={{ label: 'Select major...' }}
+          setValue={this.setMajor}
+        />
+        {this.state.triedSubmitting && this.errorMajor()}
 
-          <NativePicker
-            items={[
-              { label: '2023', value: '2023' },
-              { label: '2022', value: '2022' },
-              { label: '2021', value: '2021' },
-              { label: '2020', value: '2020' },
-            ]}
-            placeholder={{ label: 'Select year...' }}
-            setValue={this.setYear}
-          />
-          {this.state.triedSubmitting && this.errorYear()}
+        <NativePicker
+          items={[
+            { label: '2023', value: '2023' },
+            { label: '2022', value: '2022' },
+            { label: '2021', value: '2021' },
+            { label: '2020', value: '2020' },
+          ]}
+          placeholder={{ label: 'Select year...' }}
+          setValue={this.setYear}
+        />
+        {this.state.triedSubmitting && this.errorYear()}
 
-          <TextInputBox 
-            placeholder={"UFL Email Address"}
-            setValue={this.setEmail}
-          />
-          {this.state.triedSubmitting && this.errorEmail()}
+        <TextInputBox
+          placeholder={"UFL Email Address"}
+          setValue={this.setEmail}
+        />
+        {this.state.triedSubmitting && this.errorEmail()}
 
-          <TextInputBox 
-            placeholder={"Username"}
-            setValue={this.setUserName}
-          />
-          {this.state.triedSubmitting && this.errorName(this.state.username)}
+        <TextInputBox
+          placeholder={"Username"}
+          setValue={this.setUserName}
+        />
+        {this.state.triedSubmitting && this.errorName(this.state.username)}
 
-          <TextInputBox 
-            placeholder={"Password"}
-            setValue={this.setPassWord}
-          />
-          {this.state.triedSubmitting && this.errorPassword()}
+        <TextInputBox
+          isHidden={true}
+          placeholder={"Password"}
+          setValue={this.setPassWord}
+        />
+        {this.state.triedSubmitting && this.errorPassword()}
 
-          <TextInputBox 
-            placeholder={"Confirm Password"}
-            setValue={this.setConfirmPassword}
-          />
-          {this.state.triedSubmitting && this.errorPassword()}
+        <TextInputBox
+          isHidden={true}
+          placeholder={"Confirm Password"}
+          setValue={this.setConfirmPassword}
+        />
+        {this.state.triedSubmitting && this.errorPassword()}
 
-          <TouchableOpacity
-            style={styles.signupButton}
-            onPress={this.signupHandler}
-          >
+        <TouchableOpacity
+          style={styles.signupButton}
+          onPress={this.signupHandler}
+        >
 
           <Text style={styles.signupButtonTxt}>Sign Up</Text>
         </TouchableOpacity>
-    </Form>
+      </Form>
     );
   }
 }
