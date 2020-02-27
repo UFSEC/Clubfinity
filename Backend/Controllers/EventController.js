@@ -1,4 +1,5 @@
 const eventDAO = require("../DAO/EventDAO");
+const userDAO = require("../DAO/UserDAO");
 const { validationResult, body } = require("express-validator");
 const { ValidationError, NotFoundError } = require( '../util/exceptions');
 
@@ -29,6 +30,19 @@ exports.getAll = async (req, res) => catchErrors(res, async () => {
 
 exports.get = async (req, res) => catchErrors(res, async () => {
   return eventDAO.get(req.params['id']);
+});
+
+exports.getFollowing = async (req, res) => catchErrors(res, async () => {
+  let user;
+  try {
+    user = await userDAO.get(req.params['userId']);
+  } catch (error) {
+    throw new NotFoundError();
+  }
+
+  const clubs = user.clubs;
+  const followingEvents = await eventDAO.getByClubs(clubs);
+  return followingEvents;
 });
 
 exports.update = async (req, res) => catchErrors(res, async () => {

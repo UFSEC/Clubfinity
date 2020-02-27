@@ -1,6 +1,7 @@
 require("ts-node").register();
 const config = require("../Config/config");
 const { Seeder } = require("mongo-seeding");
+const path = require('path');
 
 const seedConfig = {
   database: {
@@ -11,8 +12,8 @@ const seedConfig = {
   dropDatabase: true
 };
 const seeder = new Seeder(seedConfig);
-console.log("Seeding from " + __filename + "/data")
-const collections = seeder.readCollectionsFromPath( __filename.replace("seed.js", "data"), {
+console.log("Seeding from " + path.resolve("Seed", "data"));
+const collections = seeder.readCollectionsFromPath( path.resolve('./Seed/data'), {
   extensions: ["ts"],
   transformers: [Seeder.Transformers.replaceDocumentIdWithUnderscoreId]
 });

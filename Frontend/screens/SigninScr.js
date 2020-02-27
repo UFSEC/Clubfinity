@@ -1,6 +1,5 @@
-import React from 'react';
+import React from "react";
 import {
-  AsyncStorage,
   View,
   Dimensions,
   TouchableOpacity,
@@ -9,11 +8,11 @@ import {
   Image,
   StyleSheet,
   Text,
-  TextInput,
-} from 'react-native';
+  TextInput
+} from "react-native";
 
-import { API } from '../util/API';
-import ErrorText from '../components/ErrorText';
+import AuthApi from "../api/AuthApi";
+import ErrorText from "../components/ErrorText";
 
 export default class SigninScr extends React.Component {
   static navigationOptions = {
@@ -23,114 +22,117 @@ export default class SigninScr extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
-      password: '',
+      username: "",
+      password: "",
       showError: false,
-      errorMessage: ''
-    }
+      errorMessage: ""
+    };
   }
 
   // Make Auth request to backend and save token if correct credentials
-  signIn = async (event) => {
+  signIn = async event => {
     event.preventDefault();
 
-    await API.post('/auth/login', {
-      username: this.state.username,
-      password: this.state.password
-    })
-    .then( async (response) => {
-      await AsyncStorage.setItem('userToken', response.data.token);
+    let authResponse = await AuthApi.authenticate(
+      this.state.username,
+      this.state.password
+    );
+    if (authResponse.token) {
       this.setState({
         showError: false,
-        errorMessage: ''
+        errorMessage: ""
       });
-      this.props.navigation.navigate('App');
-    })
-    .catch((error) => {
+      this.props.navigation.navigate("App");
+    } else {
       this.setState({
         showError: true,
-        errorMessage: error.response.data.error || "Invalid Credentials. Try again."
+        errorMessage: authResponse.error
       });
-      // console.log(error.response.data.error);
-    });
-
-  }
+    }
+  };
 
   signUp = async () => {
-    this.props.navigation.navigate('SignUp')
-  }
+    this.props.navigation.navigate("SignUp");
+  };
 
-  changeUsername = (input) => {
+  changeUsername = input => {
     this.setState({
       username: input
     });
-  }
+  };
 
-  changePassword = (input) => {
+  changePassword = input => {
     this.setState({
       password: input
     });
-  }
+  };
 
   render() {
     return (
       <SafeAreaView style={styles.mainContainer}>
-
-        <View style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "space-between",
+            alignItems: "center"
+          }}
+        >
           <Image
             style={{ width: 200, height: 200, margin: 30, marginBottom: 80 }}
-            source={require('../assets/images/ClubfinityLogo.png')}
+            source={require("../assets/images/ClubfinityLogo.png")}
           />
           <View style={{ flex: 1 }}>
             <TextInput
-              textAlign={'left'}
+              textAlign={"left"}
               style={styles.field}
-              name='username'
-              placeholderTextColor={'#8E8E93'}
+              name="username"
+              placeholderTextColor={"#8E8E93"}
               returnKeyType={"next"}
               onChangeText={this.changeUsername}
-              autoCapitalize={'none'}
+              autoCapitalize={"none"}
               value={this.state.username}
-              placeholder="E-mail">
-            </TextInput>
+              placeholder="E-mail"
+            ></TextInput>
             <TextInput
               style={styles.field}
-              name='password'
+              name="password"
               secureTextEntry={true}
               autoCapitalize={"none"}
-              placeholderTextColor={'#8E8E93'}
+              placeholderTextColor={"#8E8E93"}
               onChangeText={this.changePassword}
               value={this.state.password}
-              placeholder="Password">
-            </TextInput>
-            {this.state.showError && <ErrorText errorMessage={this.state.errorMessage} />}
+              placeholder="Password"
+            ></TextInput>
+            {this.state.showError && (
+              <ErrorText errorMessage={this.state.errorMessage} />
+            )}
           </View>
 
-          <View style={{ flex: 1, display: 'flex', justifyContent: 'flex-start' }}>
+          <View
+            style={{ flex: 1, display: "flex", justifyContent: "flex-start" }}
+          >
             <TouchableOpacity
               style={styles.loginButton}
               onPress={this.signIn}
-              backgroundColor={'#ACCBAC'}
+              backgroundColor={"#ACCBAC"}
             >
               <Text style={styles.loginButtonText}>Login</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.signupButton}
               onPress={this.signUp}
-              backgroundColor={'#D4D4D4'}
+              backgroundColor={"#D4D4D4"}
             >
-              <Text style={styles.signupButtonTxt}>
-                New here? Sign up</Text>
+              <Text style={styles.signupButtonTxt}>New here? Sign up</Text>
             </TouchableOpacity>
           </View>
-
         </View>
       </SafeAreaView>
     );
   }
 }
 
-const MAX_FIELD_WIDTH = Dimensions.get('screen').width * 3 / 4;
+const MAX_FIELD_WIDTH = (Dimensions.get("screen").width * 3) / 4;
 const STATUS_BAR_HEIGHT = StatusBar.currentHeight;
 
 const styles = StyleSheet.create({
@@ -138,57 +140,56 @@ const styles = StyleSheet.create({
     margin: 20,
     marginTop: STATUS_BAR_HEIGHT,
     flex: 1,
-    display: 'flex',
-    backgroundColor: '#FFF',
-    justifyContent: 'center',
-    alignItems: 'center'
+    display: "flex",
+    backgroundColor: "#FFF",
+    justifyContent: "center",
+    alignItems: "center"
   },
   title: {
     fontSize: 34,
     letterSpacing: 1,
-    marginVertical: 30,
+    marginVertical: 30
   },
   field: {
-    backgroundColor: '#F4F4F4',
+    backgroundColor: "#F4F4F4",
     borderWidth: 1,
     minWidth: MAX_FIELD_WIDTH,
     borderRadius: 6,
-    borderColor: '#F4F4F4',
+    borderColor: "#F4F4F4",
     margin: 5,
     paddingHorizontal: 20,
-    paddingVertical: 5,
+    paddingVertical: 5
   },
   loginButton: {
     padding: 10,
     minWidth: MAX_FIELD_WIDTH,
-    backgroundColor: '#ACCBAC',
+    backgroundColor: "#ACCBAC",
     borderWidth: 1,
-    borderColor: '#ACCBAC',
+    borderColor: "#ACCBAC",
     borderRadius: 100,
     marginHorizontal: 10,
     marginVertical: 10,
-    elevation: 3,
+    elevation: 3
   },
   signupButton: {
     padding: 10,
     minWidth: MAX_FIELD_WIDTH,
-    backgroundColor: '#FFF',
+    backgroundColor: "#FFF",
     borderWidth: 1,
-    borderColor: '#ACCBAC',
+    borderColor: "#ACCBAC",
     borderRadius: 100,
     marginHorizontal: 10,
-    marginVertical: 10,
-
+    marginVertical: 10
   },
   signupButtonTxt: {
     fontSize: 15,
-    alignSelf: 'center',
-    color: '#ACCBAC'
+    alignSelf: "center",
+    color: "#ACCBAC"
   },
   loginButtonText: {
     // flex: 1,
     fontSize: 15,
-    alignSelf: 'center',
-    color: '#fff'
+    alignSelf: "center",
+    color: "#fff"
   }
-})
+});

@@ -1,25 +1,36 @@
 import React from 'react';
 import {
+  AsyncStorage,
+  Dimensions,
+  KeyboardAvoidingView,
+  Picker,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   TextInput,
-  Picker,
-  AsyncStorage,
-  View,
   TouchableOpacity,
-  ScrollView,
-  SafeAreaView,
-  Dimensions,
-  KeyboardAvoidingView,
-  StatusBar
-} from 'react-native';
+  View
+} from "react-native";
 import RNPickerSelect from 'react-native-picker-select';
+import AuthApi from "../api/AuthApi";
+import UserApi from "../api/UserApi";
 
 export default class SignupScr extends React.Component {
   static navigationOptions = {
     header: null
   }
 
+  // TODO
+  // * Refactor backend User model to have:
+  //    + major
+  //    +classYear
+  //    -dob
+  // * (Bug) Validations are broken, signupHandler will still work
+  //   with wrong input, but the wrong validation text will still show
+  // * Error message must be added to HTML
+  // * Resizing upon selection is still a little weird
   constructor(props) {
     super(props);
     this.state = {
@@ -47,9 +58,9 @@ export default class SignupScr extends React.Component {
 
   // Validates username otherwise renders error
   errorEmail = () => {
-    if (this.state.username == '' || !(this.state.username.endsWith('@ufl.edu'))) {
+    if (this.state.email == '' || !(this.state.email.endsWith('@ufl.edu'))) {
       return (
-        <Text style={styles.error}>Please enter a valid username</Text>
+        <Text style={styles.error}>Please enter a valid email</Text>
       );
     }
   }
@@ -87,11 +98,25 @@ export default class SignupScr extends React.Component {
     this.setState({
       triedSubmitting: true
     });
-    // await AsyncStorage.setItem('userToken', 'abc');
-    // console.log("New user added");
-    // this.props.navigation.navigate('App');
-  }
-
+    let createUserResponse = await UserApi.createUser(
+      { first: this.state.firstName, last: this.state.lastName },
+      this.state.username,
+      this.state.password,
+      this.state.email
+    );
+    if (createUserResponse.error) {
+      console.log(createUserResponse.error);
+      return;
+    } else {
+      console.log("Successfully created user " + this.state.username)
+    }
+    let authResponse = await AuthApi.authenticate(this.state.username, this.state.password);
+    if (authResponse.token) {
+      await this.props.navigation.navigate("App");
+    } else {
+      console.log(authResponse.error)
+    }
+  };
 
   render() {
     return (
@@ -208,7 +233,7 @@ export default class SignupScr extends React.Component {
           </KeyboardAvoidingView>
       </SafeAreaView>
       </ScrollView>
-     
+
     );
   }
 }

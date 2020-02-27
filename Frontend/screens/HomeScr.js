@@ -4,7 +4,7 @@ import { primary } from '../assets/styles/stylesheet';
 import { Octicons } from '@expo/vector-icons';
 
 import EventCard from '../components/EventCard';
-import { API } from '../util/API';
+import EventsApi from '../api/EventsApi';
 
 // Event Feed App Module
 class EventFeed extends Component {
@@ -24,22 +24,17 @@ class EventFeed extends Component {
 
   async componentDidMount() {
     // Fetch list of Events from API
-    const token = await AsyncStorage.getItem('userToken');
-    try {
-      let response = await API.get('/api/event', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      let { data } = response.data;
+    console.log(await AsyncStorage.getItem('userToken'))
+    const bearerToken = await AsyncStorage.getItem('userToken')
+    const eventData = await EventsApi.getEvents(bearerToken)
+    if (eventData.events) {
       this.setState({
-        events: data,
+        events: eventData.events,
         isLoading: false
       });
-    } catch (error) {
-      console.error(error);
+    } else {
+      console.log(eventData.errors)
     }
-
   }
 
   render() {

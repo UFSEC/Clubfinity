@@ -2,12 +2,12 @@ import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View, Button, ScrollView, FlatList, AsyncStorage } from 'react-native';
 import { CreateEvent } from '../components/CreateEvent';
 import { FontAwesome } from '@expo/vector-icons';
-
+import Preferences from './Preferences';
 import SettingScr from './SettingScr';
 import ProfileInfoScr from './ProfileInfoScr';
 import ClubsFollowScr from './ClubsFollowScr'
 import Tab from '../components/Tabs'
-import { API } from '../util/API';
+// Add User API
 
 export default class ProfileScr extends React.Component {
 
@@ -19,6 +19,9 @@ export default class ProfileScr extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.state = {
+			admin: false
+		}
 	}
 
 	signOut = async () => {
@@ -49,11 +52,9 @@ export default class ProfileScr extends React.Component {
 							</FontAwesome.Button>
 						</View>
 					</View>
+					<ProfileInfoScr/>
 				</View>
-				<View style={style.Card}>
-					<CreateEvent />
-				</View>
-				<Tab tab1={<ProfileInfoScr />} tab2={<ClubsFollowScr />} tab3={<SettingScr />} />
+				<Tab tab1={<Preferences/>} tab2={<ClubsFollowScr />}  />
 			</ScrollView>
 		);
 	}
@@ -68,7 +69,16 @@ const style = StyleSheet.create({
 		padding: 15,
 		backgroundColor: '#ffffff',
 		marginBottom: 10,
-		elevation: 2
+		elevation: 2,
+		
+	},
+	ButCard: {
+		padding: 15,
+		backgroundColor: '#ffffff',
+		marginBottom: 10,
+		elevation: 2,
+		flexDirection: 'row',
+		justifyContent: 'space-between'
 	},
 	settingsCard: {
 		backgroundColor: '#ffffff',

@@ -1,6 +1,7 @@
 import React from 'react'
-import { StyleSheet, Text, View, Dimensions, Switch } from 'react-native'
+import { StyleSheet, Text, View, Dimensions } from 'react-native'
 const { width, height } = Dimensions.get('screen')
+
 
 export default class SettingScr extends React.Component {
   static navigationOptions = {
@@ -8,15 +9,24 @@ export default class SettingScr extends React.Component {
     headerStyle: { backgroundColor: '#7e947f' },
     headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 }
   }
+  constructor(props){
+    super(props);
+    this.state = {
+      Name: 'Christian Sarmiento',
+      Major: 'Computer Science',
+      Interests: 'I love to codes lla accusamus sunt consequatur repellat tenetur numquam porro.',
+      Email: 'cs@gmail.com',
+      Year: 'Senior'
 
+      }
+  }
   render() {
     return (
-      <View style={styles.section}>
-        <Text style={styles.textHeader}>Christian Sarmiento</Text>
-        <Text style={styles.textSubheading}><Text style={{fontWeight: "bold"}}>Major:</Text> Computer Science</Text>
-        <Text style={styles.textSubheading}><Text style={{fontWeight: "bold"}}>Interest:</Text> I love to code! </Text>
-        <Text style={styles.textSubheading}><Text style={{fontWeight: "bold"}}>Email:</Text> cs@gmail.com</Text>
-        <Text style={styles.textSubheading}><Text style={{fontWeight: "bold"}}>Year:</Text> Senior</Text>
+      <View style={styles.container}>
+        <Text style={styles.textSubheading}><Text style={{fontWeight: "bold"}}>Major:</Text> {this.state.Major}</Text>
+        <Text style={styles.textSubheading}><Text style={{fontWeight: "bold"}}>Interest:</Text> {this.state.Interests} </Text>
+        <Text style={styles.textSubheading}><Text style={{fontWeight: "bold"}}>Email:</Text> {this.state.Email}</Text>
+        <Text style={styles.textSubheading}><Text style={{fontWeight: "bold"}}>Year:</Text> {this.state.Year}</Text>
       </View>
     )
   }
@@ -24,7 +34,20 @@ export default class SettingScr extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+  
+    alignItems: 'center',
+    position: 'relative',
+    marginLeft: width/5,
+    marginRight: 5,
+    
+    marginTop: 10,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: "#fff",
+    borderRadius: 5,
+    borderWidth: 4,
+    elevation: 3
   },
   section: {
     flexDirection: 'column',
@@ -36,9 +59,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1
   },
   title: {
-    flexDirection: 'row',
-    fontSize: 18,
-    marginVertical: 10,
+    fontSize: 17,
     fontWeight: '800',
     color: '#2980b9'
   },
@@ -54,8 +75,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
-  },textSubheading: {
+  },
+  textSubheading: {
 	alignSelf: 'flex-start',
-	marginLeft:20
+	marginTop:20
   }
 })

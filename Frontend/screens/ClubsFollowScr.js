@@ -1,20 +1,14 @@
 import React from 'react'
 import {
   StyleSheet,
-  Text,
   View,
-  TouchableOpacity,
-  TextInput,
-  Picker
- 
 } from 'react-native'
 
 import ClubsFollowGrid from '../components/ClubsFollowGrid'
 
-export default class CLubsFollowScr extends React.Component {
+export default class ClubsFollowScr extends React.Component {
   constructor(props){
     super(props);
-   
   }
 
   render() {
@@ -24,9 +18,7 @@ export default class CLubsFollowScr extends React.Component {
      
         <ClubsFollowGrid/>
    </View>
-    
-      
-    
+
     )
 }
 }
