@@ -1,6 +1,6 @@
 const userDAO = require("../DAO/UserDAO");
-const { validationResult, body } = require("express-validator");
-const { ValidationError, NotFoundError } = require( '../util/exceptions');
+const { validationResult, body, query } = require("express-validator");
+const { ValidationError, NotFoundError } = require('../util/exceptions');
 
 const validateUserData = req => {
   const errors = validationResult(req);
@@ -18,7 +18,7 @@ const catchErrors = async (res, f) => {
     } else if (e instanceof NotFoundError) {
       res.status(e.httpErrorCode).send({ ok: false, error: e.message });
     } else {
-      res.status(400).send({ ok: false, error: e.message});
+      res.status(400).send({ ok: false, error: e.message });
     }
   }
 };
@@ -36,6 +36,21 @@ exports.update = async (req, res) => catchErrors(res, async () => {
 
   return userDAO.update(req.userId, req.body);
 });
+
+exports.followClub = async (req, res) => catchErrors(res, async () => {
+  validateUserData(req);
+
+  const userId = req.userId;
+  const clubId = req.query.clubId;
+  const updatedUser = await userDAO.get(userId);
+
+  if (updatedUser.clubs.includes(clubId)) {
+    throw new Error("Club is already followed");
+  }
+
+  updatedUser.clubs.push(clubId);
+  return userDAO.update(req.userId, updatedUser);
+})
 
 exports.create = async (req, res) => catchErrors(res, async () => {
   validateUserData(req);
@@ -65,6 +80,13 @@ exports.validate = type => {
         body("password", "Password does not exist")
           .exists()
           .custom(password => validatePassword(password))
+      ];
+    }
+
+    case "validateFollow": {
+      console.log("here");
+      return [
+        query("clubId", "Club Id does not exist").exists()
       ];
     }
   }
