@@ -7,6 +7,7 @@ import SettingScr from './SettingScr';
 import ProfileInfoScr from './ProfileInfoScr';
 import ClubsFollowScr from './ClubsFollowScr'
 import Tab from '../components/Tabs'
+import UserContext from '../util/UserContext';
 // Add User API
 
 export default class ProfileScr extends React.Component {
@@ -20,9 +21,16 @@ export default class ProfileScr extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			admin: false
+			admin: false,
 		}
 	}
+
+	// REMOVE THIS
+	componentDidMount() {
+		let { user, setUser } = this.context;
+		console.log("=>" + user.name.first + " " + user.name.last);
+	}
+
 
 	signOut = async () => {
 		await AsyncStorage.removeItem('userToken');
@@ -31,6 +39,8 @@ export default class ProfileScr extends React.Component {
 
 
 	render() {
+		const { user, setUser } = this.context;
+
 		const userProfilePicture = {
 			ProfilePic: require('../assets/images/profile-icon.png')
 		}
@@ -40,7 +50,7 @@ export default class ProfileScr extends React.Component {
 					<View style={style.profileCardRow}>
 						<Image style={[style.profilePicture]} source={userProfilePicture.ProfilePic} />
 						<View style={style.profileInfo}>
-							<Text adjustsFontSizeToFit numberOfLines={2} style={style.textHeader}>Christian Sarmiento</Text>
+							<Text adjustsFontSizeToFit numberOfLines={2} style={style.textHeader}>{user.name.first} {user.name.last}</Text>
 							<FontAwesome.Button name="edit" color="#2980b9" backgroundColor="#fff" style={{ alignSelf: 'center' }} onPress={() => {
 								this.props.navigation.navigate({ routeName: 'Edit' })
 							}}>
@@ -48,17 +58,19 @@ export default class ProfileScr extends React.Component {
 							</FontAwesome.Button>
 
 							<FontAwesome.Button name="sign-out" color="#F40" backgroundColor="#fff" style={{ alignSelf: 'center' }} onPress={this.signOut}>
-							<Text style={{ color: "#F40", paddingRight: 5 }}>Logout</Text>
+								<Text style={{ color: "#F40", paddingRight: 5 }}>Logout</Text>
 							</FontAwesome.Button>
 						</View>
 					</View>
-					<ProfileInfoScr/>
+					<ProfileInfoScr />
 				</View>
-				<Tab tab1={<Preferences/>} tab2={<ClubsFollowScr />}  />
+				<Tab tab1={<Preferences />} tab2={<ClubsFollowScr />} />
 			</ScrollView>
 		);
 	}
 }
+
+ProfileScr.contextType = UserContext;
 
 const style = StyleSheet.create({
 	container: {
@@ -70,7 +82,7 @@ const style = StyleSheet.create({
 		backgroundColor: '#ffffff',
 		marginBottom: 10,
 		elevation: 2,
-		
+
 	},
 	ButCard: {
 		padding: 15,

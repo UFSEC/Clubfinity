@@ -13,11 +13,14 @@ import {
 
 import AuthApi from "../api/AuthApi";
 import ErrorText from "../components/ErrorText";
+import UserContext from "../util/UserContext";
 
 export default class SigninScr extends React.Component {
   static navigationOptions = {
     header: null
   };
+
+  static contextType = UserContext;
 
   constructor(props) {
     super(props);
@@ -42,6 +45,8 @@ export default class SigninScr extends React.Component {
         showError: false,
         errorMessage: ""
       });
+      const { setUser } = this.context;
+      console.log(authResponse);
       this.props.navigation.navigate("App");
     } else {
       this.setState({
