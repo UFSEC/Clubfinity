@@ -12,10 +12,8 @@ export default class App extends Component {
   state = {
     isLoadingComplete: true,
     user: {
-      name: {
-        first: "Test",
-        last: "User"
-      }
+      firstName: "Null",
+      "lastName": "User"
     },
   };
 

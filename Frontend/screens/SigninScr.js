@@ -46,7 +46,9 @@ export default class SigninScr extends React.Component {
         errorMessage: ""
       });
       const { setUser } = this.context;
-      console.log(authResponse);
+      if (authResponse.user) {
+        setUser(authResponse.user);
+      }
       this.props.navigation.navigate("App");
     } else {
       this.setState({

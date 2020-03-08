@@ -25,18 +25,10 @@ export default class ProfileScr extends React.Component {
 		}
 	}
 
-	// REMOVE THIS
-	componentDidMount() {
-		let { user, setUser } = this.context;
-		console.log("=>" + user.name.first + " " + user.name.last);
-	}
-
-
 	signOut = async () => {
 		await AsyncStorage.removeItem('userToken');
 		this.props.navigation.navigate('Auth');
 	}
-
 
 	render() {
 		const { user, setUser } = this.context;
@@ -50,7 +42,7 @@ export default class ProfileScr extends React.Component {
 					<View style={style.profileCardRow}>
 						<Image style={[style.profilePicture]} source={userProfilePicture.ProfilePic} />
 						<View style={style.profileInfo}>
-							<Text adjustsFontSizeToFit numberOfLines={2} style={style.textHeader}>{user.name.first} {user.name.last}</Text>
+							<Text adjustsFontSizeToFit numberOfLines={2} style={style.textHeader}>{user.firstName} {user.lastName}</Text>
 							<FontAwesome.Button name="edit" color="#2980b9" backgroundColor="#fff" style={{ alignSelf: 'center' }} onPress={() => {
 								this.props.navigation.navigate({ routeName: 'Edit' })
 							}}>
