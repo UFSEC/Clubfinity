@@ -23,6 +23,7 @@ export default class DiscoverGrid extends Component {
     super(props);
     this.state = {
       searchText: "",
+      clubs: '',
       filteredClubs: '',
       errorMessage:'',
       clubList:clubList,
@@ -33,12 +34,15 @@ export default class DiscoverGrid extends Component {
     // event.preventDefault();
   
     try {
+      
       let response = await API.get('/api/club');
       let { data } = response.data;
       this.setState({
+        clubs: data,
         filteredClubs: data,
         isLoading: false
       });
+     
     } catch (error) {
       console.error(error);
     }
@@ -53,8 +57,10 @@ export default class DiscoverGrid extends Component {
 
   filterClubs = (text) => {
     searchText = text.toLowerCase();
-    newFilterClubs = this.state.filteredClubs.filter((club) => {
-      return club.name.toLowerCase().includes(searchText);
+  
+    newFilterClubs = this.state.clubs.filter((club) => {
+      return club.major_of_interest.toLowerCase().includes(searchText);
+      console.log(club)
     }); 
 
     this.setState({
@@ -117,7 +123,7 @@ export default class DiscoverGrid extends Component {
             </TouchableOpacity>
           )}
           numColumns={2}
-          keyExtractor={(item) => item._id.toString()}
+          keyExtractor={(item) => item._id}
         />
       </View>
 
