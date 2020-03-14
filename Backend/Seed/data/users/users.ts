@@ -17,7 +17,7 @@ const usersData: User[] = [
     email: "pablo@gmail.com",
     username: "pablo",
     password: "123456",
-    clubs: [ new Types.ObjectId('16cb91bdc3464f14678934ca') ],
+    clubs: [ new Types.ObjectId('99cb91bdc3464f14678934ca'), new Types.ObjectId('99cd91bdc3464f14678934ca') ],
     _id: new Types.ObjectId('16cb91bdc3464f14678934ca')
   },
   {
