@@ -1,7 +1,7 @@
-import { StyleSheet, Dimensions } from 'react-native'
+import { StyleSheet } from 'react-native'
 
 // Primary Style Guide for entire application
-const primary = StyleSheet.create({
+export const primary = StyleSheet.create({
     container: {
         paddingHorizontal: 10,
         backgroundColor: '#F2F2F7'
@@ -19,22 +19,22 @@ const primary = StyleSheet.create({
     }
 });
 
-const club = StyleSheet.create({
+export const club = StyleSheet.create({
     title: {
-        fontSize: 26, 
-        fontWeight: '700', 
+        fontSize: 26,
+        fontWeight: '700',
         paddingHorizontal: 15,
         paddingVertical: 10
     },
     description: {
-        fontSize: 15, 
+        fontSize: 15,
         fontWeight: '200',
         paddingVertical: 10,
         paddingHorizontal: 20
     }
 });
 
-const smCard = StyleSheet.create({
+export const smCard = StyleSheet.create({
     container: {
         backgroundColor: '#f5f6fa',
         padding: 0,
@@ -53,7 +53,7 @@ const smCard = StyleSheet.create({
 });
 
 // Style definition for card components
-const card = StyleSheet.create({
+export const card = StyleSheet.create({
     title: {
         color: '#2980b9',
         fontSize: 20,
@@ -118,7 +118,7 @@ const card = StyleSheet.create({
     }
 });
 
-const post = StyleSheet.create({
+export const post = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'row',
@@ -135,4 +135,15 @@ const post = StyleSheet.create({
     },
 });
 
-export { primary, card, club, smCard, post }
+export const emptyEventList = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  text: {
+    fontSize: 18,
+    margin: 10,
+    color: '#636e72',
+  }
+});

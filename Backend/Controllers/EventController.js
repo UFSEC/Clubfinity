@@ -35,7 +35,7 @@ exports.get = async (req, res) => catchErrors(res, async () => {
 exports.getFollowing = async (req, res) => catchErrors(res, async () => {
   let user;
   try {
-    user = await userDAO.get(req.params['userId']);
+    user = await userDAO.get(req.userId);
   } catch (error) {
     throw new NotFoundError();
   }
