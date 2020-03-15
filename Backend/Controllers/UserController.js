@@ -53,9 +53,12 @@ exports.validate = type => {
       return [
         body("name.first", "First name does not exist").exists(),
         body("name.last", "Last name does not exist").exists(),
-        body("dob", "Date of birth does not exist")
+        body("major", "Major does not exist or is invalid")
           .exists()
-          .custom(date => validateDate(date)),
+          .custom(major => validateMajor(major)),
+        body("year", "Year does not exist or is invalid")
+          .exists()
+          .custom(year => validateYear(year)),
         body("email", "Email does not exist or is invalid")
           .exists()
           .isEmail(),
@@ -69,15 +72,6 @@ exports.validate = type => {
     }
   }
 };
-
-// Validating date
-// Format must be able to be parsed into Date class
-function validateDate(date) {
-  if (new Date(date) === "Invalid Date" || isNaN(new Date(date))) {
-    throw new Error("Invalid date string");
-  }
-  return true;
-}
 
 // Username must be within 6 and 20 characters
 // Username must not contain empty spaces
@@ -98,6 +92,26 @@ function validateUser(user) {
 function validatePassword(password) {
   if (password.length < 6) {
     throw new Error("Password is too short (less than 6 characters)");
+  }
+  return true;
+}
+
+// Major cannot be an empty string
+function validateMajor(major) {
+  if (major === '') {
+    throw new Error("Major cannot be empty");
+  }
+  return true;
+}
+
+// Year cannot be an empty string
+// Year must be a number
+function validateYear(year) {
+  if (year === '') {
+    throw new Error("Year cannot be empty");
+  }
+  else if(isNaN(year)) {
+    throw new Error("Year must be a number");
   }
   return true;
 }

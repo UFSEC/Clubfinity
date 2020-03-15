@@ -2,7 +2,8 @@ import { Schema, Types } from 'mongoose';
 
 interface User {
   name: { first: string, last: string };
-  dob: string;
+  major: string,
+  year: string,
   email: string;
   username: string;
   password: string;
@@ -13,7 +14,8 @@ interface User {
 const usersData: User[] = [
   {
     name: { first: 'Pablo', last: 'Estrada' },
-    dob: "01/01/1999",
+    major: 'Computer Science',
+    year: '2022',
     email: "pablo@gmail.com",
     username: "pablo",
     password: "123456",
@@ -22,7 +24,8 @@ const usersData: User[] = [
   },
   {
     name: { first: 'Jake', last: 'Sully' },
-    dob: "01/01/1999",
+    major: 'Computer Science',
+    year: '2022',
     email: "jake@gmail.com",
     username: "jake",
     password: "123456",
@@ -31,7 +34,8 @@ const usersData: User[] = [
   },
   {
     name: { first: 'Jerry', last: 'Smith' },
-    dob: "01/01/1999",
+    major: 'Computer Science',
+    year: '2022',
     email: "jerry@gmail.com",
     username: "jerry",
     password: "123456",
@@ -40,7 +44,8 @@ const usersData: User[] = [
   },
   {
     name: { first: 'Amy', last: 'Stake' },
-    dob: "02/23/2000",
+    major: 'Computer Science',
+    year: '2022',
     email: "a.stake@gmail.com",
     username: "amy",
     password: "p@ssw0rd",
@@ -49,7 +54,8 @@ const usersData: User[] = [
   },
   {
     name: { first: 'Anita', last: 'Braig' },
-    dob: "05/09/1998",
+    major: 'Computer Science',
+    year: '2022',
     email: "anitabraig@gmail.com",
     username: "anita",
     password: "Pets2000",
@@ -58,7 +64,8 @@ const usersData: User[] = [
   },
   {
     name: { first: 'Dan', last: 'Geruss' },
-    dob: "07/14/2001",
+    major: 'Computer Science',
+    year: '2022',
     email: "dan@gmail.com",
     username: "dan",
     password: "notMyP@ssword",
@@ -67,7 +74,8 @@ const usersData: User[] = [
   },
   {
     name: { first: 'Eve', last: 'O\'Lution' },
-    dob: "08/16/1998",
+    major: 'Computer Science',
+    year: '2022',
     email: "eve@gmail.com",
     username: "eve",
     password: "Eve1998",
@@ -76,7 +84,8 @@ const usersData: User[] = [
   },
   {
     name: { first: 'Faye', last: 'Tallity' },
-    dob: "01/07/1999",
+    major: 'Computer Science',
+    year: '2022',
     email: "faye@gmail.com",
     username: "faye",
     password: "ClubFinity15",
@@ -85,7 +94,8 @@ const usersData: User[] = [
   },
   {
     name: { first: 'Hayden', last: 'Seek' },
-    dob: "01/12/1999",
+    major: 'Computer Science',
+    year: '2022',
     email: "hayden@gmail.com",
     username: "hayden",
     password: "se56523",
@@ -94,7 +104,8 @@ const usersData: User[] = [
   },
   {
     name: { first: 'Ho Lin', last: 'Wan' },
-    dob: "03/01/1997",
+    major: 'Computer Science',
+    year: '2022',
     email: "holin@gmail.com",
     username: "holin",
     password: "865542d",
@@ -103,7 +114,8 @@ const usersData: User[] = [
   },
   {
     name: { first: 'Hope', last: 'Lescase' },
-    dob: "12/15/1996",
+    major: 'Computer Science',
+    year: '2022',
     email: "hope@gmail.com",
     username: "hope",
     password: "sd5f45a631",
@@ -112,7 +124,8 @@ const usersData: User[] = [
   },
   {
     name: { first: 'Hugh', last: 'Cumber' },
-    dob: "11/01/1996",
+    major: 'Computer Science',
+    year: '2022',
     email: "hugh@gmail.com",
     username: "hugh",
     password: "ghf65hf",
@@ -121,7 +134,8 @@ const usersData: User[] = [
   },
   {
     name: { first: 'Hugh', last: 'Mungous' },
-    dob: "05/14/2000",
+    major: 'Computer Science',
+    year: '2022',
     email: "hugh.M@gmail.com",
     username: "hugh53",
     password: "PowerRangers36",
@@ -130,7 +144,8 @@ const usersData: User[] = [
   },
   {
     name: { first: 'Ira', last: 'Grett' },
-    dob: "06/28/1998",
+    major: 'Computer Science',
+    year: '2022',
     email: "ira@gmail.com",
     username: "ira",
     password: "CareBear1532",
@@ -139,7 +154,8 @@ const usersData: User[] = [
   },
   {
     name: { first: 'Jay', last: 'Walker' },
-    dob: "05/05/1995",
+    major: 'Computer Science',
+    year: '2022',
     email: "jay@gmail.com",
     username: "jay",
     password: "Jif321f",
@@ -148,7 +164,8 @@ const usersData: User[] = [
   },
   {
     name: { first: 'Milly', last: 'Meter' },
-    dob: "01/01/2000",
+    major: 'Computer Science',
+    year: '2022',
     email: "milly@gmail.com",
     username: "milly",
     password: "sdkljfaj5",
@@ -157,7 +174,8 @@ const usersData: User[] = [
   },
   {
     name: { first: 'Sabina', last: 'Pleasure' },
-    dob: "02/27/1997",
+    major: 'Computer Science',
+    year: '2022',
     email: "sabina@gmail.com",
     username: "sabina",
     password: "asdfghjkl123",
@@ -166,7 +184,8 @@ const usersData: User[] = [
   },
   {
     name: { first: 'sally', last: 'Mander' },
-    dob: "03/14/1999",
+    major: 'Computer Science',
+    year: '2022',
     email: "sally@gmail.com",
     username: "sally",
     password: "qwert123",
@@ -175,7 +194,8 @@ const usersData: User[] = [
   },
   {
     name: { first: 'Shirley', last: 'Knott' },
-    dob: "04/16/1996",
+    major: 'Computer Science',
+    year: '2022',
     email: "shirley@gmail.com",
     username: "shirley",
     password: "poiu987",
@@ -184,7 +204,8 @@ const usersData: User[] = [
   },
   {
     name: { first: 'Sue', last: 'Denley' },
-    dob: "07/19/1999",
+    major: 'Computer Science',
+    year: '2022',
     email: "sue@gmail.com",
     username: "sue",
     password: "SUe99f",
@@ -193,7 +214,8 @@ const usersData: User[] = [
   },
   {
     name: { first: 'Tina', last: 'Beense' },
-    dob: "08/21/1997",
+    major: 'Computer Science',
+    year: '2022',
     email: "tina@gmail.com",
     username: "tina",
     password: "TBeense658",
@@ -202,7 +224,8 @@ const usersData: User[] = [
   },
   {
     name: { first: 'Tom', last: 'Mawtow' },
-    dob: "03/25/2000",
+    major: 'Computer Science',
+    year: '2022',
     email: "tom@gmail.com",
     username: "tom",
     password: "lastMawtow5",
@@ -211,7 +234,8 @@ const usersData: User[] = [
   },
   {
     name: { first: 'Wanda', last: 'phul' },
-    dob: "04/18/2001",
+    major: 'Computer Science',
+    year: '2022',
     email: "wanda@gmail.com",
     username: "wanda",
     password: "WonderfulIsMyName",
