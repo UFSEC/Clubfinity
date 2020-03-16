@@ -12,8 +12,8 @@ export default class App extends Component {
   state = {
     isLoadingComplete: true,
     user: {
-      firstName: "Null",
-      "lastName": "User"
+      firstName: "Null", // Testing purposes TODO: change to null. 
+      lastName: "User"
     },
   };
 
