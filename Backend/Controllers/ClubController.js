@@ -1,4 +1,5 @@
 const clubDAO = require("../DAO/ClubDAO");
+const userDAO = require('../DAO/UserDAO');
 const { validationResult, body } = require("express-validator");
 const { ValidationError, NotFoundError } = require( '../util/exceptions');
 
@@ -18,7 +19,7 @@ const catchErrors = async (res, f) => {
     } else if (e instanceof NotFoundError) {
       res.status(e.httpErrorCode).send({ ok: false, error: e.message });
     } else {
-      res.status(400).send({ ok: false, error: e.message});i
+      res.status(400).send({ ok: false, error: e.message});
     }
   }
 };
@@ -29,6 +30,15 @@ exports.getAll = async (req, res) => catchErrors(res, async () => {
 
 exports.get = async (req, res) => catchErrors(res, async () => {
   return clubDAO.get(req.params['id']);
+});
+
+exports.getFollowing = async (req, res) => catchErrors(res, async () => {
+  try {
+    const user = await userDAO.get(req.userId);
+    return user.clubs;
+  } catch (e) {
+    throw new NotFoundError();
+  }
 });
 
 exports.update = async (req, res) => catchErrors(res, async () => {
