@@ -94,19 +94,22 @@ export default class ClubScr extends React.Component {
       return (
         <SafeAreaView style={{ flex: 1, alignItems: 'center' }}>
         <ScrollView showsVerticalScrollIndicator={true}>
+          {/* Club Image */}
           <View style={{ width: width, height: 175 }}>
               <Image style={{ flex: 1, height: undefined, width: undefined, resizeMode: 'cover' }} source={require('../assets/images/clubLogo.jpg')} />
           </View>
-          {/* Top section with Title, subtitle, and follow button */}
+
+
+          {/* ===Top section with Title and follow button=== */}
           <View style={{flexDirection: 'row', width: width}}>
             <View style={{width: 290}}>
               <Text style={club.title}>Software Engineering Club</Text>
             </View>
-            {/* Follow / Following button */}
-            <View style={{width: 110, alignSelf: "center"}}>
+            <View style={{ alignSelf: "center", alignItems: 'center'}}>
                 <FollowButton clickHandler={this.followBtnHandler}/>
             </View>
           </View>
+          {/* Club description */}
           <View>
             <Text style={club.description}>The coolest club on campus. Period.The coolest club on campus. Period.The coolest club on campus. Period.</Text>
           </View>
@@ -121,9 +124,12 @@ export default class ClubScr extends React.Component {
             </View>
             */
           }
+
+
+          {/* ===Events Happenning Section=== */}
           <View>
             <Text style={{ fontSize: 18, fontWeight: '700', paddingHorizontal: 20, 
-                  marginTop: 5, marginBottom: 20}}>Events Happening</Text>
+            marginTop: 5, marginBottom: 20}}>Events Happening</Text>
           </View>
           <View style={{flex: 1} [primary.container]}>
             <FlatList
@@ -137,6 +143,8 @@ export default class ClubScr extends React.Component {
               }
               keyExtractor={(item) => item.id.toString()}/>
           </View>
+
+          {/* ===Club Posts Section=== */}
             <View style={{flex: 1} [primary.container]}>
             <Text style={{ fontSize: 18, fontWeight: '700', paddingHorizontal: 20, 
               marginTop: 5, marginBottom: 20}}>Club Posts</Text>
@@ -150,6 +158,8 @@ export default class ClubScr extends React.Component {
               }
               keyExtractor={(item) => item.id.toString()}/>
           </View>
+
+    
           </ScrollView>
         </SafeAreaView>
       );
