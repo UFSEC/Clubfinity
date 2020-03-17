@@ -1,6 +1,8 @@
 import React from 'react';
-import { StyleSheet, View, Platform, StatusBar, Text } from 'react-native';
+import { StyleSheet, View, Platform, StatusBar, Dimensions } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
+const {height, width } = Dimensions.get('window');
 
 export default class Form extends React.Component {
 	constructor(props) {
@@ -11,7 +13,8 @@ export default class Form extends React.Component {
 			<KeyboardAwareScrollView
 				extraScrollHeight={100}
 				enableOnAndroid={true}
-				contentContainerStyle={Platform.OS === "ios" && styles.contentContainer}>
+				showsVerticalScrollIndicator={false}
+				contentContainerStyle={Platform.OS === 'ios' ? styles.contentContainer : styles.androidContentContainer}>
 				<View style={Platform.OS === "ios" ? this.props.isCentered? styles.iOScontainerCentered : styles.iOScontainer : this.props.isCentered ? styles.androidContainerCentered : styles.androidContainer}>
 					{this.props.children}
 				</View>
@@ -25,6 +28,14 @@ const styles = StyleSheet.create({
 	contentContainer: {
 		flex: 1,
 		justifyContent: 'center',
+		width: width,
+		height: height,
+		backgroundColor: 'red',
+	},
+	androidContentContainer: {
+		flex: 0,
+		justifyContent: 'center',
+		backgroundColor: bgColor,
 	},
 	iOScontainerCentered: {
 		flex: 1,
@@ -43,16 +54,14 @@ const styles = StyleSheet.create({
 		flex: 1,
 		display: 'flex',
 		padding: 20,
-		marginTop: StatusBar.currentHeight,
 		backgroundColor: bgColor,
 
 	},
 	androidContainerCentered: {
 		flex: 1,
-		display: 'flex',
-		padding: 20,
+		width: width,
+		height: height,
 		justifyContent: 'center',
-		marginTop: StatusBar.currentHeight,
 		backgroundColor: bgColor,
 	}
 })

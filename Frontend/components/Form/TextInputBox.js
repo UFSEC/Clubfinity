@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
 		margin: 5,
 		paddingHorizontal: 20,
 		paddingVertical: 10,
-		flex: 1
+		flex: 1,
+		maxHeight: 50,
 	}
 })
