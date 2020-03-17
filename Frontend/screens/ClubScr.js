@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { FlatList, ActivityIndicator, Button, Text, View, TextInput, SafeAreaView, Dimensions, Image, ScrollView } from 'react-native';
+
 import { primary, club } from '../assets/styles/stylesheet';
 import EventCard from '../components/EventCard';
 import { Octicons }  from '@expo/vector-icons';
@@ -13,7 +14,20 @@ export default class ClubScr extends React.Component {
         title: 'Club', 
         header: null,
     }
-  
+
+    //Changes "Follow" button text to "Following", vice versa
+    state = {
+      textValue: 'Follow',
+      
+    }
+
+    onPress = () => {
+      this.setState({
+        textValue: 'Following',
+      })
+    }
+
+    //--------------------Renders interface--------------------
     render() {
         const evData = [
             {
@@ -75,10 +89,22 @@ export default class ClubScr extends React.Component {
           <View style={{ width: width, height: 175 }}>
               <Image style={{ flex: 1, height: undefined, width: undefined, resizeMode: 'cover' }} source={require('../assets/images/clubLogo.jpg')} />
           </View>
-          <View style={{ width: width, height: 100}}>
-            <Text style={club.title}>Software Engineering Club</Text>
-            <Text style={club.description}>The coolest club on campus. Period.</Text>
+          {/* Top section with Title, subtitle, and follow button */}
+          <View style={{flexDirection: 'row', width: width, height: 100, flexShrink: 1}}>
+            <View style={{}}>
+              <Text style={club.title}>Software Engineering</Text>
+              <Text style={club.description}>The coolest club on campus. Period.</Text>
+            </View>
+            {/* Follow / Following button */}
+            <View style={{backgroundColor: '#ACCAAC', borderRadius: 50, width: 100, alignSelf: 'center'}}>
+            <Button 
+              title={this.state.textValue}
+              color='white'
+              onPress={this.onPress}
+            />
           </View>
+          </View>
+          
           <Text style={{ fontSize: 18, fontWeight: '700', paddingHorizontal: 20, 
                   marginTop: 5, marginBottom: 20}}>Events Happening</Text>
           <View style={{flex: 1} [primary.container]}>
