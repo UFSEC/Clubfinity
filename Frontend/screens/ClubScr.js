@@ -28,7 +28,7 @@ export default class ClubScr extends React.Component {
       })
     }
 
-    // Change card style if 'Going' clicked || remove if Not going
+    // Change follow button style from "Following" to "Follow", vice versa, when clicked
   followBtnHandler = () => {
     this.setState({
       goingChecked: !this.state.goingChecked
@@ -98,29 +98,33 @@ export default class ClubScr extends React.Component {
               <Image style={{ flex: 1, height: undefined, width: undefined, resizeMode: 'cover' }} source={require('../assets/images/clubLogo.jpg')} />
           </View>
           {/* Top section with Title, subtitle, and follow button */}
-          <View style={{flexDirection: 'row', width: width, height: 100, flexShrink: 1}}>
-            <View style={{}}>
-              <Text style={club.title}>Software Engineering</Text>
-              <Text style={club.description}>The coolest club on campus. Period.</Text>
+          <View style={{flexDirection: 'row', width: width}}>
+            <View style={{width: 290}}>
+              <Text style={club.title}>Software Engineering Club</Text>
             </View>
             {/* Follow / Following button */}
             <View style={{width: 110, alignSelf: "center"}}>
                 <FollowButton clickHandler={this.followBtnHandler}/>
             </View>
           </View>
-          
-        {/* Seperate potential button created
-          <View style={{backgroundColor: '#ACCAAC', borderRadius: 50, width: 100,  alignSelf: 'center'}}>
-              <Button 
-                title={this.state.textValue}
-                color='white'
-                onPress={this.onPress}
-              />
+          <View>
+            <Text style={club.description}>The coolest club on campus. Period.The coolest club on campus. Period.The coolest club on campus. Period.</Text>
           </View>
-          */
-        }
-          <Text style={{ fontSize: 18, fontWeight: '700', paddingHorizontal: 20, 
+          
+          {/* Seperate potential button created
+            <View style={{backgroundColor: '#ACCAAC', borderRadius: 50, width: 100,  alignSelf: 'center'}}>
+                <Button 
+                  title={this.state.textValue}
+                  color='white'
+                  onPress={this.onPress}
+                />
+            </View>
+            */
+          }
+          <View>
+            <Text style={{ fontSize: 18, fontWeight: '700', paddingHorizontal: 20, 
                   marginTop: 5, marginBottom: 20}}>Events Happening</Text>
+          </View>
           <View style={{flex: 1} [primary.container]}>
             <FlatList
               marginHorizontal={15}
