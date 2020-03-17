@@ -7,8 +7,12 @@ export default class TextInputBox extends React.Component {
 	}
 
 	render() {
+		const isMultilineEnabled = !!this.props.multiline
 		return (
 			<TextInput
+				numberOfLines={isMultilineEnabled ? (Platform.OS === 'ios' ? null : 5) : null}
+				minHeight={isMultilineEnabled ? ((Platform.OS === 'ios' && 5) ? (20 * 5) : null) : null}
+				multiline={isMultilineEnabled}
 				secureTextEntry={this.props.isHidden}
 				style={Platform.OS === "ios" ? styles.iOS : styles.android}
 				placeholderTextColor={'#8E8E93'}
