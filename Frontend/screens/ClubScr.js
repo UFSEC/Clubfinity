@@ -97,7 +97,7 @@ export default class ClubScr extends React.Component {
 
           {/* ===Top section with Title and follow button=== */}
           <View style={{flexDirection: 'row', width: width}}>
-            <View style={{width: 290}}>
+            <View style={{width: '70%'}}>
               <Text style={club.title}>Software Engineering Club</Text>
             </View>
             <View style={{ alignSelf: "center", alignItems: 'center'}}>
