@@ -6,6 +6,7 @@ import EventCard from '../components/EventCard';
 import { Octicons }  from '@expo/vector-icons';
 import SmallEventCard from '../components/SmallEventCard';
 import Post from '../components/Post';
+import FollowButton from '../components/FollowButton';
 
 const {height, width } = Dimensions.get('window');
 
@@ -26,6 +27,13 @@ export default class ClubScr extends React.Component {
         textValue: 'Following',
       })
     }
+
+    // Change card style if 'Going' clicked || remove if Not going
+  followBtnHandler = () => {
+    this.setState({
+      goingChecked: !this.state.goingChecked
+    });
+  }
 
     //--------------------Renders interface--------------------
     render() {
@@ -96,15 +104,21 @@ export default class ClubScr extends React.Component {
               <Text style={club.description}>The coolest club on campus. Period.</Text>
             </View>
             {/* Follow / Following button */}
-            <View style={{backgroundColor: '#ACCAAC', borderRadius: 50, width: 100, alignSelf: 'center'}}>
-            <Button 
-              title={this.state.textValue}
-              color='white'
-              onPress={this.onPress}
-            />
-          </View>
+            <View style={{width: 110, alignSelf: "center"}}>
+                <FollowButton clickHandler={this.followBtnHandler}/>
+            </View>
           </View>
           
+        {/* Seperate potential button created
+          <View style={{backgroundColor: '#ACCAAC', borderRadius: 50, width: 100,  alignSelf: 'center'}}>
+              <Button 
+                title={this.state.textValue}
+                color='white'
+                onPress={this.onPress}
+              />
+          </View>
+          */
+        }
           <Text style={{ fontSize: 18, fontWeight: '700', paddingHorizontal: 20, 
                   marginTop: 5, marginBottom: 20}}>Events Happening</Text>
           <View style={{flex: 1} [primary.container]}>
