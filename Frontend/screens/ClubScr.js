@@ -16,19 +16,15 @@ export default class ClubScr extends React.Component {
         header: null,
     }
 
-    //Changes "Follow" button text to "Following", vice versa
-    state = {
-      textValue: 'Follow',
-      
+    //State for changing button
+    constructor(props) {
+      super(props);
+      this.state = {
+        goingChecked: false,
+      }
     }
 
-    onPress = () => {
-      this.setState({
-        textValue: 'Following',
-      })
-    }
-
-    // Change follow button style from "Following" to "Follow", vice versa, when clicked
+  /* Handles when the button is clicked, changing the state */
   followBtnHandler = () => {
     this.setState({
       goingChecked: !this.state.goingChecked
@@ -99,7 +95,6 @@ export default class ClubScr extends React.Component {
               <Image style={{ flex: 1, height: undefined, width: undefined, resizeMode: 'cover' }} source={require('../assets/images/clubLogo.jpg')} />
           </View>
 
-
           {/* ===Top section with Title and follow button=== */}
           <View style={{flexDirection: 'row', width: width}}>
             <View style={{width: 290}}>
@@ -113,18 +108,6 @@ export default class ClubScr extends React.Component {
           <View>
             <Text style={club.description}>The coolest club on campus. Period.The coolest club on campus. Period.The coolest club on campus. Period.</Text>
           </View>
-          
-          {/* Seperate potential button created
-            <View style={{backgroundColor: '#ACCAAC', borderRadius: 50, width: 100,  alignSelf: 'center'}}>
-                <Button 
-                  title={this.state.textValue}
-                  color='white'
-                  onPress={this.onPress}
-                />
-            </View>
-            */
-          }
-
 
           {/* ===Events Happenning Section=== */}
           <View>
