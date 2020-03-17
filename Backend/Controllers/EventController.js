@@ -29,7 +29,6 @@ exports.getAll = async (req, res) => catchErrors(res, async () => {
 });
 
 exports.get = async (req, res) => catchErrors(res, async () => {
-  console.log('cattt')
   return eventDAO.get(req.params['id']);
 });
 
