@@ -131,7 +131,7 @@ describe('Events', () => {
     });
 
     it('should return all events for the given month when filter = all', async () => {
-      const resp = await http.get('/api/event/inMonth/2020-01-01');
+      const resp = await http.get('/api/event/inMonth/2020-01-01?filter=all');
       isOk(resp);
 
       const data = resp.body.data;
