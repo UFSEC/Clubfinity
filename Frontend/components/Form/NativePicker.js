@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     margin: 5,
     paddingHorizontal: 10,
     justifyContent: 'center',
+    minHeight: 60,
     maxHeight: 60,
   },
   android: {
@@ -49,6 +50,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    minHeight: 50,
     maxHeight: 50,
 
   }

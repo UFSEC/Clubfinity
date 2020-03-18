@@ -160,7 +160,7 @@ export default class SignupScr extends React.Component {
             setValue={this.setLastName}
           />
           {this.state.triedSubmitting && this.errorName(this.state.lastName)}
-
+          
           <NativePicker 
             items={[
               { label: 'Computer Science', value: 'Computer Science' },

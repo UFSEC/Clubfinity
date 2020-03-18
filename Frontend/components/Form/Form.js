@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Platform, StatusBar, Dimensions } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const {height, width } = Dimensions.get('window');
@@ -15,9 +16,11 @@ export default class Form extends React.Component {
 				enableOnAndroid={true}
 				showsVerticalScrollIndicator={false}
 				contentContainerStyle={Platform.OS === 'ios' ? styles.contentContainer : styles.androidContentContainer}>
-				<View style={Platform.OS === "ios" ? this.props.isCentered? styles.iOScontainerCentered : styles.iOScontainer : this.props.isCentered ? styles.androidContainerCentered : styles.androidContainer}>
+				{Platform.OS === 'ios' ? <SafeAreaView style={this.props.isCentered? styles.iOScontainerCentered : styles.iOScontainer}>
 					{this.props.children}
-				</View>
+				</SafeAreaView> :  <View style={this.props.isCentered? styles.androidContainerCentered : styles.androidContainer}>
+					{this.props.children}
+				</View>}
 			</KeyboardAwareScrollView>
 		);
 	}
@@ -26,14 +29,12 @@ export default class Form extends React.Component {
 const bgColor = "#FFF";
 const styles = StyleSheet.create({
 	contentContainer: {
-		flex: 1,
+		flexGrow: 1,
 		justifyContent: 'center',
-		width: width,
-		height: height,
-		backgroundColor: 'red',
+		backgroundColor: bgColor,
 	},
 	androidContentContainer: {
-		flex: 0,
+		flexGrow: 1,
 		justifyContent: 'center',
 		backgroundColor: bgColor,
 	},
@@ -59,8 +60,6 @@ const styles = StyleSheet.create({
 	},
 	androidContainerCentered: {
 		flex: 1,
-		width: width,
-		height: height,
 		justifyContent: 'center',
 		backgroundColor: bgColor,
 	}
