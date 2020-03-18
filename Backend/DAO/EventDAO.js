@@ -40,6 +40,13 @@ exports.getByClubs = async (clubs) => {
   return events
 }
 
+exports.getGoingUsers = async (id) => {
+  const event = await Event.findById(id);
+  if (!event) throw new NotFoundError();
+
+  return event.goingUsers;
+};
+
 exports.update = async (id, updatedData) => {
   await Event.findOneAndUpdate({ _id: id   }, updatedData, { upsert: true, useFindAndModify: false });
 

@@ -1,6 +1,6 @@
 const eventDAO = require("../DAO/EventDAO");
 const userDAO = require("../DAO/UserDAO");
-const { validationResult, body } = require("express-validator");
+const { validationResult, body, param } = require("express-validator");
 const { ValidationError, NotFoundError } = require( '../util/exceptions');
 
 const validateEventData = req => {
@@ -57,6 +57,24 @@ exports.create = async (req, res) => catchErrors(res, async () => {
   return eventDAO.create(req.body);
 });
 
+exports.getGoingUsers = async (req, res) => catchErrors(res, async () => {
+  validateEventData(req);
+
+  return eventDAO.getGoingUsers(req.params['id'], { $addToSet: { usersGoing: req.userId  } })
+});
+
+exports.addGoingUser = async (req, res) => catchErrors(res, async () => {
+  validateEventData(req);
+
+  return eventDAO.update(req.params['id'], { $addToSet: { goingUsers: req.userId  } })
+});
+
+exports.removeGoingUser = async (req, res) => catchErrors(res, async () => {
+  validateEventData(req);
+
+  return eventDAO.update(req.params['id'], { $pull: { goingUsers: req.userId  } })
+});
+
 exports.delete = async (req, res) => catchErrors(res, async () => {
   return eventDAO.delete(req.params['id']);
 });
@@ -73,14 +91,20 @@ exports.validate = type => {
         body("club", "Club id does not exist").exists()
       ];
     }
+    case "validateExistingEvent": {
+      return [
+        param("id", "Event id does not exist or invalid")
+          .exists()
+          .custom(date => validateEvent(date))
+      ];
+    }
   }
 };
 
-// Validating date
-// Format must be able to be parsed into Date class
-function validateDate(date) {
-  if (new Date(date) === "Invalid Date" || isNaN(new Date(date))) {
-    throw new Error("Invalid date string");
+async function validateEvent(id) {
+  try {
+    await eventDAO.get(id);
+  } catch (error) {
+    throw new Error("Event with given id doesn't exist");
   }
-  return true;
 }
