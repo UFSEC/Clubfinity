@@ -12,7 +12,7 @@ import Tab from '../components/Tabs'
 export default class ProfileScr extends React.Component {
 
 	static navigationOptions = {
-		title: 'Clubfinity',
+		title: 'Profile',
 		headerStyle: { backgroundColor: '#7e947f' },
 		headerTitleStyle: { color: "#ecf0f1", letterSpacing: 2 },
 	}

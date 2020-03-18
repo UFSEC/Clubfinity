@@ -13,7 +13,8 @@ const {height, width } = Dimensions.get('window');
 export default class ClubScr extends React.Component {
     static navigationOptions = {
         title: 'Club', 
-        header: null,
+        headerStyle: { backgroundColor: '#7e947f' },
+        headerTitleStyle: { color: "#ecf0f1", letterSpacing: 2 },
     }
 
     //State for changing button

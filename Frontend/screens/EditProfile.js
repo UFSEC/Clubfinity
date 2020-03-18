@@ -4,7 +4,7 @@ import EditForm from '../components/EditForm'
 
 export default class EditProfile extends Component {
     static navigationOptions = {
-		title: 'Clubfinity',
+		title: 'Edit Profile',
 		headerStyle: { backgroundColor: '#7e947f' },
 		headerTitleStyle: { color: "#ecf0f1", letterSpacing: 2 },
 	}

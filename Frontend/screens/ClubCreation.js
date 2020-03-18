@@ -3,7 +3,7 @@ import { Text, View,StyleSheet,ScrollView,Dimensions,TouchableOpacity,TextInput,
 const { width} = Dimensions.get('screen')
 export default class ClubCreation extends Component {
 static navigationOptions = {
-    title: 'Clubfinity',
+    title: 'Create a club',
     headerStyle: { backgroundColor: '#7e947f' },
     headerTitleStyle: { color: "#ecf0f1", letterSpacing: 2 },
 }
