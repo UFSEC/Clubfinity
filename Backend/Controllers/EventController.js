@@ -1,27 +1,12 @@
 const eventDAO = require("../DAO/EventDAO");
-const userDAO = require("../DAO/UserDAO");
 const { validationResult, body, param } = require("express-validator");
-const { ValidationError, NotFoundError } = require( '../util/exceptions');
+const { ValidationError } = require( '../util/exceptions');
+const { catchErrors, getCurrentUser } = require('../util/httpUtil');
 
 const validateEventData = req => {
   const errors = validationResult(req);
   if (!errors.isEmpty())
     throw new ValidationError(errors.array());
-};
-
-const catchErrors = async (res, f) => {
-  try {
-    const result = await f();
-    res.send({ ok: true, data: result })
-  } catch (e) {
-    if (e instanceof ValidationError) {
-      res.status(e.httpErrorCode).send({ ok: false, error: e.message, validationErrors: e.validationErrors });
-    } else if (e instanceof NotFoundError) {
-      res.status(e.httpErrorCode).send({ ok: false, error: e.message });
-    } else {
-      res.status(400).send({ ok: false, error: e.message});
-    }
-  }
 };
 
 exports.getAll = async (req, res) => catchErrors(res, async () => {
@@ -33,16 +18,27 @@ exports.get = async (req, res) => catchErrors(res, async () => {
 });
 
 exports.getFollowing = async (req, res) => catchErrors(res, async () => {
-  let user;
-  try {
-    user = await userDAO.get(req.userId);
-  } catch (error) {
-    throw new NotFoundError();
-  }
+  const user = await getCurrentUser(req);
 
-  const clubs = user.clubs;
-  const followingEvents = await eventDAO.getByClubs(clubs);
-  return followingEvents;
+  return await eventDAO.getByClubs(user.clubs);
+});
+
+exports.getInMonth = async (req, res) => catchErrors(res, async () => {
+  const searchDate = new Date(req.params['date']);
+  const user = await getCurrentUser(req);
+
+  switch (req.query.filter) {
+    case undefined:
+    case 'all':
+    case '':
+      return await eventDAO.getAllEventsInMonth(searchDate);
+    case 'following':
+      return await eventDAO.getEventsFromFollowedClubsInMonth(searchDate, user);
+    case 'going':
+      return await eventDAO.getGoingEventsInMonth(searchDate, user);
+    default:
+      throw new Error(`Filter '${req.query.filter}' does not exist`);
+  }
 });
 
 exports.update = async (req, res) => catchErrors(res, async () => {

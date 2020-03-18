@@ -1,4 +1,4 @@
-const env = process.env.NODE_ENV || "development"; 
+const env = process.env.NODE_ENV || "development";
 
 const config = {
   "development": {
@@ -14,8 +14,14 @@ const config = {
       "collection": "users"
     }
   },
-  "testing": {
+  "test": {
     "port": process.env.PORT || 8080,
+    "database": {
+      "host": "localhost",
+      "port": 27017,
+      "database": "test",
+      "url": "mongodb://localhost:27017/"
+    },
     "jwtSecret": "4686E7A784E4176F122F7F00D5742225421",
   },
   "production": {
