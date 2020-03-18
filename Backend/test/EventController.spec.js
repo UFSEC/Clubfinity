@@ -186,12 +186,9 @@ describe('Events', () => {
       await eventDAO.create({ ...baseEventParams, club: clubId });
 
       const resp = await http.get(`/api/event/following`);
-
-      resp.should.have.status(200);
-      resp.body.ok.should.be.true;
+      isOk(resp);
 
       const data = resp.body.data;
-
       data.should.have.length(1);
       data[0].name.should.equal('Event');
     });
