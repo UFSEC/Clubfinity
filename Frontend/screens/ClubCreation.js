@@ -29,15 +29,13 @@ export default class ClubCreation extends Component {
   }
 
   createClub = () => {
+      if (isClubInputValid()) {
 
+      }
   };
 
-  errorName = (input) => {
-    if (input == '' || !(/^[a-zA-Z()]+$/.test(input))) {
-      return (
-        <Text style={styles.error}>Please enter a valid name</Text>
-      );
-    }
+  isClubInputValid = () => {
+
   }
 
   render() {
@@ -48,19 +46,23 @@ export default class ClubCreation extends Component {
             placeholder={"Club name"}
             setValue={value => this.setState({ clubName: value })}
           />
+          <Text style={styles.error}>Please select a club name</Text>
           <TextInputBox
             placeholder={"Position"}
-            setValue={value => this.setState({ clubName: value })}
+            setValue={value => this.setState({ position: value })}
           />
+          <Text style={styles.error}>Please select a position</Text>
           <TextInputBox
             placeholder={"Facebook link (optional)"}
-            setValue={value => this.setState({ clubName: value })}
+            setValue={value => this.setState({ facebookLink: value })}
           />
+          <Text style={styles.error}>Please select a facebook link</Text>
           <TextInputBox
             multiline={true}
             placeholder={"Description"}
-            setValue={value => this.setState({ clubName: value })}
+            setValue={value => this.setState({ description: value })}
           />
+          <Text style={styles.error}>Please select a description</Text>
           <NativePicker
             items={[
               { label: 'Computer Science', value: 'Computer Science' },
@@ -71,9 +73,9 @@ export default class ClubCreation extends Component {
             setValue={value => this.setState({ clubCategory: value })}
           />
           <TextInputBox
-            multiline={true}
+              multiline={true}
             placeholder={"Tags (separated by commas)"}
-            setValue={value => this.setState({ clubName: value })}
+            setValue={value => this.setState({ tags: value })}
           />
           <TouchableOpacity
             style={styles.signupButton}
