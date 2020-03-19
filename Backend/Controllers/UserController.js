@@ -1,4 +1,5 @@
 const userDAO = require("../DAO/UserDAO");
+const clubDAO = require("../DAO/ClubDAO");
 const { validationResult, body, query } = require("express-validator");
 const { ValidationError, NotFoundError } = require('../util/exceptions');
 
@@ -85,11 +86,21 @@ exports.validate = type => {
 
     case "validateFollow": {
       return [
-        query("clubId", "Club Id does not exist").exists()
+        query("clubId", "Club Id missing").exists()
+          .custom(clubId => validateClubId(clubId))
       ];
     }
   }
 };
+
+// Club ID must belong to a club that exists in FB
+async function validateClubId(clubId) {
+  const clubExists = await clubDAO.exists(clubId);
+  if (!clubExists) {
+    throw new Error("Invalid Club ID. Club does not exist.")
+  }
+  return clubExists;
+}
 
 // Validating date
 // Format must be able to be parsed into Date class
