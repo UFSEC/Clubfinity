@@ -1,14 +1,14 @@
-import { Types } from 'mongoose';
+import { Types } from "mongoose";
 
 interface Event {
-  name: String,
-  location: String,
-  major_of_interest: String,
-  description: String,
-  date: String,
-  goingUsers: Types.ObjectId[],
-  club: Types.ObjectId,
-  _id: Types.ObjectId
+  name: String;
+  location: String;
+  major_of_interest: String;
+  description: String;
+  date: String;
+  goingUsers: Types.ObjectId[];
+  club: Types.ObjectId;
+  _id: Types.ObjectId;
 }
 
 const eventsData: Event[] = [
@@ -18,7 +18,7 @@ const eventsData: Event[] = [
     major_of_interest: "Computer Science",
     description: "Join us for mini hackathon",
     date: "02/23/2020",
-    goingUsers: [ "16cb91bdc3464f14678934ca" ],
+    goingUsers: [Types.ObjectId("16cb91bdc3464f14678934ca")],
     club: new Types.ObjectId("99cb91bdc3464f14678934ca"),
     _id: new Types.ObjectId()
   },
@@ -28,7 +28,7 @@ const eventsData: Event[] = [
     major_of_interest: "Computer Science",
     description: "We will be hosting google hashcode competition",
     date: "02/20/2020",
-    goingUsers: [ "16cb91bdc3464f14678934ca" ],
+    goingUsers: [Types.ObjectId("16cb91bdc3464f14678934ca")],
     club: new Types.ObjectId("99cb91bdc3464f14678934ca"),
     _id: new Types.ObjectId()
   },
@@ -38,7 +38,7 @@ const eventsData: Event[] = [
     major_of_interest: "Computer Science",
     description: "Join us for mini hackathon",
     date: "02/07/2020",
-    goingUsers: [ "16cb91bdc3464f14678934ca" ],
+    goingUsers: [Types.ObjectId("16cb91bdc3464f14678934ca")],
     club: new Types.ObjectId("99cb91bdc3464f14678934ca"),
     _id: new Types.ObjectId()
   },
