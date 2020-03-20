@@ -14,77 +14,10 @@ export default class ClubScr extends React.Component {
         header: null,
     }
 
-    constructor(props) {
-      super(props)
-      this.state = {
-        isLoading: true,
-        events: [],
-        posts: [],
-      };
-    }
-
-    componentDidMount() {
-      const evData = [
-          {
-              id: 1,
-              name: "GBM 2",
-              date: "10/17/19",
-              time: "6:00",
-              location: "LIT 101"
-            },
-            {
-              id: 2,
-              name: "codeCollab",
-              date: "10/24/19",
-              time: "7:00",
-              location: "LIT 101"
-            },
-            {
-              id: 3,
-              name: "SEC X Microsoft",
-              date: "10/31/19",
-              time: "6:00",
-              location: "LIT 101"
-            },
-            {
-              id: 4,
-              name: "GBM 3",
-              date: "11/07/19",
-              time: "6:00",
-              location: "LIT 101"
-            },
-      ];
-
-      const postData = [
-          {
-              id: 1,
-              header: "Hey guys! Get ready for our final GBM!",
-              description: 'Its a me a Mario!',
-            },
-            {
-              id: 2,
-              header: 'See you all at the CS Picnic today :)',
-              description: 'Its a me a Mario!',
-            },
-            {
-              id: 3,
-              header: 'Its a me a Mario!',
-              description: 'Its a me a Mario!',
-            },
-            {
-              id: 4,
-              header: 'We Cool',
-              description: 'Its a me a Mario!',
-            },
-      ];
-      this.setState({
-        isLoading: false,
-        events: evData,
-        posts: postData
-      });
-    }
-
     render() {
+      const { navigation } = this.props;
+      const events = navigation.getParam('eventData', []);
+      const posts = navigation.getParam('postData', []);
       return (
         <SafeAreaView style={{ flex: 1, alignItems: 'center' }}>
         <ScrollView showsVerticalScrollIndicator={true}>
@@ -102,8 +35,8 @@ export default class ClubScr extends React.Component {
               marginHorizontal={15}
               horizontal={true}
               showsHorizontalScrollIndicator={false}
-              data={this.state.events}
-              key={this.state.events.id}
+              data={events}
+              key={events.id}
               renderItem={({ item }) =>
                 <SmallEventCard data={item} />
               }
@@ -115,8 +48,8 @@ export default class ClubScr extends React.Component {
             <FlatList
               marginHorizontal={15}
               showsVerticalScrollIndicator={false}
-              data={this.state.posts}
-              key={this.state.posts.id}
+              data={posts}
+              key={posts.id}
               renderItem={({ item }) =>
                 <Post data={item} />
               }
