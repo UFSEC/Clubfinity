@@ -31,8 +31,6 @@ export default class DiscoverGrid extends Component {
     }
   }
   async componentDidMount(){
-    // event.preventDefault();
-  
     try {
       
       let response = await API.get('/api/club');
@@ -51,7 +49,6 @@ export default class DiscoverGrid extends Component {
   };
 
   handleClubSelect = () => {
-    console.log("Clubs tapped boi");
     this.props.navigation.navigate('Club');
   }
 
@@ -60,7 +57,6 @@ export default class DiscoverGrid extends Component {
   
     newFilterClubs = this.state.clubs.filter((club) => {
       return club.major_of_interest.toLowerCase().includes(searchText);
-      console.log(club)
     }); 
 
     this.setState({
@@ -107,11 +103,10 @@ export default class DiscoverGrid extends Component {
               <Image
               // This retrieves the first instance of the club based on name if in Image File
                 source={{
-                  uri: clubFilterImage.filter(user => {
-                    return user.name == item.name
-                    })[0].src,
+                  uri: clubFilterImage[item.name][0].src || "../assets/images/ClubfinityLogo.png"
                  
                 }}
+                onError={(e)=>{e.target.onerror = null; e.target.src="../assets/images/ClubfinityLogo.png"}}
                 style={styles.gridImage}
                 resizeMode={"stretch"}
               />
