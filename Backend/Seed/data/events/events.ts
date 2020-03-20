@@ -6,6 +6,7 @@ interface Event {
   major_of_interest: String,
   description: String,
   date: String,
+  goingUsers: Types.ObjectId[],
   club: Types.ObjectId,
   _id: Types.ObjectId
 }
@@ -17,6 +18,7 @@ const eventsData: Event[] = [
     major_of_interest: "Computer Science",
     description: "Join us for mini hackathon",
     date: "02/23/2020",
+    goingUsers: [ "16cb91bdc3464f14678934ca" ],
     club: new Types.ObjectId("99cb91bdc3464f14678934ca"),
     _id: new Types.ObjectId()
   },
@@ -26,6 +28,7 @@ const eventsData: Event[] = [
     major_of_interest: "Computer Science",
     description: "We will be hosting google hashcode competition",
     date: "02/20/2020",
+    goingUsers: [ "16cb91bdc3464f14678934ca" ],
     club: new Types.ObjectId("99cb91bdc3464f14678934ca"),
     _id: new Types.ObjectId()
   },
@@ -35,6 +38,7 @@ const eventsData: Event[] = [
     major_of_interest: "Computer Science",
     description: "Join us for mini hackathon",
     date: "02/07/2020",
+    goingUsers: [ "16cb91bdc3464f14678934ca" ],
     club: new Types.ObjectId("99cb91bdc3464f14678934ca"),
     _id: new Types.ObjectId()
   },
@@ -44,6 +48,7 @@ const eventsData: Event[] = [
     major_of_interest: "Fun",
     description: "We'll have various puppers to cuddle with! Join us :)",
     date: "02/05/2020",
+    goingUsers: [],
     club: new Types.ObjectId("99cd91bdc3464f14678934ca"),
     _id: new Types.ObjectId()
   },
@@ -53,6 +58,7 @@ const eventsData: Event[] = [
     major_of_interest: "Fun",
     description: "Join us for an evening of good pasta.",
     date: "02/05/2020",
+    goingUsers: [],
     club: new Types.ObjectId("99ce91bdc3464f14678934ca"),
     _id: new Types.ObjectId()
   }
