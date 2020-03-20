@@ -41,6 +41,7 @@ class HomeScr extends Component {
       return;
     }
 
+
     const events = await EventsApi.getFollowing(bearerToken);
     this.setState({
       events: events,
