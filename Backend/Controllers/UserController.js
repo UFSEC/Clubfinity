@@ -2,26 +2,12 @@ const userDAO = require("../DAO/UserDAO");
 const clubDAO = require("../DAO/ClubDAO");
 const { validationResult, body, query } = require("express-validator");
 const { ValidationError, NotFoundError } = require('../util/exceptions');
+const { catchErrors } = require('../util/httpUtil');
 
 const validateUserData = req => {
   const errors = validationResult(req);
   if (!errors.isEmpty())
     throw new ValidationError(errors.array());
-};
-
-const catchErrors = async (res, f) => {
-  try {
-    const result = await f();
-    res.send({ ok: true, data: result })
-  } catch (e) {
-    if (e instanceof ValidationError) {
-      res.status(e.httpErrorCode).send({ ok: false, error: e.message, validationErrors: e.validationErrors });
-    } else if (e instanceof NotFoundError) {
-      res.status(e.httpErrorCode).send({ ok: false, error: e.message });
-    } else {
-      res.status(400).send({ ok: false, error: e.message });
-    }
-  }
 };
 
 exports.getAll = async (req, res) => catchErrors(res, async () => {
