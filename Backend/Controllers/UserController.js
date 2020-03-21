@@ -1,6 +1,7 @@
 const userDAO = require("../DAO/UserDAO");
-const { validationResult, body } = require("express-validator");
-const { ValidationError } = require( '../util/exceptions');
+const clubDAO = require("../DAO/ClubDAO");
+const { validationResult, body, query } = require("express-validator");
+const { ValidationError, NotFoundError } = require('../util/exceptions');
 const { catchErrors } = require('../util/httpUtil');
 
 const validateUserData = req => {
@@ -22,6 +23,21 @@ exports.update = async (req, res) => catchErrors(res, async () => {
 
   return userDAO.update(req.userId, req.body);
 });
+
+exports.followClub = async (req, res) => catchErrors(res, async () => {
+  validateUserData(req);
+
+  const userId = req.userId;
+  const clubId = req.query.clubId;
+  const updatedUser = await userDAO.get(userId);
+
+  if (updatedUser.clubs.includes(clubId)) {
+    throw new Error("Club is already followed");
+  }
+
+  updatedUser.clubs.push(clubId);
+  return userDAO.update(req.userId, updatedUser);
+})
 
 exports.create = async (req, res) => catchErrors(res, async () => {
   validateUserData(req);
@@ -53,8 +69,24 @@ exports.validate = type => {
           .custom(password => validatePassword(password))
       ];
     }
+
+    case "validateFollow": {
+      return [
+        query("clubId", "Club Id missing").exists()
+          .custom(clubId => validateClubId(clubId))
+      ];
+    }
   }
 };
+
+// Club ID must belong to a club that exists in FB
+async function validateClubId(clubId) {
+  const clubExists = await clubDAO.exists(clubId);
+  if (!clubExists) {
+    throw new Error("Invalid Club ID. Club does not exist.")
+  }
+  return clubExists;
+}
 
 // Validating date
 // Format must be able to be parsed into Date class
