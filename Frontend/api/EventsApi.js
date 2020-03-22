@@ -18,3 +18,14 @@ exports.getEvents = async bearerToken => {
     });
   return axiosResponse;
 };
+
+exports.getFollowing = async bearerToken => {
+  console.log('in events.getFollowing');
+  let resp = await API.get('/api/event/following', {
+    headers: {
+      Authorization: `Bearer ${bearerToken}`
+    }
+  });
+
+  return resp.data.data;
+};

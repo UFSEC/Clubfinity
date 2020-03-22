@@ -1,19 +1,13 @@
 import React from 'react';
 import {
-  AsyncStorage,
   Dimensions,
-  KeyboardAvoidingView,
-  Picker,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
-  View
-} from "react-native";
-import RNPickerSelect from 'react-native-picker-select';
+} from 'react-native';
+import Form from '../components/Form/Form';
+import TextInputBox from '../components/Form/TextInputBox';
+import NativePicker from '../components/Form/NativePicker';
 import AuthApi from "../api/AuthApi";
 import UserApi from "../api/UserApi";
 
@@ -46,9 +40,10 @@ export default class SignupScr extends React.Component {
     }
   }
 
-
   // Renders Error text if name field input is incorrect
   errorName = (input) => {
+    console.log("---------------");
+    console.log(input);
     if (input == '' || !(/^[a-zA-Z()]+$/.test(input))) {
       return (
         <Text style={styles.error}>Please enter a valid name</Text>
@@ -80,20 +75,22 @@ export default class SignupScr extends React.Component {
 
   // Validates picker menu otherwise renders error
   errorMajor = () => {
-    if(this.state.major === '' || this.state.major === null) {
+    if (this.state.major === '' || this.state.major === null) {
       return (
         <Text style={styles.error}>Please select a major</Text>
       )
     }
   }
-
+  
+  // Validates year picker
   errorYear = () => {
-    if(this.state.classYear === '' || this.state.classYear === null) {
+    if (this.state.classYear === '' || this.state.classYear === null) {
       return (
         <Text style={styles.error}>Please select your class year</Text>
       )
     }
   }
+
   signupHandler = async () => {
     this.setState({
       triedSubmitting: true
@@ -118,141 +115,122 @@ export default class SignupScr extends React.Component {
     }
   };
 
+  setFirstName = (name) => {
+    console.log(name);
+    this.setState({ firstName: name });
+  }
+
+  setLastName = (name) => {
+    console.log(name);
+    this.setState({ lastName: name });
+  }
+
+  setMajor = (major) => {
+    console.log(major);
+    this.setState({ major: major });
+  }
+
+  setYear = (year) => {
+    console.log(year);
+    this.setState({ classYear: year });
+  }
+
+  setEmail = (email) => {
+    console.log(email);
+    this.setState({ email: email});
+  }
+
+  setUserName = (username) => {
+    console.log(username);
+    this.setState({ username: username})
+  }
+
+  setPassWord = (password) => {
+    console.log(password);
+    this.setState({ password: password})
+  }
+
+  setConfirmPassword = (password) => {
+    console.log(password);
+    this.setState({ verifyPassword: password})
+  }
+
   render() {
     return (
-      <ScrollView contentContainerStyle={{flex: 1, display: 'flex', flexDirection: 'row', marginBottom: 0, marginTop: '30%'}}>
-      <SafeAreaView style={styles.container}>
-          <Text style={styles.header}>Sign Up</Text>
-          <KeyboardAvoidingView style={styles.formContainer} behavior='padding' keyboardVerticalOffset={30}>
-            {/* First Name */}
-            <TextInput
-              style={styles.inputFieldText}
-              placeholderTextColor={'#8E8E93'}
-              placeholder="First Name"
-              onChangeText={(text) => this.setState({ firstName: text })}
-              value={this.state.firstName}
-            ></TextInput>
-            {this.state.triedSubmitting && this.errorName(this.state.firstName)}
+      <Form>
+        <Text style={styles.header}>Sign Up</Text>
+          <TextInputBox 
+            placeholder={"First Name"}
+            setValue={this.setFirstName}
+          />
+          {this.state.triedSubmitting && this.errorName(this.state.firstName)}
 
-            {/* Last Name */}
-            <TextInput
-              style={styles.inputFieldText}
-              placeholderTextColor={'#8E8E93'}
-              placeholder="Last Name"
-              onChangeText={(text) => this.setState({ lastName: text })}
-              value={this.state.lastName}
-            ></TextInput>
-            {this.state.triedSubmitting && this.errorName(this.state.lastName)}
+          <TextInputBox 
+            placeholder={"Last Name"}
+            setValue={this.setLastName}
+          />
+          {this.state.triedSubmitting && this.errorName(this.state.lastName)}
 
-            {/* Major */}
-            <View style={styles.inputPicker}>
-            <RNPickerSelect
-            onValueChange={(value) => this.setState({ major: value })}
+          <NativePicker 
             items={[
-                { label: 'Computer Science', value: 'Computer Science' },
-                { label: 'Finance', value: 'Finance' },
-                { label: 'Industrial Engineering', value: 'Industrial Engineering' },
+              { label: 'Computer Science', value: 'Computer Science' },
+              { label: 'Finance', value: 'Finance' },
+              { label: 'Industrial Engineering', value: 'Industrial Engineering' },
             ]}
-            placeholder={{ label: 'Select major...'}}
-            style={{
-              placeholder: { color: '#8E8E93' },
-              inputIOS: { color: 'black'},
-              inputAndroid: { color: 'black'},
-            }}
-            />
-            </View>
-            {this.state.triedSubmitting && this.errorMajor()}
+            placeholder={{ label: 'Select major...' }}
+            setValue={this.setMajor}
+          />
+          {this.state.triedSubmitting && this.errorMajor()}
 
-            {/* Class Year */}
-            <View style={styles.inputPicker}>
-            <RNPickerSelect
-            onValueChange={(value) => this.setState({ classYear: value })}
+          <NativePicker
             items={[
-                { label: '2023', value: '2023' },
-                { label: '2022', value: '2022' },
-                { label: '2021', value: '2021' },
-                { label: '2020', value: '2020' },
+              { label: '2023', value: '2023' },
+              { label: '2022', value: '2022' },
+              { label: '2021', value: '2021' },
+              { label: '2020', value: '2020' },
             ]}
-            placeholder={{ label: 'Select year...'}}
-            style={{
-              placeholder: { color: '#8E8E93' },
-              inputIOS: { color: 'black'},
-              inputAndroid: { color: 'black'},
-            }}
-            />
-            </View>
-            {this.state.triedSubmitting && this.errorYear()}
+            placeholder={{ label: 'Select year...' }}
+            setValue={this.setYear}
+          />
+          {this.state.triedSubmitting && this.errorYear()}
 
-            {/* email */}
-            <TextInput
-              style={styles.inputFieldText}
-              placeholderTextColor={'#8E8E93'}
-              placeholder="UFL Email Address"
-              onChangeText={(text) => this.setState({ email: text })}
-              value={this.state.email}
-            ></TextInput>
-            {this.state.triedSubmitting && this.errorEmail()}
+          <TextInputBox 
+            placeholder={"UFL Email Address"}
+            setValue={this.setEmail}
+          />
+          {this.state.triedSubmitting && this.errorEmail()}
 
-            {/* username */}
-            <TextInput
-              style={styles.inputFieldText}
-              placeholderTextColor={'#8E8E93'}
-              placeholder="Username"
-              onChangeText={(text) => this.setState({ username: text })}
-              value={this.state.username}
-            ></TextInput>
-            {this.state.triedSubmitting && this.errorName(this.state.username)}
+          <TextInputBox 
+            placeholder={"Username"}
+            setValue={this.setUserName}
+          />
+          {this.state.triedSubmitting && this.errorName(this.state.username)}
 
-            {/* password */}
-            <TextInput
-              style={styles.inputFieldText}
-              secureTextEntry={true}
-              placeholderTextColor={'#8E8E93'}
-              placeholder="Password (minimum length 6)"
-              onChangeText={(text) => this.setState({ password: text })}
-              value={this.state.password}
-            ></TextInput>
-            {this.state.triedSubmitting && this.errorPassword()}
+          <TextInputBox 
+            placeholder={"Password"}
+            setValue={this.setPassWord}
+          />
+          {this.state.triedSubmitting && this.errorPassword()}
 
-            {/* double password */}
-            <TextInput
-              style={styles.inputFieldText}
-              placeholderTextColor={'#8E8E93'}
-              secureTextEntry={true}
-              placeholder="Confirm Password"
-              onChangeText={(text) => this.setState({ verifyPassword: text })}
-              value={this.state.verifyPassword}
-            ></TextInput>
-            {this.state.triedSubmitting && this.errorPassword()}
+          <TextInputBox 
+            placeholder={"Confirm Password"}
+            setValue={this.setConfirmPassword}
+          />
+          {this.state.triedSubmitting && this.errorPassword()}
+
           <TouchableOpacity
             style={styles.signupButton}
             onPress={this.signupHandler}
           >
-            <Text style={styles.signupButtonTxt}>Sign Up</Text>
-          </TouchableOpacity>
-          </KeyboardAvoidingView>
-      </SafeAreaView>
-      </ScrollView>
-
+          <Text style={styles.signupButtonTxt}>Sign Up</Text>
+        </TouchableOpacity>
+    </Form>
     );
   }
 }
 
 const MAX_FIELD_WIDTH = Dimensions.get('screen').width * 3 / 4;
-const bgColor = "#FFF";
-const txtFieldBgColor = "#F4F4F4";
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    display: 'flex',
-    padding: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: StatusBar.currentHeight,
-    backgroundColor: bgColor,
-    flexDirection:'column',
-  },
   error: {
     color: 'red',
     fontSize: 12,
@@ -263,7 +241,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginVertical: 5,
     color: '#636e72',
-    flex: 1,
     alignSelf: "center"
   },
   formContainer: {
@@ -271,29 +248,6 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     fontSize: 13,
     flex: 10
-  },
-  inputFieldText: {
-    backgroundColor: txtFieldBgColor,
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: txtFieldBgColor,
-    margin: 5,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    flex: 1
-  },
-  inputPicker: {
-    backgroundColor: txtFieldBgColor,
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: txtFieldBgColor,
-    margin: 5,
-    paddingVertical: 11,
-    paddingHorizontal: 10,
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   signupButton: {
     padding: 10,
