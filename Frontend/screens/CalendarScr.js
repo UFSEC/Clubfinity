@@ -4,13 +4,17 @@ import {
   Text,
   FlatList,
   View,
+  Button,
 } from 'react-native';
 import {
   Calendar
 } from 'react-native-calendars';
 import AgendaContainer from '../components/AgendaContainer';
+import UserContext from '../util/UserContext';
 
 export default class CalendarScr extends React.Component {
+
+  static contextType = UserContext;
 
   static navigationOptions = {
     title: 'Calendar',
@@ -21,7 +25,7 @@ export default class CalendarScr extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      eventsData : [
+      eventsData: [
         {
           id: 1,
           title: 'GBM #4: Clubfinity',
@@ -67,18 +71,18 @@ export default class CalendarScr extends React.Component {
   }
 
   render() {
-
+    const { user } = this.context;
     return (
       <View style={style.container}>
         <View style={style.calContainer}>
           <Calendar
             hideArrows={false}
-            markedDates={{[this.state.selected]: {selected: true}}}
+            markedDates={{ [this.state.selected]: { selected: true } }}
             onDayPress={this.handleDayPress}
           />
         </View>
 
-        <AgendaContainer eventsArr={this.state.eventsData} datePressed={this.state.datePressed}/>
+        <AgendaContainer eventsArr={this.state.eventsData} datePressed={this.state.datePressed} />
 
       </View>
     );

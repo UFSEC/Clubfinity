@@ -10,14 +10,33 @@ exports.createUser = async (name, username, password, email) => {
     username: username,
     password: password
   })
-  .then(async response => {
-    return { token: response.data.token };
-  })
-  .catch(error => {
-    if (error.response) {
-      return { error: error.response.data.error }
-    }
-    return { error: "Unable to create new user" };
-  });
+    .then(async response => {
+      return { token: response.data.token };
+    })
+    .catch(error => {
+      if (error.response) {
+        return { error: error.response.data.error }
+      }
+      return { error: "Unable to create new user" };
+    });
   return axiosResponse;
 };
+
+exports.getUser = async (bearerToken) => {
+  let axiosResponse = await API.get(`/api/user/${bearerToken}`, {
+    headers: {
+      Authorization: `Bearer ${bearerToken}`
+    }
+  })
+    .then(async response => {
+      return response;
+    })
+    .catch(error => {
+      if (error.message) {
+        return { error: error }
+      }
+      return { error: "Unable to get user" };
+    });
+
+  return axiosResponse;
+}
