@@ -74,6 +74,60 @@ const clubList = [
   }
 ]
 
+const postData = [
+    {
+        id: 1,
+        header: "Hey guys! Get ready for our final GBM!",
+        description: 'Its a me a Mario!',
+      },
+      {
+        id: 2,
+        header: 'See you all at the CS Picnic today :)',
+        description: 'Its a me a Mario!',
+      },
+      {
+        id: 3,
+        header: 'Its a me a Mario!',
+        description: 'Its a me a Mario!',
+      },
+      {
+        id: 4,
+        header: 'We Cool',
+        description: 'Its a me a Mario!',
+      },
+];
+
+const evData = [
+    {
+        id: 1,
+        name: "GBM 2",
+        date: "10/17/19",
+        time: "6:00",
+        location: "LIT 101"
+      },
+      {
+        id: 2,
+        name: "codeCollab",
+        date: "10/24/19",
+        time: "7:00",
+        location: "LIT 101"
+      },
+      {
+        id: 3,
+        name: "SEC X Microsoft",
+        date: "10/31/19",
+        time: "6:00",
+        location: "LIT 101"
+      },
+      {
+        id: 4,
+        name: "GBM 3",
+        date: "11/07/19",
+        time: "6:00",
+        location: "LIT 101"
+      },
+];
+
 export default class DiscoverGrid extends Component {
   constructor(props) {
     super(props);
@@ -86,14 +140,17 @@ export default class DiscoverGrid extends Component {
 
   handleClubSelect = () => {
     console.log("Clubs tapped boi");
-    this.props.navigation.navigate('Club');
+    this.props.navigation.navigate('Club', {
+      eventData: evData,
+      postData: postData
+    });
   }
 
   filterClubs = (text) => {
     searchText = text.toLowerCase();
     newFilterClubs = clubList.filter((club) => {
       return club.name.toLowerCase().includes(searchText) || club.category.toLowerCase().includes(searchText);
-    }); 
+    });
 
     this.setState({
       searchText: text,
@@ -222,7 +279,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     margin: 5,
-    color: "#636e72" 
+    color: "#636e72"
   },
   clubCategory: {
     display: 'flex',
@@ -261,4 +318,3 @@ const styles = StyleSheet.create({
   }
 
 });
-

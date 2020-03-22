@@ -1,9 +1,7 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View, Button, ScrollView, FlatList, AsyncStorage } from 'react-native';
-import { CreateEvent } from '../components/CreateEvent';
+import { Image, StyleSheet, Text, View, ScrollView, AsyncStorage } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import Preferences from './Preferences';
-import SettingScr from './SettingScr';
 import ProfileInfoScr from './ProfileInfoScr';
 import ClubsFollowScr from './ClubsFollowScr'
 import Tab from '../components/Tabs'
@@ -41,20 +39,11 @@ export default class ProfileScr extends React.Component {
 						<Image style={[style.profilePicture]} source={userProfilePicture.ProfilePic} />
 						<View style={style.profileInfo}>
 							<Text adjustsFontSizeToFit numberOfLines={2} style={style.textHeader}>Christian Sarmiento</Text>
-							<FontAwesome.Button name="edit" color="#2980b9" backgroundColor="#fff" style={{ alignSelf: 'center' }} onPress={() => {
-								this.props.navigation.navigate({ routeName: 'Edit' })
-							}}>
-								<Text style={{ color: "#2980b9", paddingRight: 5 }}>Edit Profile</Text>
-							</FontAwesome.Button>
-
-							<FontAwesome.Button name="sign-out" color="#F40" backgroundColor="#fff" style={{ alignSelf: 'center' }} onPress={this.signOut}>
-							<Text style={{ color: "#F40", paddingRight: 5 }}>Logout</Text>
-							</FontAwesome.Button>
 						</View>
 					</View>
 					<ProfileInfoScr/>
 				</View>
-				<Tab tab1={<Preferences/>} tab2={<ClubsFollowScr />}  />
+				<Tab tab1={<Preferences signOut={this.signOut}/>} tab2={<ClubsFollowScr />}  />
 			</ScrollView>
 		);
 	}

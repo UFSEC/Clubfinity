@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {TouchableOpacity,Text,View,StyleSheet,Dimensions} from 'react-native'
+import { TouchableOpacity, Text, View, StyleSheet, Dimensions } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons';
 import { withNavigation } from 'react-navigation';
 
@@ -10,7 +10,8 @@ import { withNavigation } from 'react-navigation';
         this.state = {
             admin:false
         }	
-	}
+    }
+    
     render() {
        
         return (
@@ -52,7 +53,7 @@ import { withNavigation } from 'react-navigation';
                     </Text>
                 </TouchableOpacity >
                
-                <TouchableOpacity style={styles.innerContainer}>
+                <TouchableOpacity style={styles.innerContainer} onPress={this.props.signOut}>
                 <FontAwesome size={24} name="sign-out" />
                     <Text style={styles.textStyle}>
                         Log Out
