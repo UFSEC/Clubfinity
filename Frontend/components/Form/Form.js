@@ -1,6 +1,9 @@
 import React from 'react';
-import { StyleSheet, View, Platform, StatusBar } from 'react-native';
+import { StyleSheet, View, Platform, StatusBar, Dimensions } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
+const {height, width } = Dimensions.get('window');
 
 export default class Form extends React.Component {
 	constructor(props) {
@@ -11,10 +14,13 @@ export default class Form extends React.Component {
 			<KeyboardAwareScrollView
 				extraScrollHeight={100}
 				enableOnAndroid={true}
-				contentContainerStyle={Platform.OS === "ios" && styles.contentContainer}>
-				<View style={Platform.OS === "ios" ? styles.iOScontainer : styles.androidContainer}>
+				showsVerticalScrollIndicator={false}
+				contentContainerStyle={Platform.OS === 'ios' ? styles.contentContainer : styles.androidContentContainer}>
+				{Platform.OS === 'ios' ? <SafeAreaView style={this.props.isCentered? styles.iOScontainerCentered : styles.iOScontainer}>
 					{this.props.children}
-				</View>
+				</SafeAreaView> :  <View style={this.props.isCentered? styles.androidContainerCentered : styles.androidContainer}>
+					{this.props.children}
+				</View>}
 			</KeyboardAwareScrollView>
 		);
 	}
@@ -23,13 +29,25 @@ export default class Form extends React.Component {
 const bgColor = "#FFF";
 const styles = StyleSheet.create({
 	contentContainer: {
+		flexGrow: 1,
+		justifyContent: 'center',
+		backgroundColor: bgColor,
+	},
+	androidContentContainer: {
+		flexGrow: 1,
+		justifyContent: 'center',
+		backgroundColor: bgColor,
+	},
+	iOScontainerCentered: {
 		flex: 1,
-		justifyContent: 'center'
+		flexDirection: 'column',
+		backgroundColor: bgColor,
+		paddingHorizontal: '5%',
+		justifyContent: 'center',
 	},
 	iOScontainer: {
 		flex: 1,
 		flexDirection: 'column',
-		justifyContent: 'center',
 		backgroundColor: bgColor,
 		paddingHorizontal: '5%',
 	},
@@ -37,9 +55,12 @@ const styles = StyleSheet.create({
 		flex: 1,
 		display: 'flex',
 		padding: 20,
-		justifyContent: 'center',
-		marginTop: StatusBar.currentHeight,
 		backgroundColor: bgColor,
 
+	},
+	androidContainerCentered: {
+		flex: 1,
+		justifyContent: 'center',
+		backgroundColor: bgColor,
 	}
 })

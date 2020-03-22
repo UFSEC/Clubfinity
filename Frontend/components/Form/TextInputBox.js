@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
 		margin: 5,
 		paddingHorizontal: 20,
 		paddingVertical: 10,
+		minHeight: 60,
 		maxHeight: 60,
 	},
 	android: {
@@ -41,6 +42,8 @@ const styles = StyleSheet.create({
 		margin: 5,
 		paddingHorizontal: 20,
 		paddingVertical: 10,
-		flex: 1
+		flex: 1,
+		minHeight: 50,
+		maxHeight: 50,
 	}
 })
