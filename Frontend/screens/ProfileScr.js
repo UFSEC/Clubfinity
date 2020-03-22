@@ -3,8 +3,9 @@ import { Image, StyleSheet, Text, View, ScrollView, AsyncStorage } from 'react-n
 import { FontAwesome } from '@expo/vector-icons';
 import Preferences from './Preferences';
 import ProfileInfoScr from './ProfileInfoScr';
-import ClubsFollowScr from './ClubsFollowScr'
-import Tab from '../components/Tabs'
+import ClubsFollowScr from './ClubsFollowScr';
+import { CreateEvent } from '../components/CreateEvent';
+import Tab from '../components/Tabs';
 // Add User API
 
 export default class ProfileScr extends React.Component {
@@ -42,6 +43,7 @@ export default class ProfileScr extends React.Component {
 						</View>
 					</View>
 					<ProfileInfoScr/>
+					<CreateEvent/>
 				</View>
 				<Tab tab1={<Preferences signOut={this.signOut}/>} tab2={<ClubsFollowScr />}  />
 			</ScrollView>

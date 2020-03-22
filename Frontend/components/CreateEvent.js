@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Dimensions, TextInput, View, Modal, Button, Text, TouchableHighlight, Alert, StyleSheet } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 class CreateEvent extends Component {
 
@@ -10,7 +11,10 @@ class CreateEvent extends Component {
             modalVisible: false,
             eventName: '',
             eventLocation: '',
-            eventDescription: ''
+            eventDescription: '',
+            date: new Date(),
+            mode: 'date',
+            show: false
         };
     }
 
@@ -19,6 +23,12 @@ class CreateEvent extends Component {
             modalVisible: !this.state.modalVisible,
         });
     }
+
+    showDatepicker = () => {
+        this.setState({ mode: 'date' });
+        this.setState({ show: !this.state.show });
+    };
+    
     handleCreateEvent = () => {
         // TODO: Ready to be sent to database!
         console.log('Event fields were successfully updated!');
@@ -60,6 +70,17 @@ class CreateEvent extends Component {
                                 value={this.state.eventName}
                                 onChangeText={(text) => this.setState({ eventName: text })}
                             />
+                            <View>
+                                <Button onPress={this.showDatepicker} title="Show date picker!" />
+                            </View>
+                            {this.state.show && (
+                                <DateTimePicker
+                                value={this.state.date}
+                                mode={this.state.mode}
+                                is24Hour={true}
+                                display="default"
+                                />
+                            )}
                             <TextInput
                                 style={styles.modalTextInput}
                                 placeholderTextColor={'#8E8E93'}
