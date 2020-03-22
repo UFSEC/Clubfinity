@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { Dimensions, TextInput, View, Modal, Button, Text, TouchableHighlight, Alert, StyleSheet } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import DatePicker from 'react-native-datepicker';
+import Form from '../components/Form/Form';
+import TextInputBox from '../components/Form/TextInputBox';
+
+const { height, width } = Dimensions.get('window');
 
 class CreateEvent extends Component {
 
@@ -35,38 +39,48 @@ class CreateEvent extends Component {
         console.log('eventDate: ' + this.state.eventDate);
     }
 
-    render() {
-        return (
-            <View>
-                <View style={styles.createEventBtn}>
-                    <FontAwesome.Button
-                        style={{ borderWidth: 1, borderColor: 'green' }}
-                        backgroundColor="transparent"
-                        name="plus-circle"
-                        color="green"
-                        onPress={() => { this.setModalVisible(true) }}
-                    >
-                        Create Event
-                    </FontAwesome.Button>
-                </View>
-                <Modal
-                    animationType="fade"
-                    transparent={true}
-                    visible={this.state.modalVisible}
-                    onRequestClose={() => {
+    setName = (text) => {
+        this.setState({ eventName: text })
+    }
+
+    setLocation = (text) => {
+        this.setState({ eventLocation: text })
+    }
+
+    setDescription = (text) => {
+        this.setState({ eventDescription: text })
+    }
+
+        render() {
+            return (
+                <View>
+                    <View style={styles.createEventBtn}>
+                        <FontAwesome.Button
+                            style={{ borderWidth: 1, borderColor: 'green' }}
+                            backgroundColor="transparent"
+                            name="plus-circle"
+                            color="green"
+                            onPress={() => { this.setModalVisible(true) }}
+                        >
+                            Create Event
+                        </FontAwesome.Button>
+                    </View>
+                    <Modal
+                        animationType="fade"
+                        transparent={true}
+                        visible={this.state.modalVisible}
+                        onRequestClose={() => {
                         Alert.alert('Modal has been closed.');
+                        
                     }}>
-                    <View>
-                        <View style={styles.modalContainer}>
+                    
+                        <Form isModal={true}>
                             <View style={{ marginBottom: 10, borderBottomWidth: 0.5, borderBottomColor: 'gray' }}>
                                 <Text style={styles.textTitle}>Create an Event</Text>
                             </View>
-                            <TextInput
-                                style={styles.modalTextInput}
+                            <TextInputBox
                                 placeholder="Event Name"
-                                placeholderTextColor={'#8E8E93'}
-                                value={this.state.eventName}
-                                onChangeText={(text) => this.setState({ eventName: text })}
+                                setValue={this.setName}
                             />
                             <DatePicker
                                 style={{width: 200}}
@@ -87,20 +101,15 @@ class CreateEvent extends Component {
                                 }}
                                 onDateChange={this.handleDateChange}
                             />
-                            <TextInput
-                                style={styles.modalTextInput}
-                                placeholderTextColor={'#8E8E93'}
+                            <TextInputBox
                                 placeholder="Location"
-                                value={this.state.eventLocation}
-                                onChangeText={(text) => this.setState({ eventLocation: text })}
+                                setValue={this.setLocation}
                             />
-                            <TextInput
-                                style={[styles.modalTextInput, {height: 100}]}
-                                numberOfLines={5}
-                                placeholderTextColor={'#8E8E93'}
+                            {/* TODO: Make this multiline */}
+                            <TextInputBox
                                 placeholder="Description"
-                                value={this.state.eventDescription}
-                                onChangeText={(text) => this.setState({ eventDescription: text })}
+                                setValue={this.setDescription}
+                                multiline={true}
                             />
                             <View style={styles.modalRow}>
                                 <FontAwesome.Button
@@ -120,12 +129,11 @@ class CreateEvent extends Component {
                                     Create Event
                                 </FontAwesome.Button>
                             </View>
-                        </View>
-                    </View>
-                </Modal>
-            </View>
-        );
-    }
+                        </Form>
+                    </Modal>
+                </View>
+            );
+        }
 }
 
 const styles = StyleSheet.create({
@@ -159,7 +167,7 @@ const styles = StyleSheet.create({
     modalButtons: {
         display: 'flex',
         alignItems: 'center',
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     textTitle: {
         textAlign: 'center',

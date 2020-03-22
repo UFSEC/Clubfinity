@@ -7,8 +7,12 @@ export default class TextInputBox extends React.Component {
 	}
 
 	render() {
+		const isMultilineEnabled = !!this.props.multiline
 		return (
 			<TextInput
+				numberOfLines={isMultilineEnabled ? (Platform.OS === 'ios' ? null : 5) : null}
+				minHeight={isMultilineEnabled ?  (20 * 5) : null}
+				multiline={isMultilineEnabled}
 				secureTextEntry={this.props.isHidden}
 				style={Platform.OS === "ios" ? styles.iOS : styles.android}
 				placeholderTextColor={'#8E8E93'}
@@ -41,6 +45,8 @@ const styles = StyleSheet.create({
 		margin: 5,
 		paddingHorizontal: 20,
 		paddingVertical: 10,
-		flex: 1
+		flex: 1,
+		flexGrow: 1,
+		maxHeight: 50,
 	}
 })

@@ -13,11 +13,14 @@ import {
 
 import AuthApi from "../api/AuthApi";
 import ErrorText from "../components/ErrorText";
+import UserContext from "../util/UserContext";
 
 export default class SigninScr extends React.Component {
   static navigationOptions = {
     header: null
   };
+
+  static contextType = UserContext;
 
   constructor(props) {
     super(props);
@@ -32,16 +35,21 @@ export default class SigninScr extends React.Component {
   // Make Auth request to backend and save token if correct credentials
   signIn = async event => {
     event.preventDefault();
+    const { setUser } = this.context;
 
     let authResponse = await AuthApi.authenticate(
       this.state.username,
       this.state.password
     );
+
     if (authResponse.token) {
       this.setState({
         showError: false,
         errorMessage: ""
       });
+      if (authResponse.user) {
+        setUser(authResponse.user);
+      }
       this.props.navigation.navigate("App");
     } else {
       this.setState({

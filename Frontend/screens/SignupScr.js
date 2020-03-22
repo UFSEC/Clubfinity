@@ -42,8 +42,6 @@ export default class SignupScr extends React.Component {
 
   // Renders Error text if name field input is incorrect
   errorName = (input) => {
-    console.log("---------------");
-    console.log(input);
     if (input == '' || !(/^[a-zA-Z()]+$/.test(input))) {
       return (
         <Text style={styles.error}>Please enter a valid name</Text>
@@ -116,48 +114,40 @@ export default class SignupScr extends React.Component {
   };
 
   setFirstName = (name) => {
-    console.log(name);
     this.setState({ firstName: name });
   }
 
   setLastName = (name) => {
-    console.log(name);
     this.setState({ lastName: name });
   }
 
   setMajor = (major) => {
-    console.log(major);
     this.setState({ major: major });
   }
 
   setYear = (year) => {
-    console.log(year);
     this.setState({ classYear: year });
   }
 
   setEmail = (email) => {
-    console.log(email);
     this.setState({ email: email});
   }
 
   setUserName = (username) => {
-    console.log(username);
     this.setState({ username: username})
   }
 
   setPassWord = (password) => {
-    console.log(password);
     this.setState({ password: password})
   }
 
   setConfirmPassword = (password) => {
-    console.log(password);
     this.setState({ verifyPassword: password})
   }
 
   render() {
     return (
-      <Form>
+      <Form isCentered={true}>
         <Text style={styles.header}>Sign Up</Text>
           <TextInputBox 
             placeholder={"First Name"}
@@ -170,7 +160,7 @@ export default class SignupScr extends React.Component {
             setValue={this.setLastName}
           />
           {this.state.triedSubmitting && this.errorName(this.state.lastName)}
-
+          
           <NativePicker 
             items={[
               { label: 'Computer Science', value: 'Computer Science' },
@@ -239,7 +229,6 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 22,
     fontWeight: 'bold',
-    marginVertical: 5,
     color: '#636e72',
     alignSelf: "center"
   },
