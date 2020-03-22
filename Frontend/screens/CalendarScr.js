@@ -13,7 +13,7 @@ import AgendaContainer from '../components/AgendaContainer';
 export default class CalendarScr extends React.Component {
 
   static navigationOptions = {
-    title: 'Clubfinity',
+    title: 'Calendar',
     headerStyle: { backgroundColor: '#7e947f' },
     headerTitleStyle: { color: "#ecf0f1", letterSpacing: 2 },
   }

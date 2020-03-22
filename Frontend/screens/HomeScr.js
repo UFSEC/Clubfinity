@@ -11,7 +11,7 @@ import DiscoverButton from "../components/DiscoverButton";
 // Event Feed App Module
 class HomeScr extends Component {
   static navigationOptions = {
-    title: 'Clubfinity',
+    title: 'Home',
     headerStyle: { backgroundColor: '#7e947f' },
     headerTitleStyle: { color: "#ecf0f1", letterSpacing: 2 },
   };
@@ -40,6 +40,7 @@ class HomeScr extends Component {
 
       return;
     }
+
 
     const events = await EventsApi.getFollowing(bearerToken);
     this.setState({
