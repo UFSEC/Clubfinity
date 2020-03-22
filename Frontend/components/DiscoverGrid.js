@@ -103,7 +103,7 @@ export default class DiscoverGrid extends Component {
               <Image
               // This retrieves the first instance of the club based on name if in Image File
                 source={{
-                  uri: clubFilterImage[item.name][0].src || "../assets/images/ClubfinityLogo.png"
+                  uri:  clubFilterImage[item.name].src || "../assets/images/ClubfinityLogo.png",
                  
                 }}
                 onError={(e)=>{e.target.onerror = null; e.target.src="../assets/images/ClubfinityLogo.png"}}
