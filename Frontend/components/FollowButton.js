@@ -9,12 +9,24 @@ import { FontAwesome, SimpleLineIcons } from '@expo/vector-icons';
 
 class FollowButton extends Component {
 
+  /* State for changing button*/
   constructor(props) {
       super(props);
       this.state = {
           isChecked: false
       };
   }
+
+  /* Handles when the button is clicked, changing the state*/
+  _eventHandler = () => {
+    this.props.clickHandler();
+    this.setState({
+        isChecked: !this.state.isChecked
+    });
+  }
+
+  /* Renders the "Follow" and "Following" buttons
+    changing the text and background color, etc. */
 
     render(){
       if(this.state.isChecked) {
@@ -38,12 +50,7 @@ class FollowButton extends Component {
         </SimpleLineIcons.Button>
       );
     }
-    _eventHandler = () => {
-        this.props.clickHandler();
-        this.setState({
-            isChecked: !this.state.isChecked
-        });
-    }
+
 }
 
 export default FollowButton;
