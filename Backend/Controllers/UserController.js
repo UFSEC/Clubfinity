@@ -1,26 +1,13 @@
 const userDAO = require("../DAO/UserDAO");
-const { validationResult, body } = require("express-validator");
-const { ValidationError, NotFoundError } = require( '../util/exceptions');
+const clubDAO = require("../DAO/ClubDAO");
+const { validationResult, body, query } = require("express-validator");
+const { ValidationError, NotFoundError } = require('../util/exceptions');
+const { catchErrors } = require('../util/httpUtil');
 
 const validateUserData = req => {
   const errors = validationResult(req);
   if (!errors.isEmpty())
     throw new ValidationError(errors.array());
-};
-
-const catchErrors = async (res, f) => {
-  try {
-    const result = await f();
-    res.send({ ok: true, data: result })
-  } catch (e) {
-    if (e instanceof ValidationError) {
-      res.status(e.httpErrorCode).send({ ok: false, error: e.message, validationErrors: e.validationErrors });
-    } else if (e instanceof NotFoundError) {
-      res.status(e.httpErrorCode).send({ ok: false, error: e.message });
-    } else {
-      res.status(400).send({ ok: false, error: e.message});
-    }
-  }
 };
 
 exports.getAll = async (req, res) => catchErrors(res, async () => {
@@ -36,6 +23,21 @@ exports.update = async (req, res) => catchErrors(res, async () => {
 
   return userDAO.update(req.userId, req.body);
 });
+
+exports.followClub = async (req, res) => catchErrors(res, async () => {
+  validateUserData(req);
+
+  const userId = req.userId;
+  const clubId = req.query.clubId;
+  const updatedUser = await userDAO.get(userId);
+
+  if (updatedUser.clubs.includes(clubId)) {
+    throw new Error("Club is already followed");
+  }
+
+  updatedUser.clubs.push(clubId);
+  return userDAO.update(req.userId, updatedUser);
+})
 
 exports.create = async (req, res) => catchErrors(res, async () => {
   validateUserData(req);
@@ -67,8 +69,24 @@ exports.validate = type => {
           .custom(password => validatePassword(password))
       ];
     }
+
+    case "validateFollow": {
+      return [
+        query("clubId", "Club Id missing").exists()
+          .custom(clubId => validateClubId(clubId))
+      ];
+    }
   }
 };
+
+// Club ID must belong to a club that exists in FB
+async function validateClubId(clubId) {
+  const clubExists = await clubDAO.exists(clubId);
+  if (!clubExists) {
+    throw new Error("Invalid Club ID. Club does not exist.")
+  }
+  return clubExists;
+}
 
 // Validating date
 // Format must be able to be parsed into Date class

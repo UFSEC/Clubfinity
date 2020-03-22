@@ -5,7 +5,11 @@ const Schema = new mongoose.Schema({
   location: String,
   major_of_interest: String,
   description: String,
-  date: String,
+  date: Date,
+  goingUsers: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }],
   club: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Club'
