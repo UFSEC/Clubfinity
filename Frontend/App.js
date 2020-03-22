@@ -11,10 +11,7 @@ console.disableYellowBox = true; // This is to switch off warning
 export default class App extends Component {
   state = {
     isLoadingComplete: true,
-    user: {
-      firstName: "Null", // Testing purposes TODO: change to null. 
-      lastName: "User"
-    },
+    user: null,
   };
 
   setUser = (newUser) => {
