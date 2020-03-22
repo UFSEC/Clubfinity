@@ -12,7 +12,7 @@ chai.use(chaiHttp);
 const currentUserParams = {
   name: { first: 'Current', last: 'User' },
   major: 'Computer Science',
-  year: '2021',
+  year: 2021,
   email: 'current@user.com',
   username: 'currentuser',
   password: 'password'
@@ -34,7 +34,7 @@ describe('Users', () => {
       const firstUser = {
         name: { first: 'Test', last: 'McTester' },
         major: 'Computer Science',
-        year: '2021',
+        year: 2021,
         email: 'test@test.com',
         username: 'tester',
         password: 'password123'
@@ -42,7 +42,7 @@ describe('Users', () => {
       const secondUser = {
         name: { first: 'Jimmy', last: 'John' },
         major: 'Computer Science',
-        year: '2021',
+        year: 2021,
         email: 'jimmy@john.com',
         username: 'jimmy',
         password: 'password123'
@@ -78,7 +78,7 @@ describe('Users', () => {
       const userData = {
         name: { first: 'Test', last: 'McTester' },
         major: 'Computer Science',
-        year: '2021',
+        year: 2021,
         email: 'test@test.com',
         username: 'tester',
         password: 'password123'
@@ -114,7 +114,7 @@ describe('Users', () => {
       const newUserData = {
         name: { first: 'New', last: 'User' },
         major: 'Computer Science',
-        year: '2021',
+        year: 2021,
         email: 'new@user.com',
         username: 'newusername',
         password: 'password'
@@ -137,7 +137,7 @@ describe('Users', () => {
       const userData = {
         name: { first: 'Test', last: 'McTester' },
         major: 'Computer Science',
-        year: '2021',
+        year: 2021,
         email: 'test@test.com',
         username: 'testmctester',
         password: 'password123'
@@ -183,7 +183,7 @@ describe('Users', () => {
       const shortUsernameAndPassword = {
         name: { first: 'Jimmy', last: 'John' },
         major: 'Computer Science',
-        year: '2021',
+        year: 2021,
         email: 'jimmy@john.com',
         username: 'short',
         password: 'short'
@@ -209,7 +209,7 @@ describe('Users', () => {
       const longUsername = {
         name: { first: 'Jimmy', last: 'John' },
         major: 'Computer Science',
-        year: '2021',
+        year: 2021,
         email: 'jimmy@john.com',
         username: 'thisusernameiswaytoolong',
         password: 'password123'
@@ -231,7 +231,7 @@ describe('Users', () => {
       const spacedUsername = {
         name: { first: 'Jimmy', last: 'John' },
         major: 'Computer Science',
-        year: '2021',
+        year: 2021,
         email: 'jimmy@john.com',
         username: 'a username',
         password: 'password123'
@@ -255,7 +255,7 @@ describe('Users', () => {
       const userData = {
         name: { first: 'Test', last: 'McTester' },
         major: 'Computer Science',
-        year: '2021',
+        year: 2021,
         email: 'test@test.com',
         username: 'tester',
         password: 'password123'
@@ -265,7 +265,7 @@ describe('Users', () => {
       const newUserData = {
         name: { first: 'DifferentFirst', last: 'DifferentLast' },
         major: 'Computer Science',
-        year: '2021',
+        year: 2021,
         email: 'different@different.com',
         username: 'diffusrnme',
         password: 'diffpassword'
@@ -288,7 +288,7 @@ describe('Users', () => {
       const userData = {
         name: { first: 'Test', last: 'McTester' },
         major: 'Computer Science',
-        year: '2021',
+        year: 2021,
         email: 'test@test.com',
         username: 'tester',
         password: 'password123'
