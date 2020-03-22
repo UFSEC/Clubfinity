@@ -12,8 +12,7 @@ class CreateEvent extends Component {
             eventName: '',
             eventLocation: '',
             eventDescription: '',
-            date: new Date(),
-            today: new Date()
+            eventDate: new Date()
         };
     }
 
@@ -24,16 +23,16 @@ class CreateEvent extends Component {
     }
 
     handleDateChange = (date) => {
-        this.setState({date: date});
-        console.log(this.state.date);
+        this.setState({eventDate: date});
     }
     
     handleCreateEvent = () => {
         // TODO: Ready to be sent to database!
-        console.log('Event fields were successfully updated!');
+        console.log('Event fields were successfully updated');
         console.log('eventName: ' + this.state.eventName);
         console.log('eventLocation: ' + this.state.eventLocation);
         console.log('eventDescription: ' + this.state.eventDescription);
+        console.log('eventDate: ' + this.state.eventDate);
     }
 
     render() {
