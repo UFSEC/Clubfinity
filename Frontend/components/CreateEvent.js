@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Dimensions, TextInput, View, Modal, Button, Text, TouchableHighlight, Alert, StyleSheet } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DatePicker from 'react-native-datepicker';
 
 class CreateEvent extends Component {
 
@@ -13,8 +13,7 @@ class CreateEvent extends Component {
             eventLocation: '',
             eventDescription: '',
             date: new Date(),
-            mode: 'date',
-            show: false
+            today: new Date()
         };
     }
 
@@ -24,10 +23,10 @@ class CreateEvent extends Component {
         });
     }
 
-    showDatepicker = () => {
-        this.setState({ mode: 'date' });
-        this.setState({ show: !this.state.show });
-    };
+    handleDateChange = (date) => {
+        this.setState({date: date});
+        console.log(this.state.date);
+    }
     
     handleCreateEvent = () => {
         // TODO: Ready to be sent to database!
@@ -70,17 +69,25 @@ class CreateEvent extends Component {
                                 value={this.state.eventName}
                                 onChangeText={(text) => this.setState({ eventName: text })}
                             />
-                            <View>
-                                <Button onPress={this.showDatepicker} title="Show date picker!" />
-                            </View>
-                            {this.state.show && (
-                                <DateTimePicker
-                                value={this.state.date}
-                                mode={this.state.mode}
-                                is24Hour={true}
-                                display="default"
-                                />
-                            )}
+                            <DatePicker
+                                style={{width: 200}}
+                                date={this.state.date}
+                                mode="datetime"
+                                confirmBtnText="Confirm"
+                                cancelBtnText="Cancel"
+                                customStyles={{
+                                dateIcon: {
+                                    position: 'absolute',
+                                    left: 0,
+                                    top: 4,
+                                    marginLeft: 0
+                                },
+                                dateInput: {
+                                    marginLeft: 36
+                                }
+                                }}
+                                onDateChange={this.handleDateChange}
+                            />
                             <TextInput
                                 style={styles.modalTextInput}
                                 placeholderTextColor={'#8E8E93'}
