@@ -3,7 +3,7 @@ import { Schema, Types } from 'mongoose';
 interface User {
   name: { first: string, last: string };
   major: string,
-  year: string,
+  year: Number,
   email: string;
   username: string;
   password: string;
@@ -15,7 +15,7 @@ const usersData: User[] = [
   {
     name: { first: 'Pablo', last: 'Estrada' },
     major: 'Computer Science',
-    year: '2022',
+    year: 2022,
     email: "pablo@gmail.com",
     username: "pablo",
     password: "123456",
@@ -25,7 +25,7 @@ const usersData: User[] = [
   {
     name: { first: 'Jake', last: 'Sully' },
     major: 'Computer Science',
-    year: '2022',
+    year: 2022,
     email: "jake@gmail.com",
     username: "jake",
     password: "123456",
@@ -35,7 +35,7 @@ const usersData: User[] = [
   {
     name: { first: 'Jerry', last: 'Smith' },
     major: 'Computer Science',
-    year: '2022',
+    year: 2022,
     email: "jerry@gmail.com",
     username: "jerry",
     password: "123456",
@@ -45,7 +45,7 @@ const usersData: User[] = [
   {
     name: { first: 'Amy', last: 'Stake' },
     major: 'Computer Science',
-    year: '2022',
+    year: 2022,
     email: "a.stake@gmail.com",
     username: "amy",
     password: "p@ssw0rd",
@@ -55,7 +55,7 @@ const usersData: User[] = [
   {
     name: { first: 'Anita', last: 'Braig' },
     major: 'Computer Science',
-    year: '2022',
+    year: 2022,
     email: "anitabraig@gmail.com",
     username: "anita",
     password: "Pets2000",
@@ -65,7 +65,7 @@ const usersData: User[] = [
   {
     name: { first: 'Dan', last: 'Geruss' },
     major: 'Computer Science',
-    year: '2022',
+    year: 2022,
     email: "dan@gmail.com",
     username: "dan",
     password: "notMyP@ssword",
@@ -75,7 +75,7 @@ const usersData: User[] = [
   {
     name: { first: 'Eve', last: 'O\'Lution' },
     major: 'Computer Science',
-    year: '2022',
+    year: 2022,
     email: "eve@gmail.com",
     username: "eve",
     password: "Eve1998",
@@ -85,7 +85,7 @@ const usersData: User[] = [
   {
     name: { first: 'Faye', last: 'Tallity' },
     major: 'Computer Science',
-    year: '2022',
+    year: 2022,
     email: "faye@gmail.com",
     username: "faye",
     password: "ClubFinity15",
@@ -95,7 +95,7 @@ const usersData: User[] = [
   {
     name: { first: 'Hayden', last: 'Seek' },
     major: 'Computer Science',
-    year: '2022',
+    year: 2022,
     email: "hayden@gmail.com",
     username: "hayden",
     password: "se56523",
@@ -105,7 +105,7 @@ const usersData: User[] = [
   {
     name: { first: 'Ho Lin', last: 'Wan' },
     major: 'Computer Science',
-    year: '2022',
+    year: 2022,
     email: "holin@gmail.com",
     username: "holin",
     password: "865542d",
@@ -115,7 +115,7 @@ const usersData: User[] = [
   {
     name: { first: 'Hope', last: 'Lescase' },
     major: 'Computer Science',
-    year: '2022',
+    year: 2022,
     email: "hope@gmail.com",
     username: "hope",
     password: "sd5f45a631",
@@ -125,7 +125,7 @@ const usersData: User[] = [
   {
     name: { first: 'Hugh', last: 'Cumber' },
     major: 'Computer Science',
-    year: '2022',
+    year: 2022,
     email: "hugh@gmail.com",
     username: "hugh",
     password: "ghf65hf",
@@ -135,7 +135,7 @@ const usersData: User[] = [
   {
     name: { first: 'Hugh', last: 'Mungous' },
     major: 'Computer Science',
-    year: '2022',
+    year: 2022,
     email: "hugh.M@gmail.com",
     username: "hugh53",
     password: "PowerRangers36",
@@ -145,7 +145,7 @@ const usersData: User[] = [
   {
     name: { first: 'Ira', last: 'Grett' },
     major: 'Computer Science',
-    year: '2022',
+    year: 2022,
     email: "ira@gmail.com",
     username: "ira",
     password: "CareBear1532",
@@ -155,7 +155,7 @@ const usersData: User[] = [
   {
     name: { first: 'Jay', last: 'Walker' },
     major: 'Computer Science',
-    year: '2022',
+    year: 2022,
     email: "jay@gmail.com",
     username: "jay",
     password: "Jif321f",
@@ -165,7 +165,7 @@ const usersData: User[] = [
   {
     name: { first: 'Milly', last: 'Meter' },
     major: 'Computer Science',
-    year: '2022',
+    year: 2022,
     email: "milly@gmail.com",
     username: "milly",
     password: "sdkljfaj5",
@@ -175,7 +175,7 @@ const usersData: User[] = [
   {
     name: { first: 'Sabina', last: 'Pleasure' },
     major: 'Computer Science',
-    year: '2022',
+    year: 2022,
     email: "sabina@gmail.com",
     username: "sabina",
     password: "asdfghjkl123",
@@ -185,7 +185,7 @@ const usersData: User[] = [
   {
     name: { first: 'sally', last: 'Mander' },
     major: 'Computer Science',
-    year: '2022',
+    year: 2022,
     email: "sally@gmail.com",
     username: "sally",
     password: "qwert123",
@@ -195,7 +195,7 @@ const usersData: User[] = [
   {
     name: { first: 'Shirley', last: 'Knott' },
     major: 'Computer Science',
-    year: '2022',
+    year: 2022,
     email: "shirley@gmail.com",
     username: "shirley",
     password: "poiu987",
@@ -205,7 +205,7 @@ const usersData: User[] = [
   {
     name: { first: 'Sue', last: 'Denley' },
     major: 'Computer Science',
-    year: '2022',
+    year: 2022,
     email: "sue@gmail.com",
     username: "sue",
     password: "SUe99f",
@@ -215,7 +215,7 @@ const usersData: User[] = [
   {
     name: { first: 'Tina', last: 'Beense' },
     major: 'Computer Science',
-    year: '2022',
+    year: 2022,
     email: "tina@gmail.com",
     username: "tina",
     password: "TBeense658",
@@ -225,7 +225,7 @@ const usersData: User[] = [
   {
     name: { first: 'Tom', last: 'Mawtow' },
     major: 'Computer Science',
-    year: '2022',
+    year: 2022,
     email: "tom@gmail.com",
     username: "tom",
     password: "lastMawtow5",
@@ -235,7 +235,7 @@ const usersData: User[] = [
   {
     name: { first: 'Wanda', last: 'phul' },
     major: 'Computer Science',
-    year: '2022',
+    year: 2022,
     email: "wanda@gmail.com",
     username: "wanda",
     password: "WonderfulIsMyName",
