@@ -32,8 +32,8 @@ exports.getUser = async (bearerToken) => {
       return response;
     })
     .catch(error => {
-      if (error.response) {
-        return { error: error.response.data.error }
+      if (error.message) {
+        return { error: error }
       }
       return { error: "Unable to get user" };
     });
