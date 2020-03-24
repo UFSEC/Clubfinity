@@ -1,4 +1,4 @@
-import { API } from './BaseApi';
+import { API } from "./BaseApi";
 
 exports.getFollowing = async bearerToken => {
   let resp = await API.get(`/api/club/following`, {
@@ -6,6 +6,34 @@ exports.getFollowing = async bearerToken => {
       Authorization: `Bearer ${bearerToken}`
     }
   });
-
   return resp.data.data;
+};
+
+exports.createClub = async (
+  bearerToken,
+  clubName,
+  clubCategory,
+  clubDescription,
+  tags,
+  facebookLink
+) => {
+  let newClubData = {
+    name: clubName,
+    category: clubCategory,
+    description: clubDescription,
+    tags: tags
+  };
+  if (facebookLink) {
+    newClubData["facebook_link"] = facebookLink;
+  }
+  try {
+    let response = await API.post(`/api/club/`, newClubData, {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`
+      }
+    });
+    return { successfulRequest: true };
+  } catch (error) {
+    return { successfulRequest: false, error: error };
+  }
 };

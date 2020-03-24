@@ -9,6 +9,9 @@ const Schema = new mongoose.Schema({
   facebook_link: String,
   description: String,
   category: String,
+  tags: [{
+    type: String
+  }],
   events: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Event'
