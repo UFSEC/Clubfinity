@@ -5,6 +5,7 @@ import EventCard from '../components/EventCard';
 import { Octicons }  from '@expo/vector-icons';
 import SmallEventCard from '../components/SmallEventCard';
 import Post from '../components/Post';
+import FollowButton from '../components/FollowButton';
 
 const {height, width } = Dimensions.get('window');
 
@@ -14,6 +15,22 @@ export default class ClubScr extends React.Component {
         headerStyle: { backgroundColor: '#7e947f' },
         headerTitleStyle: { color: "#ecf0f1", letterSpacing: 2 },
     }
+
+     //State for changing button
+     constructor(props) {
+      super(props);
+      this.state = {
+        goingChecked: false,
+      }
+    }
+
+  /* Handles when the button is clicked, changing the state */
+  followBtnHandler = () => {
+    this.setState({
+      goingChecked: !this.state.goingChecked
+    });
+  }
+
 
     render() {
       const { navigation } = this.props;
@@ -26,8 +43,18 @@ export default class ClubScr extends React.Component {
               <Image style={{ flex: 1, height: undefined, width: undefined, resizeMode: 'cover' }} source={require('../assets/images/clubLogo.jpg')} />
           </View>
           <View style={{ width: width, height: 100}}>
-            <Text style={club.title}>Software Engineering Club</Text>
-            <Text style={club.description}>The coolest club on campus. Period.</Text>
+          <View style={{flexDirection: 'row', width: width}}>
+            <View style={{width: '70%'}}>
+              <Text style={club.title}>Software Engineering Club</Text>
+            </View>
+            <View style={{ alignSelf: "center", alignItems: 'center'}}>
+                <FollowButton clickHandler={this.followBtnHandler}/>
+            </View>
+          </View>
+          {/* Club description */}
+          <View>
+            <Text style={club.description}>The coolest club on campus. Period.The coolest club on campus. Period.The coolest club on campus. Period.</Text>
+          </View>
           </View>
           <Text style={{ fontSize: 18, fontWeight: '700', paddingHorizontal: 20,
                   marginTop: 5, marginBottom: 20}}>Events Happening</Text>
