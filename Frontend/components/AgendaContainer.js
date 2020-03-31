@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-	StyleSheet,
-	Text,
-	FlatList,
-	View,
-} from 'react-native';
+import { FlatList, StyleSheet, Text, View, } from 'react-native';
 import AgendaCard from '../components/AgendaCard';
 
 export default class AgendaContainer extends React.Component {
@@ -13,28 +8,28 @@ export default class AgendaContainer extends React.Component {
 	}
 
 	// Determine Events to display based on selected date
-	getCurrentEvents = () => {
-		const curDate = new Date();
-		const dateStr = `${curDate.getFullYear()}-0${curDate.getMonth() + 1}-${curDate.getDate()}`;
-		if (this.props.datePressed.length != 0) {
-			curEventsArr = this.props.eventsArr.filter(event => event.date === this.props.datePressed);
-		} else {
-			curEventsArr = this.props.eventsArr.filter(event => event.date === dateStr);
-		}
-		return curEventsArr;
-	}
+	getEventsForSelectedDate() {
+    return this.props.events.filter(e => this.dateIsEqual(e.date, this.props.selectedDate));
+	};
+
+	dateIsEqual(first, second) {
+	  return first.year === second.year &&
+           first.month === second.month &&
+           first.day === second.day;
+  }
 
 	render() {
-		let curEventsArr = this.getCurrentEvents(curEventsArr);
+    const selectedEvents = this.getEventsForSelectedDate();
+
 		return (
 			<View style={style.agendaContainer}>
-				{(curEventsArr.length != 0 &&
+				{(selectedEvents.length !== 0 &&
 					<Text style={style.agendaSubheading}>Events happening today</Text> ) ||
 					<Text style={style.agendaSubheading}>Sorry! No Events today</Text>
 				}
 				<FlatList
-					data={curEventsArr}
-					keyExtractor={(item) => item.id.toString()}
+					data={selectedEvents}
+					keyExtractor={(item) => item._id.toString()}
 					renderItem={({ item }) =>
 						<AgendaCard data={item} />
 

@@ -17,7 +17,8 @@
     "react-native-calendars": "^1.22.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.1",
     "react-native-picker-select": "^6.5.0",
-    "react-navigation": "^3.0.0"
+    "react-navigation": "^3.0.0",
+    "luxon": "^1.22.2"
   },
   "devDependencies": {
     "babel-preset-expo": "^5.0.0"
