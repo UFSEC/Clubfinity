@@ -34,7 +34,7 @@ export default class CalendarScr extends React.Component {
   async fetchEvents() {
     const bearerToken = await AsyncStorage.getItem('userToken');
 
-    return EventsApi.getInMonth(bearerToken, new Date())
+    return EventsApi.getInMonth(bearerToken, DateTime.local())
   }
 
   handleDayPress(day) {

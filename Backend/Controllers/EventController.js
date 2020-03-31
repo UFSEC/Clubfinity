@@ -1,3 +1,4 @@
+const { DateTime } = require('luxon');
 const eventDAO = require("../DAO/EventDAO");
 const { validationResult, body, param } = require("express-validator");
 const { ValidationError } = require( '../util/exceptions');
@@ -24,7 +25,7 @@ exports.getFollowing = async (req, res) => catchErrors(res, async () => {
 });
 
 exports.getInMonth = async (req, res) => catchErrors(res, async () => {
-  const searchDate = new Date(req.params['date']);
+  const searchDate = DateTime.fromISO(req.params['date']);
   const user = await getCurrentUser(req);
 
   switch (req.query.filter) {

@@ -20,14 +20,16 @@
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "request": "^2.88.0",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "luxon": "^1.22.2"
   },
   "devDependencies": {
     "ts-node": "^8.3.0",
     "typescript": "^3.6.2",
     "mocha": "^6.2.2",
     "chai": "^4.2.0",
-    "chai-http": "^4.3.0"
+    "chai-http": "^4.3.0",
+    "@types/luxon": "^1.22.0"
   },
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha",

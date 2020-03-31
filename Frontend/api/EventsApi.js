@@ -12,7 +12,7 @@ exports.getFollowing = async bearerToken => {
 };
 
 exports.getInMonth = async (bearerToken, date) => {
-  let resp = await API.get(`/api/event/inMonth/${date.toISOString()}?filter=following`, {
+  const resp = await API.get(`/api/event/inMonth/${date.toISODate()}?filter=following`, {
     headers: {
       Authorization: `Bearer ${bearerToken}`
     }

@@ -5,6 +5,7 @@ const clubDAO = require('../DAO/ClubDAO');
 const eventDAO = require('../DAO/EventDAO');
 const authUtil = require('../util/authUtil');
 const { TestHttp, isOk, isNotOk } = require('./testHelper');
+const { DateTime } = require('luxon');
 
 const chai = require('chai');
 let chaiHttp = require('chai-http');
@@ -46,7 +47,7 @@ const baseEventParams = {
   location: 'Marston',
   major_of_interest: 'Computer Science',
   description: 'This is an event',
-  date: '2020-01-01',
+  date: DateTime.local(2020, 1, 1),
   club: '',
   goingUsers: []
 };
@@ -78,37 +79,37 @@ describe('Events', () => {
       await eventDAO.create({
         ...baseEventParams,
         name: 'In month',
-        date: '2020-01-01',
+        date: DateTime.local(2020, 1, 1),
         club: clubId
       });
       await eventDAO.create({
         ...baseEventParams,
         name: 'Another in month',
-        date: '2020-01-31',
+        date: DateTime.local(2020, 1, 31),
         club: clubId
       });
       await eventDAO.create({
         ...baseEventParams,
         name: 'Previous month',
-        date: '2019-12-01',
+        date: DateTime.local(2019, 12, 1),
         club: clubId
       });
       await eventDAO.create({
         ...baseEventParams,
         name: 'Next month',
-        date: '2020-02-10',
+        date: DateTime.local(2020, 2, 10),
         club: clubId
       });
       await eventDAO.create({
         ...baseEventParams,
         name: 'Not following',
-        date: '2020-01-02',
+        date: DateTime.local(2020, 1, 2),
         club: notFollowingClubId
       });
       await eventDAO.create({
         ...baseEventParams,
         name: 'Going event',
-        date: '2020-01-03',
+        date: DateTime.local(2020, 1, 3),
         club: notFollowingClubId,
         goingUsers: [
           currentUser._id

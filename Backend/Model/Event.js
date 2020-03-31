@@ -1,3 +1,4 @@
+const { DateTime } = require('luxon');
 const mongoose = require("mongoose");
 
 const Schema = new mongoose.Schema({
@@ -5,7 +6,11 @@ const Schema = new mongoose.Schema({
   location: String,
   major_of_interest: String,
   description: String,
-  date: Date,
+  date: {
+    type: Date,
+    set: dt => dt.toJSDate(),
+    get: d => DateTime.fromJSDate(d)
+  },
   goingUsers: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
