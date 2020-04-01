@@ -1,5 +1,114 @@
 export default Majors = [
-    { label: "Computer Science", value: "Computer Science" },
-    { label: "Finance", value: "Finance" },
-    { label: "Industrial Engineering", value: "Industrial Engineering" }
-]
+  { label: "Accounting", value: "Accounting" },
+  { label: "Acting", value: "Acting" },
+  { label: "Africana Studies", value: "Africana Studies" },
+  { label: "American Studies", value: "American Studies" },
+  { label: "Anthropology", value: "Anthropology" },
+  { label: "Art History", value: "Art History" },
+  { label: "Biochemistry", value: "Biochemistry" },
+  { label: "Bioinformatics", value: "Bioinformatics" },
+  { label: "Biology", value: "Biology" },
+  { label: "Business Analytics", value: "Business Analytics" },
+  { label: "Chemistry", value: "Chemistry" },
+  { label: "Chiropractic", value: "Chiropractic" },
+  { label: "Clinical Lab Science", value: "Clinical Lab Science" },
+  { label: "Communication Arts", value: "Communication Arts" },
+  { label: "Computer Science", value: "Computer Science" },
+  { label: "Contemplative Studies", value: "Contemplative Studies" },
+  { label: "Contemporary Arts", value: "Contemporary Arts" },
+  { label: "Creative Writing", value: "Creative Writing" },
+  { label: "Crime and Justice Studies", value: "Crime and Justice Studies" },
+  { label: "Data Science", value: "Data Science" },
+  { label: "Dentistry", value: "Dentistry" },
+  { label: "Design / Technical Theater", value: "Design / Technical Theater" },
+  { label: "Digital Filmmaking", value: "Digital Filmmaking" },
+  { label: "Directing", value: "Directing" },
+  { label: "Drawing and Painting", value: "Drawing and Painting" },
+  { label: "East Asian Studies", value: "East Asian Studies" },
+  { label: "Economics", value: "Economics" },
+  { label: "Education Studies", value: "Education Studies" },
+  { label: "Electronic Art & Animatio", value: "Electronic Art & Animatio" },
+  { label: "Elementary Education", value: "Elementary Education" },
+  { label: "Engineering Physics", value: "Engineering Physics" },
+  {
+    label: "English and Literary Studies",
+    value: "English and Literary Studies"
+  },
+  { label: "Environmental Science", value: "Environmental Science" },
+  { label: "Environmental Studies", value: "Environmental Studies" },
+  { label: "Ethnicity & Race Studies", value: "Ethnicity & Race Studies" },
+  { label: "Finance", value: "Finance" },
+  { label: "Food Studies", value: "Food Studies" },
+  { label: "French", value: "French" },
+  { label: "Gender & Sexuality Studies", value: "Gender & Sexuality Studies" },
+  { label: "Gerontology", value: "Gerontology" },
+  {
+    label: "Global Communication and Media",
+    value: "Global Communication and Media"
+  },
+  { label: "History", value: "History" },
+  { label: "International Business", value: "International Business" },
+  { label: "International Studies", value: "International Studies" },
+  { label: "Italian", value: "Italian" },
+  { label: "Journalism", value: "Journalism" },
+  {
+    label: "Latino/a and Latin American Studies",
+    value: "Latino/a and Latin American Studies"
+  },
+  { label: "Law and Society", value: "Law and Society" },
+  { label: "Liberal Studies", value: "Liberal Studies" },
+  { label: "Management", value: "Management" },
+  { label: "Marketing", value: "Marketing" },
+  {
+    label: "Master of Business Administration",
+    value: "Master of Business Administration"
+  },
+  { label: "Mathematics", value: "Mathematics" },
+  { label: "Medical Imaging Science", value: "Medical Imaging Science" },
+  {
+    label: "Museum and Exhibition Studies",
+    value: "Museum and Exhibition Studies"
+  },
+  { label: "Music", value: "Music" },
+  { label: "Neuroscience", value: "Neuroscience" },
+  { label: "Nursing", value: "Nursing" },
+  { label: "Optometry", value: "Optometry" },
+  { label: "Philosophy", value: "Philosophy" },
+  { label: "Photography", value: "Photography" },
+  { label: "Physical Therapy", value: "Physical Therapy" },
+  { label: "Plant Studies", value: "Plant Studies" },
+  { label: "Podiatric Medicine", value: "Podiatric Medicine" },
+  { label: "Political Science", value: "Political Science" },
+  {
+    label: "Professional Communications",
+    value: "Professional Communications"
+  },
+  { label: "Psychology", value: "Psychology" },
+  { label: "Public Policy", value: "Public Policy" },
+  { label: "Public Sociology", value: "Public Sociology" },
+  { label: "Social Work", value: "Social Work" },
+  { label: "Social Work", value: "Social Work" },
+  { label: "Sociology", value: "Sociology" },
+  {
+    label: "Spanish for Health Care and Human Services Professionals",
+    value: "Spanish for Health Care and Human Services Professionals"
+  },
+  { label: "Spanish Language Studies", value: "Spanish Language Studies" },
+  { label: "Special Education (MASE)", value: "Special Education (MASE)" },
+  { label: "Sports Management, Minor", value: "Sports Management, Minor" },
+  { label: "Substance Use Disorders", value: "Substance Use Disorders" },
+  { label: "Sustainability", value: "Sustainability" },
+  { label: "Teacher Education", value: "Teacher Education" },
+  { label: "Theater", value: "Theater" },
+  { label: "Theater Studies", value: "Theater Studies" },
+  { label: "Visual Arts", value: "Visual Arts" },
+  {
+    label: "Visual Communication Design",
+    value: "Visual Communication Design"
+  },
+  {
+    label: "Women's, Gender and Sexuality Studies",
+    value: "Women's, Gender and Sexuality Studies"
+  },
+  { label: "Writing", value: "Writing" }
+];
