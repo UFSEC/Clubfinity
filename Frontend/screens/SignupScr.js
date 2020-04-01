@@ -7,11 +7,14 @@ import AuthApi from "../api/AuthApi";
 import UserApi from "../api/UserApi";
 import Majors from "../data/Majors"
 import ClassYears from "../data/ClassYears"
+import UserContext from "../util/UserContext";
 
 export default class SignupScr extends React.Component {
   static navigationOptions = {
     header: null
   };
+
+  static contextType = UserContext;
 
   // TODO
   // * Refactor backend User model to have:
@@ -91,6 +94,8 @@ export default class SignupScr extends React.Component {
       errors: { arePresent: false, data: validRequest.errors }
     });
 
+    const { setUser } = this.context;
+
     let createUserResponse = await UserApi.createUser(
       { first: this.state.firstName, last: this.state.lastName },
       this.state.username,
@@ -109,6 +114,7 @@ export default class SignupScr extends React.Component {
       this.state.password
     );
     if (authResponse.token) {
+      setUser(authResponse.user);
       await this.props.navigation.navigate("App");
     } else {
       console.log(authResponse.error);
