@@ -69,9 +69,7 @@ exports.validate = type => {
       return [
         body("name.first", "First name does not exist").exists(),
         body("name.last", "Last name does not exist").exists(),
-        body("major", "Major does not exist or is invalid")
-          .exists()
-          .custom(major => validateMajor(major)),
+        body("major", "Major does not exist or is invalid").exists(),
         body("year", "Year does not exist or is invalid")
           .exists()
           .custom(year => validateYear(year)),
@@ -105,15 +103,6 @@ async function validateClubId(clubId) {
   return clubExists;
 }
 
-// Validating date
-// Format must be able to be parsed into Date class
-function validateDate(date) {
-  if (new Date(date) === "Invalid Date" || isNaN(new Date(date))) {
-    throw new Error("Invalid date string");
-  }
-  return true;
-}
-
 // Username must be within 6 and 20 characters
 // Username must not contain empty spaces
 function validateUser(user) {
@@ -133,14 +122,6 @@ function validateUser(user) {
 function validatePassword(password) {
   if (password.length < 6) {
     throw new Error("Password is too short (less than 6 characters)");
-  }
-  return true;
-}
-
-// Major cannot be an empty string
-function validateMajor(major) {
-  if (major === '') {
-    throw new Error("Major cannot be empty");
   }
   return true;
 }
