@@ -11,7 +11,8 @@ chai.use(chaiHttp);
 
 const currentUserParams = {
   name: { first: 'Current', last: 'User' },
-  dob: '2019-01-01',
+  major: 'Computer Science',
+  year: 2021,
   email: 'current@user.com',
   username: 'currentuser',
   password: 'password'
@@ -32,14 +33,16 @@ describe('Users', () => {
     it('returns all users', async () => {
       const firstUser = {
         name: { first: 'Test', last: 'McTester' },
-        dob: '2019-01-01',
+        major: 'Computer Science',
+        year: 2021,
         email: 'test@test.com',
         username: 'tester',
         password: 'password123'
       };
       const secondUser = {
         name: { first: 'Jimmy', last: 'John' },
-        dob: '2000-02-02',
+        major: 'Computer Science',
+        year: 2021,
         email: 'jimmy@john.com',
         username: 'jimmy',
         password: 'password123'
@@ -74,7 +77,8 @@ describe('Users', () => {
     it('returns a single user by id', async () => {
       const userData = {
         name: { first: 'Test', last: 'McTester' },
-        dob: '2019-01-01',
+        major: 'Computer Science',
+        year: 2021,
         email: 'test@test.com',
         username: 'tester',
         password: 'password123'
@@ -109,7 +113,8 @@ describe('Users', () => {
     it('should create a user and return it', async () => {
       const newUserData = {
         name: { first: 'New', last: 'User' },
-        dob: '2000-01-01',
+        major: 'Computer Science',
+        year: 2021,
         email: 'new@user.com',
         username: 'newusername',
         password: 'password'
@@ -131,7 +136,8 @@ describe('Users', () => {
     it('should return an error if username is taken', async () => {
       const userData = {
         name: { first: 'Test', last: 'McTester' },
-        dob: '2019-01-01',
+        major: 'Computer Science',
+        year: 2021,
         email: 'test@test.com',
         username: 'testmctester',
         password: 'password123'
@@ -176,7 +182,8 @@ describe('Users', () => {
     it('should return an error of either the password or username is too short', async () => {
       const shortUsernameAndPassword = {
         name: { first: 'Jimmy', last: 'John' },
-        dob: '2000-02-02',
+        major: 'Computer Science',
+        year: 2021,
         email: 'jimmy@john.com',
         username: 'short',
         password: 'short'
@@ -201,7 +208,8 @@ describe('Users', () => {
     it('should return an error when the username is too long', async () => {
       const longUsername = {
         name: { first: 'Jimmy', last: 'John' },
-        dob: '2000-02-02',
+        major: 'Computer Science',
+        year: 2021,
         email: 'jimmy@john.com',
         username: 'thisusernameiswaytoolong',
         password: 'password123'
@@ -222,7 +230,8 @@ describe('Users', () => {
     it('should return an error when the username has a space', async () => {
       const spacedUsername = {
         name: { first: 'Jimmy', last: 'John' },
-        dob: '2000-02-02',
+        major: 'Computer Science',
+        year: 2021,
         email: 'jimmy@john.com',
         username: 'a username',
         password: 'password123'
@@ -239,34 +248,14 @@ describe('Users', () => {
       resp.body.validationErrors.should.have.length(1);
       resp.body.validationErrors[0].msg.should.equal('Username contains a space');
     });
-
-    it('should return an error when the dob is incorrectly formatted', async () => {
-      const incorrectDateFormat = {
-        name: { first: 'Jimmy', last: 'John' },
-        dob: '2000-0202',
-        email: 'jimmy@john.com',
-        username: 'ausername',
-        password: 'password123'
-      };
-
-      const resp = await chai.request(app)
-        .post('/api/user')
-        .auth(currentUserToken, {type: 'bearer'})
-        .send(incorrectDateFormat);
-
-      resp.should.have.status(422);
-      resp.body.ok.should.be.false;
-
-      resp.body.validationErrors.should.have.length(1);
-      resp.body.validationErrors[0].msg.should.equal('Invalid date string');
-    });
   });
 
   describe('PUT /user/:id', async () => {
     it('should update a user and return the updated version', async () => {
       const userData = {
         name: { first: 'Test', last: 'McTester' },
-        dob: '2019-01-01',
+        major: 'Computer Science',
+        year: 2021,
         email: 'test@test.com',
         username: 'tester',
         password: 'password123'
@@ -275,7 +264,8 @@ describe('Users', () => {
 
       const newUserData = {
         name: { first: 'DifferentFirst', last: 'DifferentLast' },
-        dob: '2019-02-02',
+        major: 'Computer Science',
+        year: 2021,
         email: 'different@different.com',
         username: 'diffusrnme',
         password: 'diffpassword'
@@ -297,7 +287,8 @@ describe('Users', () => {
     it('should delete a user and return it', async () => {
       const userData = {
         name: { first: 'Test', last: 'McTester' },
-        dob: '2019-01-01',
+        major: 'Computer Science',
+        year: 2021,
         email: 'test@test.com',
         username: 'tester',
         password: 'password123'

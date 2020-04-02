@@ -2,10 +2,11 @@ import { API } from "./BaseApi";
 
 // TODO:
 // Refactor backend to remove username/email
-exports.createUser = async (name, username, password, email) => {
+exports.createUser = async (name, major, year, username, password, email) => {
   let axiosResponse = await API.post('/api/user', {
     name: name,
-    dob: '2000-01-01',
+    major: major,
+    year: year,
     email: email,
     username: username,
     password: password
