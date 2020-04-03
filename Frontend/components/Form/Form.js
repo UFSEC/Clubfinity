@@ -9,8 +9,23 @@ export default class Form extends React.Component {
 	constructor(props) {
 		super(props);
 	}
+	
 	render() {
+		const isModal = this.props.isModal;
+		if(isModal) {
 		return (
+			<View
+				style={Platform.OS === 'ios' ?  styles.contentContainerModal : styles.androidContentContainerModal}>
+				{Platform.OS === 'ios' ? <SafeAreaView style={this.props.isCentered? styles.iOScontainerCentered : styles.iOScontainer}>
+					{this.props.children}
+				</SafeAreaView> :  <View style={this.props.isCentered? styles.androidContainerCentered : styles.androidContainer}>
+					{this.props.children}
+				</View>}
+			</View>
+		);
+		}
+		else {
+			return(
 			<KeyboardAwareScrollView
 				extraScrollHeight={100}
 				enableOnAndroid={true}
@@ -22,7 +37,8 @@ export default class Form extends React.Component {
 					{this.props.children}
 				</View>}
 			</KeyboardAwareScrollView>
-		);
+			);
+		}
 	}
 }
 
@@ -33,10 +49,43 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		backgroundColor: bgColor,
 	},
+	contentContainerModal: {
+		flexGrow: 1,
+		justifyContent: 'center',
+		backgroundColor: '#fff',
+        marginVertical: height * 0.25,
+        marginHorizontal: width * 0.05,
+        borderWidth: 1,
+        borderColor: "#fff",
+        borderRadius: 5,
+        borderWidth: 4,
+        padding: 15,
+        elevation: 3,
+        shadowColor: 'black',
+        shadowOpacity: 1,
+        shadowRadius: 200
+	},
 	androidContentContainer: {
 		flexGrow: 1,
 		justifyContent: 'center',
 		backgroundColor: bgColor,
+	},
+	androidContentContainerModal: {
+		width: width * .90,
+		height: height * .7,
+		justifyContent: 'center',
+		backgroundColor: '#fff',
+        marginVertical: Dimensions.get('window').height * 0.15,
+        marginHorizontal: Dimensions.get('window').width * 0.05,
+        borderWidth: 1,
+        borderColor: "#fff",
+        borderRadius: 5,
+        borderWidth: 4,
+        padding: 15,
+        elevation: 3,
+        shadowColor: 'black',
+        shadowOpacity: 1,
+        shadowRadius: 200
 	},
 	iOScontainerCentered: {
 		flex: 1,
@@ -53,7 +102,7 @@ const styles = StyleSheet.create({
 	},
 	androidContainer: {
 		flex: 1,
-		display: 'flex',
+		flexDirection: 'column',
 		padding: 20,
 		backgroundColor: bgColor,
 
