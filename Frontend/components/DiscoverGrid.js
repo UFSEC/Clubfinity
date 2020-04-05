@@ -3,6 +3,7 @@ import {
   Text,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
   TextInput,
   View,
   FlatList,
@@ -10,90 +11,108 @@ import {
   Dimensions
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { API } from '../api/BaseApi';
+import clubList from '../assets/images/clubimages/FetchImage'
 
 // This isn't arbitrary and is instead depends on padding/margin b/w cards. Must be made a constant one design finalized!
 const GRID_ITEM_WIDTH = Dimensions.get('screen').width / 2 - 22;
 
-// Dummy list of clubs
-const clubList = [
-  {
-    id: 111,
-    name: " Puppy Club",
-    category: "Cute",
-    categoryColor: "#5E5CE6",
-    src: "https://i.ibb.co/F0hqL1X/puppy-club-img.jpg",
-  },
-  {
-    id: 0,
-    name: "SEC",
-    category: " Computer Science",
-    categoryColor: "#FF9F0A",
-    src: "https://i.ibb.co/F4rHdKN/sec-club-img.jpg",
-  },
-  {
-    id: 1,
-    name: "ACM",
-    category: " Computer Science",
-    categoryColor: "#FF9F0A",
-    src: "https://i.ibb.co/wLMHZHK/acm-club-img.png",
-  },
-  {
-    id: 2,
-    name: "ACE",
-    category: "Computer Engineering",
-    categoryColor: "#FF9F0A",
-    src: "https://i.ibb.co/cwJtrNy/ace-club-img.jpg",
-  },
-  {
-    id: 3,
-    name: "WiCSE",
-    category: "Computer Science",
-    categoryColor: "#FF9F0A",
-    src: "https://i.ibb.co/fSM2Zxz/wicse-club-img.jpg",
-  },
-  {
-    id: 4,
-    name: "WECE",
-    category: "Computer Engineering",
-    categoryColor: "#FF9F0A",
-    src: "https://i.ibb.co/4TWk5LX/wece-club-img.jpg",
-  },
-  {
-    id: 5,
-    name: "GatorTech",
-    category: "Computer Science",
-    categoryColor: "#FF9F0A",
-    src: "https://i.ibb.co/4TxXzRZ/gatortech-club-img.png",
-  },
-  {
-    id: 6,
-    name: "Women's Lacrosse",
-    category: "Sports",
-    categoryColor: "#FF9F0A",
-    src: "https://i.ibb.co/FYZbDgV/lacrosse-club-img.jpg"
-  }
-]
+
+const postData = [
+    {
+        id: 1,
+        header: "Hey guys! Get ready for our final GBM!",
+        description: 'Its a me a Mario!',
+      },
+      {
+        id: 2,
+        header: 'See you all at the CS Picnic today :)',
+        description: 'Its a me a Mario!',
+      },
+      {
+        id: 3,
+        header: 'Its a me a Mario!',
+        description: 'Its a me a Mario!',
+      },
+      {
+        id: 4,
+        header: 'We Cool',
+        description: 'Its a me a Mario!',
+      },
+];
+
+const evData = [
+    {
+        id: 1,
+        name: "GBM 2",
+        date: "10/17/19",
+        time: "6:00",
+        location: "LIT 101"
+      },
+      {
+        id: 2,
+        name: "codeCollab",
+        date: "10/24/19",
+        time: "7:00",
+        location: "LIT 101"
+      },
+      {
+        id: 3,
+        name: "SEC X Microsoft",
+        date: "10/31/19",
+        time: "6:00",
+        location: "LIT 101"
+      },
+      {
+        id: 4,
+        name: "GBM 3",
+        date: "11/07/19",
+        time: "6:00",
+        location: "LIT 101"
+      },
+];
 
 export default class DiscoverGrid extends Component {
   constructor(props) {
     super(props);
     this.state = {
       searchText: "",
-      filteredClubs: clubList
+      clubs: '',
+      filteredClubs: '',
+      errorMessage:'',
+      clubList:clubList,
+      isLoading: true
+    }
+  }
+  async componentDidMount() {
+    try {
+
+      let response = await API.get('/api/club');
+      let {data} = response.data;
+      this.setState({
+        clubs: data,
+        filteredClubs: data,
+        isLoading: false
+      });
+
+    } catch (error) {
+      console.error(error);
     }
   }
 
-
   handleClubSelect = () => {
-    console.log("Clubs tapped boi");
-    this.props.navigation.navigate('Club');
+    this.props.navigation.navigate('Club', {
+      eventData: evData,
+      postData: postData
+    });
   }
 
   filterClubs = (text) => {
-    searchText = text.toLowerCase();
-    newFilterClubs = clubList.filter((club) => {
-      return club.name.toLowerCase().includes(searchText) || club.category.toLowerCase().includes(searchText);
-    }); 
+    let searchText = text.toLowerCase();
+
+    let newFilterClubs = this.state.clubs.filter((club) => {
+      return club.major_of_interest.toLowerCase().includes(searchText);
+    });
 
     this.setState({
       searchText: text,
@@ -102,6 +121,15 @@ export default class DiscoverGrid extends Component {
   }
 
   render() {
+    if (this.state.isLoading) {
+      return (
+        <View style={{ flex: 1, padding: 20 }}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
+    const clubFilterImage = this.state.clubList;
+
     return (
       <View style={styles.mainContainer}>
         {/* Search Bar */}
@@ -126,13 +154,11 @@ export default class DiscoverGrid extends Component {
               onPress={this.handleClubSelect}
             >
               <Image
-                source={{
-                  uri: item.src,
-                  method: 'POST',
-                  headers: {
-                    Pragma: 'no-cache'
-                  }
-                }}
+              // This retrieves the first instance of the club based on name if in Image File
+                source={
+                  clubFilterImage[item.name] ? { uri: clubFilterImage[item.name].src} : require('../assets/images/ClubfinityLogo.png')
+                }
+                onError={(e)=>{e.target.onerror = null; e.target.src="../assets/images/ClubfinityLogo.png"}}
                 style={styles.gridImage}
                 resizeMode={"stretch"}
               />
@@ -144,7 +170,7 @@ export default class DiscoverGrid extends Component {
             </TouchableOpacity>
           )}
           numColumns={2}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item._id}
         />
       </View>
 
@@ -153,7 +179,7 @@ export default class DiscoverGrid extends Component {
 };
 
 const bgColor = "#F2F2F7";
-const cardColor = "#fff"
+const cardColor = "#fff";
 
 // Style definitions
 const styles = StyleSheet.create({
@@ -186,6 +212,9 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 5,
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
+    shadowOffset: { width: 1, height: 1 },
+    shadowColor: 'black',
+    shadowOpacity: .2,
     elevation: 2,
 
   },
@@ -193,8 +222,7 @@ const styles = StyleSheet.create({
     flex: 4,
     margin: 0,
     height: 100,
-    width: GRID_ITEM_WIDTH, 
-    borderWidth: 1,
+    width: GRID_ITEM_WIDTH,
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
     borderTopLeftRadius: 5,
@@ -220,7 +248,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     margin: 5,
-    color: "#636e72" 
+    color: "#636e72"
   },
   clubCategory: {
     display: 'flex',

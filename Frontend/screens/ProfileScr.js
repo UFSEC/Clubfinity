@@ -1,24 +1,28 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View, ScrollView, AsyncStorage } from 'react-native';
+import { Image, StyleSheet, Text, View, ScrollView, AsyncStorage, Button } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import Preferences from './Preferences';
 import ProfileInfoScr from './ProfileInfoScr';
-import ClubsFollowScr from './ClubsFollowScr'
-import Tab from '../components/Tabs'
+import ClubsFollowScr from './ClubsFollowScr';
+import { CreateEvent } from '../components/CreateEvent';
+import Tab from '../components/Tabs';
+import UserContext from '../util/UserContext';
 // Add User API
 
 export default class ProfileScr extends React.Component {
 
 	static navigationOptions = {
-		title: 'Clubfinity',
+		title: 'Profile',
 		headerStyle: { backgroundColor: '#7e947f' },
 		headerTitleStyle: { color: "#ecf0f1", letterSpacing: 2 },
 	}
 
+	// static contextType = UserContext;
+
 	constructor(props) {
 		super(props);
 		this.state = {
-			admin: false
+			admin: false,
 		}
 	}
 
@@ -27,8 +31,9 @@ export default class ProfileScr extends React.Component {
 		this.props.navigation.navigate('Auth');
 	}
 
-
 	render() {
+		const { user, setUser } = this.context;
+
 		const userProfilePicture = {
 			ProfilePic: require('../assets/images/profile-icon.png')
 		}
@@ -38,16 +43,19 @@ export default class ProfileScr extends React.Component {
 					<View style={style.profileCardRow}>
 						<Image style={[style.profilePicture]} source={userProfilePicture.ProfilePic} />
 						<View style={style.profileInfo}>
-							<Text adjustsFontSizeToFit numberOfLines={2} style={style.textHeader}>Christian Sarmiento</Text>
+							{user && <Text adjustsFontSizeToFit numberOfLines={2} style={style.textHeader}>{user.name.first} {user.name.last}</Text>}
 						</View>
 					</View>
 					<ProfileInfoScr/>
+					<CreateEvent/>
 				</View>
-				<Tab tab1={<Preferences signOut={this.signOut}/>} tab2={<ClubsFollowScr />}  />
+				<Tab tab1={<Preferences signOut={this.signOut} />} tab2={<ClubsFollowScr />} />
 			</ScrollView>
 		);
 	}
 }
+
+ProfileScr.contextType = UserContext;
 
 const style = StyleSheet.create({
 	container: {
@@ -59,7 +67,7 @@ const style = StyleSheet.create({
 		backgroundColor: '#ffffff',
 		marginBottom: 10,
 		elevation: 2,
-		
+
 	},
 	ButCard: {
 		padding: 15,

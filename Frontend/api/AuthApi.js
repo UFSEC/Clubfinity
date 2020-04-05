@@ -3,12 +3,12 @@ import { AsyncStorage } from 'react-native';
 
 exports.authenticate = async (username, password) => {
   let axiosResponse = await API.post("/auth/login", {
-      username: username,
-      password: password
-    })
+    username: username,
+    password: password
+  })
     .then(async response => {
       await AsyncStorage.setItem('userToken', response.data.token);
-      return { token: response.data.token };
+      return { token: response.data.token, user: response.data.user };
     })
     .catch(error => {
       if (error.response) {

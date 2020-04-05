@@ -23,7 +23,6 @@ import { withNavigation } from 'react-navigation';
 
                 <FontAwesome size={24} name="edit"/>
                     <Text style={styles.textStyle}>
-                    
                         Edit Profile
                     </Text>
                    
@@ -34,8 +33,7 @@ import { withNavigation } from 'react-navigation';
                   }}>
                 <FontAwesome size={24} name="cog" />
                     <Text style={styles.textStyle}>
-                    
-                        Setting
+                        Settings
                     </Text>
                   
                 </TouchableOpacity>
