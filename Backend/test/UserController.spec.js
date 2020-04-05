@@ -145,12 +145,12 @@ describe('Users', () => {
       isNotOk(resp, 422);
 
       const errorMessages = resp.body.validationErrors.map(e => e.msg);
-      errorMessages.should.have.length(10);
+      errorMessages.should.have.length(11);
       errorMessages.should.include.all.members([
         'First name does not exist',
         'Last name does not exist',
-        'Date of birth does not exist',
-        'Invalid date string',
+        'Year does not exist or is invalid',
+        'Major does not exist or is invalid',
         'Email does not exist or is invalid',
         'Username does not exist',
         'Password does not exist'
@@ -212,10 +212,11 @@ describe('Users', () => {
       resp.body.validationErrors[0].msg.should.equal('Username contains a space');
     });
 
-    it('should return an error when the dob is incorrectly formatted', async () => {
+    it('should return an error when the year is incorrectly formatted', async () => {
       const incorrectDateFormat = {
         name: { first: 'Jimmy', last: 'John' },
-        dob: '2000-0202',
+        year: 'not a year',
+        major: 'Computer Science',
         email: 'jimmy@john.com',
         username: 'ausername',
         password: 'password123'
@@ -225,7 +226,7 @@ describe('Users', () => {
       isNotOk(resp, 422);
 
       resp.body.validationErrors.should.have.length(1);
-      resp.body.validationErrors[0].msg.should.equal('Invalid date string');
+      resp.body.validationErrors[0].msg.should.equal('Year must be a number');
     });
   });
 
