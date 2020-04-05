@@ -12,6 +12,6 @@ router.post("/", userController.validate("validateUserInfo"), userController.cre
 router.put("/:id", passport.authenticate("loggedIn", { session: false }), userController.validate("validateUserInfo"), userController.update);
 router.put("/follow/:clubId", passport.authenticate("loggedIn", { session: false }), userController.validate("validateFollow"), userController.followClub);
 router.put("/unfollow/:clubId", passport.authenticate("loggedIn", { session: false }), userController.unfollowClub);
-router.delete("/:id", passport.authenticate("loggedIn", { session: false }), userController.delete);
+router.delete("/", passport.authenticate("loggedIn", { session: false }), userController.delete);
 
 module.exports = router;

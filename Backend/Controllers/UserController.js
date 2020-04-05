@@ -59,7 +59,7 @@ exports.create = async (req, res) => catchErrors(res, async () => {
 });
 
 exports.delete = async (req, res) => catchErrors(res, async () => {
-  return userDAO.delete(req.params.id);
+  return userDAO.delete(req.userId);
 });
 
 exports.validate = type => {

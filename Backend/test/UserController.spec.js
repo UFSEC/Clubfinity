@@ -326,27 +326,15 @@ describe('Users', () => {
 
   describe('DELETE /user/:id', async () => {
     it('should delete a user and return it', async () => {
-      const userData = {
-        name: { first: 'Test', last: 'McTester' },
-        dob: '2019-01-01',
-        email: 'test@test.com',
-        username: 'tester',
-        password: 'password123'
-      };
-
-      const user = await userDAO.create(userData);
-
-      const resp = await http.delete(`/api/user/${user._id}`);
+      const resp = await http.delete('/api/user');
       isOk(resp);
 
-      resp.body.data.should.deep.include(userData);
-    });
+      resp.body.data.should.deep.include(currentUserParams);
 
-    it('should return an error when the id does not exist', async () => {
-      const resp = await http.delete(`/api/user/${fakeId}`);
-      isNotOk(resp, 404);
+      const getResp = await http.get(`/api/user/${currentUser._id}`);
+      isNotOk(getResp, 404);
 
-      resp.body.error.should.equal('Id not found');
+      getResp.body.error.should.contain('Id not found');
     });
   });
 });
