@@ -9,11 +9,7 @@ const Schema = new mongoose.Schema({
   goingUsers: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
-  }],
-  club: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Club'
-  }
+  }]
 });
 
 exports.Model = mongoose.model("Event", Schema);

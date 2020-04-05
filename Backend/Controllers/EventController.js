@@ -56,7 +56,7 @@ exports.create = async (req, res) => catchErrors(res, async () => {
 exports.getGoingUsers = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);
 
-  return eventDAO.getGoingUsers(req.params['id'], { $addToSet: { usersGoing: req.userId  } })
+  return eventDAO.getGoingUsers(req.params['id'])
 });
 
 exports.addGoingUser = async (req, res) => catchErrors(res, async () => {

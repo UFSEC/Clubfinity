@@ -18,7 +18,7 @@ exports.getAll = async () => {
 };
 
 exports.get = async id => {
-  const user = await User.findById(id);
+  const user = await User.findById(id).populate('clubs').exec().then(data => {return data});
   if (!user) throw new NotFoundError();
 
   return user;
