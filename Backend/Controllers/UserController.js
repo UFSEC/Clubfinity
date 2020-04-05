@@ -41,7 +41,7 @@ exports.followClub = async (req, res) => catchErrors(res, async () => {
 
 exports.create = async (req, res) => catchErrors(res, async () => {
   validateUserData(req);
-
+  req.body['clubs'] = []
   return userDAO.create(req.body);
 });
 
