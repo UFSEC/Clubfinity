@@ -10,7 +10,7 @@ import DiscoverGrid from '../components/DiscoverGrid';
 
 export default class DiscoverScr extends React.Component {
   static navigationOptions = {
-    title: 'Clubfinity',
+    title: 'Discover',
     headerStyle: { backgroundColor: '#7e947f' },
     headerTitleStyle: { color: "#ecf0f1", letterSpacing: 2 },
   }

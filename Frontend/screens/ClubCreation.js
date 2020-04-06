@@ -27,34 +27,34 @@ const clubCategories = [
 ]
 
 export default class ClubCreation extends Component {
-  static navigationOptions = {
-    title: "Clubfinity",
-    headerStyle: { backgroundColor: "#7e947f" },
-    headerTitleStyle: { color: "#ecf0f1", letterSpacing: 2 }
-  };
-  constructor(props) {
-    super(props);
-    const errors = {
-      clubName: false,
-      clubDescription: false,
-      clubCategory: false,
-      position: false,
-      tags: false,
-      facebookLink: false
-    };
-    this.state = {
-      clubName: "",
-      clubDescription: "",
-      clubCategory: "",
-      position: "",
-      tags: "",
-      facebookLink: "",
-      processingRequest: false,
-      createdClub: false,
-      createdClubError: false,
-      errors: { arePresent: false, data: errors }
-    };
-  }
+    static navigationOptions = {
+        title: 'Create a club',
+        headerStyle: { backgroundColor: '#7e947f' },
+        headerTitleStyle: { color: "#ecf0f1", letterSpacing: 2 },
+    }
+    constructor(props) {
+        super(props);
+        const errors = {
+            clubName: false,
+            clubDescription: false,
+            clubCategory: false,
+            position: false,
+            tags: false,
+            facebookLink: false
+        };
+        this.state = {
+            clubName: "",
+            clubDescription: "",
+            clubCategory: "",
+            position: "",
+            tags: "",
+            facebookLink: "",
+            processingRequest: false,
+            createdClub: false,
+            createdClubError: false,
+            errors: { arePresent: false, data: errors }
+        };
+    }
 
   createClub = async () => {
     const validRequest = this.isRequestValid();

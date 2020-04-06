@@ -7,11 +7,14 @@ import EventCard from '../components/EventCard';
 import EventsApi from '../api/EventsApi';
 import ClubsApi from '../api/ClubsApi';
 import DiscoverButton from "../components/DiscoverButton";
+import UserContext from "../util/UserContext";
 
 // Event Feed App Module
 class HomeScr extends Component {
+  static contextType = UserContext;
+
   static navigationOptions = {
-    title: 'Clubfinity',
+    title: 'Home',
     headerStyle: { backgroundColor: '#7e947f' },
     headerTitleStyle: { color: "#ecf0f1", letterSpacing: 2 },
   };
@@ -27,10 +30,10 @@ class HomeScr extends Component {
 
   async componentDidMount() {
     // Fetch list of Events from API
-    console.log(await AsyncStorage.getItem('userToken'));
     const bearerToken = await AsyncStorage.getItem('userToken');
-
-    const clubs = await ClubsApi.getFollowing(bearerToken);
+    // const clubs = await ClubsApi.getFollowing(bearerToken);
+    const { user } = this.context;
+    const clubs = user.clubs;
     if (clubs.length === 0) {
       this.setState({
         events: [],
@@ -40,6 +43,7 @@ class HomeScr extends Component {
 
       return;
     }
+
 
     const events = await EventsApi.getFollowing(bearerToken);
     this.setState({
@@ -56,7 +60,7 @@ class HomeScr extends Component {
   loadingView() {
     return (
       <View style={{ flex: 1, padding: 20 }}>
-        <ActivityIndicator/>
+        <ActivityIndicator />
       </View>
     );
   }
@@ -65,7 +69,7 @@ class HomeScr extends Component {
     return (
       <View style={emptyEventList.container}>
         <Text style={emptyEventList.text}>You're not following any clubs</Text>
-        <DiscoverButton onPress={this.navigateToDiscover}/>
+        <DiscoverButton onPress={this.navigateToDiscover} />
       </View>
     );
   }
@@ -81,11 +85,11 @@ class HomeScr extends Component {
   eventListView() {
     return (
       <View style={[primary.container, primary.bodyText]}>
-        <Text style={primary.headerText}>Upcoming Events <Octicons name="megaphone" color={'teal'} size={24}/> </Text>
+        <Text style={primary.headerText}>Hey Upcoming Events <Octicons name="megaphone" color={'teal'} size={24} /> </Text>
         <FlatList
           data={this.state.events}
           renderItem={({ item }) =>
-            <EventCard key={item._id} data={item}/>
+            <EventCard key={item._id} data={item} />
           }
           keyExtractor={(item) => item._id.toString()}
         />

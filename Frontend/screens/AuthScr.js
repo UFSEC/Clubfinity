@@ -7,18 +7,29 @@ import {
   View,
 } from 'react-native';
 
+import UserContext from '../util/UserContext';
+import UserApi from '../api/UserApi';
+
 export default class AuthScr extends React.Component {
+  static contextType = UserContext;
+
   componentDidMount() {
-    this._bootstrapAsync();
+    this.authRouter();
   }
 
-  // Fetch the token from storage then navigate to our appropriate place
-  _bootstrapAsync = async () => {
-    const userToken = await AsyncStorage.getItem('userToken');
-
-    // This will switch to the App screen or Auth screen and this loading
-    // screen will be unmounted and thrown away.
-    this.props.navigation.navigate(userToken ? 'App' : 'Auth');
+  // Check for valid user token, if not route to auth else get user from API and route to App screens
+  authRouter = async () => {
+    const { setUser } = this.context;
+    const bearerToken = await AsyncStorage.getItem('userToken');
+    let routeName = 'Auth';
+    if (bearerToken) {
+      let authResponse = await UserApi.getUser(bearerToken);
+      if (!authResponse.error && authResponse.data && authResponse.data.data) {
+        setUser(authResponse.data.data);
+        routeName = 'App';
+      }
+    }
+    this.props.navigation.navigate(routeName);
   };
 
   // Render any loading content that you like here

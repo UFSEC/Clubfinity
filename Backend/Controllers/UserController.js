@@ -1,6 +1,8 @@
 const userDAO = require("../DAO/UserDAO");
-const { validationResult, body } = require("express-validator");
-const { ValidationError, NotFoundError } = require( '../util/exceptions');
+const clubDAO = require("../DAO/ClubDAO");
+const { validationResult, body, param } = require("express-validator");
+const { ValidationError, NotFoundError } = require('../util/exceptions');
+const { catchErrors } = require('../util/httpUtil');
 
 const validateUserData = req => {
   const errors = validationResult(req);
@@ -8,27 +10,12 @@ const validateUserData = req => {
     throw new ValidationError(errors.array());
 };
 
-const catchErrors = async (res, f) => {
-  try {
-    const result = await f();
-    res.send({ ok: true, data: result })
-  } catch (e) {
-    if (e instanceof ValidationError) {
-      res.status(e.httpErrorCode).send({ ok: false, error: e.message, validationErrors: e.validationErrors });
-    } else if (e instanceof NotFoundError) {
-      res.status(e.httpErrorCode).send({ ok: false, error: e.message });
-    } else {
-      res.status(400).send({ ok: false, error: e.message});
-    }
-  }
-};
-
 exports.getAll = async (req, res) => catchErrors(res, async () => {
   return userDAO.getAll();
 });
 
 exports.get = async (req, res) => catchErrors(res, async () => {
-  return userDAO.get(req.userId);
+  return userDAO.get(req.params.id);
 });
 
 exports.update = async (req, res) => catchErrors(res, async () => {
@@ -37,9 +24,37 @@ exports.update = async (req, res) => catchErrors(res, async () => {
   return userDAO.update(req.userId, req.body);
 });
 
-exports.create = async (req, res) => catchErrors(res, async () => {
+exports.followClub = async (req, res) => catchErrors(res, async () => {
   validateUserData(req);
 
+  const clubId = req.params['clubId'];
+  const updatedUser = await userDAO.get(req.userId);
+
+  if (updatedUser.clubs.includes(clubId))
+    return updatedUser;
+
+  updatedUser.clubs.push(clubId);
+  return userDAO.update(req.userId, updatedUser);
+});
+
+exports.unfollowClub = async (req, res) => catchErrors(res, async () => {
+  validateUserData(req);
+
+  const clubId = req.params['clubId'];
+  const user = await userDAO.get(req.userId);
+
+  const idIndex = user.clubs.indexOf(clubId);
+
+  if (idIndex === -1)
+    return user;
+
+  user.clubs.splice(idIndex, 1);
+  return userDAO.update(req.userId, user);
+});
+
+exports.create = async (req, res) => catchErrors(res, async () => {
+  validateUserData(req);
+  req.body['clubs'] = []
   return userDAO.create(req.body);
 });
 
@@ -53,9 +68,10 @@ exports.validate = type => {
       return [
         body("name.first", "First name does not exist").exists(),
         body("name.last", "Last name does not exist").exists(),
-        body("dob", "Date of birth does not exist")
+        body("major", "Major does not exist or is invalid").exists(),
+        body("year", "Year does not exist or is invalid")
           .exists()
-          .custom(date => validateDate(date)),
+          .custom(year => validateYear(year)),
         body("email", "Email does not exist or is invalid")
           .exists()
           .isEmail(),
@@ -67,16 +83,23 @@ exports.validate = type => {
           .custom(password => validatePassword(password))
       ];
     }
+
+    case "validateFollow": {
+      return [
+        param("clubId", "Club Id missing").exists()
+          .custom(clubId => validateClubId(clubId))
+      ];
+    }
   }
 };
 
-// Validating date
-// Format must be able to be parsed into Date class
-function validateDate(date) {
-  if (new Date(date) === "Invalid Date" || isNaN(new Date(date))) {
-    throw new Error("Invalid date string");
+// Club ID must belong to a club that exists in FB
+async function validateClubId(clubId) {
+  const clubExists = await clubDAO.exists(clubId);
+  if (!clubExists) {
+    throw new Error("Invalid Club ID. Club does not exist.")
   }
-  return true;
+  return clubExists;
 }
 
 // Username must be within 6 and 20 characters
@@ -98,6 +121,18 @@ function validateUser(user) {
 function validatePassword(password) {
   if (password.length < 6) {
     throw new Error("Password is too short (less than 6 characters)");
+  }
+  return true;
+}
+
+// Year cannot be an empty string
+// Year must be a number
+function validateYear(year) {
+  if (year === '') {
+    throw new Error("Year cannot be empty");
+  }
+  else if(isNaN(year)) {
+    throw new Error("Year must be a number");
   }
   return true;
 }
