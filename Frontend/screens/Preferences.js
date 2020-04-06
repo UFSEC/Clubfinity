@@ -15,13 +15,13 @@ import { withNavigation } from 'react-navigation';
     render() {
        
         return (
-            <View style={styles.container}>
+            <View style={styles.container} bounces={false}>
                 <TouchableOpacity style={styles.innerContainer}
                 onPress={() => {
                     this.props.navigation.navigate({ routeName: 'Edit' })
                   }}> 
 
-                <FontAwesome size={24} name="edit"/>
+                <FontAwesome color='#636e72' size={24} name="edit"/>
                     <Text style={styles.textStyle}>
                         Edit Profile
                     </Text>
@@ -31,14 +31,14 @@ import { withNavigation } from 'react-navigation';
                  onPress={() => {
                     this.props.navigation.navigate({ routeName: 'Setting' })
                   }}>
-                <FontAwesome size={24} name="cog" />
+                <FontAwesome color='#636e72' size={24} name="cog" />
                     <Text style={styles.textStyle}>
                         Settings
                     </Text>
                   
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.innerContainer}>
-                <FontAwesome size={24} name="flag" />
+                <FontAwesome color='#636e72' size={24} name="flag" />
                     <Text style={styles.textStyle}>
                        Report a Problem
                     </Text>
@@ -47,14 +47,14 @@ import { withNavigation } from 'react-navigation';
                 onPress={() => {
                     this.props.navigation.navigate({ routeName: 'ClubCreationScr' })
                   }}>
-                <FontAwesome size={24} name="plus" />
+                <FontAwesome color='#636e72' size={24} name="plus" />
                     <Text style={styles.textStyle}>
                         Create a Club
                     </Text>
                 </TouchableOpacity >
                
                 <TouchableOpacity style={styles.innerContainer} onPress={this.props.signOut}>
-                <FontAwesome size={24} name="sign-out" />
+                <FontAwesome color='#636e72' size={24} name="sign-out" />
                     <Text style={styles.textStyle}>
                         Log Out
                     </Text>
@@ -63,23 +63,24 @@ import { withNavigation } from 'react-navigation';
         )
     }
 }
-const { width} = Dimensions.get('screen')
+const {width} = Dimensions.get('screen')
 const styles = StyleSheet.create({
     container:{
         width:width
     },
     innerContainer:{
-        padding:20,
-        paddingBottom:20,
-        borderBottomColor: 'black',
+        padding:12,
+        //paddingBottom:10,
+        borderBottomColor: '#636e72',
         borderBottomWidth: 1,
         flexDirection:'row',
-        fontSize: 30
+        fontSize: 40,
     },
     textStyle: {
         marginLeft:20,
-        fontSize:20,
-        
+        fontSize:17,
+        letterSpacing:2,
+        color: '#636e72'
     }
 })
 export default withNavigation(Preferences);
