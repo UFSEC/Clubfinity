@@ -1,6 +1,6 @@
 const userDAO = require("../DAO/UserDAO");
 const clubDAO = require("../DAO/ClubDAO");
-const { validationResult, body, query } = require("express-validator");
+const { validationResult, body, param } = require("express-validator");
 const { ValidationError, NotFoundError } = require('../util/exceptions');
 const { catchErrors } = require('../util/httpUtil');
 
@@ -15,7 +15,7 @@ exports.getAll = async (req, res) => catchErrors(res, async () => {
 });
 
 exports.get = async (req, res) => catchErrors(res, async () => {
-  return userDAO.get(req.userId);
+  return userDAO.get(req.params.id);
 });
 
 exports.update = async (req, res) => catchErrors(res, async () => {
@@ -27,17 +27,30 @@ exports.update = async (req, res) => catchErrors(res, async () => {
 exports.followClub = async (req, res) => catchErrors(res, async () => {
   validateUserData(req);
 
-  const userId = req.userId;
-  const clubId = req.query.clubId;
-  const updatedUser = await userDAO.get(userId);
+  const clubId = req.params['clubId'];
+  const updatedUser = await userDAO.get(req.userId);
 
-  if (updatedUser.clubs.includes(clubId)) {
-    throw new Error("Club is already followed");
-  }
+  if (updatedUser.clubs.includes(clubId))
+    return updatedUser;
 
   updatedUser.clubs.push(clubId);
   return userDAO.update(req.userId, updatedUser);
-})
+});
+
+exports.unfollowClub = async (req, res) => catchErrors(res, async () => {
+  validateUserData(req);
+
+  const clubId = req.params['clubId'];
+  const user = await userDAO.get(req.userId);
+
+  const idIndex = user.clubs.indexOf(clubId);
+
+  if (idIndex === -1)
+    return user;
+
+  user.clubs.splice(idIndex, 1);
+  return userDAO.update(req.userId, user);
+});
 
 exports.create = async (req, res) => catchErrors(res, async () => {
   validateUserData(req);
@@ -73,7 +86,7 @@ exports.validate = type => {
 
     case "validateFollow": {
       return [
-        query("clubId", "Club Id missing").exists()
+        param("clubId", "Club Id missing").exists()
           .custom(clubId => validateClubId(clubId))
       ];
     }
