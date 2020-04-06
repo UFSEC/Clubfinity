@@ -29,8 +29,7 @@ const clubParams = {
   admins: [],
   facebook_link: 'facebook',
   description: 'This is a club',
-  category: 'Computer Science',
-  events: []
+  category: 'Computer Science'
 };
 
 const clubNotFollowingParams = {
@@ -38,8 +37,7 @@ const clubNotFollowingParams = {
   admins: [],
   facebook_link: 'facebook',
   description: 'This is a club',
-  category: 'Computer Science',
-  events: []
+  category: 'Computer Science'
 };
 
 const baseEventParams = {
@@ -63,6 +61,25 @@ describe('Events', () => {
     currentUser = await userDAO.create(currentUserParams);
     const currentUserToken = authUtil.tokanizeUser(currentUser);
     http = new TestHttp(chai, app, currentUserToken);
+  });
+
+  describe('GET /club/', async () => {
+    it('get all events by club', async () => {
+      const { _id: clubId } = await clubDAO.create(clubParams);
+      const event = await eventDAO.create({
+        ...baseEventParams,
+        name: 'In month',
+        date: '2020-01-01',
+        club: clubId
+      });
+
+      const resp = await http.get(`/api/event/club/${clubId}`);
+      isOk(resp);
+
+      const data = resp.body.data;
+      data.should.have.length(1);
+      data.should.deep.include(JSON.parse(JSON.stringify(event)))
+    });
   });
 
   describe('GET /inMonth', async () => {
