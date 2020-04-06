@@ -271,30 +271,33 @@ describe('Users', () => {
 
     describe('PUT /user/follow/:clubId', async () => {
       it('should add a club to the list of followed clubs for the current user', async () => {
-        const { _id: clubId } = await clubDAO.create(baseClubParams);
+        const club = await clubDAO.create(baseClubParams);
+        const jsonClub = JSON.parse(JSON.stringify(club));
 
-        const resp = await http.put(`/api/user/follow/${clubId}`);
+        const resp = await http.put(`/api/user/follow/${club._id}`);
         isOk(resp);
-        resp.body.data.clubs.should.include(clubId.toString());
+        resp.body.data.clubs.should.deep.include(jsonClub);
 
         // Re-fetch user info to verify that the change persisted
         const userResp = await http.get(`/api/user/${currentUser._id}`);
-        userResp.body.data.clubs.should.include(clubId.toString());
+        userResp.body.data.clubs.should.deep.include(jsonClub);
       });
 
       it('should do nothing if it is called twice with the same club', async () => {
-        const { _id: clubId } = await clubDAO.create(baseClubParams);
+        const club = await clubDAO.create(baseClubParams);
+        const jsonClub = JSON.parse(JSON.stringify(club));
 
-        const resp = await http.put(`/api/user/follow/${clubId}`);
+        const resp = await http.put(`/api/user/follow/${club._id}`);
         isOk(resp);
         resp.body.data.clubs.should.have.length(1);
-        resp.body.data.clubs.should.include(clubId.toString());
+        resp.body.data.clubs.should.deep.include(jsonClub);
 
-        const resp2 = await http.put(`/api/user/follow/${clubId}`);
+        const resp2 = await http.put(`/api/user/follow/${club._id}`);
         isOk(resp2);
         resp2.body.data.clubs.should.have.length(1);
-        resp2.body.data.clubs.should.include(clubId.toString());
+        resp2.body.data.clubs.should.deep.include(jsonClub);
       });
+
 
       it('should return an error if the clubId does not exist', async () => {
         const resp = await http.put(`/api/user/follow/${fakeId}`);
@@ -307,11 +310,11 @@ describe('Users', () => {
 
     describe('PUT /user/unfollow/:clubId', async () => {
       it('should remove a club from the list of followed clubs for the current user', async () => {
-        const { _id: clubId } = await clubDAO.create(baseClubParams);
-        currentUser.clubs.push(clubId);
+        const club = await clubDAO.create(baseClubParams);
+        currentUser.clubs.push(club);
         currentUser.save();
 
-        const resp = await http.put(`/api/user/unfollow/${clubId}`);
+        const resp = await http.put(`/api/user/unfollow/${club._id}`);
         isOk(resp);
         resp.body.data.clubs.should.be.empty;
 
@@ -337,7 +340,7 @@ describe('Users', () => {
     });
   });
 
-  describe('DELETE /user/:id', async () => {
+  describe('DELETE /user/', async () => {
     it('should delete a user and return it', async () => {
       const resp = await http.delete('/api/user');
       isOk(resp);

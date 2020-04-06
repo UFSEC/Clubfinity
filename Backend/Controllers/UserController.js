@@ -24,18 +24,20 @@ exports.update = async (req, res) => catchErrors(res, async () => {
   return userDAO.update(req.userId, req.body);
 });
 
-exports.followClub = async (req, res) => catchErrors(res, async () => {
-  validateUserData(req);
+exports.followClub = async (req, res) => {
+  return catchErrors(res, async () => {
+    validateUserData(req);
 
-  const clubId = req.params['clubId'];
-  const updatedUser = await userDAO.get(req.userId);
+    const clubId = req.params['clubId'];
+    const updatedUser = await userDAO.get(req.userId);
 
-  if (updatedUser.clubs.includes(clubId))
-    return updatedUser;
+    if (updatedUser.clubs.some((club) => { return club._id.toString() === clubId} ))
+      return updatedUser;
 
-  updatedUser.clubs.push(clubId);
-  return userDAO.update(req.userId, updatedUser);
-});
+    updatedUser.clubs.push(clubId);
+    return userDAO.update(req.userId, updatedUser);
+  });
+};
 
 exports.unfollowClub = async (req, res) => catchErrors(res, async () => {
   validateUserData(req);
@@ -43,12 +45,11 @@ exports.unfollowClub = async (req, res) => catchErrors(res, async () => {
   const clubId = req.params['clubId'];
   const user = await userDAO.get(req.userId);
 
-  const idIndex = user.clubs.indexOf(clubId);
-
-  if (idIndex === -1)
-    return user;
-
-  user.clubs.splice(idIndex, 1);
+  user.clubs.forEach(function(club, index, clubs) {
+    if (club._id.toString() === clubId) {
+      clubs.splice(index, 1);
+    }
+  });
   return userDAO.update(req.userId, user);
 });
 
