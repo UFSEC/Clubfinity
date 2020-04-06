@@ -8,11 +8,9 @@ exports.create = async eventParams => {
   if (!(await clubDAO.exists(eventParams.club))) {
     throw Error("Club does not exist");
   }
-  const clubId = eventParams.club;
-  delete eventParams.club;
-  const event = await new Event(eventParams).save();
-  clubDAO.update(clubId, { $addToSet: { events: event  } });
-  return event;
+  eventParams.club = (await clubDAO.get(eventParams.club))._id
+
+  return await new Event(eventParams).save()
 }
 
 exports.getAll = async () => {

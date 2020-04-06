@@ -17,6 +17,10 @@ exports.get = async (req, res) => catchErrors(res, async () => {
   return eventDAO.get(req.params['id']);
 });
 
+exports.getByClub = async (req, res) => catchErrors(res, async () => {
+  return eventDAO.getByClubs([req.params['clubId']]);
+});
+
 exports.getFollowing = async (req, res) => catchErrors(res, async () => {
   const user = await getCurrentUser(req);
 

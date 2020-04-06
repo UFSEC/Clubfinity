@@ -81,7 +81,8 @@ describe('Users', () => {
         year: 2021,
         email: 'test@test.com',
         username: 'tester',
-        password: 'password123'
+        password: 'password123',
+        clubs: []
       };
 
       const user = await userDAO.create(userData);

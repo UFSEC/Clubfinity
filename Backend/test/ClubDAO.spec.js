@@ -13,12 +13,10 @@ describe('ClubDAO', () => {
     it('should return a promise of all clubs', async () => {
       const clubParams = {
         name: 'Woodworking Club',
-        president_name: 'Bob',
         admins: [],
-        major_of_interest: 'Computer Science',
-        email: 'wood@working.com',
-        password: 'password',
-        events: []
+        facebook_link: "http://facebook.com/woodworking",
+        description: "We cut wood",
+        category: "Engineering",
       };
       await clubDAO.create(clubParams);
 
@@ -33,12 +31,10 @@ describe('ClubDAO', () => {
     it('should return a promise of a club', async () => {
       const clubParams = {
         name: 'Woodworking Club',
-        president_name: 'Bob',
         admins: [],
-        major_of_interest: 'Computer Science',
-        email: 'wood@working.com',
-        password: 'password',
-        events: []
+        facebook_link: "http://facebook.com/woodworking",
+        description: "We cut wood",
+        category: "Engineering",
       };
       const newClub = await clubDAO.create(clubParams);
 
@@ -51,24 +47,20 @@ describe('ClubDAO', () => {
     it('should update an existing club', async () => {
       const oldClubParams = {
         name: 'Woodworking Club',
-        president_name: 'Bob',
         admins: [],
-        major_of_interest: 'Computer Science',
-        email: 'wood@working.com',
-        password: 'password',
-        events: []
+        facebook_link: "http://facebook.com/woodworking",
+        description: "We cut wood",
+        category: "Engineering",
       };
 
       const oldClub = await clubDAO.create(oldClubParams);
 
       const updatedClubParams = {
-        name: 'Painting Club',
-        president_name: 'Sheral',
+        name: 'Woodworking Club',
         admins: [],
-        major_of_interest: 'Art Science',
-        email: 'paint@working.com',
-        password: 'password1',
-        events: []
+        facebook_link: "http://facebook.com/woodworking",
+        description: "DescriptionWoodworking is the activity or skill of making items from wood, and includes cabinet making, wood carving, joinery, carpentry, and woodturning",
+        category: "Engineering",
       };
 
       await clubDAO.update(oldClub._id, updatedClubParams);
