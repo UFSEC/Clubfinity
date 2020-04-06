@@ -30,7 +30,7 @@
     "chai-http": "^4.3.0"
   },
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha",
+    "test": "$(npm bin)/mocha",
     "start": "nodemon ./app"
   },
   "repository": {

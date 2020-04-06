@@ -1,5 +1,6 @@
 const Event = require("../Model/Event.js").Model;
 const clubDAO = require("../DAO/ClubDAO");
+const { NotFoundError } = require('../util/exceptions');
 
 exports.create = async eventParams => {
   if (await Event.exists({ name: eventParams.name })) {

@@ -59,14 +59,14 @@ const clubList = [
   }
 ]
 
-export default class DiscoverGrid extends Component {
+export default class ClubsFollowGrid extends Component {
   constructor(props) {
     super(props);
     this.state = {
       searchText: "",
       filteredClubs: clubList,
       editButton: true,
-      isVisible:true
+      isVisible:true,
     }
   }
 

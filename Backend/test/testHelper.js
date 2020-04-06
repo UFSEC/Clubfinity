@@ -6,9 +6,30 @@ exports.TestHttp = class {
   }
 
   async get(url) {
-    return await this.chai.request(this.app)
+    return this.chai.request(this.app)
       .get(url)
       .auth(this.userToken, { type: 'bearer' })
+  }
+
+  async post(url, body = {}) {
+    return this.chai.request(this.app)
+      .post(url)
+      .auth(this.userToken, { type: 'bearer' })
+      .send(body)
+  }
+
+  async put(url, body = {}) {
+    return this.chai.request(this.app)
+      .put(url)
+      .auth(this.userToken, { type: 'bearer' })
+      .send(body);
+  }
+
+  async delete(url) {
+    return this.chai.request(this.app)
+      .delete(url)
+      .auth(this.userToken, { type: 'bearer' })
+      .send()
   }
 };
 
