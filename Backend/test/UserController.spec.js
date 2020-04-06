@@ -1,8 +1,11 @@
 process.env.NODE_ENV = 'test';
 
 const userDAO = require('../DAO/UserDAO');
+const clubDAO = require('../DAO/ClubDAO');
 const chai = require('chai');
 const authUtil = require('../util/authUtil');
+const { TestHttp, isOk, isNotOk } = require('./testHelper');
+
 let chaiHttp = require('chai-http');
 chai.should();
 const app = require('../app');
@@ -18,15 +21,19 @@ const currentUserParams = {
   password: 'password'
 };
 
-let currentUserToken = null;
+let currentUser = null;
+let http = null;
+
+const fakeId = '5dba44f05b88ed1602589e84';
 
 describe('Users', () => {
 
   beforeEach(async () => {
     await userDAO.deleteAll();
 
-    const currentUser = await userDAO.create(currentUserParams);
-    currentUserToken = authUtil.tokanizeUser(currentUser)
+    currentUser = await userDAO.create(currentUserParams);
+    const currentUserToken = authUtil.tokanizeUser(currentUser);
+    http = new TestHttp(chai, app, currentUserToken);
   });
 
   describe('GET /user', async () => {
@@ -51,13 +58,8 @@ describe('Users', () => {
       await userDAO.create(firstUser);
       await userDAO.create(secondUser);
 
-      const resp = await chai.request(app)
-        .get('/api/user')
-        .auth(currentUserToken, {type: 'bearer'})
-        .send();
-
-      resp.should.have.status(200);
-      resp.body.ok.should.be.true;
+      const resp = await http.get('/api/user');
+      isOk(resp);
 
       const data = resp.body.data;
 
@@ -87,25 +89,16 @@ describe('Users', () => {
 
       const user = await userDAO.create(userData);
 
-      const resp = await chai.request(app)
-        .get(`/api/user/${user._id}`)
-        .auth(currentUserToken, {type: 'bearer'})
-        .send();
-
-      resp.should.have.status(200);
-      resp.body.ok.should.be.true;
+      const resp = await http.get(`/api/user/${user._id}`);
+      isOk(resp);
 
       resp.body.data.should.deep.include(userData);
     });
 
     it('returns an error when the id is not found', async () => {
-      const resp = await chai.request(app)
-        .get('/api/user/5dba404f70edd5146e98492b')
-        .auth(currentUserToken, {type: 'bearer'})
-        .send();
+      const resp = await http.get(`/api/user/${fakeId}`);
+      isNotOk(resp, 404);
 
-      resp.should.have.status(404);
-      resp.body.ok.should.be.false;
       resp.body.error.should.equal('Id not found');
     })
   });
@@ -121,17 +114,12 @@ describe('Users', () => {
         password: 'password'
       };
 
-      const resp = await chai.request(app)
-        .post('/api/user')
-        .auth(currentUserToken, {type: 'bearer'})
-        .send(newUserData);
-      resp.should.have.status(200);
+      const resp = await http.post('/api/user', newUserData);
+      isOk(resp);
 
-
-      const body = resp.body;
-      body.ok.should.be.true;
-      body.data.should.deep.include(newUserData);
-      body.data.should.include.all.keys('_id', 'clubs');
+      const data = resp.body.data;
+      data.should.deep.include(newUserData);
+      data.should.include.all.keys('_id', 'clubs');
     });
 
     it('should return an error if username is taken', async () => {
@@ -143,37 +131,27 @@ describe('Users', () => {
         username: 'testmctester',
         password: 'password123'
       };
-
       await userDAO.create(userData);
 
-      const resp = await chai.request(app)
-        .post('/api/user')
-        .auth(currentUserToken, {type: 'bearer'})
-        .send(userData);
+      const resp = await http.post('/api/user', userData);
+      isNotOk(resp, 400);
 
-      resp.should.have.status(400);
-      resp.body.ok.should.be.false;
       resp.body.error.should.equal('username already taken')
     });
 
     it('should return an error if any field is missing', async () => {
       const incompleteUserData = {};
 
-      const resp = await chai.request(app)
-        .post('/api/user')
-        .auth(currentUserToken, {type: 'bearer'})
-        .send(incompleteUserData);
-
-      resp.should.have.status(422);
-      resp.body.ok.should.be.false;
+      const resp = await http.post('/api/user', incompleteUserData);
+      isNotOk(resp, 422);
 
       const errorMessages = resp.body.validationErrors.map(e => e.msg);
-      errorMessages.should.have.length(10);
+      errorMessages.should.have.length(11);
       errorMessages.should.include.all.members([
         'First name does not exist',
         'Last name does not exist',
-        'Date of birth does not exist',
-        'Invalid date string',
+        'Year does not exist or is invalid',
+        'Major does not exist or is invalid',
         'Email does not exist or is invalid',
         'Username does not exist',
         'Password does not exist'
@@ -190,13 +168,8 @@ describe('Users', () => {
         password: 'short'
       };
 
-      const resp = await chai.request(app)
-        .post('/api/user')
-        .auth(currentUserToken, {type: 'bearer'})
-        .send(shortUsernameAndPassword);
-
-      resp.should.have.status(422);
-      resp.body.ok.should.be.false;
+      const resp = await http.post('/api/user', shortUsernameAndPassword);
+      isNotOk(resp, 422);
 
       const errorMessages = resp.body.validationErrors.map(e => e.msg);
       errorMessages.should.have.length(2);
@@ -216,13 +189,8 @@ describe('Users', () => {
         password: 'password123'
       };
 
-      const resp = await chai.request(app)
-        .post('/api/user')
-        .auth(currentUserToken, {type: 'bearer'})
-        .send(longUsername);
-
-      resp.should.have.status(422);
-      resp.body.ok.should.be.false;
+      const resp = await http.post('/api/user', longUsername);
+      isNotOk(resp, 422);
 
       resp.body.validationErrors.should.have.length(1);
       resp.body.validationErrors[0].msg.should.equal('Username is too long (more than 20 characters)');
@@ -238,16 +206,28 @@ describe('Users', () => {
         password: 'password123'
       };
 
-      const resp = await chai.request(app)
-        .post('/api/user')
-        .auth(currentUserToken, {type: 'bearer'})
-        .send(spacedUsername);
-
-      resp.should.have.status(422);
-      resp.body.ok.should.be.false;
+      const resp = await http.post('/api/user', spacedUsername);
+      isNotOk(resp, 422);
 
       resp.body.validationErrors.should.have.length(1);
       resp.body.validationErrors[0].msg.should.equal('Username contains a space');
+    });
+
+    it('should return an error when the year is incorrectly formatted', async () => {
+      const incorrectDateFormat = {
+        name: { first: 'Jimmy', last: 'John' },
+        year: 'not a year',
+        major: 'Computer Science',
+        email: 'jimmy@john.com',
+        username: 'ausername',
+        password: 'password123'
+      };
+
+      const resp = await http.post('/api/user', incorrectDateFormat);
+      isNotOk(resp, 422);
+
+      resp.body.validationErrors.should.have.length(1);
+      resp.body.validationErrors[0].msg.should.equal('Year must be a number');
     });
   });
 
@@ -272,51 +252,102 @@ describe('Users', () => {
         password: 'diffpassword'
       };
 
-      const resp = await chai.request(app)
-        .put(`/api/user/${oldUser._id}`)
-        .auth(currentUserToken, {type: 'bearer'})
-        .send(newUserData);
-
-      resp.should.have.status(200);
-      resp.body.ok.should.be.true;
+      const resp = await http.put(`/api/user/${oldUser._id}`, newUserData);
+      isOk(resp);
 
       resp.body.data.should.deep.include(newUserData);
     });
   });
 
-  describe('DELETE /user/:id', async () => {
-    it('should delete a user and return it', async () => {
-      const userData = {
-        name: { first: 'Test', last: 'McTester' },
-        major: 'Computer Science',
-        year: 2021,
-        email: 'test@test.com',
-        username: 'tester',
-        password: 'password123'
-      };
+  describe('Club Operations', async () => {
+    const baseClubParams = {
+      name: 'Club Club',
+      admins: [],
+      facebook_link: 'facebook',
+      description: 'This is a club',
+      category: 'Computer Science',
+      events: []
+    };
 
-      const user = await userDAO.create(userData);
+    describe('PUT /user/follow/:clubId', async () => {
+      it('should add a club to the list of followed clubs for the current user', async () => {
+        const { _id: clubId } = await clubDAO.create(baseClubParams);
 
-      const resp = await chai.request(app)
-        .delete(`/api/user/${user._id}`)
-        .auth(currentUserToken, {type: 'bearer'})
-        .send();
+        const resp = await http.put(`/api/user/follow/${clubId}`);
+        isOk(resp);
+        resp.body.data.clubs.should.include(clubId.toString());
 
-      resp.should.have.status(200);
-      resp.body.ok.should.be.true;
+        // Re-fetch user info to verify that the change persisted
+        const userResp = await http.get(`/api/user/${currentUser._id}`);
+        userResp.body.data.clubs.should.include(clubId.toString());
+      });
 
-      resp.body.data.should.deep.include(userData);
+      it('should do nothing if it is called twice with the same club', async () => {
+        const { _id: clubId } = await clubDAO.create(baseClubParams);
+
+        const resp = await http.put(`/api/user/follow/${clubId}`);
+        isOk(resp);
+        resp.body.data.clubs.should.have.length(1);
+        resp.body.data.clubs.should.include(clubId.toString());
+
+        const resp2 = await http.put(`/api/user/follow/${clubId}`);
+        isOk(resp2);
+        resp2.body.data.clubs.should.have.length(1);
+        resp2.body.data.clubs.should.include(clubId.toString());
+      });
+
+      it('should return an error if the clubId does not exist', async () => {
+        const resp = await http.put(`/api/user/follow/${fakeId}`);
+        isNotOk(resp, 422);
+
+        resp.body.validationErrors.should.have.length(1);
+        resp.body.validationErrors[0].msg.should.equal('Invalid Club ID. Club does not exist.')
+      })
     });
 
-    it('should return an error when the id does not exist', async () => {
-      const resp = await chai.request(app)
-        .delete('/api/user/5dba44f05b88ed1602589e84')
-        .auth(currentUserToken, {type: 'bearer'})
-        .send();
+    describe('PUT /user/unfollow/:clubId', async () => {
+      it('should remove a club from the list of followed clubs for the current user', async () => {
+        const { _id: clubId } = await clubDAO.create(baseClubParams);
+        currentUser.clubs.push(clubId);
+        currentUser.save();
 
-      resp.should.have.status(404);
-      resp.body.ok.should.be.false;
-      resp.body.error.should.equal('Id not found');
+        const resp = await http.put(`/api/user/unfollow/${clubId}`);
+        isOk(resp);
+        resp.body.data.clubs.should.be.empty;
+
+        // Re-fetch user info to verify that the change persisted
+        const userResp = await http.get(`/api/user/${currentUser._id}`);
+        isOk(userResp);
+        userResp.body.data.clubs.should.be.empty;
+      });
+
+      it('should do nothing if it is called twice with the same club', async () => {
+        const { _id: clubId } = await clubDAO.create(baseClubParams);
+        currentUser.clubs.push(clubId);
+        currentUser.save();
+
+        const resp = await http.put(`/api/user/unfollow/${clubId}`);
+        isOk(resp);
+        resp.body.data.clubs.should.be.empty;
+
+        const resp2 = await http.put(`/api/user/unfollow/${clubId}`);
+        isOk(resp2);
+        resp2.body.data.clubs.should.be.empty;
+      });
+    });
+  });
+
+  describe('DELETE /user/:id', async () => {
+    it('should delete a user and return it', async () => {
+      const resp = await http.delete('/api/user');
+      isOk(resp);
+
+      resp.body.data.should.deep.include(currentUserParams);
+
+      const getResp = await http.get(`/api/user/${currentUser._id}`);
+      isNotOk(getResp, 404);
+
+      getResp.body.error.should.contain('Id not found');
     });
   });
 });

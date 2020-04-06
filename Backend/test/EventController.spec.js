@@ -15,7 +15,8 @@ const app = require('../app');
 
 const currentUserParams = {
   name: { first: 'Current', last: 'User' },
-  dob: '2019-01-01',
+  year: 2021,
+  major: 'Computer Science',
   email: 'current@user.com',
   username: 'currentuser',
   password: 'password'
