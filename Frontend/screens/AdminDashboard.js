@@ -1,23 +1,26 @@
 import React, { Component } from 'react';
-import { AsyncStorage, Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, StatusBar, TouchableOpacity, Dimensions } from 'react-native';
 import { club } from '../assets/styles/stylesheet';
-import EventsApi from '../api/EventsApi';
-import DashboardButton from "../components/DashboardButton";
 import UserContext from "../util/UserContext";
 
+const STATUS_BAR_HEIGHT = StatusBar.currentHeight;
+const MAX_FIELD_WIDTH = (Dimensions.get("screen").width * 3) / 4;
 const styles = StyleSheet.create({
   container: {
+    margin: 20,
+    marginTop: STATUS_BAR_HEIGHT,
     flex: 1,
-    alignItems: 'center',
-    textAlign: 'center',
+    display: "flex",
+    backgroundColor: "#FFF",
+    alignItems: "center",
   },
   heading: {
     marginTop: 30,
     marginBottom: 40,
   },
   middleButton: {
-    marginTop: 12,
-    marginBottom: 12
+    marginTop: 15,
+    marginBottom: 15
   },
   body:{
     fontSize: 18,
@@ -25,10 +28,30 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     marginTop: 24,
   },
+  flexbox: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    maxWidth: '80%',
+  },
+  button: {
+    minWidth: MAX_FIELD_WIDTH,
+    padding: 10,
+    backgroundColor: "#7e947f",
+    borderRadius: 100,
+    marginHorizontal: 10,
+    marginVertical: 10,
+    elevation: 3
+  },
+  buttonText: {
+    fontSize: 15,
+    alignSelf: "center",
+    color: "#fff"
+  }
 });
 
 // Event Feed App Module
-class HomeScr extends Component {
+class AdminDashboard extends Component {
   static contextType = UserContext;
 
   static navigationOptions = {
@@ -44,20 +67,35 @@ class HomeScr extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={{marginTop: 8}}>
-          <Text style={club.title}>Club name</Text>
+        <View>
+          <Text style={club.title}>{props.clubName}</Text>
         </View>
         <View style={styles.heading}>
           <Text><Text style={styles.body}>Admin</Text><Text style={[styles.body, {color: '#7e947f'}]}> Panel</Text></Text>
         </View>
-        <DashboardButton text='Edit Club Information' onPress={() => {}} />
-        <View style={styles.middleButton}>
-          <DashboardButton text='Edit Admins' onPress={() => {}} />
+        <View style={styles.flexbox}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={e => {}}
+          >
+            <Text style={styles.buttonText}>Edit Club Information</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={e => {}}
+          >
+            <Text style={styles.buttonText}>Edit Admins</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={e => {}}
+          >
+            <Text style={styles.buttonText}>Add Post</Text>
+          </TouchableOpacity>
         </View>
-        <DashboardButton text='Add Post' onPress={() => {}} />
       </View>
     );
   }
 }
 
-export default HomeScr;
+export default AdminDashboard;
