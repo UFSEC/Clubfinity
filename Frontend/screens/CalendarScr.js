@@ -25,24 +25,33 @@ export default class CalendarScr extends React.Component {
   }
 
   async componentDidMount() {
-    const events = await this.fetchEvents();
+    const now = DateTime.local();
+    const events = await this.fetchEvents(now.year, now.month);
     this.setState({
       events
     })
   }
 
-  async fetchEvents() {
+  async fetchEvents(year, month) {
     const bearerToken = await AsyncStorage.getItem('userToken');
+    const date = DateTime.local(year, month);
 
-    return EventsApi.getInMonth(bearerToken, DateTime.local())
+    return EventsApi.getInMonth(bearerToken, date)
   }
 
-  handleDayPress(day) {
-    const selectedDate = DateTime.local(day.year, day.month, day.day);
+  handleMonthChange = async date => {
+    const events = await this.fetchEvents(date.year, date.month);
+    console.log(events);
+
+    this.setState({ events });
+  };
+
+  handleDayPress = date => {
+    const selectedDate = DateTime.local(date.year, date.month, date.day);
     this.setState({
       selectedDate
     });
-  }
+  };
 
   render() {
     const { user } = this.context;
@@ -53,6 +62,7 @@ export default class CalendarScr extends React.Component {
             hideArrows={false}
             markedDates={{ [this.state.selectedDate.toISODate()]: { selected: true } }}
             onDayPress={this.handleDayPress.bind(this)}
+            onMonthChange={this.handleMonthChange}
           />
         </View>
 
