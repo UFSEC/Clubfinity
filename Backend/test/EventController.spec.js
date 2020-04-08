@@ -78,6 +78,8 @@ describe('Events', () => {
 
       const data = resp.body.data;
       data.should.have.length(1);
+      // event.id is of type ObjectId, response has string representation of ObjectId
+      // Used JSON.parse to be able to compare ObjectId and with the string representation successfully 
       data.should.deep.include(JSON.parse(JSON.stringify(event)))
     });
   });

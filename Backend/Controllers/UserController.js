@@ -31,7 +31,7 @@ exports.followClub = async (req, res) => {
     const clubId = req.params['clubId'];
     const updatedUser = await userDAO.get(req.userId);
 
-    if (updatedUser.clubs.some((club) => { return club._id.toString() === clubId} ))
+    if (updatedUser.clubs.some((club) => club._id.toString() === clubId))
       return updatedUser;
 
     updatedUser.clubs.push(clubId);
@@ -45,7 +45,7 @@ exports.unfollowClub = async (req, res) => catchErrors(res, async () => {
   const clubId = req.params['clubId'];
   const user = await userDAO.get(req.userId);
 
-  user.clubs.forEach(function(club, index, clubs) {
+  user.clubs.forEach((club, index, clubs) => {
     if (club._id.toString() === clubId) {
       clubs.splice(index, 1);
     }
