@@ -65,18 +65,22 @@ describe('Events', () => {
 
   describe('GET /club/', async () => {
     it('get all events by club', async () => {
-      const { _id: clubId } = await clubDAO.create(clubParams);
+      const club = await clubDAO.create(clubParams);
       const event = await eventDAO.create({
         ...baseEventParams,
         name: 'In month',
         date: '2020-01-01',
-        club: clubId
+        club: club
       });
-
-      const resp = await http.get(`/api/event/club/${clubId}`);
+      const resp = await http.get(`/api/event/club/${club._id}`);
       isOk(resp);
 
       const data = resp.body.data;
+      console.log("Original event is")
+      console.log(event)
+
+      console.log("Response event is ");
+      console.log(data)
       data.should.have.length(1);
       // event.id is of type ObjectId, response has string representation of ObjectId
       // Used JSON.parse to be able to compare ObjectId and with the string representation successfully 
