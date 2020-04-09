@@ -261,7 +261,8 @@ const styles = StyleSheet.create({
   },
   floatingButtonText:{
     fontSize: 30,
-    color: 'white'
+    color: 'white',
+    paddingBottom: 2
   },
 })
 
