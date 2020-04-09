@@ -7,64 +7,17 @@ import { Ionicons } from '@expo/vector-icons';
 const adminData = [
     {
       // id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'First Item',
+      firstName: 'FirstName',
+      lastName: 'LastName',
+      position: 'Position',
       image: '', 
     },
-    {
-      // id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      title: 'Second Item',
-      image: '', 
-    },
-    {
-      // id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      title: 'Third Item',
-      image: '', 
-    },
-    {
-      // id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'First Item',
-      image: '', 
-    },
-    {
-      // id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      title: 'Second Item',
-      image: '', 
-    },
-    {
-      // id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      title: 'Third Item',
-      image: '', 
-    },
-    {
-        // id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        title: 'Second Item',
-        image: '', 
-      },
-      {
-        // id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        title: 'Third Item',
-        image: '', 
-      },
-      {
-        // id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'First Item',
-        image: '', 
-      },
-      {
-        // id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        title: 'Second Item',
-        image: '', 
-      },
-      {
-        // id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        title: 'Third Item',
-        image: '', 
-      },
+   
     
   ];
 
 //AdminCard component - displays text and image
-function AdminCard({ title }) {
+function AdminCard({ firstName, lastName, position, image }) {
     return (
       <View style={styles.adminCard}>
         <Image 
@@ -73,7 +26,8 @@ function AdminCard({ title }) {
             style={styles.cardImage}
         />
         <View style={styles.cardText}>
-          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.nameStyle}>{firstName + " " + lastName}</Text>
+          <Text style={styles.positionStyle}>{position}</Text>
         </View>
         
       </View>
@@ -83,7 +37,7 @@ function AdminCard({ title }) {
 //Actual Admin List - displays all the admins
 export class AdminList extends Component {
     
-    //Function to disply if no admins have been added
+    //Function to display if no admins have been added
     eventListView() {
         return (
           <SafeAreaView style={styles.container}>
@@ -114,7 +68,7 @@ export class AdminList extends Component {
                 {/* List of admins */}
                 <FlatList
                     data={adminData}
-                    renderItem={({ item }) => <AdminCard title={item.title} />}
+                    renderItem={({ item }) => <AdminCard firstName={item.firstName} lastName={item.lastName} position={item.position} image={item.image} />}
                     keyExtractor={item => item.id}
                 />
             
@@ -142,95 +96,99 @@ export class AdminList extends Component {
 
 //------styleSheet-------//
 const style = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white',
-    },
-    topBar:{
-        backgroundColor: '#93AA93',
-        alignItems:'center',
-        justifyContent:'center',
-        marginBottom: 5,
-        padding: 15,
-    },
-    toptopBarText:{
-        fontSize: 22, 
-        fontWeight: 'bold',
-        color: 'white', 
-    },
-    searchBox: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        backgroundColor: '#E5E4EA',
-        borderWidth: 1,
-        borderRadius: 10,
-        borderColor: '#E5E4EA',
-        marginHorizontal: 10,
-        marginVertical: 5,
-        height: 50,
-        paddingHorizontal: 20,
-    },
-    searchBoxText: {
-        marginLeft: 7,
-        flex: 11
-    },
-    searchBoxIcon: {
-        flex: 1,
-    },
-    adminCard: {
-        backgroundColor: 'white', //#f9c2ff
-        padding: 5,
-        marginVertical: 5,
-        marginHorizontal: 10,
-        borderRadius: 10,
-        flexDirection: 'row',
-        borderWidth: 1,
-        borderColor: "lightgrey",
-    },
-    cardImage: {
-        width: 60,
-        height: 60,
-        borderRadius: 75/2,
-        overflow: "hidden",
-        padding: 5,
-        backgroundColor: 'lightgray'
-    },
-    cardText:{
-        // for padding, etc.
-        justifyContent: 'center', 
-        alignItems: 'center',
-        paddingLeft: 10,
-    },
-    title: {
-        //to customize text, font, etc. 
-        fontSize: 15,
-    },
-    floatingButton: {
-        //Layout 
-        flex: 1,
-        alignItems:'center',
-        justifyContent:'center',
-        //Size
-        width:70,
-        height:70,
-        //Position
-        position: 'absolute',                                          
-        bottom: 20,                                                    
-        right: 20,
-        //Styling w/ shadows
-        backgroundColor: '#93AA93',
-        borderRadius: 100, 
-        shadowColor: 'black',
-        shadowRadius: 10,
-        shadowOpacity: .3,
-        shadowOffset: {width: 0, height: 0},
-    },
-    floatingButtonText:{
-        fontSize: 30,
-        color: 'white'
-    },
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  topBar:{
+    backgroundColor: '#93AA93',
+    alignItems:'center',
+    justifyContent:'center',
+    marginBottom: 5,
+    padding: 15,
+  },
+  toptopBarText:{
+    fontSize: 22, 
+    fontWeight: 'bold',
+    color: 'white', 
+  },
+  searchBox: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    backgroundColor: '#E5E4EA',
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: '#E5E4EA',
+    marginHorizontal: 10,
+    marginVertical: 5,
+    height: 50,
+    paddingHorizontal: 20,
+  },
+  searchBoxText: {
+    marginLeft: 7,
+    flex: 11
+  },
+  searchBoxIcon: {
+    flex: 1,
+  },
+  adminCard: {
+    backgroundColor: 'white', //#f9c2ff
+    padding: 5,
+    marginVertical: 5,
+    marginHorizontal: 10,
+    borderRadius: 10,
+    flexDirection: 'row',
+    borderWidth: 1,
+    borderColor: "lightgrey",
+  },
+  cardImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 75/2,
+    overflow: "hidden",
+    padding: 5,
+    backgroundColor: 'lightgray'
+  },
+  cardText:{
+    // for padding, etc.
+    justifyContent: 'center', 
+    paddingLeft: 10,
+  },
+  nameStyle: {
+    //to customize text, font, etc. 
+    fontSize: 15,
+  },
+  positionStyle:{
+    fontSize: 15,
+    color: 'gray',
+
+  },
+  floatingButton: {
+    //Layout 
+    flex: 1,
+    alignItems:'center',
+    justifyContent:'center',
+    //Size
+    width:70,
+    height:70,
+    //Position
+    position: 'absolute',                                          
+    bottom: 20,                                                    
+    right: 20,
+    //Styling w/ shadows
+    backgroundColor: '#93AA93',
+    borderRadius: 100, 
+    shadowColor: 'black',
+    shadowRadius: 10,
+    shadowOpacity: .3,
+    shadowOffset: {width: 0, height: 0},
+  },
+  floatingButtonText:{
+    fontSize: 30,
+    color: 'white'
+  },
 })
 
 export default AdminList; 
