@@ -95,7 +95,7 @@ export class AdminList extends Component {
 
 
 //------styleSheet-------//
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
