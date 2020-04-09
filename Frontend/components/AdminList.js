@@ -12,6 +12,55 @@ const adminData = [
       position: 'Position',
       image: '', 
     },
+    {
+      // id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+      firstName: 'FirstName',
+      lastName: 'LastName',
+      position: 'Position',
+      image: '', 
+    },
+    {
+      // id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+      firstName: 'FirstName',
+      lastName: 'LastName',
+      position: 'Position',
+      image: '', 
+    },
+    {
+      // id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+      firstName: 'FirstName',
+      lastName: 'LastName',
+      position: 'Position',
+      image: '', 
+    },
+    {
+      // id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+      firstName: 'FirstName',
+      lastName: 'LastName',
+      position: 'Position',
+      image: '', 
+    },
+    {
+      // id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+      firstName: 'FirstName',
+      lastName: 'LastName',
+      position: 'Position',
+      image: '', 
+    },
+    {
+      // id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+      firstName: 'FirstName',
+      lastName: 'LastName',
+      position: 'Position',
+      image: '', 
+    },
+    {
+      // id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+      firstName: 'FirstName',
+      lastName: 'LastName',
+      position: 'Position',
+      image: '', 
+    },
    
     
   ];
@@ -38,21 +87,35 @@ function AdminCard({ firstName, lastName, position, image }) {
 export class AdminList extends Component {
     
     //Function to display if no admins have been added
-    eventListView() {
+    noAdminsView() {
         return (
-          <SafeAreaView style={styles.container}>
-            <Text> No Admins added.</Text>
-          </SafeAreaView>
+          <SafeAreaView style={styles.adminListContainer}>
+            
+            {/* Fixed top navBar */}
+            <View style={styles.topBar}>
+              <Text style={styles.topBarText}>Admin List</Text>
+            </View>
+
+            <View style={styles.noAdminsTextContainer}>
+              <Text> No Admins added.</Text>
+            </View>
+
+            {/* Floating button */}
+            <TouchableOpacity style={styles.floatingButton}>
+              <Text style={styles.floatingButtonText}>+</Text>
+            </TouchableOpacity>
+
+        </SafeAreaView>
         );
       }
 
     //Function to display admins w/ image and name
     adminListView(){
         return(
-            <SafeAreaView style={styles.container}>
-                {/* Top bar */}
+            <SafeAreaView style={styles.adminListContainer}>
+                {/* Fixed top navBar */}
                 <View style={styles.topBar}>
-                    <Text style={styles.toptopBarText}>Admin List</Text>
+                    <Text style={styles.topBarText}>Admin List</Text>
                 </View>
 
                 {/* Search Bar */}
@@ -88,7 +151,12 @@ export class AdminList extends Component {
 
     //------Renders Interface-------//
     render() {
-        return this.adminListView();
+      //add conditional statements
+
+      // if(noAdmins)
+      //   return this.noAdminsView()
+      // else
+      return this.adminListView();
     }
 
 }
@@ -96,7 +164,13 @@ export class AdminList extends Component {
 
 //------styleSheet-------//
 const styles = StyleSheet.create({
-  container: {
+  noAdminsTextContainer:{
+    flex: 1,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  adminListContainer: {
     flex: 1,
     backgroundColor: 'white',
   },
@@ -107,7 +181,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     padding: 15,
   },
-  toptopBarText:{
+  topBarText:{
     fontSize: 22, 
     fontWeight: 'bold',
     color: 'white', 
