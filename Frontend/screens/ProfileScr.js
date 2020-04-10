@@ -34,6 +34,12 @@ export default class ProfileScr extends React.Component {
 		}
 	}
 
+	componentDidUpdate(prevState) {
+		if (prevState.active !== this.state.active) {
+		  this.scroll.scrollTo({x:0,y:0,animated:true});
+		}
+	  }
+
 	signOut = async () => {
 		await AsyncStorage.removeItem('userToken');
 		this.props.navigation.navigate('Auth');
@@ -99,10 +105,11 @@ export default class ProfileScr extends React.Component {
 		return (
 			<View style={style.mainContainer}>
 				<ScrollView 
+					ref={(c)=>{this.scroll = c}}
 					scrollEnabled = {active == 1 ? true : false}
-					alwaysBounceHoriztonal = {false}
 				>
-					<View style={style.Card}>
+					<View 
+						style={style.Card}>
 						<View style={style.profileCardRow}>
 							<Image style={[style.profilePicture]} source={userProfilePicture.ProfilePic} />
 							<View >
@@ -131,12 +138,12 @@ export default class ProfileScr extends React.Component {
                    				 		borderRadius:7
                 					},
                 				...{backgroundColor: active == 1 ? '#b1caa9' : '#7e947f'}
-              					}}
+								  }}
               					onLayout={event =>
 								this.setState({ xTabOne: event.nativeEvent.layout.x })
-              					}
+								}
 								onPress={() =>
-								this.setState({ active: 0 }, () => this.handleSlide(xTabOne))
+								this.setState({ active: 0 }, () =>  this.handleSlide(xTabOne))								
 								}
             				>
              					<Text style={style.textStyle}> {this.state.title[0]} </Text>
@@ -158,7 +165,7 @@ export default class ProfileScr extends React.Component {
                 				this.setState({ xTabTwo: event.nativeEvent.layout.x })
               					}
               					onPress={() =>
-                				this.setState({ active: 1 }, () => this.handleSlide(xTabTwo))
+								this.setState({ active: 1 }, () => this.handleSlide(xTabTwo))
               					}
             					>
               						<Text style={style.textStyle}> {this.state.title[1]} </Text>
@@ -175,9 +182,9 @@ export default class ProfileScr extends React.Component {
                     			}
                   				]
                 			}
-              			}}
+						  }}
               			onLayout={event =>
-                		this.setState({translateY: event.nativeEvent.layout.height})}
+						this.setState({translateY: event.nativeEvent.layout.height})}
             		>
               			<Preferences/>
             		</Animated.View>
