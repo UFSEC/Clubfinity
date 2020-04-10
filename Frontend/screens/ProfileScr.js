@@ -138,12 +138,12 @@ export default class ProfileScr extends React.Component {
                    				 		borderRadius:7
                 					},
                 				...{backgroundColor: active == 1 ? '#b1caa9' : '#7e947f'}
-								  }}
+              					}}
               					onLayout={event =>
 								this.setState({ xTabOne: event.nativeEvent.layout.x })
-								}
+              					}
 								onPress={() =>
-								this.setState({ active: 0 }, () =>  this.handleSlide(xTabOne))								
+								this.setState({ active: 0 }, () => this.handleSlide(xTabOne))
 								}
             				>
              					<Text style={style.textStyle}> {this.state.title[0]} </Text>
@@ -165,7 +165,7 @@ export default class ProfileScr extends React.Component {
                 				this.setState({ xTabTwo: event.nativeEvent.layout.x })
               					}
               					onPress={() =>
-								this.setState({ active: 1 }, () => this.handleSlide(xTabTwo))
+                				this.setState({ active: 1 }, () => this.handleSlide(xTabTwo))
               					}
             					>
               						<Text style={style.textStyle}> {this.state.title[1]} </Text>
@@ -182,9 +182,9 @@ export default class ProfileScr extends React.Component {
                     			}
                   				]
                 			}
-						  }}
+              			}}
               			onLayout={event =>
-						this.setState({translateY: event.nativeEvent.layout.height})}
+                		this.setState({translateY: event.nativeEvent.layout.height})}
             		>
               			<Preferences/>
             		</Animated.View>
@@ -203,7 +203,7 @@ export default class ProfileScr extends React.Component {
                 			}
               			}}
            			>
-						<ClubsFollowScr/>
+              				<ClubsFollowScr/>
             		</Animated.View>
 				</ScrollView>
 			</View>
