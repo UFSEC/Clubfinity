@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    maxWidth: '80%',
+    maxWidth: '100%',
   },
   button: {
     minWidth: MAX_FIELD_WIDTH,
