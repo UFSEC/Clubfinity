@@ -72,6 +72,9 @@ describe('Events', () => {
         date: '2020-01-01',
         club: club
       });
+      // Populating event.club since the response to /api/event/club will also have populated event.club
+      event.populate('club', (err) => console.log(err));
+
       const resp = await http.get(`/api/event/club/${club._id}`);
       isOk(resp);
 
