@@ -17,6 +17,10 @@ exports.get = async (req, res) => catchErrors(res, async () => {
   return eventDAO.get(req.params['id']);
 });
 
+exports.getByClub = async (req, res) => catchErrors(res, async () => {
+  return eventDAO.getByClubs([req.params['clubId']]);
+});
+
 exports.getFollowing = async (req, res) => catchErrors(res, async () => {
   const user = await getCurrentUser(req);
 
@@ -56,7 +60,7 @@ exports.create = async (req, res) => catchErrors(res, async () => {
 exports.getGoingUsers = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);
 
-  return eventDAO.getGoingUsers(req.params['id'], { $addToSet: { usersGoing: req.userId  } })
+  return eventDAO.getGoingUsers(req.params['id'])
 });
 
 exports.addGoingUser = async (req, res) => catchErrors(res, async () => {

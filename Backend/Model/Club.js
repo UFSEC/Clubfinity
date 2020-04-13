@@ -9,10 +9,6 @@ const Schema = new mongoose.Schema({
   facebook_link: String,
   description: String,
   category: String,
-  events: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Event'
-  }]
 });
 
 exports.Model = mongoose.model("Club", Schema);

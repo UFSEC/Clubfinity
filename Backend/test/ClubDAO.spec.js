@@ -9,8 +9,7 @@ const baseClubParams = {
   admins: [],
   facebook_link: 'facebook',
   description: 'This is a club',
-  category: 'Crafts',
-  events: []
+  category: 'Crafts'
 };
 
 describe('ClubDAO', () => {
@@ -45,10 +44,9 @@ describe('ClubDAO', () => {
       const updatedClubParams = {
         name: 'Painting Club',
         admins: [],
-        facebook_link: 'notfacebook',
+        facebook_link: 'http://facebook.com/other',
         description: 'This is not a club',
-        category: 'Arts',
-        events: []
+        category: 'Arts'
       };
 
       await clubDAO.update(oldClub._id, updatedClubParams);
@@ -65,8 +63,7 @@ describe('ClubDAO', () => {
         name: 'Woodworking Club',
         admins: [],
         email: 'wood@working.com',
-        password: 'password',
-        events: []
+        password: 'password'
       };
       const newClub = await clubDAO.create(clubParams);
       await clubDAO.delete(newClub._id);
