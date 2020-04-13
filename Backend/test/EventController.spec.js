@@ -79,11 +79,6 @@ describe('Events', () => {
       isOk(resp);
 
       const data = resp.body.data;
-      console.log("Original event is")
-      console.log(event)
-
-      console.log("Response event is ");
-      console.log(data)
       data.should.have.length(1);
       // event.id is of type ObjectId, response has string representation of ObjectId
       // Used JSON.parse to be able to compare ObjectId and with the string representation successfully 
