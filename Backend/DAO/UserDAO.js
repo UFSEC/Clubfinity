@@ -25,7 +25,7 @@ exports.get = async id => {
 };
 
 exports.getByUsername = async username => {
-  const user = await User.findOne({ username: username });
+  const user = await User.findOne({ username: username }).populate('clubs').exec();
   if (!user) throw new NotFoundError();
 
   return user;
