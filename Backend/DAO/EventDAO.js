@@ -1,5 +1,6 @@
 const Event = require("../Model/Event.js").Model;
 const clubDAO = require("../DAO/ClubDAO");
+const { NotFoundError } = require('../util/exceptions');
 
 exports.create = async eventParams => {
   if (await Event.exists({ name: eventParams.name })) {
@@ -14,7 +15,7 @@ exports.create = async eventParams => {
 }
 
 exports.getAll = async () => {
-  return await Event.find({}).exec();
+  return await Event.find({}).populate('club').exec();
 };
 
 exports.getAllEventsInMonth = async date => {
@@ -50,9 +51,10 @@ exports.getByName = async name => {
 };
 
 exports.getByClubs = async (clubs) => {
-  const events = await Event.find({
-    club: { $in: clubs}
-  });
+  const events = await Event
+      .find({club: { $in: clubs}})
+      .populate('club')
+      .exec();
 
   if (!events) throw NotFoundError();
   return events
@@ -66,7 +68,7 @@ exports.getGoingUsers = async (id) => {
 };
 
 exports.getEventsUserIsGoingTo = async userId => {
-  return await Event.find({ goingUsers: userId })
+  return await Event.find({ goingUsers: userId }).populate('club').exec();
 };
 
 exports.update = async (id, updatedData) => {

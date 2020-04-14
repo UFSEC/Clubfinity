@@ -32,7 +32,7 @@
     "@types/luxon": "^1.22.0"
   },
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha",
+    "test": "$(npm bin)/mocha",
     "start": "nodemon ./app"
   },
   "repository": {

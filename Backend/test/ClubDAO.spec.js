@@ -4,6 +4,14 @@ const clubDAO = require('../DAO/ClubDAO');
 const chai = require('chai');
 chai.should();
 
+const baseClubParams = {
+  name: 'Woodworking Club',
+  admins: [],
+  facebook_link: 'facebook',
+  description: 'This is a club',
+  category: 'Crafts'
+};
+
 describe('ClubDAO', () => {
   beforeEach(async () => {
     await clubDAO.deleteAll()
@@ -11,64 +19,34 @@ describe('ClubDAO', () => {
 
   describe('getAll', () => {
     it('should return a promise of all clubs', async () => {
-      const clubParams = {
-        name: 'Woodworking Club',
-        president_name: 'Bob',
-        admins: [],
-        major_of_interest: 'Computer Science',
-        email: 'wood@working.com',
-        password: 'password',
-        events: []
-      };
-      await clubDAO.create(clubParams);
+      await clubDAO.create(baseClubParams);
 
       const clubs = await clubDAO.getAll();
 
       clubs.should.have.length(1);
-      clubs[0].should.deep.include(clubParams);
+      clubs[0].should.deep.include(baseClubParams);
     });
   });
 
   describe('get', () => {
     it('should return a promise of a club', async () => {
-      const clubParams = {
-        name: 'Woodworking Club',
-        president_name: 'Bob',
-        admins: [],
-        major_of_interest: 'Computer Science',
-        email: 'wood@working.com',
-        password: 'password',
-        events: []
-      };
-      const newClub = await clubDAO.create(clubParams);
+      const newClub = await clubDAO.create(baseClubParams);
 
       const club = await clubDAO.get(newClub._id);
-      club.should.deep.include(clubParams);
+      club.should.deep.include(baseClubParams);
     });
   });
 
   describe('update', () => {
     it('should update an existing club', async () => {
-      const oldClubParams = {
-        name: 'Woodworking Club',
-        president_name: 'Bob',
-        admins: [],
-        major_of_interest: 'Computer Science',
-        email: 'wood@working.com',
-        password: 'password',
-        events: []
-      };
-
-      const oldClub = await clubDAO.create(oldClubParams);
+      const oldClub = await clubDAO.create(baseClubParams);
 
       const updatedClubParams = {
         name: 'Painting Club',
-        president_name: 'Sheral',
         admins: [],
-        major_of_interest: 'Art Science',
-        email: 'paint@working.com',
-        password: 'password1',
-        events: []
+        facebook_link: 'http://facebook.com/other',
+        description: 'This is not a club',
+        category: 'Arts'
       };
 
       await clubDAO.update(oldClub._id, updatedClubParams);
@@ -83,12 +61,9 @@ describe('ClubDAO', () => {
     it('should delete a club by id', async () => {
       const clubParams = {
         name: 'Woodworking Club',
-        president_name: 'Bob',
         admins: [],
-        major_of_interest: 'Computer Science',
         email: 'wood@working.com',
-        password: 'password',
-        events: []
+        password: 'password'
       };
       const newClub = await clubDAO.create(clubParams);
       await clubDAO.delete(newClub._id);

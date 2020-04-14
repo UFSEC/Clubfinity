@@ -3,8 +3,9 @@ import { Image, StyleSheet, Text, View, ScrollView, AsyncStorage, Button } from 
 import { FontAwesome } from '@expo/vector-icons';
 import Preferences from './Preferences';
 import ProfileInfoScr from './ProfileInfoScr';
-import ClubsFollowScr from './ClubsFollowScr'
-import Tab from '../components/Tabs'
+import ClubsFollowScr from './ClubsFollowScr';
+import { CreateEvent } from '../components/CreateEvent';
+import Tab from '../components/Tabs';
 import UserContext from '../util/UserContext';
 // Add User API
 
@@ -45,7 +46,8 @@ export default class ProfileScr extends React.Component {
 							{user && <Text adjustsFontSizeToFit numberOfLines={2} style={style.textHeader}>{user.name.first} {user.name.last}</Text>}
 						</View>
 					</View>
-					<ProfileInfoScr />
+					<ProfileInfoScr/>
+					<CreateEvent/>
 				</View>
 				<Tab tab1={<Preferences signOut={this.signOut} />} tab2={<ClubsFollowScr />} />
 			</ScrollView>

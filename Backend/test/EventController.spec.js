@@ -16,7 +16,8 @@ const app = require('../app');
 
 const currentUserParams = {
   name: { first: 'Current', last: 'User' },
-  dob: '2019-01-01',
+  year: 2021,
+  major: 'Computer Science',
   email: 'current@user.com',
   username: 'currentuser',
   password: 'password'
@@ -29,8 +30,7 @@ const clubParams = {
   admins: [],
   facebook_link: 'facebook',
   description: 'This is a club',
-  category: 'Computer Science',
-  events: []
+  category: 'Computer Science'
 };
 
 const clubNotFollowingParams = {
@@ -38,8 +38,7 @@ const clubNotFollowingParams = {
   admins: [],
   facebook_link: 'facebook',
   description: 'This is a club',
-  category: 'Computer Science',
-  events: []
+  category: 'Computer Science'
 };
 
 const baseEventParams = {
@@ -63,6 +62,29 @@ describe('Events', () => {
     currentUser = await userDAO.create(currentUserParams);
     const currentUserToken = authUtil.tokanizeUser(currentUser);
     http = new TestHttp(chai, app, currentUserToken);
+  });
+
+  describe('GET /club/', async () => {
+    it('get all events by club', async () => {
+      const club = await clubDAO.create(clubParams);
+      const event = await eventDAO.create({
+        ...baseEventParams,
+        name: 'In month',
+        date: '2020-01-01',
+        club: club
+      });
+      // Populating event.club since the response to /api/event/club will also have populated event.club
+      event.populate('club', (err) => console.log(err));
+
+      const resp = await http.get(`/api/event/club/${club._id}`);
+      isOk(resp);
+
+      const data = resp.body.data;
+      data.should.have.length(1);
+      // event.id is of type ObjectId, response has string representation of ObjectId
+      // Used JSON.parse to be able to compare ObjectId and with the string representation successfully 
+      data.should.deep.include(JSON.parse(JSON.stringify(event)))
+    });
   });
 
   describe('GET /inMonth', async () => {
