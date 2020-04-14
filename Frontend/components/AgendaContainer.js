@@ -29,7 +29,7 @@ export default class AgendaContainer extends React.Component {
 				}
 				<FlatList
 					data={selectedEvents}
-					keyExtractor={(item) => item._id.toString()}
+					keyExtractor={event => event._id.toString()}
 					renderItem={({ item }) =>
 						<AgendaCard data={item} />
 

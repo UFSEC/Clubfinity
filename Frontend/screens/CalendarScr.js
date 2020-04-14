@@ -36,12 +36,11 @@ export default class CalendarScr extends React.Component {
     const bearerToken = await AsyncStorage.getItem('userToken');
     const date = DateTime.local(year, month);
 
-    return EventsApi.getInMonth(bearerToken, date)
+    return EventsApi.getInMonth(bearerToken, date);
   }
 
   handleMonthChange = async date => {
     const events = await this.fetchEvents(date.year, date.month);
-    console.log(events);
 
     this.setState({ events });
   };
