@@ -31,8 +31,8 @@ exports.update = async (req, res) => catchErrors(res, async () => {
 exports.create = async (req, res) => catchErrors(res, async () => {
   validateClubData(req);
   const newClubData = req.body
-  newClubData['admins'] = [req.body.admin]
-  delete newClubData.admin
+  newClubData['admins'] = [req.userId]
+  newClubData['tags'] = newClubData['tags'].replace(' ', '').split(',').filter(Boolean)
 
   return clubDAO.create(req.body);
 });
@@ -52,7 +52,7 @@ exports.validate = type => {
     }
     case "validateCreateClubInfo": {
       return [
-        body("admin", "Club admin does not exist").exists(),
+        body("tags", "Tags does not exist").exists(),
       ];
     }
     case "validateUpdateClubInfo": {
