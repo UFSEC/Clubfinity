@@ -15,16 +15,14 @@ export default class ClubsFollowScr extends React.Component {
   
     return (
    <View styles={styles.formVal}>
-     
         <ClubsFollowGrid/>
    </View>
-
-    )
+  )
 }
 }
 const styles = StyleSheet.create({
   formVal: {
-   
+   maxWidth: 600,
    backgroundColor:'#F2F2F7'
    
   }

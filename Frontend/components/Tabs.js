@@ -7,15 +7,15 @@ import {
   Dimensions,
   Animated,
   ScrollView
-} from 'react-native'
+} from 'react-native';
 
 const { width} = Dimensions.get('screen')
 
-export default class App extends React.Component {
+export default class Tabs extends React.Component {
   constructor (props) { 
     super(props); 
     this.state = { 
-      title:['Prefrences','Following'],
+      title:['Preferences','Following'],
       active: 0,
       xTabOne: 0,
       xTabTwo: 0,
@@ -83,7 +83,7 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.tabContainerOuter}>
-          <View style={styles.tabContainerInner}>
+          <View style={styles.tabContainerInner}> 
             <Animated.View
               style={{
                 ...styles.tabOverlay,
@@ -98,7 +98,8 @@ export default class App extends React.Component {
                     borderTopRightRadius: 0,
                     borderBottomRightRadius: 0,
                     borderRadius:7
-                }
+                },
+                ...{backgroundColor: active == 1 ? '#b1caa9' : '#7e947f'}
               }}
               onLayout={event =>
                 this.setState({ xTabOne: event.nativeEvent.layout.x })
@@ -107,7 +108,7 @@ export default class App extends React.Component {
                 this.setState({ active: 0 }, () => this.handleSlide(xTabOne))
               }
             >
-              <Text > {this.state.title[0]}</Text>
+              <Text style={styles.textStyle}> {this.state.title[0]} </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={{
@@ -119,7 +120,8 @@ export default class App extends React.Component {
                   borderTopRightRadius: 3,
                   borderBottomRightRadius: 3,
                  
-                }
+                },
+                ...{backgroundColor: active == 1 ? '#7e947f': '#b1caa9' }
               }}
               onLayout={event =>
                 this.setState({ xTabTwo: event.nativeEvent.layout.x })
@@ -128,15 +130,11 @@ export default class App extends React.Component {
                 this.setState({ active: 1 }, () => this.handleSlide(xTabTwo))
               }
             >
-              <Text Color={() => { active === 1 ? '#fff' : '#007aff ' }}>
-                {this.state.title[1]}
-              </Text>
-            </TouchableOpacity>
-       
+              <Text style={styles.textStyle}> {this.state.title[1]} </Text>
+            </TouchableOpacity>      
           </View>
-
           {/* Additional Screen Here */}
-          <ScrollView>
+          <ScrollView >
             <Animated.View
               style={{
                 ...styles.tabContent,
@@ -156,7 +154,6 @@ export default class App extends React.Component {
             >
               {this.props.tab1}
             </Animated.View>
-
             <Animated.View
               style={{
                 ...styles.tabContent,
@@ -173,15 +170,18 @@ export default class App extends React.Component {
               }}
             >
               {this.props.tab2}
-            </Animated.View>
-        
+            </Animated.View>        
           </ScrollView>
         </View>
       </View>
     )
-  }
+  } 
 }
 const styles = StyleSheet.create({
+  textStyle:{
+    color: 'white',
+    letterSpacing: 2 
+  },
   container: {
     flex: 1
   },
@@ -200,8 +200,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#20638f',
-    padding: 8
+    borderColor: 'transparent',
+    padding: 8,
   },
   tabOverlay: {
     position: 'absolute',
@@ -209,16 +209,17 @@ const styles = StyleSheet.create({
     height: '100%',
     top: 0,
     left: 0,
-    backgroundColor: '#54aae3',
+    backgroundColor: '#7e947f',
     color: 'white',
     borderRadius: 4
   },
   tabOneView: {
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   tabContent: {
     justifyContent: 'center',
     alignItems: 'center'
   }
-})
+});
+

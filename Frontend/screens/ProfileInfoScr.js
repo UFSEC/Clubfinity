@@ -1,36 +1,43 @@
-import React from 'react'
-import { StyleSheet, Text, View, Dimensions } from 'react-native'
-const { width, height } = Dimensions.get('screen')
+import React, { useReducer } from 'react';
+import { StyleSheet, Text, View, Dimensions } from 'react-native';
+const { width, height } = Dimensions.get('screen');
+import UserContext from '../util/UserContext';
 
 
-export default class SettingScr extends React.Component {
+
+export default class ProfileInfoScr extends React.Component {
   static navigationOptions = {
     title: 'Clubfinity',
     headerStyle: { backgroundColor: '#7e947f' },
     headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 }
   }
+  static contextType = UserContext;
+  
   constructor(props){
-    super(props);
+    super();
     this.state = {
       Name: 'Christian Sarmiento',
       Major: 'Computer Science',
-      Interests: 'I love to codes lla accusamus sunt consequatur repellat tenetur numquam porro.',
+      Interests: 'I love to codes lla accusamus sunt consequatur repellat tenetur numquam porro mas.',
       Email: 'cs@gmail.com',
       Year: 'Senior'
 
       }
   }
+
   render() {
+    const { user } = this.context;
     return (
       <View style={styles.container}>
-        <Text style={styles.textSubheading}><Text style={{fontWeight: "bold"}}>Major:</Text> {this.state.Major}</Text>
-        <Text style={styles.textSubheading}><Text style={{fontWeight: "bold"}}>Interest:</Text> {this.state.Interests} </Text>
-        <Text style={styles.textSubheading}><Text style={{fontWeight: "bold"}}>Email:</Text> {this.state.Email}</Text>
-        <Text style={styles.textSubheading}><Text style={{fontWeight: "bold"}}>Year:</Text> {this.state.Year}</Text>
+        {user && <Text style={styles.textSubheading}><Text style={{fontWeight: "bold"}}>Major:</Text> {user.major}</Text>}
+        {user && <Text style={styles.textSubheading}><Text style={{fontWeight: "bold"}}>Email:</Text> {user.email}</Text>}
+        {user && <Text style={styles.textSubheading}><Text style={{fontWeight: "bold"}}>Class Year:</Text> {user.year}</Text>}
+        {user && <Text style={styles.textSubheading}><Text style={{fontWeight: "bold"}}>Interests:</Text>{this.state.Interests}</Text>}
       </View>
     )
   }
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -38,11 +45,11 @@ const styles = StyleSheet.create({
   
     alignItems: 'center',
     position: 'relative',
-    marginLeft: width/5,
-    marginRight: 5,
+    marginLeft: 1,
+    marginRight: 1,
     
-    marginTop: 10,
-    marginBottom: 10,
+    marginTop: 5,
+    marginBottom: 5,
     borderWidth: 1,
     borderColor: "#fff",
     borderRadius: 5,
@@ -77,7 +84,9 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   textSubheading: {
-	alignSelf: 'flex-start',
-	marginTop:20
+	  alignSelf: 'flex-start',
+    marginTop: 5,
+    letterSpacing:2,
+    color: '#636e72'
   }
 })
