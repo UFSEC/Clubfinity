@@ -7,21 +7,21 @@ import { Ionicons } from '@expo/vector-icons';
 const adminData = [
     {
       // id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      firstName: 'FirstName',
+      firstName: 'John',
       lastName: 'LastName',
       position: 'Position',
       image: '', 
     },
     {
       // id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      firstName: 'FirstName',
+      firstName: 'Elon',
       lastName: 'LastName',
       position: 'Position',
       image: '', 
     },
     {
       // id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      firstName: 'FirstName',
+      firstName: 'Mark',
       lastName: 'LastName',
       position: 'Position',
       image: '', 
@@ -86,6 +86,16 @@ function AdminCard({ firstName, lastName, position, image }) {
 //Actual Admin List - displays all the admins
 export class AdminList extends Component {
     
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchText: "",
+      filteredAdmins: adminData,
+      editButton: true,
+      isVisible:true
+    }
+  }
+
     //Function to display if no admins have been added
     noAdminsView() {
         return (
@@ -109,6 +119,18 @@ export class AdminList extends Component {
         );
       }
 
+      filterAdmins(text){
+        searchText = text.toLowerCase();
+        newFilterAdmins = adminData.filter((admin) => {
+          return admin.firstName.toLowerCase().includes(searchText) || admin.lastName.toLowerCase().includes(searchText);
+        });
+    
+        this.setState({
+          searchText: text,
+          filteredAdmins: newFilterAdmins
+        });
+      }
+
     //Function to display admins w/ image and name
     adminListView(){
         return(
@@ -125,12 +147,13 @@ export class AdminList extends Component {
                         style={styles.searchBoxText}
                         placeholderTextColor={'#8E8E93'}
                         placeholder="Search Admins"
+                        onChangeText={(text) => this.filterAdmins(text)}
                     ></TextInput>
                 </View>
                 
                 {/* List of admins */}
                 <FlatList
-                    data={adminData}
+                    data={this.state.filteredAdmins}
                     renderItem={({ item }) => <AdminCard firstName={item.firstName} lastName={item.lastName} position={item.position} image={item.image} />}
                     keyExtractor={item => item.id}
                 />
