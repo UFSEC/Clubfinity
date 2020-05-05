@@ -85,6 +85,13 @@ function AdminCard({ firstName, lastName, position, image }) {
 
 //Actual Admin List - displays all the admins
 export class AdminList extends Component {
+
+  /* Top navBar with AdminList */
+  static navigationOptions = {
+    title: 'AdminList',
+    headerStyle: { backgroundColor: '#7e947f' },
+    headerTitleStyle: { color: "#ecf0f1", letterSpacing: 2 },
+  }
     
   constructor(props) {
     super(props);
@@ -135,11 +142,6 @@ export class AdminList extends Component {
     adminListView(){
         return(
             <SafeAreaView style={styles.adminListContainer}>
-                {/* Fixed top navBar */}
-                <View style={styles.topBar}>
-                    <Text style={styles.topBarText}>Admin List</Text>
-                </View>
-
                 {/* Search Bar */}
                 <View style={styles.searchBox}>
                     <Ionicons style={styles.searchBoxIcon} color={'#8E8E93'} name={"md-search"} size={24} />
