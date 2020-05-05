@@ -90,7 +90,7 @@ exports.deleteAll = async () => {
 
 const filterInMonth = (searchDate, events) => {
   return events.filter(e => {
-    return e.date.getUTCMonth() === searchDate.getUTCMonth() &&
-      e.date.getUTCFullYear() === searchDate.getUTCFullYear()
+    return e.date.month === searchDate.month &&
+           e.date.year === searchDate.year
   })
 };

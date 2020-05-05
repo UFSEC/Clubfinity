@@ -8,11 +8,11 @@ export default class AgendaCard extends Component {
 		return (
 			<View style={[card.container, style.container,]}>
 				<View style={style.mainSection}>
-					<Text style={style.title}>{data.title}</Text>
-					<Text style={card.bodyText}>{data.club}</Text>
+					<Text style={style.title}>{data.name}</Text>
+					<Text style={card.bodyText}>{data.club.name}</Text>
 				</View>
 				<View style={style.subSection}>
-					<Text style={card.agendaText}>{data.time}</Text>
+					<Text style={card.agendaText}>{data.date.toLocaleString()}</Text>
 					<Text style={card.agendaText}>{data.location}</Text>
 				</View>
 

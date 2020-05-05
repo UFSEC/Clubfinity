@@ -1,16 +1,10 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  FlatList,
-  View,
-  Button,
-} from 'react-native';
-import {
-  Calendar
-} from 'react-native-calendars';
+import { AsyncStorage, StyleSheet, View } from 'react-native';
+import { Calendar } from 'react-native-calendars';
+import { DateTime } from 'luxon'
 import AgendaContainer from '../components/AgendaContainer';
 import UserContext from '../util/UserContext';
+import EventsApi from '../api/EventsApi';
 
 export default class CalendarScr extends React.Component {
 
@@ -25,50 +19,38 @@ export default class CalendarScr extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      eventsData: [
-        {
-          id: 1,
-          title: 'GBM #4: Clubfinity',
-          club: 'Software Engineering Club',
-          time: '6:15 pm',
-          date: '2019-09-20',
-          location: 'CSE E114'
-        },
-        {
-          id: 2,
-          title: 'Election Night',
-          club: 'ACM',
-          time: '6:30 pm',
-          date: '2019-09-20',
-          location: 'Fishbowl'
-        },
-        {
-          id: 3,
-          title: 'Botanicon',
-          club: 'Gator Botanics',
-          time: '3:00 pm',
-          date: '2019-09-21',
-          location: 'Reitz Union'
-        },
-        {
-          id: 4,
-          title: 'AC/DC 101',
-          club: 'WECE',
-          time: '4:25 pm',
-          date: '2019-09-22',
-          location: 'CAB 214'
-        }
-      ],
-      datePressed: ""
-    }
+      events: [],
+      selectedDate: DateTime.local()
+    };
   }
 
-  handleDayPress = (day) => {
+  async componentDidMount() {
+    const now = DateTime.local();
+    const events = await this.fetchEvents(now.year, now.month);
     this.setState({
-      datePressed: day.dateString,
-      selected: day.dateString
-    });
+      events
+    })
   }
+
+  async fetchEvents(year, month) {
+    const bearerToken = await AsyncStorage.getItem('userToken');
+    const date = DateTime.local(year, month);
+
+    return EventsApi.getInMonth(bearerToken, date);
+  }
+
+  handleMonthChange = async date => {
+    const events = await this.fetchEvents(date.year, date.month);
+
+    this.setState({ events });
+  };
+
+  handleDayPress = date => {
+    const selectedDate = DateTime.local(date.year, date.month, date.day);
+    this.setState({
+      selectedDate
+    });
+  };
 
   render() {
     const { user } = this.context;
@@ -77,12 +59,13 @@ export default class CalendarScr extends React.Component {
         <View style={style.calContainer}>
           <Calendar
             hideArrows={false}
-            markedDates={{ [this.state.selected]: { selected: true } }}
-            onDayPress={this.handleDayPress}
+            markedDates={{ [this.state.selectedDate.toISODate()]: { selected: true } }}
+            onDayPress={this.handleDayPress.bind(this)}
+            onMonthChange={this.handleMonthChange}
           />
         </View>
 
-        <AgendaContainer eventsArr={this.state.eventsData} datePressed={this.state.datePressed} />
+        <AgendaContainer events={this.state.events} selectedDate={this.state.selectedDate} />
 
       </View>
     );
