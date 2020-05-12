@@ -4,7 +4,7 @@ stages:
 
 api unit:
   stage: test
-  image: node:12-alpine
+  image: node:12
   cache:
     key: ${CI_COMMIT_REF_SLUG}
     paths:
