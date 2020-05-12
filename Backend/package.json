@@ -32,7 +32,8 @@
     "@types/luxon": "^1.22.0"
   },
   "scripts": {
-    "test": "$(npm bin)/mocha",
+    "test": "NODE_ENV=test $(npm bin)/mocha",
+    "test:ci": "NODE_ENV=ci $(npm bin)/mocha",
     "start": "nodemon ./app"
   },
   "repository": {

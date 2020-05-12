@@ -17,7 +17,7 @@ api unit:
     - cd ..
   script:
     - cd Backend
-    - npm test
+    - npm run test:ci
     - cd ..
   only:
     - master

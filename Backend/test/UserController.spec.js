@@ -1,5 +1,3 @@
-process.env.NODE_ENV = 'test';
-
 const userDAO = require('../DAO/UserDAO');
 const clubDAO = require('../DAO/ClubDAO');
 const chai = require('chai');
