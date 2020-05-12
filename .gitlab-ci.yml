@@ -1,0 +1,25 @@
+stages:
+  - test
+  - build-deploy
+
+api unit:
+  stage: test
+  image: node:12-alpine
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - Backend/node_modules
+  services:
+    - mongo
+  before_script:
+    - npm install
+  script:
+    - npm test
+  only:
+    - master
+
+deploy api:
+  stage: build-deploy
+  script:
+    - echo "It works!"
+

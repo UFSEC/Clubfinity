@@ -35,6 +35,15 @@ const config = {
     "users": {
       "collection": "users"
     }
+  },
+  "ci": {
+    "port": process.env.PORT || 8080,
+    "jwtSecret": "testSecret",
+    "database": {
+      "host": "mongo",
+      "port": 27017,
+      "database": "test"
+    }
   }
 }
 
