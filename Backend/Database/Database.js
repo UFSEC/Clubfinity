@@ -36,3 +36,7 @@ process.on("SIGINT", function () {
 exports.connect = () => {
   mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
 };
+
+exports.disconnect = () => {
+  mongoose.disconnect();
+}

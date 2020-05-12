@@ -28,8 +28,15 @@ app.use("/auth", authRoute);
 
 database.connect();
 
-app.listen(config.port, () => {
+const server = app.listen(config.port, () => {
   console.log(`Now listening on port ${config.port}`);
 });
 
+function stop() {
+  console.log('stopping');
+  server.close();
+  database.disconnect();
+}
+
 module.exports = app;
+module.exports.stop = stop;
