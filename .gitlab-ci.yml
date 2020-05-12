@@ -12,9 +12,13 @@ api unit:
   services:
     - mongo
   before_script:
-    - pushd Backend && npm install && popd
+    - cd Backend
+    - npm install
+    - cd ..
   script:
+    - cd Backend
     - npm test
+    - cd ..
   only:
     - master
 
