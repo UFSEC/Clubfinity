@@ -1,5 +1,7 @@
 const env = process.env.NODE_ENV || "development";
 
+console.log(`NODE_ENV: ${env}`)
+
 const config = {
   "development": {
     "port": process.env.PORT || 8080,

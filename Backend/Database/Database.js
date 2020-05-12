@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const config = require("../Config/config");
 
+console.log(config)
+
 const url =
   "mongodb://" +
   config.database.host +
