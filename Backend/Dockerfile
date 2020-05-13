@@ -1,0 +1,10 @@
+FROM node:12
+COPY . /app
+WORKDIR /app
+ENV NODE_ENV production
+ENV DATABASE_HOST $DATABASE_HOST
+ENV DATABASE_NAME clubfinity-db
+ENV DATABASE_PORT 35668
+RUN npm install
+EXPOSE 8080
+CMD npm start
