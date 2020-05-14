@@ -28,7 +28,7 @@ build api:
   image: registry.gitlab.com/ufsec/clubfinity/build-push:latest
   before_script:
     - echo $GCLOUD_SERVICE_KEY > /gcloud-service-key.json
-    - cat $GCLOUD_SERVICE_KEY
+    - cat /gcloud-service-key.json
     - /google-cloud-sdk/bin/gcloud auth activate-service-account --key-file /gcloud-service-key.json
     - docker login -u _json_key --password-stdin https://us.gcr.io < /gcloud-service-key.json
   script:
