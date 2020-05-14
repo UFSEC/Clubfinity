@@ -26,7 +26,10 @@ api unit:
 build api:
   stage: build
   image: registry.gitlab.com/ufsec/clubfinity/build-push:latest
+  entrypoint: ["env", "-u", "DOCKER_HOST"]
+  command: ["dockerd-entrypoint.sh"]
   variables:
+    DOCKER_HOST: "tcp://docker:2378"
     DOCKER_TLS_CERTDIR: ""
   before_script:
     - echo $GCLOUD_SERVICE_KEY > /gcloud-service-key.json
