@@ -43,12 +43,12 @@ deploy api:
   image: 'gcloud-with-envsubst:latest'
   stage: deploy
   script:
-    - echo $$API_IMAGE_TAG
+    - echo $API_IMAGE_TAG
     - echo $GCLOUD_SERVICE_KEY > /gcloud-service-key.json
-    — gcloud auth activate-service-account --key-file /gcloud-service-key.json
-    — gcloud config set project $PROJECT_ID
-    — gcloud config set container/cluster clubfinity-cluster
-    — gcloud config set compute/zone us-east1
-    — gcloud container clusters get-credentials clubfinity-cluster --zone us-east1
-    — cat docker/deployment.yml | envsubst | kubectl apply -f -
+    - gcloud auth activate-service-account --key-file /gcloud-service-key.json
+    - gcloud config set project $PROJECT_ID
+    - gcloud config set container/cluster clubfinity-cluster
+    - gcloud config set compute/zone us-east1
+    - gcloud container clusters get-credentials clubfinity-cluster --zone us-east1
+    - cat kubernetes/deployment.yml | envsubst | kubectl apply -f -
     - kubectl expose deployment clubfinity --type=LoadBalancer --port 80 --target-port 8080
