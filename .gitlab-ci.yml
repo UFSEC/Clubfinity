@@ -39,16 +39,25 @@ build api:
     - docker build Backend/ -t "gcr.io/$PROJECT_ID/clubfinity-api"
     - /google-cloud-sdk/bin/gcloud docker -- push "gcr.io/$PROJECT_ID/clubfinity-api"
 
-deploy api:
-  image: 'registry.gitlab.com/ufsec/clubfinity/deploy-api'
+deploy frontend:
+  image: 'patwoz/expo-cli:3'
   stage: deploy
   script:
+    - npm install --prefix Frontend/
+    - expo login -u $EXPO_USERNAME -p $EXPO_PASSWORD
+    - expo publish /Frontend
+
+deploy api:
+  image: 'google/cloud-sdk'
+  stage: deploy
+  script:
+    - apt-get install -y gettext
     - echo $API_IMAGE_TAG
     - echo $GCLOUD_SERVICE_KEY > /gcloud-service-key.json
-    - /google-cloud-sdk/bin/gcloud auth activate-service-account --key-file /gcloud-service-key.json
-    - /google-cloud-sdk/bin/gcloud config set project $PROJECT_ID
-    - /google-cloud-sdk/bin/gcloud config set container/cluster clubfinity-cluster
-    - /google-cloud-sdk/bin/gcloud config set compute/zone us-east1
-    - /google-cloud-sdk/bin/gcloud container clusters get-credentials clubfinity-cluster --zone us-east1
+    - gcloud auth activate-service-account --key-file /gcloud-service-key.json
+    - gcloud config set project $PROJECT_ID
+    - gcloud config set container/cluster clubfinity-cluster
+    - gcloud config set compute/zone us-east1
+    - gcloud container clusters get-credentials clubfinity-cluster --zone us-east1
     - cat docker/deployment.yml | envsubst | kubectl apply -f -
     - kubectl expose deployment clubfinity --type=LoadBalancer --port 80 --target-port 8080
