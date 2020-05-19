@@ -43,9 +43,10 @@ deploy frontend:
   image: 'patwoz/expo-cli:3'
   stage: deploy
   script:
-    - npm install --prefix Frontend/
+    - cd Frontend
+    - npm install
     - expo login -u $EXPO_USERNAME -p $EXPO_PASSWORD
-    - expo publish /Frontend
+    - expo publish
 
 deploy api:
   image: 'google/cloud-sdk'
@@ -60,4 +61,3 @@ deploy api:
     - gcloud config set compute/zone us-east1
     - gcloud container clusters get-credentials clubfinity-cluster --zone us-east1
     - cat docker/deployment.yml | envsubst | kubectl apply -f -
-    - kubectl expose deployment clubfinity --type=LoadBalancer --port 80 --target-port 8080
