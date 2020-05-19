@@ -1,0 +1,19 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: clubfinity
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: clubfinity
+    spec:
+      containers:
+      - name: clubfinity
+        image: $API_IMAGE_TAG
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+        - name: $API_IMAGE_TAG

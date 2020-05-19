@@ -1,6 +1,3 @@
-services:
-  - docker:dind
-
 stages:
   - test
   - build
@@ -27,6 +24,8 @@ api unit:
     - master
 
 build api:
+  services:
+    - docker:dind
   stage: build
   image: registry.gitlab.com/ufsec/clubfinity/build-push:latest
   variables:
@@ -41,6 +40,15 @@ build api:
     - /google-cloud-sdk/bin/gcloud docker -- push "gcr.io/$PROJECT_ID/clubfinity-api"
 
 deploy api:
+  image: 'gcloud-with-envsubst:latest'
   stage: deploy
   script:
-    - echo "It works!"
+    - echo $$API_IMAGE_TAG
+    - echo $GCLOUD_SERVICE_KEY > /gcloud-service-key.json
+    — gcloud auth activate-service-account --key-file /gcloud-service-key.json
+    — gcloud config set project $PROJECT_ID
+    — gcloud config set container/cluster clubfinity-cluster
+    — gcloud config set compute/zone us-east1
+    — gcloud container clusters get-credentials clubfinity-cluster --zone us-east1
+    — cat docker/deployment.yml | envsubst | kubectl apply -f -
+    - kubectl expose deployment clubfinity --type=LoadBalancer --port 80 --target-port 8080
