@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, FlatList, SafeAreaView, TextInput} from 'react-native';
-
 import { Ionicons } from '@expo/vector-icons';
+
+import AdminCard from '../components/AdminCard';
 
 //Dummy data - list of admins
 const adminData = [
@@ -65,30 +66,12 @@ const adminData = [
     
   ];
 
-//AdminCard component - displays text and image
-function AdminCard({ firstName, lastName, position, image }) {
-    return (
-      <View style={styles.adminCard}>
-        <Image 
-            // source={require('./assets/splash.png')}      standard 
-            // source={require(image)}                      using data from admin
-            style={styles.cardImage}
-        />
-        <View style={styles.cardText}>
-          <Text style={styles.nameStyle}>{firstName + " " + lastName}</Text>
-          <Text style={styles.positionStyle}>{position}</Text>
-        </View>
-        
-      </View>
-    );
-  }
-
 //Actual Admin List - displays all the admins
 export class AdminList extends Component {
 
   /* Top navBar with AdminList */
   static navigationOptions = {
-    title: 'AdminList',
+    title: 'Admin List',
     headerStyle: { backgroundColor: '#7e947f' },
     headerTitleStyle: { color: "#ecf0f1", letterSpacing: 2 },
   }
@@ -231,38 +214,6 @@ const styles = StyleSheet.create({
   },
   searchBoxIcon: {
     flex: 1,
-  },
-  adminCard: {
-    backgroundColor: 'white', //#f9c2ff
-    padding: 5,
-    marginVertical: 5,
-    marginHorizontal: 10,
-    borderRadius: 10,
-    flexDirection: 'row',
-    borderWidth: 1,
-    borderColor: "lightgrey",
-  },
-  cardImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 75/2,
-    overflow: "hidden",
-    padding: 5,
-    backgroundColor: 'lightgray'
-  },
-  cardText:{
-    // for padding, etc.
-    justifyContent: 'center', 
-    paddingLeft: 10,
-  },
-  nameStyle: {
-    //to customize text, font, etc. 
-    fontSize: 15,
-  },
-  positionStyle:{
-    fontSize: 15,
-    color: 'gray',
-
   },
   floatingButton: {
     //Layout 
