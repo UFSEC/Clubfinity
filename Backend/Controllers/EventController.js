@@ -1,26 +1,21 @@
 const { DateTime } = require('luxon');
-const eventDAO = require("../DAO/EventDAO");
-const { validationResult, body, param } = require("express-validator");
-const { ValidationError } = require( '../util/exceptions');
+const { validationResult, body, param } = require('express-validator');
+const eventDAO = require('../DAO/EventDAO');
+const { ValidationError } = require('../util/errors/validationError');
 const { catchErrors, getCurrentUser } = require('../util/httpUtil');
 
-const validateEventData = req => {
+const validateEventData = (req) => {
   const errors = validationResult(req);
-  if (!errors.isEmpty())
-    throw new ValidationError(errors.array());
+  if (!errors.isEmpty()) throw new ValidationError(errors.array());
 };
 
-exports.getAll = async (req, res) => catchErrors(res, async () => {
-  return eventDAO.getAll();
-});
+exports.getAll = async (req, res) => catchErrors(res, async () => eventDAO.getAll());
 
-exports.get = async (req, res) => catchErrors(res, async () => {
-  return eventDAO.get(req.params['id']);
-});
+exports.get = async (req, res) => catchErrors(res, async () => eventDAO.get(req.params.id));
 
-exports.getByClub = async (req, res) => catchErrors(res, async () => {
-  return eventDAO.getByClubs([req.params['clubId']]);
-});
+exports.getByClub = async (req, res) => catchErrors(
+  res, async () => eventDAO.getByClubs([req.params.clubId]),
+);
 
 exports.getFollowing = async (req, res) => catchErrors(res, async () => {
   const user = await getCurrentUser(req);
@@ -29,7 +24,7 @@ exports.getFollowing = async (req, res) => catchErrors(res, async () => {
 });
 
 exports.getInMonth = async (req, res) => catchErrors(res, async () => {
-  const searchDate = DateTime.fromISO(req.params['date']);
+  const searchDate = DateTime.fromISO(req.params.date);
   const user = await getCurrentUser(req);
 
   switch (req.query.filter) {
@@ -49,7 +44,7 @@ exports.getInMonth = async (req, res) => catchErrors(res, async () => {
 exports.update = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);
 
-  return eventDAO.update(req.params['id'], req.body);
+  return eventDAO.update(req.params.id, req.body);
 });
 
 exports.create = async (req, res) => catchErrors(res, async () => {
@@ -61,46 +56,22 @@ exports.create = async (req, res) => catchErrors(res, async () => {
 exports.getGoingUsers = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);
 
-  return eventDAO.getGoingUsers(req.params['id'])
+  return eventDAO.getGoingUsers(req.params.id);
 });
 
 exports.addGoingUser = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);
 
-  return eventDAO.update(req.params['id'], { $addToSet: { goingUsers: req.userId  } })
+  return eventDAO.update(req.params.id, { $addToSet: { goingUsers: req.userId } });
 });
 
 exports.removeGoingUser = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);
 
-  return eventDAO.update(req.params['id'], { $pull: { goingUsers: req.userId  } })
+  return eventDAO.update(req.params.id, { $pull: { goingUsers: req.userId } });
 });
 
-exports.delete = async (req, res) => catchErrors(res, async () => {
-  return eventDAO.delete(req.params['id']);
-});
-
-exports.validate = type => {
-  switch (type) {
-    case "validateEventInfo": {
-      return [
-        body("name", "Event name does not exist").exists(),
-        body("location", "Location does not exist").exists(),
-        body("major_of_interest", "Major of interest does not exist").exists(),
-        body("description", "Description does not exist").exists(),
-        body("date", "Date does not exist").exists(),
-        body("club", "Club id does not exist").exists()
-      ];
-    }
-    case "validateExistingEvent": {
-      return [
-        param("id", "Event id does not exist or invalid")
-          .exists()
-          .custom(date => validateEvent(date))
-      ];
-    }
-  }
-};
+exports.delete = async (req, res) => catchErrors(res, async () => eventDAO.delete(req.params.id));
 
 async function validateEvent(id) {
   try {
@@ -109,3 +80,28 @@ async function validateEvent(id) {
     throw new Error("Event with given id doesn't exist");
   }
 }
+
+exports.validate = (type) => {
+  switch (type) {
+    case 'validateEventInfo': {
+      return [
+        body('name', 'Event name does not exist').exists(),
+        body('location', 'Location does not exist').exists(),
+        body('majorOfInterest', 'Major of interest does not exist').exists(),
+        body('description', 'Description does not exist').exists(),
+        body('date', 'Date does not exist').exists(),
+        body('club', 'Club id does not exist').exists(),
+      ];
+    }
+    case 'validateExistingEvent': {
+      return [
+        param('id', 'Event id does not exist or invalid')
+          .exists()
+          .custom((date) => validateEvent(date)),
+      ];
+    }
+    default: {
+      throw new Error('Invalid validator');
+    }
+  }
+};

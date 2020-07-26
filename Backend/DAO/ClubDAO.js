@@ -1,40 +1,34 @@
 const Club = require('../Model/Club.js').Model;
-const { NotFoundError } = require('../util/exceptions');
+const { NotFoundError } = require('../util/errors/validationError');
 
-exports.create = async clubParams => {
-    return await new Club(clubParams).save()
-};
+exports.create = async (clubParams) => await new Club(clubParams).save();
 
-exports.getAll = async () => {
-    return await Club.find({}).exec()
-};
+exports.getAll = async () => await Club.find({}).exec();
 
 exports.get = async (id) => {
-    const club = await Club.findById(id);
-    if (!club) throw new NotFoundError();
+  const club = await Club.findById(id);
+  if (!club) throw new NotFoundError();
 
-    return club;
+  return club;
 };
 
-exports.exists = async (id) => {
-  return await Club.exists({ _id: id })
-}
+exports.exists = async (id) => await Club.exists({ _id: id });
 
 exports.update = async (id, updateData) => {
-    await Club.findOneAndUpdate({ _id: id}, updateData, {
-        upsert: true,
-        useFindAndModify: false
-    });
-    return exports.get(id);
+  await Club.findOneAndUpdate({ _id: id }, updateData, {
+    upsert: true,
+    useFindAndModify: false,
+  });
+  return exports.get(id);
 };
 
-exports.delete = async id => {
-    const club = await Club.findByIdAndDelete(id);
-    if (!club) throw new NotFoundError();
+exports.delete = async (id) => {
+  const club = await Club.findByIdAndDelete(id);
+  if (!club) throw new NotFoundError();
 
-    return club;
+  return club;
 };
 
 exports.deleteAll = async () => {
-    await Club.deleteMany();
+  await Club.deleteMany();
 };

@@ -1,22 +1,17 @@
-const userDAO = require("../DAO/UserDAO");
-const clubDAO = require("../DAO/ClubDAO");
-const { validationResult, body, param } = require("express-validator");
-const { ValidationError, NotFoundError } = require('../util/exceptions');
+const { validationResult, body, param } = require('express-validator');
+const userDAO = require('../DAO/UserDAO');
+const clubDAO = require('../DAO/ClubDAO');
+const { ValidationError } = require('../util/errors/validationError');
 const { catchErrors } = require('../util/httpUtil');
 
-const validateUserData = req => {
+const validateUserData = (req) => {
   const errors = validationResult(req);
-  if (!errors.isEmpty())
-    throw new ValidationError(errors.array());
+  if (!errors.isEmpty()) throw new ValidationError(errors.array());
 };
 
-exports.getAll = async (req, res) => catchErrors(res, async () => {
-  return userDAO.getAll();
-});
+exports.getAll = async (req, res) => catchErrors(res, async () => userDAO.getAll());
 
-exports.get = async (req, res) => catchErrors(res, async () => {
-  return userDAO.get(req.params.id);
-});
+exports.get = async (req, res) => catchErrors(res, async () => userDAO.get(req.params.id));
 
 exports.update = async (req, res) => catchErrors(res, async () => {
   validateUserData(req);
@@ -24,25 +19,22 @@ exports.update = async (req, res) => catchErrors(res, async () => {
   return userDAO.update(req.userId, req.body);
 });
 
-exports.followClub = async (req, res) => {
-  return catchErrors(res, async () => {
-    validateUserData(req);
+exports.followClub = async (req, res) => catchErrors(res, async () => {
+  validateUserData(req);
 
-    const clubId = req.params['clubId'];
-    const updatedUser = await userDAO.get(req.userId);
+  const { clubId } = req.params;
+  const updatedUser = await userDAO.get(req.userId);
 
-    if (updatedUser.clubs.some((club) => club._id.toString() === clubId))
-      return updatedUser;
+  if (updatedUser.clubs.some((club) => club._id.toString() === clubId)) return updatedUser;
 
-    updatedUser.clubs.push(clubId);
-    return userDAO.update(req.userId, updatedUser);
-  });
-};
+  updatedUser.clubs.push(clubId);
+  return userDAO.update(req.userId, updatedUser);
+});
 
 exports.unfollowClub = async (req, res) => catchErrors(res, async () => {
   validateUserData(req);
 
-  const clubId = req.params['clubId'];
+  const { clubId } = req.params;
   const user = await userDAO.get(req.userId);
 
   user.clubs.forEach((club, index, clubs) => {
@@ -55,65 +47,23 @@ exports.unfollowClub = async (req, res) => catchErrors(res, async () => {
 
 exports.create = async (req, res) => catchErrors(res, async () => {
   validateUserData(req);
-  req.body['clubs'] = []
+  req.body.clubs = [];
   return userDAO.create(req.body);
 });
 
-exports.delete = async (req, res) => catchErrors(res, async () => {
-  return userDAO.delete(req.userId);
-});
-
-exports.validate = type => {
-  switch (type) {
-    case "validateUserInfo": {
-      return [
-        body("name.first", "First name does not exist").exists(),
-        body("name.last", "Last name does not exist").exists(),
-        body("major", "Major does not exist or is invalid").exists(),
-        body("year", "Year does not exist or is invalid")
-          .exists()
-          .custom(year => validateYear(year)),
-        body("email", "Email does not exist or is invalid")
-          .exists()
-          .isEmail(),
-        body("username", "Username does not exist")
-          .exists()
-          .custom(username => validateUser(username)),
-        body("password", "Password does not exist")
-          .exists()
-          .custom(password => validatePassword(password))
-      ];
-    }
-
-    case "validateFollow": {
-      return [
-        param("clubId", "Club Id missing").exists()
-          .custom(clubId => validateClubId(clubId))
-      ];
-    }
-  }
-};
-
-// Club ID must belong to a club that exists in FB
-async function validateClubId(clubId) {
-  const clubExists = await clubDAO.exists(clubId);
-  if (!clubExists) {
-    throw new Error("Invalid Club ID. Club does not exist.")
-  }
-  return clubExists;
-}
+exports.delete = async (req, res) => catchErrors(res, async () => userDAO.delete(req.userId));
 
 // Username must be within 6 and 20 characters
 // Username must not contain empty spaces
 function validateUser(user) {
   if (user.length < 6) {
-    throw new Error("Username is too short (less than 6 characters)");
+    throw new Error('Username is too short (less than 6 characters)');
   }
   if (user.length > 20) {
-    throw new Error("Username is too long (more than 20 characters)");
+    throw new Error('Username is too long (more than 20 characters)');
   }
-  if (user.indexOf(" ") !== -1) {
-    throw new Error("Username contains a space");
+  if (user.indexOf(' ') !== -1) {
+    throw new Error('Username contains a space');
   }
   return true;
 }
@@ -121,7 +71,7 @@ function validateUser(user) {
 // Password must be longer than 6 characters
 function validatePassword(password) {
   if (password.length < 6) {
-    throw new Error("Password is too short (less than 6 characters)");
+    throw new Error('Password is too short (less than 6 characters)');
   }
   return true;
 }
@@ -130,10 +80,52 @@ function validatePassword(password) {
 // Year must be a number
 function validateYear(year) {
   if (year === '') {
-    throw new Error("Year cannot be empty");
-  }
-  else if(isNaN(year)) {
-    throw new Error("Year must be a number");
+    throw new Error('Year cannot be empty');
+  } else if (Number.isNaN(Number(year))) {
+    throw new Error('Year must be a number');
   }
   return true;
 }
+
+// Club ID must belong to a club that exists in FB
+async function validateClubId(clubId) {
+  const clubExists = await clubDAO.exists(clubId);
+  if (!clubExists) {
+    throw new Error('Invalid Club ID. Club does not exist.');
+  }
+  return clubExists;
+}
+
+exports.validate = (type) => {
+  switch (type) {
+    case 'validateUserInfo': {
+      return [
+        body('name.first', 'First name does not exist').exists(),
+        body('name.last', 'Last name does not exist').exists(),
+        body('major', 'Major does not exist or is invalid').exists(),
+        body('year', 'Year does not exist or is invalid')
+          .exists()
+          .custom((year) => validateYear(year)),
+        body('email', 'Email does not exist or is invalid')
+          .exists()
+          .isEmail(),
+        body('username', 'Username does not exist')
+          .exists()
+          .custom((username) => validateUser(username)),
+        body('password', 'Password does not exist')
+          .exists()
+          .custom((password) => validatePassword(password)),
+      ];
+    }
+
+    case 'validateFollow': {
+      return [
+        param('clubId', 'Club Id missing').exists()
+          .custom((clubId) => validateClubId(clubId)),
+      ];
+    }
+    default: {
+      throw new Error('Invalid validator');
+    }
+  }
+};

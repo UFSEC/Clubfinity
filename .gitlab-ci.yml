@@ -19,9 +19,11 @@ api unit:
   script:
     - cd Backend
     - npm run test:ci
+    - npm run lint
     - cd ..
   only:
     - master
+    - merge_requests
 
 build api:
   services:
@@ -38,6 +40,8 @@ build api:
   script:
     - docker build Backend/ -t "gcr.io/$PROJECT_ID/clubfinity-api"
     - /google-cloud-sdk/bin/gcloud docker -- push "gcr.io/$PROJECT_ID/clubfinity-api"
+  only:
+    - master
 
 deploy frontend:
   image: 'patwoz/expo-cli:3'
@@ -47,6 +51,8 @@ deploy frontend:
     - npm install
     - expo login -u $EXPO_USERNAME -p $EXPO_PASSWORD
     - expo publish
+  only:
+    - master
 
 deploy api:
   image: 'google/cloud-sdk'
@@ -61,3 +67,5 @@ deploy api:
     - gcloud config set compute/zone us-east1
     - gcloud container clusters get-credentials clubfinity-cluster --zone $ZONE
     - cat docker/deployment.yml | envsubst | kubectl apply -f -
+  only:
+    - master

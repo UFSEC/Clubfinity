@@ -24,7 +24,7 @@ exports.createClub = async (
     tags: tags
   };
   if (facebookLink) {
-    newClubData["facebook_link"] = facebookLink;
+    newClubData["facebookLink"] = facebookLink;
   }
   try {
     let response = await API.post(`/api/club/`, newClubData, {

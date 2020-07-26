@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const Schema = new mongoose.Schema({
   name: { first: String, last: String },
@@ -8,9 +8,9 @@ const Schema = new mongoose.Schema({
   email: String,
   password: String,
   clubs: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Club'
-  }]
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Club',
+  }],
 });
 
-exports.Model = mongoose.model("User", Schema);
+exports.Model = mongoose.model('User', Schema);

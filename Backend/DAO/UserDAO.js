@@ -1,31 +1,29 @@
-const User = require("../Model/User.js").Model;
-const { NotFoundError } = require("../util/exceptions");
+const User = require('../Model/User.js').Model;
+const { NotFoundError } = require('../util/errors/notFoundError');
 
 // TODO
 // 1. Add support for a prod/dev config without hardcoded vars
 // 2. Possible memoization of db connection
 
-exports.create = async userParams => {
+exports.create = async (userParams) => {
   if (await User.exists({ username: userParams.username })) {
-    throw Error("username already taken");
+    throw Error('username already taken');
   }
 
   return await new User(userParams).save();
 };
 
-exports.getAll = async () => {
-  return await User.find({}).exec();
-};
+exports.getAll = async () => await User.find({}).exec();
 
-exports.get = async id => {
+exports.get = async (id) => {
   const user = await User.findById(id).populate('clubs').exec();
   if (!user) throw new NotFoundError();
 
   return user;
 };
 
-exports.getByUsername = async username => {
-  const user = await User.findOne({ username: username }).populate('clubs').exec();
+exports.getByUsername = async (username) => {
+  const user = await User.findOne({ username }).populate('clubs').exec();
   if (!user) throw new NotFoundError();
 
   return user;
@@ -34,13 +32,13 @@ exports.getByUsername = async username => {
 exports.update = async (id, updatedData) => {
   await User.findOneAndUpdate({ _id: id }, updatedData, {
     upsert: true,
-    useFindAndModify: false
+    useFindAndModify: false,
   });
 
   return exports.get(id);
 };
 
-exports.delete = async id => {
+exports.delete = async (id) => {
   const user = await User.findByIdAndDelete(id);
   if (!user) throw new NotFoundError();
 

@@ -1,18 +1,19 @@
-const clubDAO = require('../DAO/ClubDAO');
 const chai = require('chai');
+const clubDAO = require('../DAO/ClubDAO');
+
 chai.should();
 
-const baseClubParams = {
-  name: 'Woodworking Club',
-  admins: [],
-  facebook_link: 'facebook',
-  description: 'This is a club',
-  category: 'Crafts'
-};
-
 describe('ClubDAO', () => {
+  const baseClubParams = {
+    name: 'Woodworking Club',
+    admins: [],
+    facebookLink: 'facebook',
+    description: 'This is a club',
+    category: 'Crafts',
+  };
+
   beforeEach(async () => {
-    await clubDAO.deleteAll()
+    await clubDAO.deleteAll();
   });
 
   describe('getAll', () => {
@@ -42,16 +43,16 @@ describe('ClubDAO', () => {
       const updatedClubParams = {
         name: 'Painting Club',
         admins: [],
-        facebook_link: 'http://facebook.com/other',
+        facebookLink: 'http://facebook.com/other',
         description: 'This is not a club',
-        category: 'Arts'
+        category: 'Arts',
       };
 
       await clubDAO.update(oldClub._id, updatedClubParams);
 
       const newClub = await clubDAO.get(oldClub._id);
 
-      newClub.should.deep.include(updatedClubParams)
+      newClub.should.deep.include(updatedClubParams);
     });
   });
 
@@ -61,13 +62,12 @@ describe('ClubDAO', () => {
         name: 'Woodworking Club',
         admins: [],
         email: 'wood@working.com',
-        password: 'password'
+        password: 'password',
       };
       const newClub = await clubDAO.create(clubParams);
       await clubDAO.delete(newClub._id);
       const clubs = await clubDAO.getAll();
       clubs.should.have.length(0);
-    })
-
-  })
+    });
+  });
 });

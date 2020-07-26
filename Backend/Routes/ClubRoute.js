@@ -1,7 +1,8 @@
-const clubController = require('../Controllers/ClubController');
-const express = require('express');
-const router = express.Router();
 const passport = require('passport');
+const express = require('express');
+const clubController = require('../Controllers/ClubController');
+
+const router = express.Router();
 
 router.get('/', clubController.getAll);
 router.get('/following', passport.authenticate('loggedIn', { session: false }), clubController.getFollowing);

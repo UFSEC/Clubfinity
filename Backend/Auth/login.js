@@ -1,24 +1,21 @@
-const express = require('express');
-const router  = express.Router();
-const jwt = require('jsonwebtoken');
+const passport = require('passport');
 const authUtil = require('../util/authUtil');
-const passport = require("passport");
-const config = require("../Config/config");
 
-exports.authenticate = (req, res, next) => {
-    passport.authenticate('login', {session: false}, (err, user, info) => {
-        if (err || !user) {
-            return res.status(400).json({
-                error: info.message,
-                user   : user
-            });
-        }
-       req.login(user, {session: false}, (err) => {
-           if (err) {
-               res.send(err);
-           }
-           const token = authUtil.tokanizeUser(user);
-           return res.json({token: token, user: user});
-        });
-    })(req, res);
+exports.authenticate = (request, response) => {
+  passport.authenticate('login', { session: false }, (error, user, info) => {
+    if (error || !user) {
+      return response.status(400).json({
+        error: info.message,
+        user,
+      });
+    }
+    request.login(user, { session: false }, (loginError) => {
+      if (loginError) {
+        response.send(loginError);
+      }
+      const token = authUtil.tokanizeUser(user);
+      return response.json({ token, user });
+    });
+    return false;
+  })(request, response);
 };

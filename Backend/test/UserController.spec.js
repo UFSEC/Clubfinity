@@ -1,10 +1,10 @@
+const chai = require('chai');
+const chaiHttp = require('chai-http');
 const userDAO = require('../DAO/UserDAO');
 const clubDAO = require('../DAO/ClubDAO');
-const chai = require('chai');
 const authUtil = require('../util/authUtil');
 const { TestHttp, isOk, isNotOk } = require('./testHelper');
 
-let chaiHttp = require('chai-http');
 chai.should();
 const app = require('../app');
 
@@ -16,7 +16,7 @@ const currentUserParams = {
   year: 2021,
   email: 'current@user.com',
   username: 'currentuser',
-  password: 'password'
+  password: 'password',
 };
 
 let currentUser = null;
@@ -25,7 +25,6 @@ let http = null;
 const fakeId = '5dba44f05b88ed1602589e84';
 
 describe('Users', () => {
-
   beforeEach(async () => {
     await userDAO.deleteAll();
 
@@ -42,7 +41,7 @@ describe('Users', () => {
         year: 2021,
         email: 'test@test.com',
         username: 'tester',
-        password: 'password123'
+        password: 'password123',
       };
       const secondUser = {
         name: { first: 'Jimmy', last: 'John' },
@@ -50,7 +49,7 @@ describe('Users', () => {
         year: 2021,
         email: 'jimmy@john.com',
         username: 'jimmy',
-        password: 'password123'
+        password: 'password123',
       };
 
       await userDAO.create(firstUser);
@@ -59,7 +58,7 @@ describe('Users', () => {
       const resp = await http.get('/api/user');
       isOk(resp);
 
-      const data = resp.body.data;
+      const { data } = resp.body;
 
       data.should.have.length(3);
 
@@ -82,7 +81,7 @@ describe('Users', () => {
         email: 'test@test.com',
         username: 'tester',
         password: 'password123',
-        clubs: []
+        clubs: [],
       };
 
       const user = await userDAO.create(userData);
@@ -98,7 +97,7 @@ describe('Users', () => {
       isNotOk(resp, 404);
 
       resp.body.error.should.equal('Id not found');
-    })
+    });
   });
 
   describe('POST /user', async () => {
@@ -109,13 +108,13 @@ describe('Users', () => {
         year: 2021,
         email: 'new@user.com',
         username: 'newusername',
-        password: 'password'
+        password: 'password',
       };
 
       const resp = await http.post('/api/user', newUserData);
       isOk(resp);
 
-      const data = resp.body.data;
+      const { data } = resp.body;
       data.should.deep.include(newUserData);
       data.should.include.all.keys('_id', 'clubs');
     });
@@ -127,14 +126,14 @@ describe('Users', () => {
         year: 2021,
         email: 'test@test.com',
         username: 'testmctester',
-        password: 'password123'
+        password: 'password123',
       };
       await userDAO.create(userData);
 
       const resp = await http.post('/api/user', userData);
       isNotOk(resp, 400);
 
-      resp.body.error.should.equal('username already taken')
+      resp.body.error.should.equal('username already taken');
     });
 
     it('should return an error if any field is missing', async () => {
@@ -143,8 +142,9 @@ describe('Users', () => {
       const resp = await http.post('/api/user', incompleteUserData);
       isNotOk(resp, 422);
 
-      const errorMessages = resp.body.validationErrors.map(e => e.msg);
+      const errorMessages = resp.body.validationErrors.map((e) => e.msg);
       errorMessages.should.have.length(11);
+
       errorMessages.should.include.all.members([
         'First name does not exist',
         'Last name does not exist',
@@ -152,8 +152,8 @@ describe('Users', () => {
         'Major does not exist or is invalid',
         'Email does not exist or is invalid',
         'Username does not exist',
-        'Password does not exist'
-      ])
+        'Password does not exist',
+      ]);
     });
 
     it('should return an error of either the password or username is too short', async () => {
@@ -163,18 +163,18 @@ describe('Users', () => {
         year: 2021,
         email: 'jimmy@john.com',
         username: 'short',
-        password: 'short'
+        password: 'short',
       };
 
       const resp = await http.post('/api/user', shortUsernameAndPassword);
       isNotOk(resp, 422);
 
-      const errorMessages = resp.body.validationErrors.map(e => e.msg);
+      const errorMessages = resp.body.validationErrors.map((e) => e.msg);
       errorMessages.should.have.length(2);
       errorMessages.should.include.all.members([
         'Username is too short (less than 6 characters)',
-        'Password is too short (less than 6 characters)'
-      ])
+        'Password is too short (less than 6 characters)',
+      ]);
     });
 
     it('should return an error when the username is too long', async () => {
@@ -184,7 +184,7 @@ describe('Users', () => {
         year: 2021,
         email: 'jimmy@john.com',
         username: 'thisusernameiswaytoolong',
-        password: 'password123'
+        password: 'password123',
       };
 
       const resp = await http.post('/api/user', longUsername);
@@ -201,7 +201,7 @@ describe('Users', () => {
         year: 2021,
         email: 'jimmy@john.com',
         username: 'a username',
-        password: 'password123'
+        password: 'password123',
       };
 
       const resp = await http.post('/api/user', spacedUsername);
@@ -218,7 +218,7 @@ describe('Users', () => {
         major: 'Computer Science',
         email: 'jimmy@john.com',
         username: 'ausername',
-        password: 'password123'
+        password: 'password123',
       };
 
       const resp = await http.post('/api/user', incorrectDateFormat);
@@ -237,7 +237,7 @@ describe('Users', () => {
         year: 2021,
         email: 'test@test.com',
         username: 'tester',
-        password: 'password123'
+        password: 'password123',
       };
       const oldUser = await userDAO.create(userData);
 
@@ -247,7 +247,7 @@ describe('Users', () => {
         year: 2021,
         email: 'different@different.com',
         username: 'diffusrnme',
-        password: 'diffpassword'
+        password: 'diffpassword',
       };
 
       const resp = await http.put(`/api/user/${oldUser._id}`, newUserData);
@@ -261,10 +261,10 @@ describe('Users', () => {
     const baseClubParams = {
       name: 'Club Club',
       admins: [],
-      facebook_link: 'facebook',
+      facebookLink: 'facebook',
       description: 'This is a club',
       category: 'Computer Science',
-      events: []
+      events: [],
     };
 
     describe('PUT /user/follow/:clubId', async () => {
@@ -296,14 +296,13 @@ describe('Users', () => {
         resp2.body.data.clubs.should.deep.include(jsonClub);
       });
 
-
       it('should return an error if the clubId does not exist', async () => {
         const resp = await http.put(`/api/user/follow/${fakeId}`);
         isNotOk(resp, 422);
 
         resp.body.validationErrors.should.have.length(1);
-        resp.body.validationErrors[0].msg.should.equal('Invalid Club ID. Club does not exist.')
-      })
+        resp.body.validationErrors[0].msg.should.equal('Invalid Club ID. Club does not exist.');
+      });
     });
 
     describe('PUT /user/unfollow/:clubId', async () => {
