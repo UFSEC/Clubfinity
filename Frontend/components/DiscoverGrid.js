@@ -111,7 +111,7 @@ export default class DiscoverGrid extends Component {
     let searchText = text.toLowerCase();
 
     let newFilterClubs = this.state.clubs.filter((club) => {
-      return club.major_of_interest.toLowerCase().includes(searchText);
+      return club.majorOfInterest.toLowerCase().includes(searchText);
     });
 
     this.setState({
@@ -287,4 +287,3 @@ const styles = StyleSheet.create({
   }
 
 });
-

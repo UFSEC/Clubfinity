@@ -1,21 +1,21 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const Schema = new mongoose.Schema({
   name: String,
-  admins:[{
+  admins: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
   }],
-  facebook_link: String,
+  facebookLink: String,
   description: String,
   category: String,
   tags: [{
-    type: String
+    type: String,
   }],
   events: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Event'
-  }]
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Event',
+  }],
 });
 
-exports.Model = mongoose.model("Club", Schema);
+exports.Model = mongoose.model('Club', Schema);

@@ -1,31 +1,32 @@
-const Event = require("../Model/Event.js").Model;
-const clubDAO = require("../DAO/ClubDAO");
-const { NotFoundError } = require('../util/exceptions');
+const Event = require('../Model/Event.js').Model;
+const clubDAO = require('./ClubDAO');
+const { NotFoundError } = require('../util/errors/notFoundError');
 
-exports.create = async eventParams => {
+const filterInMonth = (searchDate, events) => events.filter((e) => e.date.month === searchDate.month
+           && e.date.year === searchDate.year);
+
+exports.create = async (eventParams) => {
   if (await Event.exists({ name: eventParams.name })) {
-    throw Error("Event already exists!");
+    throw Error('Event already exists!');
   }
   if (!(await clubDAO.exists(eventParams.club))) {
-    throw Error("Club does not exist");
+    throw Error('Club does not exist');
   }
-  eventParams.club = (await clubDAO.get(eventParams.club))._id
+  const updatedEventParams = eventParams;
+  updatedEventParams.club = (await clubDAO.get(eventParams.club))._id;
 
-  return await new Event(eventParams).save()
-}
-
-exports.getAll = async () => {
-  return await Event.find({}).populate('club').exec();
+  return await new Event(updatedEventParams).save();
 };
 
-exports.getAllEventsInMonth = async date => {
+exports.getAll = async () => await Event.find({}).populate('club').exec();
+
+exports.getAllEventsInMonth = async (date) => {
   const allEvents = await exports.getAll();
   return filterInMonth(date, allEvents);
 };
 
 exports.getEventsFromFollowedClubsInMonth = async (date, user) => {
-  if (user.clubs.length === 0)
-    return [];
+  if (user.clubs.length === 0) return [];
 
   const followingEvents = await exports.getByClubs(user.clubs);
   return filterInMonth(date, followingEvents);
@@ -43,8 +44,8 @@ exports.get = async (id) => {
   return event;
 };
 
-exports.getByName = async name => {
-  const event = await Event.findOne({name: name});
+exports.getByName = async (name) => {
+  const event = await Event.findOne({ name });
   if (!event) throw new NotFoundError();
 
   return event;
@@ -52,13 +53,13 @@ exports.getByName = async name => {
 
 exports.getByClubs = async (clubs) => {
   const events = await Event
-      .find({club: { $in: clubs}})
-      .populate('club')
-      .exec();
+    .find({ club: { $in: clubs } })
+    .populate('club')
+    .exec();
 
   if (!events) throw NotFoundError();
-  return events
-}
+  return events;
+};
 
 exports.getGoingUsers = async (id) => {
   const event = await Event.findById(id);
@@ -67,17 +68,15 @@ exports.getGoingUsers = async (id) => {
   return event.goingUsers;
 };
 
-exports.getEventsUserIsGoingTo = async userId => {
-  return await Event.find({ goingUsers: userId }).populate('club').exec();
-};
+exports.getEventsUserIsGoingTo = async (userId) => await Event.find({ goingUsers: userId }).populate('club').exec();
 
 exports.update = async (id, updatedData) => {
-  await Event.findOneAndUpdate({ _id: id   }, updatedData, { upsert: true, useFindAndModify: false });
+  await Event.findOneAndUpdate({ _id: id }, updatedData, { upsert: true, useFindAndModify: false });
 
   return exports.get(id);
 };
 
-exports.delete = async id => {
+exports.delete = async (id) => {
   const event = await Event.findByIdAndDelete(id);
   if (!event) throw new NotFoundError();
 
@@ -86,11 +85,4 @@ exports.delete = async id => {
 
 exports.deleteAll = async () => {
   await Event.deleteMany();
-};
-
-const filterInMonth = (searchDate, events) => {
-  return events.filter(e => {
-    return e.date.month === searchDate.month &&
-           e.date.year === searchDate.year
-  })
 };
