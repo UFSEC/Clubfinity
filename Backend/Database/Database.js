@@ -5,7 +5,7 @@ const url = config.database;
 
 // Events
 mongoose.connection.on('connected', () => {
-  console.log(`Mongoose connection open to ${url}`);
+  console.log(`Mongoose database connection open to ${url}`);
 });
 
 mongoose.connection.on('error', (err) => {

@@ -2,8 +2,6 @@ FROM node:12
 COPY . /app
 WORKDIR /app
 ENV NODE_ENV production
-ENV DATABASE_URL $DATABASE_URL
-ENV JWT_SECRET $JWT_SECRET
 RUN npm install
 EXPOSE 8080
 CMD npm start

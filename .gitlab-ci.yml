@@ -86,14 +86,10 @@ deploy api:
   image: 'google/cloud-sdk'
   stage: deploy
   script:
-    - apt-get install -y gettext
-    - echo $API_IMAGE_TAG
     - echo $GCLOUD_SERVICE_KEY > /gcloud-service-key.json
     - gcloud auth activate-service-account --key-file /gcloud-service-key.json
-    - gcloud config set project $PROJECT_ID
-    - gcloud config set container/cluster clubfinity-cluster
-    - gcloud config set compute/zone us-east1
-    - gcloud container clusters get-credentials clubfinity-cluster --zone $ZONE
-    - cat docker/deployment.yml | envsubst | kubectl apply -f -
+    - gcloud container clusters get-credentials clubfinity-cluster --zone $ZONE --project $PROJECT_ID
+    - kubectl set image deployment/clubfinity clubfinity=gcr.io/$PROJECT_ID/clubfinity-api:latest
+    - kubectl set image deployment/clubfinity clubfinity=gcr.io/$PROJECT_ID/clubfinity-api
   only:
     - master
