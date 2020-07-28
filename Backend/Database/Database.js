@@ -5,11 +5,11 @@ const url = config.database;
 
 // Events
 mongoose.connection.on('connected', () => {
-  console.log(`Mongoose database connection open to ${url}`);
+  console.log(`Mongoose connection open to ${url}`);
 });
 
 mongoose.connection.on('error', (err) => {
-  console.log(`Mongoose default connection error: ${err}`);
+  console.log(`Mongoose connection error: ${err}`);
 });
 
 mongoose.connection.on('disconnected', () => {
