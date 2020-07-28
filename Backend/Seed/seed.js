@@ -1,13 +1,12 @@
 const tsNode = require('ts-node');
 const { Seeder } = require('mongo-seeding');
 const path = require('path');
-const config = require('../Config/config');
 
 const seedConfig = {
   database: {
-    host: config.database.host,
-    port: config.database.port,
-    name: config.database.database,
+    host: 'localhost',
+    port: 27017,
+    name: 'test',
   },
   dropDatabase: true,
 };

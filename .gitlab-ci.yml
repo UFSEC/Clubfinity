@@ -1,21 +1,40 @@
 stages:
+  - install_dependencies
   - test
   - build
   - deploy
 
-api unit:
+install_dependencies:
+  stage: install_dependencies
+  image: node:12
+  cache:
+    key: $CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR
+    paths:
+      - Backend/node_modules
+      - Frontend/node_modules
+  script:
+    - cd Backend
+    - npm ci
+    - cd ../Frontend
+    - npm ci
+  only:
+    refs:
+      - master
+      - merge_requests
+    changes:
+      - Backend/package-lock.json
+      - Frontend/package-lock.json
+
+unit:
   stage: test
   image: node:12
   cache:
-    key: ${CI_COMMIT_REF_SLUG}
+    key: $CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR
     paths:
       - Backend/node_modules
+    policy: pull
   services:
     - mongo
-  before_script:
-    - cd Backend
-    - npm install
-    - cd ..
   script:
     - cd Backend
     - npm run test:ci
@@ -30,6 +49,11 @@ build api:
     - docker:dind
   stage: build
   image: registry.gitlab.com/ufsec/clubfinity/build-push:latest
+  cache:
+    key: $CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR
+    paths:
+      - Backend/node_modules
+    policy: pull
   variables:
     DOCKER_TLS_CERTDIR: ""
   before_script:
@@ -46,9 +70,13 @@ build api:
 deploy frontend:
   image: 'patwoz/expo-cli:3'
   stage: deploy
+  cache:
+    key: $CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR
+    paths:
+      - Backend/node_modules
+    policy: pull
   script:
     - cd Frontend
-    - npm install
     - expo login -u $EXPO_USERNAME -p $EXPO_PASSWORD
     - expo publish
   only:
