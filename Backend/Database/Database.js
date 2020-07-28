@@ -1,16 +1,11 @@
 const mongoose = require('mongoose');
 const config = require('../Config/config');
 
-const url = `mongodb://${
-  config.database.host
-}:${
-  config.database.port
-}/${
-  config.database.database}`;
+const url = config.database;
 
 // Events
 mongoose.connection.on('connected', () => {
-  console.log(`Mongoose default connection open to ${url}`);
+  console.log(`Mongoose database connection open to ${url}`);
 });
 
 mongoose.connection.on('error', (err) => {
