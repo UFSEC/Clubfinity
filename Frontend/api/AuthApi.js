@@ -1,21 +1,21 @@
-import { API } from "./BaseApi";
 import { AsyncStorage } from 'react-native';
+import API from './BaseApi';
 
 exports.authenticate = async (username, password) => {
-  let axiosResponse = await API.post("/auth/login", {
-    username: username,
-    password: password
+  const axiosResponse = await API.post('/auth/login', {
+    username,
+    password,
   })
-    .then(async response => {
+    .then(async (response) => {
       await AsyncStorage.setItem('userToken', response.data.token);
       return { token: response.data.token, user: response.data.user };
     })
-    .catch(error => {
+    .catch((error) => {
       if (error.response) {
-        return { error: error.response.data.error }
+        return { error: error.response.data.error };
       }
       return {
-        error: "Invalid user/password!"
+        error: 'Invalid user/password!',
       };
     });
   return axiosResponse;

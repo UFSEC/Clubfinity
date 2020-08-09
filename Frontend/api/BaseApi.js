@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-exports.API = axios.create({
-    baseURL: 'https://clubfinitybackend.azurewebsites.net',
-    responseType: "json",
+const API = axios.create({
+  baseURL: 'http://35.192.152.56:8080',
+  responseType: 'json',
 });
+
+export default API;

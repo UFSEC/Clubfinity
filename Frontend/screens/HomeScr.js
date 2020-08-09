@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, AsyncStorage, FlatList, Text, View } from 'react-native';
-import { primary, emptyEventList } from '../assets/styles/stylesheet';
+import {
+  ActivityIndicator, AsyncStorage, FlatList, Text, View,
+} from 'react-native';
 import { Octicons } from '@expo/vector-icons';
+import { primary, emptyEventList } from '../assets/styles/stylesheet';
 
 import EventCard from '../components/EventCard';
 import EventsApi from '../api/EventsApi';
-import ClubsApi from '../api/ClubsApi';
-import DiscoverButton from "../components/DiscoverButton";
-import UserContext from "../util/UserContext";
+import DiscoverButton from '../components/DiscoverButton';
+import UserContext from '../util/UserContext';
 
 // Event Feed App Module
 class HomeScr extends Component {
@@ -16,7 +17,7 @@ class HomeScr extends Component {
   static navigationOptions = {
     title: 'Home',
     headerStyle: { backgroundColor: '#7e947f' },
-    headerTitleStyle: { color: "#ecf0f1", letterSpacing: 2 },
+    headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
   };
 
   constructor(props) {
@@ -24,7 +25,7 @@ class HomeScr extends Component {
     this.state = {
       isLoading: true,
       isFollowingClubs: true,
-      events: []
+      events: [],
     };
   }
 
@@ -33,64 +34,67 @@ class HomeScr extends Component {
     const bearerToken = await AsyncStorage.getItem('userToken');
     // const clubs = await ClubsApi.getFollowing(bearerToken);
     const { user } = this.context;
-    const clubs = user.clubs;
+    const { clubs } = user;
     if (clubs.length === 0) {
       this.setState({
         events: [],
         isFollowingClubs: false,
-        isLoading: false
+        isLoading: false,
       });
 
       return;
     }
 
-
     const events = await EventsApi.getFollowing(bearerToken);
     this.setState({
-      events: events,
-      isLoading: false
+      events,
+      isLoading: false,
     });
   }
 
   // This has to be a lambda in order to preserve the value of 'this.props'
   navigateToDiscover = async () => {
-    await this.props.navigation.navigate('Discover');
+    const { navigation } = this.props;
+    await navigation.navigate('Discover');
   };
 
-  loadingView() {
-    return (
-      <View style={{ flex: 1, padding: 20 }}>
-        <ActivityIndicator />
-      </View>
-    );
-  }
+  loadingView = () => (
+    <View style={{ flex: 1, padding: 20 }}>
+      <ActivityIndicator />
+    </View>
+  )
 
-  notFollowingClubsView() {
-    return (
-      <View style={emptyEventList.container}>
-        <Text style={emptyEventList.text}>You're not following any clubs</Text>
-        <DiscoverButton onPress={this.navigateToDiscover} />
-      </View>
-    );
-  }
+  notFollowingClubsView = () => (
+    <View style={emptyEventList.container}>
+      <Text style={emptyEventList.text}>You are not following any clubs</Text>
+      <DiscoverButton onPress={this.navigateToDiscover} />
+    </View>
+  )
 
-  noUpcomingEventsView() {
-    return (
-      <View style={emptyEventList.container}>
-        <Text style={emptyEventList.text}>No upcoming events</Text>
-      </View>
-    );
-  }
+  noUpcomingEventsView = () => (
+    <View style={emptyEventList.container}>
+      <Text style={emptyEventList.text}>No upcoming events</Text>
+    </View>
+  )
 
   eventListView() {
+    const { events } = this.state;
     return (
       <View style={[primary.container, primary.bodyText]}>
-        <Text style={primary.headerText}>Hey Upcoming Events <Octicons name="megaphone" color={'teal'} size={24} /> </Text>
+        <Text style={primary.headerText}>
+          Hey Upcoming Events
+          <Octicons name="megaphone" color="teal" size={24} />
+        </Text>
         <FlatList
-          data={this.state.events}
-          renderItem={({ item }) =>
-            <EventCard key={item._id} data={item} />
-          }
+          data={events}
+          renderItem={({ item }) => (
+            <EventCard
+              key={item._id}
+              name={item.name}
+              location={item.location}
+              description={item.description}
+            />
+          )}
           keyExtractor={(item) => item._id.toString()}
         />
       </View>
@@ -98,14 +102,12 @@ class HomeScr extends Component {
   }
 
   render() {
-    if (this.state.isLoading)
-      return this.loadingView();
-    else if (!this.state.isFollowingClubs)
-      return this.notFollowingClubsView();
-    else if (this.state.events.length === 0)
-      return this.noUpcomingEventsView();
-    else
-      return this.eventListView();
+    const { isLoading, isFollowingClubs, events } = this.state;
+
+    if (isLoading) return this.loadingView();
+    if (!isFollowingClubs) return this.notFollowingClubsView();
+    if (events.length === 0) return this.noUpcomingEventsView();
+    return this.eventListView();
   }
 }
 

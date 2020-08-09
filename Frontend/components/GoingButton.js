@@ -1,18 +1,33 @@
 import React, { Component } from 'react';
-import { Button } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import PropTypes from 'prop-types';
 
-class GoingButton extends Component {
+export default class GoingButton extends Component {
+  static propTypes = {
+    clickHandler: PropTypes.func.isRequired,
+  }
 
   constructor(props) {
     super(props);
     this.state = {
-      isChecked: false
+      isChecked: false,
     };
   }
 
+  _eventHandler = () => {
+    const { isChecked } = this.state;
+    const { clickHandler } = this.props;
+
+    clickHandler();
+    this.setState({
+      isChecked: !isChecked,
+    });
+  }
+
   render() {
-    if (this.state.isChecked) {
+    const { isChecked } = this.state;
+
+    if (isChecked) {
       return (
         <FontAwesome.Button
           name="check-square"
@@ -20,7 +35,7 @@ class GoingButton extends Component {
           onPress={this._eventHandler}
         >
           Going
-            </FontAwesome.Button>
+        </FontAwesome.Button>
       );
     }
     return (
@@ -30,16 +45,7 @@ class GoingButton extends Component {
         onPress={this._eventHandler}
       >
         Interested
-            </FontAwesome.Button>
+      </FontAwesome.Button>
     );
   }
-
-  _eventHandler = () => {
-    this.props.clickHandler();
-    this.setState({
-      isChecked: !this.state.isChecked
-    });
-  }
 }
-
-export { GoingButton };

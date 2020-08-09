@@ -1,21 +1,26 @@
 import React, { Component } from 'react';
-import { Button } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import PropTypes from 'prop-types';
 
-class NotGoingButton extends Component {
+export default class NotGoingButton extends Component {
+  static propTypes = {
+    clickHandler: PropTypes.func.isRequired,
+  }
 
-	render() {
-		return (
-			<FontAwesome.Button
-				name="remove"
-				backgroundColor="#ff8080"
-				onPress={this._eventHandler}
-			>Remove</FontAwesome.Button>);
-	}
+    _eventHandler = () => {
+      const { clickHandler } = this.props;
+      clickHandler();
+    }
 
-	_eventHandler = () => {
-		this.props.clickHandler();
-	}
+    render() {
+      return (
+        <FontAwesome.Button
+          name="remove"
+          backgroundColor="#ff8080"
+          onPress={this._eventHandler}
+        >
+          Remove
+        </FontAwesome.Button>
+      );
+    }
 }
-
-export { NotGoingButton };

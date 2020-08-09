@@ -8,195 +8,35 @@ import {
   View,
   FlatList,
   StyleSheet,
-  Dimensions
+  Dimensions,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { API } from '../api/BaseApi';
-import clubList from '../assets/images/clubimages/FetchImage'
+import API from '../api/BaseApi';
+import clubImageList from '../assets/images/clubimages/FetchImage';
+import ClubfinityLogo from '../assets/images/ClubfinityLogo.png';
 
-// This isn't arbitrary and is instead depends on padding/margin b/w cards. Must be made a constant one design finalized!
+// This isn't arbitrary and is instead depends on padding/margin b/w cards
+// Must be made a constant one design finalized!
 const GRID_ITEM_WIDTH = Dimensions.get('screen').width / 2 - 22;
-
-
-const postData = [
-    {
-        id: 1,
-        header: "Hey guys! Get ready for our final GBM!",
-        description: 'Its a me a Mario!',
-      },
-      {
-        id: 2,
-        header: 'See you all at the CS Picnic today :)',
-        description: 'Its a me a Mario!',
-      },
-      {
-        id: 3,
-        header: 'Its a me a Mario!',
-        description: 'Its a me a Mario!',
-      },
-      {
-        id: 4,
-        header: 'We Cool',
-        description: 'Its a me a Mario!',
-      },
-];
-
-const evData = [
-    {
-        id: 1,
-        name: "GBM 2",
-        date: "10/17/19",
-        time: "6:00",
-        location: "LIT 101"
-      },
-      {
-        id: 2,
-        name: "codeCollab",
-        date: "10/24/19",
-        time: "7:00",
-        location: "LIT 101"
-      },
-      {
-        id: 3,
-        name: "SEC X Microsoft",
-        date: "10/31/19",
-        time: "6:00",
-        location: "LIT 101"
-      },
-      {
-        id: 4,
-        name: "GBM 3",
-        date: "11/07/19",
-        time: "6:00",
-        location: "LIT 101"
-      },
-];
-
-export default class DiscoverGrid extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      searchText: "",
-      clubs: '',
-      filteredClubs: '',
-      errorMessage:'',
-      clubList:clubList,
-      isLoading: true
-    }
-  }
-  async componentDidMount() {
-    try {
-
-      let response = await API.get('/api/club');
-      let {data} = response.data;
-      this.setState({
-        clubs: data,
-        filteredClubs: data,
-        isLoading: false
-      });
-
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  handleClubSelect = () => {
-    this.props.navigation.navigate('Club', {
-      eventData: evData,
-      postData: postData
-    });
-  }
-
-  filterClubs = (text) => {
-    let searchText = text.toLowerCase();
-
-    let newFilterClubs = this.state.clubs.filter((club) => {
-      return club.majorOfInterest.toLowerCase().includes(searchText);
-    });
-
-    this.setState({
-      searchText: text,
-      filteredClubs: newFilterClubs
-    });
-  }
-
-  render() {
-    if (this.state.isLoading) {
-      return (
-        <View style={{ flex: 1, padding: 20 }}>
-          <ActivityIndicator />
-        </View>
-      );
-    }
-    const clubFilterImage = this.state.clubList;
-
-    return (
-      <View style={styles.mainContainer}>
-        {/* Search Bar */}
-        <View style={styles.searchBox}>
-          <Ionicons style={styles.searchBoxIcon} color={'#8E8E93'} name={"md-search"} size={24} />
-          <TextInput
-            style={styles.searchBoxText}
-            placeholderTextColor={'#8E8E93'}
-            placeholder="Explore clubs"
-            onChangeText={(text) => this.filterClubs(text)}
-            value={this.state.searchText}
-          ></TextInput>
-        </View>
-
-        {/* Grid */}
-        <FlatList
-          style={styles.scrollContainer}
-          data={this.state.filteredClubs}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.gridItem}
-              onPress={this.handleClubSelect}
-            >
-              <Image
-              // This retrieves the first instance of the club based on name if in Image File
-                source={
-                  clubFilterImage[item.name] ? { uri: clubFilterImage[item.name].src} : require('../assets/images/ClubfinityLogo.png')
-                }
-                onError={(e)=>{e.target.onerror = null; e.target.src="../assets/images/ClubfinityLogo.png"}}
-                style={styles.gridImage}
-                resizeMode={"stretch"}
-              />
-              <View style={styles.gridSubheading}>
-                <Text color={item.categoryColor} style={styles.clubName}>{item.name}</Text>
-                <Text style={styles.clubCategory}>{item.category}</Text>
-              </View>
-
-            </TouchableOpacity>
-          )}
-          numColumns={2}
-          keyExtractor={(item) => item._id}
-        />
-      </View>
-
-    );
-  }
-};
-
-const bgColor = "#F2F2F7";
-const cardColor = "#fff";
+const bgColor = '#F2F2F7';
+const cardColor = '#fff';
 
 // Style definitions
 const styles = StyleSheet.create({
   mainContainer: {
     justifyContent: 'center',
     flex: 1,
-    backgroundColor: bgColor
+    backgroundColor: bgColor,
   },
   scrollContainer: {
     flex: 1,
     margin: 1,
     paddingHorizontal: 10,
-    minWidth: Dimensions.get("screen").width
+    minWidth: Dimensions.get('screen').width,
   },
   gridItem: {
-    display: "flex",
-    flexDirection: "column",
+    display: 'flex',
+    flexDirection: 'column',
     flex: 1,
     minWidth: 150,
     maxWidth: GRID_ITEM_WIDTH,
@@ -214,7 +54,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 0,
     shadowOffset: { width: 1, height: 1 },
     shadowColor: 'black',
-    shadowOpacity: .2,
+    shadowOpacity: 0.2,
     elevation: 2,
 
   },
@@ -230,11 +70,11 @@ const styles = StyleSheet.create({
   },
   gridSubheading: {
     flex: 1,
-    display: "flex",
+    display: 'flex',
     backgroundColor: cardColor,
-    justifyContent: "center",
+    justifyContent: 'center',
     alignSelf: 'stretch',
-    alignItems: "center",
+    alignItems: 'center',
     margin: 0,
     padding: 10,
     borderBottomLeftRadius: 5,
@@ -248,7 +88,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     margin: 5,
-    color: "#636e72"
+    color: '#636e72',
   },
   clubCategory: {
     display: 'flex',
@@ -262,7 +102,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#5E5CE6',
     fontSize: 10,
-    color: '#fff'
+    color: '#fff',
   },
   searchBox: {
     display: 'flex',
@@ -280,10 +120,175 @@ const styles = StyleSheet.create({
   },
   searchBoxText: {
     marginLeft: 7,
-    flex: 11
+    flex: 11,
   },
   searchBoxIcon: {
     flex: 1,
-  }
+  },
 
 });
+
+const postData = [
+  {
+    id: 1,
+    header: 'Hey guys! Get ready for our final GBM!',
+    description: 'Its a me a Mario!',
+  },
+  {
+    id: 2,
+    header: 'See you all at the CS Picnic today :)',
+    description: 'Its a me a Mario!',
+  },
+  {
+    id: 3,
+    header: 'Its a me a Mario!',
+    description: 'Its a me a Mario!',
+  },
+  {
+    id: 4,
+    header: 'We Cool',
+    description: 'Its a me a Mario!',
+  },
+];
+
+const evData = [
+  {
+    id: 1,
+    name: 'GBM 2',
+    date: '10/17/19',
+    time: '6:00',
+    location: 'LIT 101',
+  },
+  {
+    id: 2,
+    name: 'codeCollab',
+    date: '10/24/19',
+    time: '7:00',
+    location: 'LIT 101',
+  },
+  {
+    id: 3,
+    name: 'SEC X Microsoft',
+    date: '10/31/19',
+    time: '6:00',
+    location: 'LIT 101',
+  },
+  {
+    id: 4,
+    name: 'GBM 3',
+    date: '11/07/19',
+    time: '6:00',
+    location: 'LIT 101',
+  },
+];
+
+export default class DiscoverGrid extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchText: '',
+      clubs: '',
+      filteredClubs: '',
+      clubList: clubImageList,
+      isLoading: true,
+    };
+  }
+
+  async componentDidMount() {
+    try {
+      const response = await API.get('/api/club');
+      const { data } = response.data;
+      this.setState({
+        clubs: data,
+        filteredClubs: data,
+        isLoading: false,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  handleClubSelect = () => {
+    const { navigation } = this.props;
+    navigation.navigate('Club', {
+      eventData: evData,
+      postData,
+    });
+  }
+
+  filterClubs = (text) => {
+    const { clubs } = this.state;
+    const searchText = text.toLowerCase();
+
+    const newFilterClubs = clubs.filter((club) => club.name
+      .toLowerCase()
+      .includes(searchText));
+
+    this.setState({
+      searchText: text,
+      filteredClubs: newFilterClubs,
+    });
+  }
+
+  render() {
+    const {
+      isLoading, clubList, searchText, filteredClubs,
+    } = this.state;
+
+    if (isLoading) {
+      return (
+        <View style={{ flex: 1, padding: 20 }}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
+    const clubFilterImage = clubList;
+
+    return (
+      <View style={styles.mainContainer}>
+        {/* Search Bar */}
+        <View style={styles.searchBox}>
+          <Ionicons style={styles.searchBoxIcon} color="#8E8E93" name="md-search" size={24} />
+          <TextInput
+            style={styles.searchBoxText}
+            placeholderTextColor="#8E8E93"
+            placeholder="Explore clubs"
+            onChangeText={(text) => this.filterClubs(text)}
+            value={searchText}
+          />
+        </View>
+
+        {/* Grid */}
+        <FlatList
+          style={styles.scrollContainer}
+          data={filteredClubs}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={styles.gridItem}
+              onPress={this.handleClubSelect}
+            >
+              <Image
+              // This retrieves the first instance of the club based on name if in Image File
+                source={
+                  clubFilterImage[item.name]
+                    ? { uri: clubFilterImage[item.name].src } : ClubfinityLogo
+                }
+                onError={(e) => { e.target.onerror = null; e.target.src = '../assets/images/ClubfinityLogo.png'; }}
+                style={styles.gridImage}
+                resizeMode="stretch"
+              />
+              <View style={styles.gridSubheading}>
+                <Text color={item.categoryColor} style={styles.clubName}>{item.name}</Text>
+                <Text style={styles.clubCategory}>{item.category}</Text>
+              </View>
+
+            </TouchableOpacity>
+          )}
+          numColumns={2}
+          keyExtractor={(item) => item._id}
+        />
+      </View>
+
+    );
+  }
+}

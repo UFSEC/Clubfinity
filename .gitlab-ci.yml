@@ -39,7 +39,8 @@ unit:
     - cd Backend
     - npm run test:ci
     - npm run lint
-    - cd ..
+    - cd ../Frontend
+    - npm run lint
   only:
     - master
     - merge_requests

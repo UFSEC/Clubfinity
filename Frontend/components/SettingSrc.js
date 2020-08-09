@@ -1,35 +1,13 @@
-import React from 'react'
-import { StyleSheet, Text, View, Dimensions, Switch } from 'react-native'
-const { width, height } = Dimensions.get('screen')
+import React from 'react';
+import {
+  StyleSheet, Text, View, Switch,
+} from 'react-native';
+import PropTypes from 'prop-types';
 
-export default class SettingSrc extends React.Component {
-  state = {
-    profieViewSwitch: false
-  }
-
-  render() {
-    return (
-      <View style={styles.section}>
-        <View>
-          <View style={styles.option}>
-            <Text style={styles.textStyle}>{this.props.text}</Text>
-            <Switch
-              ios_backgroundColor="#EAEAED"
-              value={this.state.profieViewSwitch}
-              onValueChange={value =>
-                this.setState({ profieViewSwitch: value })
-              }
-            />
-          </View>
-        </View>
-      </View>
-    )
-  }
-}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
   },
   section: {
     flexDirection: 'column',
@@ -37,16 +15,49 @@ const styles = StyleSheet.create({
     paddingBottom: 2,
     marginTop: 20,
     borderBottomColor: '#EAEAED',
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
   },
   textStyle: {
     fontWeight: '500',
-    paddingRight: 5
+    paddingRight: 5,
   },
   option: {
     marginBottom: 14,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+  },
+});
+
+export default class SettingSrc extends React.Component {
+  static propTypes = {
+    text: PropTypes.string.isRequired,
   }
-})
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      profileViewSwitch: false,
+    };
+  }
+
+  render() {
+    const { profileViewSwitch } = this.state;
+    const { text } = this.props;
+
+    return (
+      <View style={styles.section}>
+        <View>
+          <View style={styles.option}>
+            <Text style={styles.textStyle}>{text}</Text>
+            <Switch
+              ios_backgroundColor="#EAEAED"
+              value={profileViewSwitch}
+              onValueChange={(value) => this.setState({ profileViewSwitch: value })}
+            />
+          </View>
+        </View>
+      </View>
+    );
+  }
+}
