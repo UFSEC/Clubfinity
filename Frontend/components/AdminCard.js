@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
   positionStyle: {
     fontSize: 15,
     color: 'gray',
-
   },
 });
 
@@ -45,7 +44,7 @@ export default class AdminCard extends Component {
     firstName: PropTypes.string.isRequired,
     lastName: PropTypes.string.isRequired,
     position: PropTypes.string.isRequired,
-  }
+  };
 
   render() {
     const { firstName, lastName, position } = this.props;
@@ -53,15 +52,14 @@ export default class AdminCard extends Component {
     return (
       <View style={styles.adminCard}>
         <Image
-            // source={require('./assets/splash.png')}      standard
-            // source={require(image)}                      using data from admin
+          // source={require('./assets/splash.png')}      standard
+          // source={require(image)}                      using data from admin
           style={styles.cardImage}
         />
         <View style={styles.cardText}>
           <Text style={styles.nameStyle}>{`${firstName} ${lastName}`}</Text>
           <Text style={styles.positionStyle}>{position}</Text>
         </View>
-
       </View>
     );
   }

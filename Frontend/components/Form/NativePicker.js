@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     minHeight: 50,
     maxHeight: 50,
-
   },
 });
 
@@ -39,7 +38,7 @@ export default class NativePicker extends React.Component {
     items: PropTypes.array.isRequired,
     placeholder: PropTypes.string.isRequired,
     setValue: PropTypes.func.isRequired,
-  }
+  };
 
   render() {
     const { items, placeholder, setValue } = this.props;

@@ -115,7 +115,7 @@ export default class Tabs extends React.Component {
         }).start(),
       ]);
     }
-  }
+  };
 
   render() {
     // Destructure State
@@ -169,7 +169,6 @@ export default class Tabs extends React.Component {
                   borderBottomLeftRadius: 0,
                   borderTopRightRadius: 3,
                   borderBottomRightRadius: 3,
-
                 },
                 ...{ backgroundColor: active === 1 ? '#7e947f' : '#b1caa9' },
               }}

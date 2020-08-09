@@ -11,17 +11,17 @@ const styles = StyleSheet.create({
 });
 
 export default class EditProfile extends Component {
-    static navigationOptions = {
-      title: 'Edit Profile',
-      headerStyle: { backgroundColor: '#7e947f' },
-      headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
-    }
+  static navigationOptions = {
+    title: 'Edit Profile',
+    headerStyle: { backgroundColor: '#7e947f' },
+    headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
+  };
 
-    render() {
-      return (
-        <View style={styles.container}>
-          <EditForm />
-        </View>
-      );
-    }
+  render() {
+    return (
+      <View style={styles.container}>
+        <EditForm />
+      </View>
+    );
+  }
 }

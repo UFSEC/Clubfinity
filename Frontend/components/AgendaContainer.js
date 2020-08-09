@@ -22,26 +22,28 @@ export default class AgendaContainer extends React.Component {
     events: PropTypes.array.isRequired,
     // eslint-disable-next-line react/forbid-prop-types
     selectedDate: PropTypes.object.isRequired,
-  }
+  };
 
   // Determine Events to display based on selected date
   getEventsForSelectedDate = () => {
     const { events, selectedDate } = this.props;
     return events.filter((e) => this.dateIsEqual(e.date, selectedDate));
-  }
+  };
 
   dateIsEqual = (first, second) => first.year === second.year
-           && first.month === second.month
-           && first.day === second.day
+    && first.month === second.month
+    && first.day === second.day;
 
   render() {
     const selectedEvents = this.getEventsForSelectedDate();
 
     return (
       <View style={style.agendaContainer}>
-        {(selectedEvents.length !== 0
-                    && <Text style={style.agendaSubheading}>Events happening today</Text>)
-                    || <Text style={style.agendaSubheading}>Sorry! No Events today</Text>}
+        {(selectedEvents.length !== 0 && (
+          <Text style={style.agendaSubheading}>Events happening today</Text>
+        )) || (
+          <Text style={style.agendaSubheading}>Sorry! No Events today</Text>
+        )}
         <FlatList
           data={selectedEvents}
           keyExtractor={(event) => event._id.toString()}

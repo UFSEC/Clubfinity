@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  StyleSheet, Text, View,
-} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import UserContext from '../util/UserContext';
 
 const styles = StyleSheet.create({
@@ -61,7 +59,7 @@ export default class ProfileInfoScr extends React.Component {
     title: 'Clubfinity',
     headerStyle: { backgroundColor: '#7e947f' },
     headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
-  }
+  };
 
   static contextType = UserContext;
 
@@ -70,32 +68,33 @@ export default class ProfileInfoScr extends React.Component {
     return (
       <View style={styles.container}>
         {user && (
-        <Text style={styles.textSubheading}>
-          <Text style={{ fontWeight: 'bold' }}>Major:</Text>
-          {' '}
-          {user.major}
-        </Text>
+          <Text style={styles.textSubheading}>
+            <Text style={{ fontWeight: 'bold' }}>Major:</Text>
+            {' '}
+            {user.major}
+          </Text>
         )}
         {user && (
-        <Text style={styles.textSubheading}>
-          <Text style={{ fontWeight: 'bold' }}>Email:</Text>
-          {' '}
-          {user.email}
-        </Text>
+          <Text style={styles.textSubheading}>
+            <Text style={{ fontWeight: 'bold' }}>Email:</Text>
+            {' '}
+            {user.email}
+          </Text>
         )}
         {user && (
-        <Text style={styles.textSubheading}>
-          <Text style={{ fontWeight: 'bold' }}>Class Year:</Text>
-          {' '}
-          {user.year}
-        </Text>
+          <Text style={styles.textSubheading}>
+            <Text style={{ fontWeight: 'bold' }}>Class Year:</Text>
+            {' '}
+            {user.year}
+          </Text>
         )}
         {user && (
-        <Text style={styles.textSubheading}>
-          <Text style={{ fontWeight: 'bold' }}>Interests:</Text>
-          {' '}
-          I love to code
-        </Text>
+          <Text style={styles.textSubheading}>
+            <Text style={{ fontWeight: 'bold' }}>Interests:</Text>
+            {' '}
+            I love to
+            code
+          </Text>
         )}
       </View>
     );

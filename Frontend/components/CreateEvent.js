@@ -74,126 +74,135 @@ export default class CreateEvent extends Component {
     };
   }
 
-    setModalVisible = () => {
-      const { modalVisible } = this.state;
+  setModalVisible = () => {
+    const { modalVisible } = this.state;
 
-      this.setState({
-        modalVisible: !modalVisible,
-      });
-    }
+    this.setState({
+      modalVisible: !modalVisible,
+    });
+  };
 
-    handleDateChange = (date) => {
-      this.setState({ eventDate: date });
-    }
+  handleDateChange = (date) => {
+    this.setState({ eventDate: date });
+  };
 
-    handleCreateEvent = () => {
-      const {
-        eventName, eventLocation, eventDescription, eventDate,
-      } = this.state;
+  handleCreateEvent = () => {
+    const {
+      eventName,
+      eventLocation,
+      eventDescription,
+      eventDate,
+    } = this.state;
 
-      // TODO: Ready to be sent to database!
-      console.log('Event fields were successfully updated');
-      console.log(`eventName: ${eventName}`);
-      console.log(`eventLocation: ${eventLocation}`);
-      console.log(`eventDescription: ${eventDescription}`);
-      console.log(`eventDate: ${eventDate}`);
-    }
+    // TODO: Ready to be sent to database!
+    console.log('Event fields were successfully updated');
+    console.log(`eventName: ${eventName}`);
+    console.log(`eventLocation: ${eventLocation}`);
+    console.log(`eventDescription: ${eventDescription}`);
+    console.log(`eventDate: ${eventDate}`);
+  };
 
-    setName = (text) => {
-      this.setState({ eventName: text });
-    }
+  setName = (text) => {
+    this.setState({ eventName: text });
+  };
 
-    setLocation = (text) => {
-      this.setState({ eventLocation: text });
-    }
+  setLocation = (text) => {
+    this.setState({ eventLocation: text });
+  };
 
-    setDescription = (text) => {
-      this.setState({ eventDescription: text });
-    }
+  setDescription = (text) => {
+    this.setState({ eventDescription: text });
+  };
 
-    render() {
-      const { modalVisible, eventDate } = this.state;
+  render() {
+    const { modalVisible, eventDate } = this.state;
 
-      return (
-        <View>
-          <View style={styles.createEventBtn}>
-            <FontAwesome.Button
-              style={{ borderWidth: 1, borderColor: 'green' }}
-              backgroundColor="transparent"
-              name="plus-circle"
-              color="green"
-              onPress={() => { this.setModalVisible(true); }}
-            >
-              Create Event
-            </FontAwesome.Button>
-          </View>
-          <Modal
-            animationType="fade"
-            transparent
-            visible={modalVisible}
-            onRequestClose={() => {
-              Alert.alert('Modal has been closed.');
+    return (
+      <View>
+        <View style={styles.createEventBtn}>
+          <FontAwesome.Button
+            style={{ borderWidth: 1, borderColor: 'green' }}
+            backgroundColor="transparent"
+            name="plus-circle"
+            color="green"
+            onPress={() => {
+              this.setModalVisible(true);
             }}
           >
-
-            <Form isModal>
-              <View style={{ marginBottom: 10, borderBottomWidth: 0.5, borderBottomColor: 'gray' }}>
-                <Text style={styles.textTitle}>Create an Event</Text>
-              </View>
-              <TextInputBox
-                placeholder="Event Name"
-                setValue={this.setName}
-              />
-              <DatePicker
-                style={{ width: 200 }}
-                date={eventDate}
-                mode="datetime"
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                customStyles={{
-                  dateIcon: {
-                    position: 'absolute',
-                    left: 0,
-                    top: 4,
-                    marginLeft: 0,
-                  },
-                  dateInput: {
-                    marginLeft: 36,
-                  },
-                }}
-                onDateChange={this.handleDateChange}
-              />
-              <TextInputBox
-                placeholder="Location"
-                setValue={this.setLocation}
-              />
-              {/* TODO: Make this multiline */}
-              <TextInputBox
-                placeholder="Description"
-                setValue={this.setDescription}
-                multiline
-              />
-              <View style={styles.modalRow}>
-                <FontAwesome.Button
-                  name="remove"
-                  backgroundColor="gray"
-                  style={styles.modalButtons}
-                  onPress={() => { this.setModalVisible(false); }}
-                >
-                  Cancel
-                </FontAwesome.Button>
-                <FontAwesome.Button
-                  name="check-square"
-                  backgroundColor="green"
-                  style={styles.modalButtons}
-                  onPress={() => { this.setModalVisible(true); this.handleCreateEvent(); }}
-                >
-                  Create Event
-                </FontAwesome.Button>
-              </View>
-            </Form>
-          </Modal>
+            Create Event
+          </FontAwesome.Button>
         </View>
-      );
-    }
+        <Modal
+          animationType="fade"
+          transparent
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+          }}
+        >
+          <Form isModal>
+            <View
+              style={{
+                marginBottom: 10,
+                borderBottomWidth: 0.5,
+                borderBottomColor: 'gray',
+              }}
+            >
+              <Text style={styles.textTitle}>Create an Event</Text>
+            </View>
+            <TextInputBox placeholder="Event Name" setValue={this.setName} />
+            <DatePicker
+              style={{ width: 200 }}
+              date={eventDate}
+              mode="datetime"
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              customStyles={{
+                dateIcon: {
+                  position: 'absolute',
+                  left: 0,
+                  top: 4,
+                  marginLeft: 0,
+                },
+                dateInput: {
+                  marginLeft: 36,
+                },
+              }}
+              onDateChange={this.handleDateChange}
+            />
+            <TextInputBox placeholder="Location" setValue={this.setLocation} />
+            {/* TODO: Make this multiline */}
+            <TextInputBox
+              placeholder="Description"
+              setValue={this.setDescription}
+              multiline
+            />
+            <View style={styles.modalRow}>
+              <FontAwesome.Button
+                name="remove"
+                backgroundColor="gray"
+                style={styles.modalButtons}
+                onPress={() => {
+                  this.setModalVisible(false);
+                }}
+              >
+                Cancel
+              </FontAwesome.Button>
+              <FontAwesome.Button
+                name="check-square"
+                backgroundColor="green"
+                style={styles.modalButtons}
+                onPress={() => {
+                  this.setModalVisible(true);
+                  this.handleCreateEvent();
+                }}
+              >
+                Create Event
+              </FontAwesome.Button>
+            </View>
+          </Form>
+        </Modal>
+      </View>
+    );
+  }
 }

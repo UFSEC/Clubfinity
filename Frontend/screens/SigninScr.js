@@ -101,10 +101,7 @@ export default class SigninScr extends React.Component {
     const { setUser } = this.context;
     const { username, password } = this.state;
 
-    const authResponse = await AuthApi.authenticate(
-      username,
-      password,
-    );
+    const authResponse = await AuthApi.authenticate(username, password);
 
     if (authResponse.token) {
       this.setState({
@@ -156,7 +153,10 @@ export default class SigninScr extends React.Component {
         >
           <Image
             style={{
-              width: 200, height: 200, margin: 30, marginBottom: 80,
+              width: 200,
+              height: 200,
+              margin: 30,
+              marginBottom: 80,
             }}
             source={ClubfinityLogo}
           />
@@ -182,9 +182,7 @@ export default class SigninScr extends React.Component {
               value={password}
               placeholder="Password"
             />
-            {showError && (
-              <ErrorText errorMessage={errorMessage} />
-            )}
+            {showError && <ErrorText errorMessage={errorMessage} />}
           </View>
 
           <View

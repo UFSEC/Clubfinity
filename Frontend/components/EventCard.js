@@ -11,7 +11,7 @@ export default class EventCard extends Component {
     name: PropTypes.string.isRequired,
     location: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -26,10 +26,9 @@ export default class EventCard extends Component {
     this.setState({
       goingChecked: !goingChecked,
     });
-  }
+  };
 
-  notGoingHandler = () => {
-  }
+  notGoingHandler = () => {};
 
   render() {
     const { goingChecked } = this.state;
@@ -45,9 +44,23 @@ export default class EventCard extends Component {
         <View style={card.body}>
           <Text style={card.location}>{location}</Text>
           <Text style={card.bodyText}>{description}</Text>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
-            <NotGoingButton clickHandler={this.notGoingHandler} name="Not Going" btnColor="#ff8080" />
-            <GoingButton clickHandler={this.goingBtnHandler} name="Going" btnColor="#16a085" />
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginTop: 10,
+            }}
+          >
+            <NotGoingButton
+              clickHandler={this.notGoingHandler}
+              name="Not Going"
+              btnColor="#ff8080"
+            />
+            <GoingButton
+              clickHandler={this.goingBtnHandler}
+              name="Going"
+              btnColor="#16a085"
+            />
           </View>
         </View>
       </View>

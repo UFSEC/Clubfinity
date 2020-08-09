@@ -88,22 +88,25 @@ export default class SignupScr extends React.Component {
 
   isRequestValid = () => {
     const {
-      errors, firstName, lastName, major, classYear, username, email, password, verifyPassword,
+      errors,
+      firstName,
+      lastName,
+      major,
+      classYear,
+      username,
+      email,
+      password,
+      verifyPassword,
     } = this.state;
     const errorsData = { ...errors.data };
     errorsData.firstName = firstName === '' || !/^[a-zA-Z()]+$/.test(firstName);
     errorsData.lastName = lastName === '' || !/^[a-zA-Z()]+$/.test(lastName);
     errorsData.major = major === '' || major === null;
-    errorsData.classYear = classYear === ''
-      || classYear === null
-      || Number.isNaN(Number(classYear));
-    errorsData.username = username === ''
-      || username < 6
-      || username > 20;
+    errorsData.classYear = classYear === '' || classYear === null || Number.isNaN(Number(classYear));
+    errorsData.username = username === '' || username < 6 || username > 20;
     errorsData.email = email === '' || !email.endsWith('@ufl.edu');
     errorsData.password = password === '' || password < 6;
-    errorsData.verifyPassword = verifyPassword === ''
-      || verifyPassword !== password;
+    errorsData.verifyPassword = verifyPassword === '' || verifyPassword !== password;
 
     let validRequest = true;
     Object.keys(errorsData).forEach((input) => {
@@ -146,10 +149,7 @@ export default class SignupScr extends React.Component {
     }
     console.log(`Successfully created user ${username}`);
 
-    const authResponse = await AuthApi.authenticate(
-      username,
-      password,
-    );
+    const authResponse = await AuthApi.authenticate(username, password);
     if (authResponse.token) {
       setUser(authResponse.user);
       const { navigation } = this.props;
@@ -197,17 +197,17 @@ export default class SignupScr extends React.Component {
       <Form isCentered>
         <Text style={styles.header}>Sign Up</Text>
         {triedSubmitting && errors.data.firstName && (
-        <Text style={styles.error}>Please enter a valid name</Text>
+          <Text style={styles.error}>Please enter a valid name</Text>
         )}
         <TextInputBox placeholder="First Name" setValue={this.setFirstName} />
 
         {triedSubmitting && errors.data.lastName && (
-        <Text style={styles.error}>Please enter a valid name</Text>
+          <Text style={styles.error}>Please enter a valid name</Text>
         )}
         <TextInputBox placeholder="Last Name" setValue={this.setLastName} />
 
         {triedSubmitting && errors.data.major && (
-        <Text style={styles.error}>Please select a major</Text>
+          <Text style={styles.error}>Please select a major</Text>
         )}
         <NativePicker
           items={Majors}
@@ -216,7 +216,7 @@ export default class SignupScr extends React.Component {
         />
 
         {triedSubmitting && errors.data.classYear && (
-        <Text style={styles.error}>Please select your class year</Text>
+          <Text style={styles.error}>Please select your class year</Text>
         )}
         <NativePicker
           items={ClassYears}
@@ -225,7 +225,7 @@ export default class SignupScr extends React.Component {
         />
 
         {triedSubmitting && errors.data.email && (
-        <Text style={styles.error}>Please enter a valid email</Text>
+          <Text style={styles.error}>Please enter a valid email</Text>
         )}
         <TextInputBox
           placeholder="UFL Email Address"
@@ -233,16 +233,16 @@ export default class SignupScr extends React.Component {
         />
 
         {triedSubmitting && errors.data.username && (
-        <Text style={styles.error}>
-          Please enter a valid username (between 6 and 20 characters)
-        </Text>
+          <Text style={styles.error}>
+            Please enter a valid username (between 6 and 20 characters)
+          </Text>
         )}
         <TextInputBox placeholder="Username" setValue={this.setUserName} />
 
         {triedSubmitting && errors.data.password && (
-        <Text style={styles.error}>
-          Please enter a valid password (at least 6 characters)
-        </Text>
+          <Text style={styles.error}>
+            Please enter a valid password (at least 6 characters)
+          </Text>
         )}
         <TextInputBox
           isHidden
@@ -250,9 +250,8 @@ export default class SignupScr extends React.Component {
           setValue={this.setPassWord}
         />
 
-        {triedSubmitting
-        && errors.data.verifyPassword && (
-        <Text style={styles.error}>Passwords do not match</Text>
+        {triedSubmitting && errors.data.verifyPassword && (
+          <Text style={styles.error}>Passwords do not match</Text>
         )}
         <TextInputBox
           isHidden

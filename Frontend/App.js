@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
 import {
-  ActivityIndicator, View,
-  Platform, StatusBar, StyleSheet,
+  ActivityIndicator,
+  View,
+  Platform,
+  StatusBar,
+  StyleSheet,
 } from 'react-native';
 
-import AppNavigator from './navigation/TabNavigator';
+import * as Font from 'expo-font';
+import Roboto from 'native-base/Fonts/Roboto.ttf';
+import RobotoMedium from 'native-base/Fonts/Roboto_medium.ttf';
+import Ionicons from 'native-base/Fonts/Ionicons.ttf';
 import UserContext from './util/UserContext';
+import AppNavigator from './navigation/TabNavigator';
 
 console.disableYellowBox = true; // This is to switch off warning
 
@@ -20,23 +27,33 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoadingComplete: true,
+      isLoadingComplete: false,
       user: null,
     };
+  }
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      Roboto,
+      RobotoMedium,
+      Ionicons,
+      ...Ionicons.font,
+    });
+    this.setState({ isLoadingComplete: true });
   }
 
   setUser = (newUser) => {
     this.setState({
       user: newUser,
     });
-  }
+  };
 
   render() {
     const { user, isLoadingComplete } = this.state;
     const { setUser } = this;
     if (!isLoadingComplete) {
       return (
-        <View style={{ flex: 1, padding: 20 }}>
+        <View style={{ flex: 1, padding: 20, justifyContent: 'center' }}>
           <ActivityIndicator />
         </View>
       );

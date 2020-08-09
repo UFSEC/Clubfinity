@@ -34,7 +34,7 @@ export default class AgendaCard extends Component {
     location: PropTypes.string.isRequired,
     // eslint-disable-next-line react/forbid-prop-types
     date: PropTypes.object.isRequired,
-  }
+  };
 
   render() {
     const {
@@ -50,7 +50,6 @@ export default class AgendaCard extends Component {
           <Text style={card.agendaText}>{date.toLocaleString()}</Text>
           <Text style={card.agendaText}>{location}</Text>
         </View>
-
       </View>
     );
   }
