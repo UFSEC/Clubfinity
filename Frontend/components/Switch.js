@@ -5,7 +5,7 @@ import { FontAwesome } from '@expo/vector-icons';
 export default class Switch extends Component {
   static propTypes = {
     clickHandler: PropTypes.func.isRequired,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -21,7 +21,7 @@ export default class Switch extends Component {
     this.setState({
       toggled: !toggled,
     });
-  }
+  };
 
   render() {
     const { toggled } = this.state;

@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  StyleSheet,
-  SafeAreaView,
-} from 'react-native';
+import { StyleSheet, SafeAreaView } from 'react-native';
 
 import DiscoverGrid from '../components/DiscoverGrid';
 
@@ -21,7 +18,7 @@ export default class DiscoverScr extends React.Component {
     title: 'Discover',
     headerStyle: { backgroundColor: '#7e947f' },
     headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
-  }
+  };
 
   render() {
     const { navigation } = this.props;

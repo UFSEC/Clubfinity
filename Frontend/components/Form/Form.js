@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     backgroundColor: bgColor,
   },
   androidContentContainerModal: {
-    width: width * 0.90,
+    width: width * 0.9,
     height: height * 0.7,
     justifyContent: 'center',
     backgroundColor: '#fff',
@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     padding: 20,
     backgroundColor: bgColor,
-
   },
   androidContainerCentered: {
     flex: 1,
@@ -83,29 +82,39 @@ export default class Form extends React.Component {
     isModal: PropTypes.bool,
     isCentered: PropTypes.bool,
     children: PropTypes.node.isRequired,
-  }
+  };
 
   static defaultProps = {
     isModal: false,
     isCentered: false,
-  }
+  };
 
   render() {
     const { isModal, isCentered, children } = this.props;
     if (isModal) {
       return (
         <View
-          style={Platform.OS === 'ios' ? styles.contentContainerModal : styles.androidContentContainerModal}
+          style={
+            Platform.OS === 'ios'
+              ? styles.contentContainerModal
+              : styles.androidContentContainerModal
+          }
         >
           {Platform.OS === 'ios' ? (
             <SafeAreaView
-              style={isCentered ? styles.iOScontainerCentered : styles.iOScontainer}
+              style={
+                isCentered ? styles.iOScontainerCentered : styles.iOScontainer
+              }
             >
               {children}
             </SafeAreaView>
           ) : (
             <View
-              style={isCentered ? styles.androidContainerCentered : styles.androidContainer}
+              style={
+                isCentered
+                  ? styles.androidContainerCentered
+                  : styles.androidContainer
+              }
             >
               {children}
             </View>
@@ -119,17 +128,27 @@ export default class Form extends React.Component {
         extraScrollHeight={100}
         enableOnAndroid
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={Platform.OS === 'ios' ? styles.contentContainer : styles.androidContentContainer}
+        contentContainerStyle={
+          Platform.OS === 'ios'
+            ? styles.contentContainer
+            : styles.androidContentContainer
+        }
       >
         {Platform.OS === 'ios' ? (
           <SafeAreaView
-            style={isCentered ? styles.iOScontainerCentered : styles.iOScontainer}
+            style={
+              isCentered ? styles.iOScontainerCentered : styles.iOScontainer
+            }
           >
             {children}
           </SafeAreaView>
         ) : (
           <View
-            style={isCentered ? styles.androidContainerCentered : styles.androidContainer}
+            style={
+              isCentered
+                ? styles.androidContainerCentered
+                : styles.androidContainer
+            }
           >
             {children}
           </View>

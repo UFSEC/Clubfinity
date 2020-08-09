@@ -35,12 +35,12 @@ export default class TextInputBox extends React.Component {
     isHidden: PropTypes.bool,
     placeholder: PropTypes.string.isRequired,
     setValue: PropTypes.func.isRequired,
-  }
+  };
 
   static defaultProps = {
     multiline: false,
     isHidden: false,
-  }
+  };
 
   render() {
     const {
@@ -49,8 +49,10 @@ export default class TextInputBox extends React.Component {
     const isMultilineEnabled = !!multiline;
     return (
       <TextInput
-        numberOfLines={isMultilineEnabled ? (Platform.OS === 'ios' ? null : 5) : null}
-        minHeight={isMultilineEnabled ? (20 * 5) : null}
+        numberOfLines={
+          isMultilineEnabled ? (Platform.OS === 'ios' ? null : 5) : null
+        }
+        minHeight={isMultilineEnabled ? 20 * 5 : null}
         multiline={isMultilineEnabled}
         secureTextEntry={isHidden}
         style={Platform.OS === 'ios' ? styles.iOS : styles.android}

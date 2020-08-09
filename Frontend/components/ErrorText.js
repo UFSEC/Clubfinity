@@ -13,13 +13,11 @@ const style = StyleSheet.create({
 export default class ErrorText extends Component {
   static propTypes = {
     errorMessage: PropTypes.string.isRequired,
-  }
+  };
 
   render() {
     const { errorMessage } = this.props;
 
-    return (
-      <Text style={style.error}>{errorMessage}</Text>
-    );
+    return <Text style={style.error}>{errorMessage}</Text>;
   }
 }

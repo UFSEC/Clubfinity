@@ -44,7 +44,7 @@ export default class SettingScr extends React.Component {
     title: 'Settings',
     headerStyle: { backgroundColor: '#7e947f' },
     headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -62,8 +62,14 @@ export default class SettingScr extends React.Component {
 
   render() {
     const {
-      profileViewSwitch, clubViewSwitch, freeSpotSwitch, soundSwitch,
-      notCenterSwitch, badgeIconSwitch, bannerSwitch, lockScreenSwitch,
+      profileViewSwitch,
+      clubViewSwitch,
+      freeSpotSwitch,
+      soundSwitch,
+      notCenterSwitch,
+      badgeIconSwitch,
+      bannerSwitch,
+      lockScreenSwitch,
     } = this.state;
 
     return (

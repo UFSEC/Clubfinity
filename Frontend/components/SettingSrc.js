@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 export default class SettingSrc extends React.Component {
   static propTypes = {
     text: PropTypes.string.isRequired,
-  }
+  };
 
   constructor(props) {
     super(props);

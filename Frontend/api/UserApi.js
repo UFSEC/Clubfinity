@@ -37,3 +37,23 @@ exports.getUser = async (bearerToken) => {
 
   return axiosResponse;
 };
+
+exports.followClub = async (clubId, bearerToken) => {
+  const axiosResponse = await API.put(
+    `/api/user/follow?clubId=${clubId}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+      },
+    },
+  )
+    .then(async (response) => response)
+    .catch((error) => {
+      if (error) {
+        return error;
+      }
+      return { error: 'Unable to follow club' };
+    });
+  return axiosResponse;
+};

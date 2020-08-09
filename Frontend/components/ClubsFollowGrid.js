@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
     width: '30%',
     borderRadius: 53,
     marginLeft: 5,
-
   },
   scrollContainer: {
     flex: 1,
@@ -40,7 +39,7 @@ const styles = StyleSheet.create({
   gridItem: {
     display: 'flex',
     flexDirection: 'row',
-    flex: 0.30,
+    flex: 0.3,
     minWidth: GRID_ITEM_WIDTH,
     maxWidth: GRID_ITEM_WIDTH,
     minHeight: 150,
@@ -56,7 +55,6 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
     elevation: 2,
-
   },
 
   gridSubheading: {
@@ -121,9 +119,7 @@ const styles = StyleSheet.create({
     borderColor: 'red',
     borderWidth: 5,
     borderRadius: 15,
-
   },
-
 });
 
 // Dummy list of clubs
@@ -134,7 +130,6 @@ const clubList = [
     category: 'Cute',
     categoryColor: '#5E5CE6',
     src: 'https://i.ibb.co/F0hqL1X/puppy-club-img.jpg',
-
   },
   {
     id: 0,
@@ -142,7 +137,6 @@ const clubList = [
     category: ' Computer Science',
     categoryColor: '#FF9F0A',
     src: 'https://i.ibb.co/F4rHdKN/sec-club-img.jpg',
-
   },
   {
     id: 1,
@@ -150,7 +144,6 @@ const clubList = [
     category: ' Computer Science',
     categoryColor: '#FF9F0A',
     src: 'https://i.ibb.co/wLMHZHK/acm-club-img.png',
-
   },
   {
     id: 2,
@@ -158,7 +151,6 @@ const clubList = [
     category: 'Computer Engineering',
     categoryColor: '#FF9F0A',
     src: 'https://i.ibb.co/cwJtrNy/ace-club-img.jpg',
-
   },
   {
     id: 3,
@@ -166,7 +158,6 @@ const clubList = [
     category: 'Computer Science',
     categoryColor: '#FF9F0A',
     src: 'https://i.ibb.co/fSM2Zxz/wicse-club-img.jpg',
-
   },
 ];
 
@@ -185,20 +176,19 @@ export default class ClubsFollowGrid extends Component {
     this.setState((state) => ({
       isVisible: !state.isVisible,
     }));
-  }
+  };
 
   handleClubSelect = () => {
     console.log('Clubs tapped boi');
-  }
+  };
 
-  notGoingHandler = () => {
-  }
+  notGoingHandler = () => {};
 
   removeHandler = () => {
     const { editButton } = this.state;
     console.log('Clicked');
     console.log(editButton);
-  }
+  };
 
   editButtonHandler = () => {
     const { editButton } = this.state;
@@ -209,19 +199,20 @@ export default class ClubsFollowGrid extends Component {
       this.setState({ editButton: true });
     }
     console.log(editButton);
-  }
+  };
 
   filterClubs = (text) => {
     const searchText = text.toLowerCase();
     const newFilterClubs = clubList.filter(
-      (club) => club.name.toLowerCase().includes(searchText) || club.category.toLowerCase().includes(searchText),
+      (club) => club.name.toLowerCase().includes(searchText)
+        || club.category.toLowerCase().includes(searchText),
     );
 
     this.setState({
       searchText: text,
       filteredClubs: newFilterClubs,
     });
-  }
+  };
 
   render() {
     const { searchText, filteredClubs } = this.state;
@@ -230,7 +221,12 @@ export default class ClubsFollowGrid extends Component {
       <View style={styles.mainContainer}>
         {/* Search Bar */}
         <View style={styles.searchBox}>
-          <Ionicons style={styles.searchBoxIcon} color="#8E8E93" name="md-search" size={24} />
+          <Ionicons
+            style={styles.searchBoxIcon}
+            color="#8E8E93"
+            name="md-search"
+            size={24}
+          />
           <TextInput
             style={styles.searchBoxText}
             placeholderTextColor="#8E8E93"
@@ -260,22 +256,21 @@ export default class ClubsFollowGrid extends Component {
                 resizeMode="cover"
               />
               <View style={styles.gridSubheading}>
-                <Text color={item.categoryColor} style={styles.clubName}>{item.name}</Text>
+                <Text color={item.categoryColor} style={styles.clubName}>
+                  {item.name}
+                </Text>
                 <Text style={styles.clubCategory}>{item.category}</Text>
               </View>
 
               <View>
                 <FontAwesome size={24} name="trash" />
-
               </View>
             </TouchableOpacity>
           )}
           numColumns={1}
           keyExtractor={(item) => item.id.toString()}
         />
-
       </View>
-
     );
   }
 }

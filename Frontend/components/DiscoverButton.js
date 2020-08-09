@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 export default class DiscoverButton extends Component {
   static propTypes = {
     onPress: PropTypes.func.isRequired,
-  }
+  };
 
   render() {
     const { onPress } = this.props;

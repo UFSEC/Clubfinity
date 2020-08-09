@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet, Text, View, TouchableOpacity, FlatList, SafeAreaView, TextInput,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  FlatList,
+  SafeAreaView,
+  TextInput,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -136,7 +142,6 @@ const adminData = [
     position: 'Position',
     image: '',
   },
-
 ];
 
 // Actual Admin List - displays all the admins
@@ -146,7 +151,7 @@ export class AdminList extends Component {
     title: 'Admin List',
     headerStyle: { backgroundColor: '#7e947f' },
     headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -158,7 +163,6 @@ export class AdminList extends Component {
   // Function to display if no admins have been added
   noAdminsView = () => (
     <SafeAreaView style={styles.adminListContainer}>
-
       {/* Fixed top navBar */}
       <View style={styles.topBar}>
         <Text style={styles.topBarText}>Admin List</Text>
@@ -172,14 +176,15 @@ export class AdminList extends Component {
       <TouchableOpacity style={styles.floatingButton}>
         <Text style={styles.floatingButtonText}>+</Text>
       </TouchableOpacity>
-
     </SafeAreaView>
-  )
+  );
 
   filterAdmins(text) {
     const searchText = text.toLowerCase();
-    const newFilterAdmins = adminData.filter((admin) => admin.firstName.toLowerCase().includes(searchText)
-    || admin.lastName.toLowerCase().includes(searchText));
+    const newFilterAdmins = adminData.filter(
+      (admin) => admin.firstName.toLowerCase().includes(searchText)
+        || admin.lastName.toLowerCase().includes(searchText),
+    );
 
     this.setState({
       filteredAdmins: newFilterAdmins,
@@ -194,7 +199,12 @@ export class AdminList extends Component {
       <SafeAreaView style={styles.adminListContainer}>
         {/* Search Bar */}
         <View style={styles.searchBox}>
-          <Ionicons style={styles.searchBoxIcon} color="#8E8E93" name="md-search" size={24} />
+          <Ionicons
+            style={styles.searchBoxIcon}
+            color="#8E8E93"
+            name="md-search"
+            size={24}
+          />
           <TextInput
             style={styles.searchBoxText}
             placeholderTextColor="#8E8E93"
@@ -221,7 +231,6 @@ export class AdminList extends Component {
         <TouchableOpacity style={styles.floatingButton}>
           <Text style={styles.floatingButtonText}>+</Text>
         </TouchableOpacity>
-
       </SafeAreaView>
     );
   }

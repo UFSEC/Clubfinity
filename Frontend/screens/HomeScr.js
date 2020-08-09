@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import {
-  ActivityIndicator, AsyncStorage, FlatList, Text, View,
+  ActivityIndicator,
+  AsyncStorage,
+  FlatList,
+  Text,
+  View,
 } from 'react-native';
 import { Octicons } from '@expo/vector-icons';
 import { primary, emptyEventList } from '../assets/styles/stylesheet';
@@ -62,20 +66,20 @@ class HomeScr extends Component {
     <View style={{ flex: 1, padding: 20 }}>
       <ActivityIndicator />
     </View>
-  )
+  );
 
   notFollowingClubsView = () => (
     <View style={emptyEventList.container}>
       <Text style={emptyEventList.text}>You are not following any clubs</Text>
       <DiscoverButton onPress={this.navigateToDiscover} />
     </View>
-  )
+  );
 
   noUpcomingEventsView = () => (
     <View style={emptyEventList.container}>
       <Text style={emptyEventList.text}>No upcoming events</Text>
     </View>
-  )
+  );
 
   eventListView() {
     const { events } = this.state;

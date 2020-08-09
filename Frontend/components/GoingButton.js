@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 export default class GoingButton extends Component {
   static propTypes = {
     clickHandler: PropTypes.func.isRequired,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -22,7 +22,7 @@ export default class GoingButton extends Component {
     this.setState({
       isChecked: !isChecked,
     });
-  }
+  };
 
   render() {
     const { isChecked } = this.state;

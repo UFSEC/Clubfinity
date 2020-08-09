@@ -15,13 +15,16 @@ import API from '../api/BaseApi';
 import clubImageList from '../assets/images/clubimages/FetchImage';
 import ClubfinityLogo from '../assets/images/ClubfinityLogo.png';
 
-// This isn't arbitrary and is instead depends on padding/margin b/w cards
-// Must be made a constant one design finalized!
+/**
+ * This isn't arbitrary and is instead depends on padding/margin b/w cards.
+ * Must be made a constant one design finalized!
+ */
+
 const GRID_ITEM_WIDTH = Dimensions.get('screen').width / 2 - 22;
+
 const bgColor = '#F2F2F7';
 const cardColor = '#fff';
 
-// Style definitions
 const styles = StyleSheet.create({
   mainContainer: {
     justifyContent: 'center',
@@ -56,7 +59,6 @@ const styles = StyleSheet.create({
     shadowColor: 'black',
     shadowOpacity: 0.2,
     elevation: 2,
-
   },
   gridImage: {
     flex: 4,
@@ -125,7 +127,6 @@ const styles = StyleSheet.create({
   searchBoxIcon: {
     flex: 1,
   },
-
 });
 
 const postData = [
@@ -208,33 +209,30 @@ export default class DiscoverGrid extends Component {
     }
   }
 
-  handleClubSelect = () => {
+  handleClubSelect = (club) => {
     const { navigation } = this.props;
     navigation.navigate('Club', {
+      club,
       eventData: evData,
       postData,
     });
-  }
+  };
 
   filterClubs = (text) => {
-    const { clubs } = this.state;
     const searchText = text.toLowerCase();
-
-    const newFilterClubs = clubs.filter((club) => club.name
-      .toLowerCase()
-      .includes(searchText));
+    const { clubs } = this.state;
+    const newFilterClubs = clubs.filter((club) => club.name.toLowerCase().includes(searchText));
 
     this.setState({
       searchText: text,
       filteredClubs: newFilterClubs,
     });
-  }
+  };
 
   render() {
     const {
       isLoading, clubList, searchText, filteredClubs,
     } = this.state;
-
     if (isLoading) {
       return (
         <View style={{ flex: 1, padding: 20 }}>
@@ -248,7 +246,12 @@ export default class DiscoverGrid extends Component {
       <View style={styles.mainContainer}>
         {/* Search Bar */}
         <View style={styles.searchBox}>
-          <Ionicons style={styles.searchBoxIcon} color="#8E8E93" name="md-search" size={24} />
+          <Ionicons
+            style={styles.searchBoxIcon}
+            color="#8E8E93"
+            name="md-search"
+            size={24}
+          />
           <TextInput
             style={styles.searchBoxText}
             placeholderTextColor="#8E8E93"
@@ -265,30 +268,36 @@ export default class DiscoverGrid extends Component {
           renderItem={({ item }) => (
             <TouchableOpacity
               style={styles.gridItem}
-              onPress={this.handleClubSelect}
+              onPress={() => this.handleClubSelect(item)}
             >
               <Image
-              // This retrieves the first instance of the club based on name if in Image File
+                // This retrieves the first instance of the club based on name if in Image File
                 source={
                   clubFilterImage[item.name]
-                    ? { uri: clubFilterImage[item.name].src } : ClubfinityLogo
+                    ? { uri: clubFilterImage[item.name].src }
+                    : ClubfinityLogo
                 }
-                onError={(e) => { e.target.onerror = null; e.target.src = '../assets/images/ClubfinityLogo.png'; }}
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = '../assets/images/ClubfinityLogo.png';
+                }}
                 style={styles.gridImage}
                 resizeMode="stretch"
               />
               <View style={styles.gridSubheading}>
-                <Text color={item.categoryColor} style={styles.clubName}>{item.name}</Text>
+                <Text color={item.categoryColor} style={styles.clubName}>
+                  {item.name}
+                </Text>
                 <Text style={styles.clubCategory}>{item.category}</Text>
               </View>
-
             </TouchableOpacity>
           )}
           numColumns={2}
           keyExtractor={(item) => item._id}
         />
       </View>
-
     );
   }
 }
+
+// Style definitions
