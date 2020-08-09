@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import PropTypes from 'prop-types';
 
 export default class SignupButton extends Component {
+  static propTypes = {
+    clickHandler: PropTypes.func.isRequired,
+  }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      disabled: false 
-    };
+  _eventHandler = () => {
+    const { clickHandler } = this.props;
+    clickHandler();
   }
 
   render() {
@@ -16,24 +17,12 @@ export default class SignupButton extends Component {
       <MaterialIcons.Button
         name="person-add"
         size={25}
-    
+
         backgroundColor="#0C85FC"
         onPress={this._eventHandler}
       >
-        Sign Up 
-            </MaterialIcons.Button>
+        Sign Up
+      </MaterialIcons.Button>
     );
   }
-
-  _eventHandler = () => {
-    this.props.clickHandler();
-  }
 }
-
-const styles = StyleSheet.create({
-  button: {
-    flex: 1,  
-    maxWidth: 200,
-    alignSelf: 'center'
-  }
-})

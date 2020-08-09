@@ -1,30 +1,46 @@
-import React, { Component } from 'react';
-import { Text, View, Image, Badge } from 'react-native';
+import React from 'react';
+import {
+  Text, View,
+} from 'react-native';
 import PropTypes from 'prop-types';
+
 import { post } from '../assets/styles/stylesheet';
-import { Platform, RoundButton } from 'react-native';
-import { validate } from '@babel/types';
 
 export default class Post extends React.Component {
-    constructor(props) {
-        super(props);
-      }
+  static propTypes = {
+    header: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+  }
 
   render() {
-    const data = this.props.data;
+    const { header, description } = this.props;
     return (
-    <View style={post.container}>
-        <View style={{flex: 1}}>
-            <View style={{flex: 1, justifyContent: 'flex-end'}}>
-                <Text style={{ fontSize: 14, fontWeight: '400', paddingHorizontal: 0, 
-                    marginLeft: 5}}>{data.header}</Text>
-            </View>
-            <View style={{flex: 1, justifyContent: 'flex-start'}}>
-                <Text style={{ fontSize: 9, fontWeight: '200', paddingHorizontal: 0,
-                     marginLeft: 5}}>{data.fullPost}</Text>
-            </View>
+      <View style={post.container}>
+        <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+            <Text style={{
+              fontSize: 14,
+              fontWeight: '400',
+              paddingHorizontal: 0,
+              marginLeft: 5,
+            }}
+            >
+              {header}
+            </Text>
+          </View>
+          <View style={{ flex: 1, justifyContent: 'flex-start' }}>
+            <Text style={{
+              fontSize: 9,
+              fontWeight: '200',
+              paddingHorizontal: 0,
+              marginLeft: 5,
+            }}
+            >
+              {description}
+            </Text>
+          </View>
         </View>
-        </View>
+      </View>
     );
   }
 }

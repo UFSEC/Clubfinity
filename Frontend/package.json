@@ -3,6 +3,8 @@
   "main": "node_modules/expo/AppEntry.js",
   "private": true,
   "scripts": {
+    "lint": "eslint \"**/*.{js,ts}\"",
+    "fix": "eslint --fix \"**/*.{js,ts}\"",
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
@@ -10,18 +12,28 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.1.5",
+    "@expo/vector-icons": "^10.2.0",
     "axios": "^0.19.2",
     "expo": "^35.0.0",
+    "luxon": "^1.22.2",
+    "prop-types": "^15.7.2",
     "react": "16.8.3",
     "react-native": "https://github.com/expo/react-native/archive/sdk-35.0.0.tar.gz",
     "react-native-calendars": "^1.22.0",
     "react-native-datepicker": "^1.7.2",
     "react-native-keyboard-aware-scroll-view": "^0.9.1",
     "react-native-picker-select": "^6.5.0",
-    "react-navigation": "^3.0.0",
-    "luxon": "^1.22.2"
+    "react-navigation": "^3.0.0"
   },
   "devDependencies": {
-    "babel-preset-expo": "^5.0.0"
+    "babel-eslint": "^10.1.0",
+    "babel-preset-expo": "^5.0.0",
+    "eslint": "^7.5.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.5",
+    "eslint-plugin-react-hooks": "^4.0.8",
+    "eslint-plugin-react-native": "^3.8.1"
   }
 }

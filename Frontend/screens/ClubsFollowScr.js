@@ -1,29 +1,24 @@
-import React from 'react'
+import React from 'react';
 import {
   StyleSheet,
   View,
-} from 'react-native'
+} from 'react-native';
 
-import ClubsFollowGrid from '../components/ClubsFollowGrid'
+import ClubsFollowGrid from '../components/ClubsFollowGrid';
 
-export default class ClubsFollowScr extends React.Component {
-  constructor(props){
-    super(props);
-  }
-
-  render() {
-  
-    return (
-   <View styles={styles.formVal}>
-        <ClubsFollowGrid/>
-   </View>
-  )
-}
-}
 const styles = StyleSheet.create({
   formVal: {
-   maxWidth: 600,
-   backgroundColor:'#F2F2F7'
-   
+    maxWidth: 600,
+    backgroundColor: '#F2F2F7',
+  },
+});
+
+export default class ClubsFollowScr extends React.Component {
+  render() {
+    return (
+      <View styles={styles.formVal}>
+        <ClubsFollowGrid />
+      </View>
+    );
   }
-})
+}

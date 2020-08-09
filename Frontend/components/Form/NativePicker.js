@@ -1,31 +1,9 @@
 import React from 'react';
 import { StyleSheet, View, Platform } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
+import PropTypes from 'prop-types';
 
-export default class NativePicker extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <View style={Platform.OS === "ios" ? styles.iOS : styles.android}>
-        <RNPickerSelect
-          onValueChange={(value) => this.props.setValue(value)}
-          items={this.props.items}
-          placeholder={this.props.placeholder}
-          style={{
-            placeholder: { color: '#8E8E93' },
-            inputIOS: { color: 'black', minHeight: 30 },
-            inputAndroid: { color: 'black' },
-          }}
-        />
-      </View>
-    );
-  }
-}
-
-const txtFieldBgColor = "#F4F4F4";
+const txtFieldBgColor = '#F4F4F4';
 const styles = StyleSheet.create({
   iOS: {
     flex: 1,
@@ -53,5 +31,32 @@ const styles = StyleSheet.create({
     minHeight: 50,
     maxHeight: 50,
 
+  },
+});
+
+export default class NativePicker extends React.Component {
+  static propTypes = {
+    items: PropTypes.array.isRequired,
+    placeholder: PropTypes.string.isRequired,
+    setValue: PropTypes.func.isRequired,
   }
-})
+
+  render() {
+    const { items, placeholder, setValue } = this.props;
+
+    return (
+      <View style={Platform.OS === 'ios' ? styles.iOS : styles.android}>
+        <RNPickerSelect
+          onValueChange={(value) => setValue(value)}
+          items={items}
+          placeholder={placeholder}
+          style={{
+            placeholder: { color: '#8E8E93' },
+            inputIOS: { color: 'black', minHeight: 30 },
+            inputAndroid: { color: 'black' },
+          }}
+        />
+      </View>
+    );
+  }
+}
