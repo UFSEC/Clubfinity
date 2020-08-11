@@ -8,7 +8,10 @@ install dependencies:
   stage: dependencies
   image: node:12
   cache:
-    key: $CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR
+    key:
+      files:
+        - Backend/node_modules
+        - Frontend/node_modules
     paths:
       - Backend/node_modules
       - Frontend/node_modules
@@ -29,7 +32,9 @@ unit:
   stage: test
   image: node:12
   cache:
-    key: $CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR
+    key:
+      files:
+        - package.json
     paths:
       - Backend/node_modules
     policy: pull
@@ -51,7 +56,9 @@ build api:
   stage: build
   image: registry.gitlab.com/ufsec/clubfinity/build-push:latest
   cache:
-    key: $CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR
+    key:
+      files:
+        - package.json
     paths:
       - Backend/node_modules
     policy: pull
@@ -72,7 +79,9 @@ deploy frontend:
   image: 'patwoz/expo-cli:3'
   stage: deploy
   cache:
-    key: $CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR
+    key:
+      files:
+        - package.json
     paths:
       - Backend/node_modules
     policy: pull
