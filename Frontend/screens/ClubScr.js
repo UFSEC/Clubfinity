@@ -8,9 +8,19 @@ import {
   AsyncStorage,
 } from 'react-native';
 import {
-  Button, Text, H1, Card, CardItem, Body, List,
+  Button,
+  Text,
+  H1,
+  Card,
+  CardItem,
+  Body,
+  List,
+  Thumbnail,
+  StyleProvider,
 } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
+import thumbnailTheme from '../native-base-theme/components/Thumbnail';
+import getTheme from '../native-base-theme/components';
 import colors from '../util/colors';
 import UserContext from '../util/UserContext';
 import UserApi from '../api/UserApi';
@@ -20,6 +30,7 @@ export default class ClubScr extends React.Component {
     title: 'Club Page',
     headerStyle: { backgroundColor: '#7e947f' },
     headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
+    headerTintColor: 'white',
   };
 
   static contextType = UserContext;
@@ -79,6 +90,7 @@ export default class ClubScr extends React.Component {
     const events = navigation.getParam('eventData', []);
     const posts = navigation.getParam('postData', []);
     const club = navigation.getParam('club', 'NO-CLUB');
+    const clubImage = navigation.getParam('clubImage', 'NO-IMAGE');
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView showsVerticalScrollIndicator>
@@ -91,7 +103,12 @@ export default class ClubScr extends React.Component {
               alignItems: 'center',
             }}
           >
-            <H1 style={{ paddingBottom: '2%', paddingTop: '10%' }}>
+            <View style={{ paddingTop: '10%' }}>
+              <StyleProvider style={getTheme(thumbnailTheme)}>
+                <Thumbnail source={clubImage} large />
+              </StyleProvider>
+            </View>
+            <H1 style={{ paddingBottom: '2%', paddingTop: '5%' }}>
               {club.name}
             </H1>
             <Text style={{ paddingBottom: '5%' }}>{club.category}</Text>
@@ -141,8 +158,8 @@ export default class ClubScr extends React.Component {
                 <CardItem>
                   <Ionicons
                     name="logo-slack"
-                    size={30}
-                    style={{ marginRight: '5%' }}
+                    size={27}
+                    style={{ marginRight: '4%' }}
                   />
                   <Text>Slack</Text>
                 </CardItem>

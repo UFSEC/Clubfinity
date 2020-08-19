@@ -7,6 +7,19 @@ const colors = {
   accent0: '#2dadff',
   accent1: '#0089d8',
   accent2: '#0068b2',
+  grayScale0: '#ffffff',
+  grayScale1: '#f8f8f9',
+  grayScale2: '#f2f2f2',
+  grayScale3: '#e6e6e6',
+  grayScale4: '#cccccc',
+  grayScale5: '#bcbec0',
+  grayScale6: '#a7a9ac',
+  grayScale7: '#939598',
+  grayScale8: '#808285',
+  grayScale9: '#6d6e71',
+  grayScale10: '#58595b',
+  grayScale11: '#414042',
+  grayScale12: '#000000',
 };
 
 export default colors;

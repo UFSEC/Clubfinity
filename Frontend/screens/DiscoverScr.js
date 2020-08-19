@@ -5,11 +5,8 @@ import DiscoverGrid from '../components/DiscoverGrid';
 
 const styles = StyleSheet.create({
   mainContainer: {
-    paddingHorizontal: 10,
     backgroundColor: '#F1F1F1',
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });
 
