@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import {
-  Dimensions, StyleSheet, Text, TouchableOpacity, AsyncStorage,
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  AsyncStorage,
 } from 'react-native';
 
 import Form from '../components/Form/Form';
@@ -67,39 +71,44 @@ const clubCategories = [
 ];
 
 export default class ClubCreation extends Component {
-    static navigationOptions = {
-      title: 'Create a club',
-      headerStyle: { backgroundColor: '#7e947f' },
-      headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
-    }
+  static navigationOptions = {
+    title: 'Create a club',
+    headerStyle: { backgroundColor: '#7e947f' },
+    headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
+    headerTintColor: 'white',
+  };
 
-    constructor(props) {
-      super(props);
-      const errors = {
-        clubName: false,
-        clubDescription: false,
-        clubCategory: false,
-        position: false,
-        tags: false,
-        facebookLink: false,
-      };
-      this.state = {
-        clubName: '',
-        clubDescription: '',
-        clubCategory: '',
-        position: '',
-        tags: '',
-        facebookLink: '',
-        processingRequest: false,
-        createdClub: false,
-        createdClubError: false,
-        errors: { arePresent: false, data: errors },
-      };
-    }
+  constructor(props) {
+    super(props);
+    const errors = {
+      clubName: false,
+      clubDescription: false,
+      clubCategory: false,
+      position: false,
+      tags: false,
+      facebookLink: false,
+    };
+    this.state = {
+      clubName: '',
+      clubDescription: '',
+      clubCategory: '',
+      position: '',
+      tags: '',
+      facebookLink: '',
+      processingRequest: false,
+      createdClub: false,
+      createdClubError: false,
+      errors: { arePresent: false, data: errors },
+    };
+  }
 
   createClub = async () => {
     const {
-      clubName, clubCategory, clubDescription, tags, facebookLink,
+      clubName,
+      clubCategory,
+      clubDescription,
+      tags,
+      facebookLink,
     } = this.state;
     const validRequest = this.isRequestValid();
     if (!validRequest.valid) {
@@ -131,15 +140,20 @@ export default class ClubCreation extends Component {
 
   isRequestValid = () => {
     const {
-      clubName, clubCategory, clubDescription, tags, facebookLink, position, errors,
+      clubName,
+      clubCategory,
+      clubDescription,
+      tags,
+      facebookLink,
+      position,
+      errors,
     } = this.state;
     const errorData = errors;
     errorData.clubName = clubName === '' || clubName.length < 3;
     errorData.clubDescription = clubDescription === '' || clubDescription.length < 3;
     errorData.clubCategory = clubCategory === '' || clubCategory.length < 3;
     errorData.facebookLink = !!facebookLink && !this.validURL(facebookLink);
-    errorData.position = !!position
-      && (position !== '' || position.length < 3);
+    errorData.position = !!position && (position !== '' || position.length < 3);
     errorData.tags = tags === '';
 
     let validRequest = true;
@@ -166,7 +180,10 @@ export default class ClubCreation extends Component {
 
   render() {
     const {
-      errors, createdClubError, processingRequest, createdClub,
+      errors,
+      createdClubError,
+      processingRequest,
+      createdClub,
     } = this.state;
     if (createdClub) {
       return (
@@ -196,32 +213,25 @@ export default class ClubCreation extends Component {
           placeholder="Position (optional)"
           setValue={(value) => this.setState({ position: value })}
         />
-        {errors.arePresent
-          && errors.data.facebookLink && (
-            <Text style={styles.error}>
-              Please select a valid facebook link
-            </Text>
+        {errors.arePresent && errors.data.facebookLink && (
+          <Text style={styles.error}>Please select a valid facebook link</Text>
         )}
         <TextInputBox
           placeholder="Facebook link (optional)"
           setValue={(value) => this.setState({ facebookLink: value })}
         />
-        {errors.arePresent
-          && errors.data.clubDescription && (
-            <Text style={styles.error}>
-              Please select a valid club description
-            </Text>
+        {errors.arePresent && errors.data.clubDescription && (
+          <Text style={styles.error}>
+            Please select a valid club description
+          </Text>
         )}
         <TextInputBox
           multiline
           placeholder="Description"
           setValue={(value) => this.setState({ clubDescription: value })}
         />
-        {errors.arePresent
-          && errors.data.clubCategory && (
-            <Text style={styles.error}>
-              Please select a valid club category
-            </Text>
+        {errors.arePresent && errors.data.clubCategory && (
+          <Text style={styles.error}>Please select a valid club category</Text>
         )}
         <NativePicker
           items={clubCategories}
