@@ -25,6 +25,60 @@ import colors from '../util/colors';
 import UserContext from '../util/UserContext';
 import UserApi from '../api/UserApi';
 
+const postData = [
+  {
+    id: 1,
+    header: 'Hey guys! Get ready for our final GBM!',
+    description: 'Its a me a Mario!',
+  },
+  {
+    id: 2,
+    header: 'See you all at the CS Picnic today :)',
+    description: 'Its a me a Mario!',
+  },
+  {
+    id: 3,
+    header: 'Its a me a Mario!',
+    description: 'Its a me a Mario!',
+  },
+  {
+    id: 4,
+    header: 'We Cool',
+    description: 'Its a me a Mario!',
+  },
+];
+
+const evData = [
+  {
+    id: 1,
+    name: 'GBM 3',
+    date: '10/17/19',
+    time: '6:00',
+    location: 'LIT 101',
+  },
+  {
+    id: 2,
+    name: 'codeCollab',
+    date: '10/24/19',
+    time: '7:00',
+    location: 'LIT 101',
+  },
+  {
+    id: 3,
+    name: 'SEC X Microsoft',
+    date: '10/31/19',
+    time: '6:00',
+    location: 'LIT 101',
+  },
+  {
+    id: 4,
+    name: 'GBM 3',
+    date: '11/07/19',
+    time: '6:00',
+    location: 'LIT 101',
+  },
+];
+
 export default class ClubScr extends React.Component {
   static navigationOptions = {
     title: 'Club Page',
@@ -87,8 +141,8 @@ export default class ClubScr extends React.Component {
   render() {
     const { navigation } = this.props;
     const { isFollowing } = this.state;
-    const events = navigation.getParam('eventData', []);
-    const posts = navigation.getParam('postData', []);
+    const events = evData;
+    const posts = postData;
     const club = navigation.getParam('club', 'NO-CLUB');
     const clubImage = navigation.getParam('clubImage', 'NO-IMAGE');
     return (
@@ -246,11 +300,7 @@ export default class ClubScr extends React.Component {
                             <Text style={{ marginLeft: '0%' }}>
                               {item.header}
                             </Text>
-                            <Ionicons
-                              name="md-arrow-dropright"
-                              size={30}
-                              alignSelf="right"
-                            />
+                            <Ionicons name="md-arrow-dropright" size={30} />
                           </View>
                         </TouchableOpacity>
                       )}
@@ -296,11 +346,7 @@ export default class ClubScr extends React.Component {
                             <Text style={{ marginLeft: '0%' }}>
                               {item.name}
                             </Text>
-                            <Ionicons
-                              name="md-arrow-dropright"
-                              size={30}
-                              alignSelf="right"
-                            />
+                            <Ionicons name="md-arrow-dropright" size={30} />
                           </View>
                         </TouchableOpacity>
                       )}

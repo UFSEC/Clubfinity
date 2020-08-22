@@ -20,6 +20,10 @@ const colors = {
   grayScale10: '#58595b',
   grayScale11: '#414042',
   grayScale12: '#000000',
+  sucess: '#2e7f79',
+  error: '#ce4445',
+  warning: '#f28154',
+  info: '#a0afa0',
 };
 
 export default colors;

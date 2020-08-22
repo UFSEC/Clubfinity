@@ -5,8 +5,8 @@ export default () => {
     '.square': {
       borderRadius: 0,
       '.small': {
-        width: 36,
-        height: 36,
+        width: 126,
+        height: 126,
         borderRadius: 0,
       },
       '.large': {
@@ -16,9 +16,9 @@ export default () => {
       },
     },
     '.small': {
-      width: 36,
-      height: 36,
-      borderRadius: 18,
+      width: 126,
+      height: 126,
+      borderRadius: 63,
       '.square': {
         borderRadius: 0,
       },
@@ -31,9 +31,9 @@ export default () => {
         borderRadius: 0,
       },
     },
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+    width: 126,
+    height: 126,
+    borderRadius: 63,
   };
 
   return thumbnailTheme;
