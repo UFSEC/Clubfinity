@@ -69,8 +69,8 @@ const CalendarStack = createStackNavigator(
 const ProfileStack = createStackNavigator(
   {
     Profile: ProfileScr,
-    Edit: EditProfile,
-    Setting: SettingScr,
+    EditProfileScr: EditProfile,
+    Settings: SettingScr,
     ClubCreationScr: ClubCreation,
   },
   {

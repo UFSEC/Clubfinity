@@ -1,111 +1,68 @@
 import React from 'react';
+import { View, FlatList, TouchableOpacity } from 'react-native';
 import {
-  Image,
-  StyleSheet,
+  Card,
   Text,
-  View,
-  TouchableOpacity,
-  ScrollView,
-  Animated,
-  AsyncStorage,
-  Dimensions,
-} from 'react-native';
-import Preferences from './Preferences';
-import ProfileInfoScr from './ProfileInfoScr';
-import ClubsFollowScr from './ClubsFollowScr';
+  H1,
+  Thumbnail,
+  StyleProvider,
+  ListItem,
+  Left,
+  CardItem,
+  Header,
+  Item,
+  Input,
+} from 'native-base';
+import { Ionicons } from '@expo/vector-icons';
 import UserContext from '../util/UserContext';
 import DefaultPic from '../assets/images/profile-icon.png';
+import thumbnailTheme from '../native-base-theme/components/Thumbnail';
+import getTheme from '../native-base-theme/components';
+import colors from '../util/colors';
 
-const { width } = Dimensions.get('window');
-
-const style = StyleSheet.create({
-  mainContainer: {
-    padding: 7,
-    backgroundColor: '#f5f6fa',
+const clubList = [
+  {
+    id: 111,
+    name: 'Puppy Club',
+    category: 'Cute',
+    categoryColor: '#5E5CE6',
+    src: 'https://i.ibb.co/F0hqL1X/puppy-club-img.jpg',
   },
-  Card: {
-    padding: 5,
-    backgroundColor: '#ffffff',
-    elevation: 2,
+  {
+    id: 0,
+    name: 'SEC',
+    category: 'Computer Science',
+    categoryColor: '#FF9F0A',
+    src: 'https://i.ibb.co/F4rHdKN/sec-club-img.jpg',
   },
-  profileCardRow: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: 5,
+  {
+    id: 1,
+    name: 'ACM',
+    category: 'Computer Science',
+    categoryColor: '#FF9F0A',
+    src: 'https://i.ibb.co/wLMHZHK/acm-club-img.png',
   },
-  profilePicture: {
-    width: 115,
-    height: 115,
-    resizeMode: 'contain',
-    alignItems: 'flex-start',
-    flex: 1,
+  {
+    id: 2,
+    name: 'ACE',
+    category: 'Computer Engineering',
+    categoryColor: '#FF9F0A',
+    src: 'https://i.ibb.co/cwJtrNy/ace-club-img.jpg',
   },
-  profileInfo: {
-    display: 'flex',
-    flexDirection: 'column',
-    marginLeft: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+  {
+    id: 3,
+    name: 'WiCSE',
+    category: 'Computer Science',
+    categoryColor: '#FF9F0A',
+    src: 'https://i.ibb.co/fSM2Zxz/wicse-club-img.jpg',
   },
-  textHeader: {
-    alignSelf: 'center',
-    fontWeight: 'bold',
-    fontSize: 30,
-    paddingBottom: 10,
-    letterSpacing: 2,
-    color: '#636e72',
-  },
-  textSubheading: {
-    alignSelf: 'flex-start',
-    marginLeft: 20,
-  },
-  tabContainerOuter: {
-    width: '100%',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-  tabContainerInner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    position: 'relative',
-  },
-  tabStyle: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: 'transparent',
-    padding: 8,
-  },
-  tabOverlay: {
-    position: 'absolute',
-    width: '50%',
-    height: '100%',
-    top: 0,
-    left: 0,
-    backgroundColor: '#7e947f',
-    color: 'white',
-    borderRadius: 4,
-  },
-  textStyle: {
-    color: 'white',
-    letterSpacing: 2,
-  },
-  tabContent: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
-
-// Add User API
+];
 
 export default class ProfileScr extends React.Component {
   static contextType = UserContext;
 
   static navigationOptions = {
-    title: 'Profile',
+    title: 'My Profile',
     headerStyle: { backgroundColor: '#7e947f' },
     headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
   };
@@ -113,203 +70,227 @@ export default class ProfileScr extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: ['Preferences', 'Following'],
-      active: 0,
-      xTabOne: 0,
-      xTabTwo: 0,
-
-      translateX: new Animated.Value(0),
-      translateXTabOne: new Animated.Value(0),
-      translateXTabTwo: new Animated.Value(width),
-
-      translateY: -1000,
+      searchText: '',
+      filteredClubs: '',
+      followedClubs: clubList,
     };
   }
 
-  componentDidUpdate(prevState) {
-    const { active } = this.state;
-    if (prevState.active !== active) {
-      this.scroll.scrollTo({ x: 0, y: 0, animated: true });
+  /* This needs to be updated to be dynamic after API call exists to fetch user's followed clubs */
+  async componentDidMount() {
+    try {
+      this.setState({
+        filteredClubs: clubList,
+      });
+    } catch (error) {
+      console.error(error);
     }
   }
 
-  signOut = async () => {
-    await AsyncStorage.removeItem('userToken');
-    const { navigation } = this.props;
-    navigation.navigate('Auth');
+  filterFollowing = (text) => {
+    const searchText = text.toLowerCase();
+    const filteredClubs = clubList.filter((club) => club.name.toLowerCase().includes(searchText));
+    this.setState({
+      searchText: text,
+      filteredClubs,
+    });
   };
 
-  handleSlide = (type) => {
-    const {
-      active,
-      translateX,
-      translateXTabOne,
+  renderSearch = () => {
+    const { searchText } = this.state;
+    return (
+      <Header
+        rounded
+        searchBar
+        style={{
+          borderBottomWidth: 0,
+          backgroundColor: 'transparent',
+        }}
+      >
+        <Item
+          style={{
+            width: '100%',
+            borderBottomWidth: 1,
+            height: 40,
+            borderBottomColor: colors.grayScale8,
+            backgroundColor: 'transparent',
+          }}
+        >
+          <Ionicons
+            name="ios-search"
+            size={20}
+            style={{
+              marginLeft: '2%',
+              marginTop: '1%',
+            }}
+            color={colors.grayScale8}
+          />
+          <Input
+            placeholder="Search following"
+            onChangeText={(text) => this.filterFollowing(text)}
+            value={searchText}
+            autoCorrect={false}
+            clearButtonMode="always"
+            style={{
+              fontSize: 14,
+              marginLeft: '2%',
+              height: '100%',
+              width: '100%',
+            }}
+          />
+        </Item>
+      </Header>
+    );
+  };
 
-      translateXTabTwo,
-    } = this.state;
-    Animated.spring(translateX, {
-      toValue: type,
-      duration: 100,
-    }).start();
-    if (active === 0) {
-      Animated.parallel([
-        Animated.spring(translateXTabOne, {
-          toValue: 0,
-          duration: 100,
-        }).start(),
-        Animated.spring(translateXTabTwo, {
-          toValue: width,
-          duration: 100,
-        }).start(),
-      ]);
-    } else {
-      Animated.parallel([
-        Animated.spring(translateXTabOne, {
-          toValue: -width,
-          duration: 100,
-        }).start(),
-        Animated.spring(translateXTabTwo, {
-          toValue: active === 1 ? 0 : -width * 2,
-          duration: 100,
-        }).start(),
-      ]);
-    }
+  handleClubSelect = (club, clubImage) => {
+    const { navigation } = this.props;
+    navigation.navigate('Club', {
+      club,
+      clubImage,
+    });
   };
 
   render() {
     const { user } = this.context;
-
-    const userProfilePicture = {
-      ProfilePic: DefaultPic,
-    };
-
-    const {
-      xTabOne,
-      xTabTwo,
-      active,
-      translateX,
-      translateXTabOne,
-      translateXTabTwo,
-      translateY,
-      title,
-    } = this.state;
+    const { navigation } = this.props;
+    const { filteredClubs, followedClubs } = this.state;
 
     return (
-      <View style={style.mainContainer}>
-        <ScrollView
-          ref={(c) => {
-            this.scroll = c;
+      <View
+        style={{
+          backgroundColor: '#f5f6fa',
+          flex: 1,
+          margin: 'auto',
+        }}
+      >
+        {/* Profile Info */}
+        <Card
+          style={{
+            width: '100%',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 0,
+            marginLeft: 0,
+            marginRight: 0,
+            marginBottom: 0,
+            borderBottomRightRadius: 20,
+            borderBottomLeftRadius: 20,
           }}
-          scrollEnabled={active === 1}
         >
-          <View style={style.Card}>
-            <View style={style.profileCardRow}>
-              <Image
-                style={[style.profilePicture]}
-                source={userProfilePicture.ProfilePic}
-              />
-              <View>
-                {user && (
-                  <Text
-                    adjustsFontSizeToFit
-                    numberOfLines={2}
-                    style={style.textHeader}
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Settings')}
+            style={{
+              paddingTop: '2%',
+              paddingRight: '2%',
+              alignSelf: 'flex-end',
+            }}
+          >
+            <Ionicons name="md-settings" size={30} color={colors.grayScale10} />
+          </TouchableOpacity>
+          <View style={{ paddingTop: '2%' }}>
+            <StyleProvider style={getTheme(thumbnailTheme)}>
+              <Thumbnail source={DefaultPic} small />
+            </StyleProvider>
+          </View>
+          <H1 style={{ paddingBottom: '2%', paddingTop: '5%' }}>
+            {`${user.name.first} ${user.name.last}`}
+          </H1>
+          <Text style={{ paddingBottom: '5%' }}>{user.major}</Text>
+        </Card>
+
+        {/* Grid */}
+        {followedClubs.length > 0 ? (
+          <FlatList
+            data={filteredClubs}
+            contentContainerStyle={{ flexGrow: 1 }}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={() => this.handleClubSelect(item, item.src)}
+                style={{
+                  width: '95%',
+                  alignSelf: 'center',
+                }}
+              >
+                <View
+                  style={{
+                    width: '100%',
+                    alignSelf: 'center',
+                    display: 'flex',
+                    flexDirection: 'row',
+                  }}
+                >
+                  <Card
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      width: '100%',
+                      alignItems: 'center',
+                    }}
                   >
-                    {user.name.first}
-                    {' '}
-                    {user.name.last}
-                  </Text>
-                )}
-              </View>
-            </View>
-            <View style={style.profileInfo}>
-              <ProfileInfoScr />
-            </View>
-          </View>
-          <View style={style.tabContainerOuter}>
-            <View style={style.tabContainerInner}>
-              <Animated.View
-                style={{
-                  ...style.tabOverlay,
-                  ...{ transform: [{ translateX }] },
-                }}
-              />
-              <TouchableOpacity
-                style={{
-                  ...style.tabStyle,
-                  ...{
-                    borderRightWidth: 1,
-                    borderTopRightRadius: 0,
-                    borderBottomRightRadius: 0,
-                    borderRadius: 7,
-                  },
-                  ...{ backgroundColor: active === 1 ? '#b1caa9' : '#7e947f' },
-                }}
-                onLayout={(event) => this.setState({ xTabOne: event.nativeEvent.layout.x })}
-                onPress={() => this.setState({ active: 0 }, () => this.handleSlide(xTabOne))}
-              >
-                <Text style={style.textStyle}>
-                  {' '}
-                  {title[0]}
-                  {' '}
-                </Text>
+                    <ListItem avatar style={{ paddingTop: 0 }}>
+                      <Left style={{ paddingTop: 0 }}>
+                        <Thumbnail source={{ uri: item.src }} />
+                      </Left>
+                    </ListItem>
+                    <View style={{ display: 'flex', flexDirection: 'column' }}>
+                      <CardItem
+                        header
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignContent: 'flex-start',
+                          alignItems: 'flex-start',
+                          paddingTop: '1%',
+                          paddingBottom: '1%',
+                        }}
+                      >
+                        <Text style={{ paddingTop: '2%' }}>{item.name}</Text>
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            color: colors.grayScale8,
+                          }}
+                        >
+                          {item.category}
+                        </Text>
+                      </CardItem>
+                      <CardItem body>
+                        <Text
+                          style={{ fontSize: 14, color: colors.grayScale8 }}
+                        >
+                          {item.description}
+                        </Text>
+                      </CardItem>
+                    </View>
+                    <View style={{ marginLeft: 'auto' }}>
+                      <Ionicons
+                        name="md-arrow-dropright"
+                        size={30}
+                        style={{ paddingRight: '5%' }}
+                      />
+                    </View>
+                  </Card>
+                </View>
               </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  ...style.tabStyle,
-                  ...{
-                    borderLeftWidth: 0,
-                    borderTopLeftRadius: 0,
-                    borderBottomLeftRadius: 0,
-                    borderTopRightRadius: 3,
-                    borderBottomRightRadius: 3,
-                  },
-                  ...{ backgroundColor: active === 1 ? '#7e947f' : '#b1caa9' },
-                }}
-                onLayout={(event) => this.setState({ xTabTwo: event.nativeEvent.layout.x })}
-                onPress={() => this.setState({ active: 1 }, () => this.handleSlide(xTabTwo))}
-              >
-                <Text style={style.textStyle}>
-                  {' '}
-                  {title[1]}
-                  {' '}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-          <Animated.View
+            )}
+            numColumns={1}
+            keyExtractor={(item) => item._id}
+            ListHeaderComponent={this.renderSearch}
+          />
+        ) : (
+          <View
             style={{
-              ...style.tabContent,
-              ...{
-                transform: [
-                  {
-                    translateX: translateXTabOne,
-                  },
-                ],
-              },
-            }}
-            onLayout={(event) => this.setState({ translateY: event.nativeEvent.layout.height })}
-          >
-            <Preferences signOut={this.signOut} />
-          </Animated.View>
-          <Animated.View
-            style={{
-              ...style.tabContent,
-              ...{
-                transform: [
-                  {
-                    translateX: translateXTabTwo,
-                  },
-                  {
-                    translateY: -translateY,
-                  },
-                ],
-              },
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingTop: '35%',
             }}
           >
-            <ClubsFollowScr />
-          </Animated.View>
-        </ScrollView>
+            <Text style={{ color: colors.grayScale8 }}>
+              You are not following any clubs yet!
+            </Text>
+          </View>
+        )}
       </View>
     );
   }
