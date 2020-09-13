@@ -1,5 +1,10 @@
 import React from 'react';
-import { View, FlatList, TouchableOpacity, AsyncStorage } from 'react-native';
+import {
+  View,
+  FlatList,
+  TouchableOpacity,
+  AsyncStorage,
+} from 'react-native';
 import {
   Card,
   Text,
@@ -20,44 +25,6 @@ import thumbnailTheme from '../native-base-theme/components/Thumbnail';
 import getTheme from '../native-base-theme/components';
 import colors from '../util/colors';
 import ClubsApi from '../api/ClubsApi';
-
-const clubList = [
-  {
-    id: 111,
-    name: 'Puppy Club',
-    category: 'Cute',
-    categoryColor: '#5E5CE6',
-    src: 'https://i.ibb.co/F0hqL1X/puppy-club-img.jpg',
-  },
-  {
-    id: 0,
-    name: 'SEC',
-    category: 'Computer Science',
-    categoryColor: '#FF9F0A',
-    src: 'https://i.ibb.co/F4rHdKN/sec-club-img.jpg',
-  },
-  {
-    id: 1,
-    name: 'ACM',
-    category: 'Computer Science',
-    categoryColor: '#FF9F0A',
-    src: 'https://i.ibb.co/wLMHZHK/acm-club-img.png',
-  },
-  {
-    id: 2,
-    name: 'ACE',
-    category: 'Computer Engineering',
-    categoryColor: '#FF9F0A',
-    src: 'https://i.ibb.co/cwJtrNy/ace-club-img.jpg',
-  },
-  {
-    id: 3,
-    name: 'WiCSE',
-    category: 'Computer Science',
-    categoryColor: '#FF9F0A',
-    src: 'https://i.ibb.co/fSM2Zxz/wicse-club-img.jpg',
-  },
-];
 
 export default class ProfileScr extends React.Component {
   static contextType = UserContext;
@@ -89,7 +56,9 @@ export default class ProfileScr extends React.Component {
 
   filterFollowing = (text) => {
     const searchText = text.toLowerCase();
-    const filteredClubs = this.state.followedClubs.filter((club) => club.name.toLowerCase().includes(searchText));
+    const { followedClubs } = this.state;
+
+    const filteredClubs = followedClubs.filter((club) => club.name.toLowerCase().includes(searchText));
     this.setState({
       searchText: text,
       filteredClubs,
