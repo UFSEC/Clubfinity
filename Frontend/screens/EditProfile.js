@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import {
   Button,
   Text,
-  Icon,
   Container,
   Content,
   Form,
@@ -11,21 +10,11 @@ import {
   Picker,
   Label,
   Input,
-  Textarea,
 } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
-import EditForm from '../components/EditForm';
 import colors from '../util/colors';
 import Majors from '../data/Majors';
 import ClassYears from '../data/ClassYears';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#F2F2F7',
-  },
-});
 
 export default class EditProfile extends Component {
   static navigationOptions = {
@@ -132,7 +121,7 @@ export default class EditProfile extends Component {
               >
                 Username
               </Label>
-              <Input onChangeText={(value) => this.setState({ firstName: value })}>
+              <Input onChangeText={(value) => this.setState({ username: value })}>
                 pablo
               </Input>
             </Item>
@@ -146,13 +135,7 @@ export default class EditProfile extends Component {
               >
                 First name
               </Label>
-              <Input style={{
-                color:
-                  errors.arePresent && errors.firstName
-                    ? colors.error
-                    : colors.grayScale10,
-              }}
-              >
+              <Input onChangeText={(value) => this.setState({ username: value })}>
                 Pablo
               </Input>
             </Item>
