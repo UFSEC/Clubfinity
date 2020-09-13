@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, FlatList, TouchableOpacity } from 'react-native';
+import { View, FlatList, TouchableOpacity, AsyncStorage } from 'react-native';
 import {
   Card,
   Text,
@@ -19,6 +19,7 @@ import DefaultPic from '../assets/images/profile-icon.png';
 import thumbnailTheme from '../native-base-theme/components/Thumbnail';
 import getTheme from '../native-base-theme/components';
 import colors from '../util/colors';
+import ClubsApi from '../api/ClubsApi';
 
 const clubList = [
   {
@@ -72,24 +73,23 @@ export default class ProfileScr extends React.Component {
     this.state = {
       searchText: '',
       filteredClubs: '',
-      followedClubs: clubList,
+      followedClubs: [],
     };
   }
 
-  /* This needs to be updated to be dynamic after API call exists to fetch user's followed clubs */
   async componentDidMount() {
-    try {
-      this.setState({
-        filteredClubs: clubList,
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    const bearerToken = await AsyncStorage.getItem('userToken');
+    const followedClubs = await ClubsApi.getFollowing(bearerToken);
+
+    this.setState({
+      followedClubs,
+      filteredClubs: followedClubs,
+    });
   }
 
   filterFollowing = (text) => {
     const searchText = text.toLowerCase();
-    const filteredClubs = clubList.filter((club) => club.name.toLowerCase().includes(searchText));
+    const filteredClubs = this.state.followedClubs.filter((club) => club.name.toLowerCase().includes(searchText));
     this.setState({
       searchText: text,
       filteredClubs,
@@ -143,12 +143,9 @@ export default class ProfileScr extends React.Component {
     );
   };
 
-  handleClubSelect = (club, clubImage) => {
+  handleClubSelect = (club) => {
     const { navigation } = this.props;
-    navigation.navigate('Club', {
-      club,
-      clubImage,
-    });
+    navigation.navigate('Club', { club });
   };
 
   render() {
@@ -206,7 +203,7 @@ export default class ProfileScr extends React.Component {
             contentContainerStyle={{ flexGrow: 1 }}
             renderItem={({ item }) => (
               <TouchableOpacity
-                onPress={() => this.handleClubSelect(item, item.src)}
+                onPress={() => this.handleClubSelect(item)}
                 style={{
                   width: '95%',
                   alignSelf: 'center',
@@ -230,7 +227,7 @@ export default class ProfileScr extends React.Component {
                   >
                     <ListItem avatar style={{ paddingTop: 0 }}>
                       <Left style={{ paddingTop: 0 }}>
-                        <Thumbnail source={{ uri: item.src }} />
+                        <Thumbnail source={{ uri: item.thumbnailUrl }} />
                       </Left>
                     </ListItem>
                     <View style={{ display: 'flex', flexDirection: 'column' }}>

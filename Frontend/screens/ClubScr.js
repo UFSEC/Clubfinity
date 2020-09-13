@@ -144,7 +144,6 @@ export default class ClubScr extends React.Component {
     const events = evData;
     const posts = postData;
     const club = navigation.getParam('club', 'NO-CLUB');
-    const clubImage = navigation.getParam('clubImage', 'NO-IMAGE');
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView showsVerticalScrollIndicator>
@@ -159,7 +158,7 @@ export default class ClubScr extends React.Component {
           >
             <View style={{ paddingTop: '10%' }}>
               <StyleProvider style={getTheme(thumbnailTheme)}>
-                <Thumbnail source={clubImage} large />
+                <Thumbnail source={{uri: club.thumbnailUrl}} large />
               </StyleProvider>
             </View>
             <H1 style={{ paddingBottom: '2%', paddingTop: '5%' }}>
