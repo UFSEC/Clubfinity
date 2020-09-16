@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import {
-  Text, View, StyleSheet, StatusBar, TouchableOpacity, Dimensions,
+  Text,
+  View,
+  StyleSheet,
+  StatusBar,
+  TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { club } from '../assets/styles/stylesheet';
@@ -57,7 +62,7 @@ const styles = StyleSheet.create({
 class AdminDashboard extends Component {
   static propTypes = {
     clubName: PropTypes.string.isRequired,
-  }
+  };
 
   static contextType = UserContext;
 
@@ -82,23 +87,17 @@ class AdminDashboard extends Component {
           </Text>
         </View>
         <View style={styles.flexbox}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {}}
-          >
+          <TouchableOpacity style={styles.button} onPress={() => {}}>
             <Text style={styles.buttonText}>Edit Club Information</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {}}
-          >
+          <TouchableOpacity style={styles.button} onPress={() => {}}>
             <Text style={styles.buttonText}>Edit Admins</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {}}
-          >
-            <Text style={styles.buttonText}>Add Post</Text>
+          <TouchableOpacity style={styles.button} onPress={() => {}}>
+            <Text style={styles.buttonText}>Events</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => {}}>
+            <Text style={styles.buttonText}>Announcements</Text>
           </TouchableOpacity>
         </View>
       </View>
