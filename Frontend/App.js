@@ -9,7 +9,8 @@ import {
 
 import * as Font from 'expo-font';
 import Roboto from 'native-base/Fonts/Roboto.ttf';
-import RobotoMedium from 'native-base/Fonts/Roboto_medium.ttf';
+// eslint-disable-next-line camelcase
+import Roboto_medium from 'native-base/Fonts/Roboto_medium.ttf';
 import Ionicons from 'native-base/Fonts/Ionicons.ttf';
 import UserContext from './util/UserContext';
 import AppNavigator from './navigation/TabNavigator';
@@ -35,7 +36,7 @@ export default class App extends Component {
   async componentDidMount() {
     await Font.loadAsync({
       Roboto,
-      RobotoMedium,
+      Roboto_medium,
       Ionicons,
       ...Ionicons.font,
     });
