@@ -57,6 +57,7 @@ export default class ClubCreation extends Component {
       clubCategory: false,
       position: false,
       tags: false,
+      thumbnailUrl: false,
       facebookLink: false,
     };
     this.state = {
@@ -65,6 +66,7 @@ export default class ClubCreation extends Component {
       clubCategory: '',
       position: '',
       tags: 'placeholder',
+      thumbnailUrl: '',
       facebookLink: '',
       processingRequest: false,
       createdClub: false,
@@ -72,13 +74,13 @@ export default class ClubCreation extends Component {
     };
   }
 
-  onCategoryChange(value) {
+  onCategoryChange = (value) => {
     this.setState({
       clubCategory: value,
     });
   }
 
-  onPositionChange(value) {
+  onPositionChange = (value) => {
     this.setState({
       position: value,
     });
@@ -90,6 +92,7 @@ export default class ClubCreation extends Component {
       clubCategory,
       clubDescription,
       tags,
+      thumbnailUrl,
       facebookLink,
     } = this.state;
     const validRequest = this.isRequestValid();
@@ -110,6 +113,7 @@ export default class ClubCreation extends Component {
       clubCategory,
       clubDescription,
       tags,
+      thumbnailUrl,
       facebookLink,
     );
     if (createClubResponse.successfulRequest) {
@@ -126,6 +130,7 @@ export default class ClubCreation extends Component {
       clubCategory,
       clubDescription,
       tags,
+      thumbnailUrl,
       facebookLink,
       position,
       errors,
@@ -134,7 +139,8 @@ export default class ClubCreation extends Component {
     errorData.clubName = clubName === '' || clubName.length < 3;
     errorData.clubDescription = clubDescription === '' || clubDescription.length > 280;
     errorData.clubCategory = clubCategory === '' || clubCategory.length < 3;
-    errorData.facebookLink = !!facebookLink && !this.validURL(facebookLink);
+    errorData.thumbnailUrl = !!thumbnailUrl && !this.validURL(thumbnailUrl);
+    errorData.facebookLink = !!facebookLink && !this.validFacebookUrl(facebookLink);
     errorData.position = position === '';
     errorData.tags = tags === '';
 
@@ -157,8 +163,10 @@ export default class ClubCreation extends Component {
         + '(\\#[-a-z\\d_]*)?$',
       'i',
     ); // fragment locator
-    return !!pattern.test(str) && str.toLowerCase().includes('facebook');
+    return !!pattern.test(str);
   };
+
+  validFacebookUrl = (str) => this.validURL(str) && str.toLowerCase().includes('facebook');
 
   render() {
     const {
@@ -231,7 +239,7 @@ export default class ClubCreation extends Component {
                   placeholderStyle={{ color: colors.error }}
                   placeholder="Select position"
                   selectedValue={position}
-                  onValueChange={this.onPositionChange}
+                  onValueChange={(value) => this.onPositionChange(value)}
                 >
                   {positionList}
                 </Picker>
@@ -254,7 +262,7 @@ export default class ClubCreation extends Component {
                   placeholderStyle={{ color: colors.grayScale10 }}
                   placeholder="Select position"
                   selectedValue={position}
-                  onValueChange={this.onPositionChange}
+                  onValueChange={(value) => this.onPositionChange(value)}
                 >
                   {positionList}
                 </Picker>
@@ -278,7 +286,7 @@ export default class ClubCreation extends Component {
                   placeholderStyle={{ color: colors.error }}
                   placeholder="Select club category"
                   selectedValue={clubCategory}
-                  onValueChange={this.onCategoryChange}
+                  onValueChange={(value) => this.onCategoryChange(value)}
                 >
                   {categories}
                 </Picker>
@@ -301,7 +309,7 @@ export default class ClubCreation extends Component {
                   placeholderStyle={{ color: colors.grayScale10 }}
                   placeholder="Select club category"
                   selectedValue={clubCategory}
-                  onValueChange={this.onCategoryChange}
+                  onValueChange={(value) => this.onCategoryChange(value)}
                 >
                   {categories}
                 </Picker>
@@ -309,6 +317,32 @@ export default class ClubCreation extends Component {
                   name="md-arrow-dropdown"
                   size={20}
                   style={{ paddingTop: '1%' }}
+                />
+              </Item>
+            )}
+            {errors.arePresent && errors.data.thumbnailUrl ? (
+              <Item
+                fixedLabel
+                style={{ width: '95%', height: 45, marginBottom: '5%' }}
+              >
+                <Label style={{ color: colors.error }}>Thumbnail URL</Label>
+                <Input
+                  onChangeText={(value) => this.setState({ thumbnailUrl: value })}
+                  style={{ textAlign: 'right' }}
+                  placeholderTextColor={colors.error}
+                  placeholder="Invalid Link"
+                />
+              </Item>
+            ) : (
+              <Item
+                fixedLabel
+                style={{ width: '95%', height: 45, marginBottom: '5%' }}
+              >
+                <Label>Thumbnail URL</Label>
+                <Input
+                  onChangeText={(value) => this.setState({ thumbnailUrl: value })}
+                  style={{ textAlign: 'right' }}
+                  placeholder=""
                 />
               </Item>
             )}
