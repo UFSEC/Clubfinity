@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import { AsyncStorage } from 'react-native';
 import {
   Button,
   Text,
@@ -15,6 +15,8 @@ import { Ionicons } from '@expo/vector-icons';
 import colors from '../util/colors';
 import Majors from '../data/Majors';
 import ClassYears from '../data/ClassYears';
+import UserContext from '../util/UserContext';
+import UserApi from '../api/UserApi'
 
 export default class EditProfile extends Component {
   static navigationOptions = {
@@ -24,6 +26,8 @@ export default class EditProfile extends Component {
     headerTintColor: 'white',
   };
 
+  static contextType = UserContext;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -32,7 +36,7 @@ export default class EditProfile extends Component {
       major: '',
       classYear: '',
       username: '',
-      processingRequest: false,
+      processingRequest: { status: false, message: '' },
       errors: {
         arePresent: false,
         data: {
@@ -46,13 +50,55 @@ export default class EditProfile extends Component {
     };
   }
 
+  componentWillMount() {
+    const { user } = this.context;
+
+    this.setState({ username: user.username, classYear: user.year, firstName: user.name.first, lastName: user.name.last, major: user.major, email: user.email })
+  }
+
   editProfile = async () => {
     const validRequest = this.isRequestValid();
     if (!validRequest.valid) {
       this.setState({
+        processingRequest: { status: false, message: '' },
         errors: { arePresent: true, data: validRequest.errors },
       });
+      return;
     }
+    this.setState({
+      processingRequest: { status: true, message: 'Updating...' },
+      errors: { arePresent: false, data: validRequest.errors },
+    });
+    const userToken = await AsyncStorage.getItem('userToken');
+    const {
+      firstName,
+      lastName,
+      major,
+      classYear,
+      username,
+    } = this.state;
+    const { user, setUser } = this.context;
+
+    user.username = username;
+    user.name = { first: firstName, last: lastName }
+    user.major = major;
+    user.year = classYear;
+
+    const updateUserResponse = await UserApi.updateUser (
+      user._id,
+      userToken,
+      user
+    );
+
+    if (updateUserResponse.error) {
+      alert('Unable to update user');
+      console.log(createUserResponse.error);
+      return;
+    }
+    this.setState({
+      processingRequest: { status: true, message: 'Updated your profile!' },
+    });
+    setUser(user);
   };
 
   isRequestValid = () => {
@@ -69,7 +115,7 @@ export default class EditProfile extends Component {
     errorsData.lastName = lastName === '' || !/^[a-zA-Z()]+$/.test(lastName);
     errorsData.major = major === '' || major === null;
     errorsData.classYear = classYear === '' || classYear === null || Number.isNaN(Number(classYear));
-    errorsData.username = username === '' || username < 6 || username > 20;
+    errorsData.username = username === '' || username.length < 6 || username.length > 20;
 
     let validRequest = true;
     Object.keys(errorsData).forEach((input) => {
@@ -77,7 +123,6 @@ export default class EditProfile extends Component {
         validRequest = false;
       }
     });
-    console.log({ valid: validRequest, errors: errorsData });
     return { valid: validRequest, errors: errorsData };
   };
 
@@ -93,6 +138,11 @@ export default class EditProfile extends Component {
     const {
       processingRequest,
       errors,
+      firstName,
+      lastName,
+      username,
+      major,
+      classYear
     } = this.state;
     const majorCategories = Majors.map((s) => (
       <Picker.Item value={s.value} label={s.label} />
@@ -114,7 +164,7 @@ export default class EditProfile extends Component {
             <Item style={{ width: '95%', height: 45, marginBottom: '5%' }} stackedLabel>
               <Label style={{
                 color:
-                  errors.arePresent && errors.username
+                  errors.arePresent && errors.data.username
                     ? colors.error
                     : colors.grayScale10,
               }}
@@ -122,44 +172,38 @@ export default class EditProfile extends Component {
                 Username
               </Label>
               <Input onChangeText={(value) => this.setState({ username: value })}>
-                pablo
+                { username }
               </Input>
             </Item>
             <Item style={{ width: '95%', height: 45, marginBottom: '5%' }} stackedLabel>
               <Label style={{
                 color:
-                  errors.arePresent && errors.firstName
+                  errors.arePresent && errors.data.firstName
                     ? colors.error
                     : colors.grayScale10,
               }}
               >
                 First name
               </Label>
-              <Input onChangeText={(value) => this.setState({ username: value })}>
-                Pablo
+              <Input onChangeText={(value) => this.setState({ firstName: value })}>
+                { firstName }
               </Input>
             </Item>
+
             <Item style={{ width: '95%', height: 45, marginBottom: '5%' }} stackedLabel>
               <Label style={{
                 color:
-                  errors.arePresent && errors.lastName
+                  errors.arePresent && errors.data.lastName
                     ? colors.error
                     : colors.grayScale10,
               }}
               >
                 Last name
               </Label>
-              <Input style={{
-                color:
-                  errors.arePresent && errors.lastName
-                    ? colors.error
-                    : colors.grayScale10,
-              }}
-              >
-                Estrada
+              <Input onChangeText={(value) => this.setState({ lastName: value })}>
+                { lastName }
               </Input>
             </Item>
-
             <Item
               picker
               fixedLabel
@@ -167,7 +211,7 @@ export default class EditProfile extends Component {
             >
               <Label style={{
                 color:
-                  errors.arePresent && errors.major
+                  errors.arePresent && errors.data.major
                     ? colors.error
                     : colors.grayScale10,
               }}
@@ -179,7 +223,7 @@ export default class EditProfile extends Component {
                 style={{ width: undefined }}
                 placeholderStyle={{ color: colors.grayScale10 }}
                 placeholder="Select club category"
-                selectedValue="Computer Science"
+                selectedValue={major}
                 onValueChange={this.setMajor}
               >
                 {majorCategories}
@@ -197,7 +241,7 @@ export default class EditProfile extends Component {
             >
               <Label style={{
                 color:
-                  errors.arePresent && errors.classYear
+                  errors.arePresent && errors.data.classYear
                     ? colors.error
                     : colors.grayScale10,
               }}
@@ -209,7 +253,7 @@ export default class EditProfile extends Component {
                 style={{ width: undefined }}
                 placeholderStyle={{ color: colors.grayScale10 }}
                 placeholder="Select class year"
-                selectedValue="2022"
+                selectedValue={classYear.toString()}
                 onValueChange={this.setYear}
               >
                 {classYearCategories}
@@ -232,7 +276,7 @@ export default class EditProfile extends Component {
               onPress={this.editProfile}
             >
               <Text style={{ alignSelf: 'center' }}>
-                {processingRequest ? 'Updating...' : 'Update Profile'}
+                {processingRequest.status ? processingRequest.message : 'Update Profile'}
               </Text>
             </Button>
           </Form>
