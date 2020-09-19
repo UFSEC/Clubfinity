@@ -16,7 +16,7 @@ import colors from '../util/colors';
 import Majors from '../data/Majors';
 import ClassYears from '../data/ClassYears';
 import UserContext from '../util/UserContext';
-import UserApi from '../api/UserApi'
+import UserApi from '../api/UserApi';
 
 export default class EditProfile extends Component {
   static navigationOptions = {
@@ -53,7 +53,13 @@ export default class EditProfile extends Component {
   componentWillMount() {
     const { user } = this.context;
 
-    this.setState({ username: user.username, classYear: user.year, firstName: user.name.first, lastName: user.name.last, major: user.major, email: user.email })
+    this.setState({
+      username: user.username,
+      classYear: user.year,
+      firstName: user.name.first,
+      lastName: user.name.last,
+      major: user.major,
+    });
   }
 
   editProfile = async () => {
@@ -80,19 +86,15 @@ export default class EditProfile extends Component {
     const { user, setUser } = this.context;
 
     user.username = username;
-    user.name = { first: firstName, last: lastName }
+    user.name = { first: firstName, last: lastName };
     user.major = major;
     user.year = classYear;
 
-    const updateUserResponse = await UserApi.updateUser (
-      user._id,
-      userToken,
-      user
-    );
+    const updateUserResponse = await UserApi.updateUser(user._id, userToken, user);
 
     if (updateUserResponse.error) {
       alert('Unable to update user');
-      console.log(createUserResponse.error);
+      console.log(updateUserResponse.error);
       return;
     }
     this.setState({
@@ -142,7 +144,7 @@ export default class EditProfile extends Component {
       lastName,
       username,
       major,
-      classYear
+      classYear,
     } = this.state;
     const majorCategories = Majors.map((s) => (
       <Picker.Item value={s.value} label={s.label} />
