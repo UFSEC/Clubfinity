@@ -201,7 +201,7 @@ export default class ClubScr extends React.Component {
                 width: '85%',
                 marginTop: '10%',
                 borderTopColor: colors.primary0,
-                borderTopWidth: '10px',
+                borderTopWidth: 10,
               }}
             >
               <CardItem header>
@@ -247,7 +247,7 @@ export default class ClubScr extends React.Component {
                 width: '85%',
                 marginTop: '5%',
                 borderTopColor: colors.primary0,
-                borderTopWidth: '10px',
+                borderTopWidth: 10,
               }}
             >
               <CardItem header>
@@ -271,7 +271,7 @@ export default class ClubScr extends React.Component {
                 width: '85%',
                 marginTop: '5%',
                 borderTopColor: colors.primary0,
-                borderTopWidth: '10px',
+                borderTopWidth: 10,
               }}
             >
               <CardItem header>
@@ -317,7 +317,7 @@ export default class ClubScr extends React.Component {
                 width: '85%',
                 marginTop: '5%',
                 borderTopColor: colors.primary0,
-                borderTopWidth: '10px',
+                borderTopWidth: 10,
               }}
             >
               <CardItem header>
