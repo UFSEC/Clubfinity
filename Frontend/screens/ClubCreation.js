@@ -72,13 +72,13 @@ export default class ClubCreation extends Component {
     };
   }
 
-  onCategoryChange(value) {
+  onCategoryChange = (value) => {
     this.setState({
       clubCategory: value,
     });
   }
 
-  onPositionChange(value) {
+  onPositionChange = (value) => {
     this.setState({
       position: value,
     });
