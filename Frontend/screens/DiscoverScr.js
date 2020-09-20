@@ -19,7 +19,6 @@ import {
   Thumbnail,
 } from 'native-base';
 import API from '../api/BaseApi';
-import clubImageList from '../assets/images/clubimages/FetchImage';
 import ClubfinityLogo from '../assets/images/ClubfinityLogo.png';
 import colors from '../util/colors';
 
@@ -36,7 +35,6 @@ export default class DiscoverScr extends Component {
       searchText: '',
       clubs: '',
       filteredClubs: '',
-      clubList: clubImageList,
       isLoading: true,
     };
   }
@@ -122,7 +120,7 @@ export default class DiscoverScr extends Component {
   };
 
   render() {
-    const { isLoading, clubList, filteredClubs } = this.state;
+    const { isLoading, filteredClubs } = this.state;
     if (isLoading) {
       return (
         <View style={{ flex: 1, padding: 20 }}>
@@ -130,7 +128,6 @@ export default class DiscoverScr extends Component {
         </View>
       );
     }
-    const clubFilterImage = clubList;
 
     return (
       <View style={{ backgroundColor: '#f5f6fa', flex: 1 }}>
@@ -156,8 +153,8 @@ export default class DiscoverScr extends Component {
                   }}
                   onPress={() => this.handleClubSelect(
                     item,
-                    clubFilterImage[item.name]
-                      ? { uri: clubFilterImage[item.name].src }
+                    item.thumbnailUrl
+                      ? { uri: item.thumbnailUrl }
                       : ClubfinityLogo,
                   )}
                 >
@@ -183,8 +180,8 @@ export default class DiscoverScr extends Component {
                         <Left style={{ paddingTop: 0 }}>
                           <Thumbnail
                             source={
-                              clubFilterImage[item.name]
-                                ? { uri: clubFilterImage[item.name].src }
+                              item.thumbnailUrl
+                                ? { uri: item.thumbnailUrl }
                                 : ClubfinityLogo
                             }
                           />

@@ -15,6 +15,7 @@ exports.createClub = async (
   clubCategory,
   clubDescription,
   tags,
+  thumbnailUrl,
   facebookLink,
 ) => {
   const newClubData = {
@@ -23,6 +24,9 @@ exports.createClub = async (
     description: clubDescription,
     tags,
   };
+  if (thumbnailUrl) {
+    newClubData.thumbnailUrl = thumbnailUrl;
+  }
   if (facebookLink) {
     newClubData.facebookLink = facebookLink;
   }

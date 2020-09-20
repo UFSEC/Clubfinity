@@ -9,6 +9,7 @@ const Schema = new mongoose.Schema({
   facebookLink: String,
   description: String,
   category: String,
+  thumbnailUrl: String,
   tags: [{
     type: String,
   }],

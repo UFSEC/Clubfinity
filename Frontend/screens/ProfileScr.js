@@ -1,5 +1,10 @@
 import React from 'react';
-import { View, FlatList, TouchableOpacity } from 'react-native';
+import {
+  View,
+  FlatList,
+  TouchableOpacity,
+  AsyncStorage,
+} from 'react-native';
 import {
   Card,
   Text,
@@ -19,44 +24,7 @@ import DefaultPic from '../assets/images/profile-icon.png';
 import thumbnailTheme from '../native-base-theme/components/Thumbnail';
 import getTheme from '../native-base-theme/components';
 import colors from '../util/colors';
-
-const clubList = [
-  {
-    id: 111,
-    name: 'Puppy Club',
-    category: 'Cute',
-    categoryColor: '#5E5CE6',
-    src: 'https://i.ibb.co/F0hqL1X/puppy-club-img.jpg',
-  },
-  {
-    id: 0,
-    name: 'SEC',
-    category: 'Computer Science',
-    categoryColor: '#FF9F0A',
-    src: 'https://i.ibb.co/F4rHdKN/sec-club-img.jpg',
-  },
-  {
-    id: 1,
-    name: 'ACM',
-    category: 'Computer Science',
-    categoryColor: '#FF9F0A',
-    src: 'https://i.ibb.co/wLMHZHK/acm-club-img.png',
-  },
-  {
-    id: 2,
-    name: 'ACE',
-    category: 'Computer Engineering',
-    categoryColor: '#FF9F0A',
-    src: 'https://i.ibb.co/cwJtrNy/ace-club-img.jpg',
-  },
-  {
-    id: 3,
-    name: 'WiCSE',
-    category: 'Computer Science',
-    categoryColor: '#FF9F0A',
-    src: 'https://i.ibb.co/fSM2Zxz/wicse-club-img.jpg',
-  },
-];
+import ClubsApi from '../api/ClubsApi';
 
 export default class ProfileScr extends React.Component {
   static contextType = UserContext;
@@ -72,24 +40,25 @@ export default class ProfileScr extends React.Component {
     this.state = {
       searchText: '',
       filteredClubs: '',
-      followedClubs: clubList,
+      followedClubs: [],
     };
   }
 
-  /* This needs to be updated to be dynamic after API call exists to fetch user's followed clubs */
   async componentDidMount() {
-    try {
-      this.setState({
-        filteredClubs: clubList,
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    const bearerToken = await AsyncStorage.getItem('userToken');
+    const followedClubs = await ClubsApi.getFollowing(bearerToken);
+
+    this.setState({
+      followedClubs,
+      filteredClubs: followedClubs,
+    });
   }
 
   filterFollowing = (text) => {
     const searchText = text.toLowerCase();
-    const filteredClubs = clubList.filter((club) => club.name.toLowerCase().includes(searchText));
+    const { followedClubs } = this.state;
+
+    const filteredClubs = followedClubs.filter((club) => club.name.toLowerCase().includes(searchText));
     this.setState({
       searchText: text,
       filteredClubs,
@@ -143,12 +112,9 @@ export default class ProfileScr extends React.Component {
     );
   };
 
-  handleClubSelect = (club, clubImage) => {
+  handleClubSelect = (club) => {
     const { navigation } = this.props;
-    navigation.navigate('Club', {
-      club,
-      clubImage,
-    });
+    navigation.navigate('Club', { club });
   };
 
   render() {
@@ -206,7 +172,7 @@ export default class ProfileScr extends React.Component {
             contentContainerStyle={{ flexGrow: 1 }}
             renderItem={({ item }) => (
               <TouchableOpacity
-                onPress={() => this.handleClubSelect(item, item.src)}
+                onPress={() => this.handleClubSelect(item)}
                 style={{
                   width: '95%',
                   alignSelf: 'center',
@@ -230,7 +196,7 @@ export default class ProfileScr extends React.Component {
                   >
                     <ListItem avatar style={{ paddingTop: 0 }}>
                       <Left style={{ paddingTop: 0 }}>
-                        <Thumbnail source={{ uri: item.src }} />
+                        <Thumbnail source={{ uri: item.thumbnailUrl }} />
                       </Left>
                     </ListItem>
                     <View style={{ display: 'flex', flexDirection: 'column' }}>

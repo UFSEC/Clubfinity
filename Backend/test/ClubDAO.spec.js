@@ -6,6 +6,7 @@ chai.should();
 describe('ClubDAO', () => {
   const baseClubParams = {
     name: 'Woodworking Club',
+    thumbnailUrl: 'https://thumbnail.url',
     admins: [],
     facebookLink: 'facebook',
     description: 'This is a club',
