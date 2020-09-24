@@ -50,7 +50,7 @@ export default class EditProfile extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { user } = this.context;
 
     this.setState({
