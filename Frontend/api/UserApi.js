@@ -38,6 +38,26 @@ exports.getUser = async (bearerToken) => {
   return axiosResponse;
 };
 
+exports.updateUser = async (userId, bearerToken, user) => {
+  const axiosResponse = await API.put(
+    `/api/user/${userId}`,
+    user,
+    {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+      },
+    },
+  )
+    .then(async (response) => response)
+    .catch((error) => {
+      if (error) {
+        return error;
+      }
+      return { error: 'Unable to update profile' };
+    });
+  return axiosResponse;
+};
+
 exports.followClub = async (clubId, bearerToken) => {
   const axiosResponse = await API.put(
     `/api/user/follow?clubId=${clubId}`,
