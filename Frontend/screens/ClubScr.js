@@ -96,7 +96,7 @@ export default class ClubScr extends React.Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { navigation } = this.props;
     const club = navigation.getParam('club', 'NO-CLUB');
     console.log(club);
