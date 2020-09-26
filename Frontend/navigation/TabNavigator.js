@@ -18,6 +18,7 @@ import AuthScr from "../screens/AuthScr";
 import EditProfile from "../screens/EditProfile";
 import ClubCreation from "../screens/ClubCreation";
 import SettingScr from "../screens/SettingScr";
+import AdminDashboard from "../screens/AdminDashboard";
 
 const HomeStack = createStackNavigator(
   {
@@ -94,6 +95,7 @@ const DiscoverStack = createStackNavigator(
   {
     Discover: DiscoverScr,
     Club: ClubScr,
+    AdminDashboard: AdminDashboard,
   },
   {
     initialRouteName: "Discover",

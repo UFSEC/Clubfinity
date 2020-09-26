@@ -67,9 +67,10 @@ class AdminDashboard extends Component {
   static contextType = UserContext;
 
   static navigationOptions = {
-    title: 'Home',
+    headerTitle: 'Club Admin',
     headerStyle: { backgroundColor: '#7e947f' },
     headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
+    headerTintColor: 'white',
   };
 
   render() {
