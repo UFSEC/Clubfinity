@@ -98,10 +98,9 @@ export default class ClubScr extends React.Component {
 
   componentDidMount() {
     const { navigation } = this.props;
-    const club = navigation.getParam('club', 'NO-CLUB');
-    console.log(club);
+    const clubContext = navigation.getParam('club', 'NO-CLUB');
     const { user } = this.context;
-    if (user.clubs.includes(club._id)) {
+    if (user.clubs.some((club) => club._id.toString() === clubContext._id)) {
       this.setState({ isFollowing: true });
     }
   }
@@ -123,19 +122,20 @@ export default class ClubScr extends React.Component {
     }
   };
 
-  async handleFollow(clubId) {
+  async handleUpdate(apiCall, clubId) {
     const { setUser } = this.context;
     const bearer = await AsyncStorage.getItem('userToken');
-    const authResponse = await UserApi.followClub(clubId, bearer);
+    const authResponse = await apiCall(clubId, bearer);
     setUser(authResponse.data.data);
     return authResponse;
   }
 
+  async handleFollow(clubId) {
+    return this.handleUpdate(UserApi.followClub, clubId);
+  }
+
   async handleUnfollow(clubId) {
-    const { user } = this.context;
-    console.log(user);
-    console.log(clubId);
-    console.log('todo');
+    return this.handleUpdate(UserApi.unfollowClub, clubId);
   }
 
   render() {

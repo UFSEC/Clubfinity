@@ -1,4 +1,4 @@
-const { validationResult, body, param } = require('express-validator');
+const { validationResult, body, query } = require('express-validator');
 const userDAO = require('../DAO/UserDAO');
 const clubDAO = require('../DAO/ClubDAO');
 const { ValidationError } = require('../util/errors/validationError');
@@ -20,11 +20,8 @@ exports.update = async (req, res) => catchErrors(res, async () => {
 });
 
 exports.followClub = async (req, res) => catchErrors(res, async () => {
-  validateUserData(req);
-
-  const { clubId } = req.params;
+  const { clubId } = req.query;
   const updatedUser = await userDAO.get(req.userId);
-
   if (updatedUser.clubs.some((club) => club._id.toString() === clubId)) return updatedUser;
 
   updatedUser.clubs.push(clubId);
@@ -32,9 +29,7 @@ exports.followClub = async (req, res) => catchErrors(res, async () => {
 });
 
 exports.unfollowClub = async (req, res) => catchErrors(res, async () => {
-  validateUserData(req);
-
-  const { clubId } = req.params;
+  const { clubId } = req.query;
   const user = await userDAO.get(req.userId);
 
   user.clubs.forEach((club, index, clubs) => {
@@ -117,10 +112,9 @@ exports.validate = (type) => {
           .custom((password) => validatePassword(password)),
       ];
     }
-
     case 'validateFollow': {
       return [
-        param('clubId', 'Club Id missing').exists()
+        query('clubId', 'Club Id missing').exists()
           .custom((clubId) => validateClubId(clubId)),
       ];
     }
