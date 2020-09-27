@@ -1,60 +1,72 @@
-const { validationResult, body } = require('express-validator');
-const clubDAO = require('../DAO/ClubDAO');
-const { ValidationError } = require('../util/errors/validationError');
-const { catchErrors, getCurrentUser } = require('../util/httpUtil');
+const { validationResult, body } = require("express-validator");
+const clubDAO = require("../DAO/ClubDAO");
+const { ValidationError } = require("../util/errors/validationError");
+const { catchErrors, getCurrentUser } = require("../util/httpUtil");
 
 const validateClubData = (req) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) throw new ValidationError(errors.array());
 };
 
-exports.getAll = async (req, res) => catchErrors(res, async () => clubDAO.getAll());
+exports.getAll = async (req, res) =>
+  catchErrors(res, async () => clubDAO.getAll());
 
-exports.get = async (req, res) => catchErrors(res, async () => clubDAO.get(req.params.id));
+exports.getRandom = async (req, res) => {
+  catchErrors(res, async () => clubDAO.getRandom());
+};
 
-exports.getFollowing = async (req, res) => catchErrors(res, async () => {
-  const user = await getCurrentUser(req);
-  return user.clubs;
-});
+exports.get = async (req, res) =>
+  catchErrors(res, async () => clubDAO.get(req.params.id));
 
-exports.update = async (req, res) => catchErrors(res, async () => {
-  validateClubData(req);
+exports.getFollowing = async (req, res) =>
+  catchErrors(res, async () => {
+    const user = await getCurrentUser(req);
+    return user.clubs;
+  });
 
-  return clubDAO.update(req.params.id, req.body);
-});
+exports.update = async (req, res) =>
+  catchErrors(res, async () => {
+    validateClubData(req);
 
-exports.create = async (req, res) => catchErrors(res, async () => {
-  validateClubData(req);
-  const newClubData = req.body;
-  newClubData.admins = [req.userId];
-  newClubData.tags = newClubData.tags.replace(' ', '').split(',').filter(Boolean);
+    return clubDAO.update(req.params.id, req.body);
+  });
 
-  return clubDAO.create(req.body);
-});
+exports.create = async (req, res) =>
+  catchErrors(res, async () => {
+    validateClubData(req);
+    const newClubData = req.body;
+    newClubData.admins = [req.userId];
+    newClubData.tags = newClubData.tags
+      .replace(" ", "")
+      .split(",")
+      .filter(Boolean);
 
-exports.delete = async (req, res) => catchErrors(res, async () => clubDAO.delete(req.params.id));
+    return clubDAO.create(req.body);
+  });
+
+exports.delete = async (req, res) =>
+  catchErrors(res, async () => clubDAO.delete(req.params.id));
 
 exports.validate = (type) => {
   switch (type) {
-    case 'validateBaseClubInfo': {
+    case "validateBaseClubInfo": {
       return [
-        body('name', 'Club name does not exist').exists(),
-        body('category', 'Club category does not exist').exists(),
-        body('description', 'Description does not exist or is invalid').exists(),
+        body("name", "Club name does not exist").exists(),
+        body("category", "Club category does not exist").exists(),
+        body(
+          "description",
+          "Description does not exist or is invalid"
+        ).exists(),
       ];
     }
-    case 'validateCreateClubInfo': {
-      return [
-        body('tags', 'Tags does not exist').exists(),
-      ];
+    case "validateCreateClubInfo": {
+      return [body("tags", "Tags does not exist").exists()];
     }
-    case 'validateUpdateClubInfo': {
-      return [
-        body('admins', 'Club admins does not exist').exists(),
-      ];
+    case "validateUpdateClubInfo": {
+      return [body("admins", "Club admins does not exist").exists()];
     }
     default: {
-      throw new Error('Invalid validator');
+      throw new Error("Invalid validator");
     }
   }
 };
