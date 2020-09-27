@@ -4,7 +4,7 @@ const clubDAO = require('../DAO/ClubDAO');
 const { ValidationError } = require('../util/errors/validationError');
 const { catchErrors } = require('../util/httpUtil');
 
-const validateUserData = (req) => {
+const validateData = (req) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) throw new ValidationError(errors.array());
 };
@@ -14,12 +14,14 @@ exports.getAll = async (req, res) => catchErrors(res, async () => userDAO.getAll
 exports.get = async (req, res) => catchErrors(res, async () => userDAO.get(req.params.id));
 
 exports.update = async (req, res) => catchErrors(res, async () => {
-  validateUserData(req);
+  validateData(req);
 
   return userDAO.update(req.userId, req.body);
 });
 
 exports.followClub = async (req, res) => catchErrors(res, async () => {
+  validateData(req);
+
   const { clubId } = req.query;
   const updatedUser = await userDAO.get(req.userId);
   if (updatedUser.clubs.some((club) => club._id.toString() === clubId)) return updatedUser;
@@ -29,6 +31,8 @@ exports.followClub = async (req, res) => catchErrors(res, async () => {
 });
 
 exports.unfollowClub = async (req, res) => catchErrors(res, async () => {
+  validateData(req);
+
   const { clubId } = req.query;
   const user = await userDAO.get(req.userId);
 
@@ -41,7 +45,7 @@ exports.unfollowClub = async (req, res) => catchErrors(res, async () => {
 });
 
 exports.create = async (req, res) => catchErrors(res, async () => {
-  validateUserData(req);
+  validateData(req);
   req.body.clubs = [];
   return userDAO.create(req.body);
 });
@@ -112,10 +116,10 @@ exports.validate = (type) => {
           .custom((password) => validatePassword(password)),
       ];
     }
-    case 'validateFollow': {
+    case 'validateClubId': {
       return [
         query('clubId', 'Club Id missing').exists()
-          .custom((clubId) => validateClubId(clubId)),
+          .custom(async (clubId) => { await validateClubId(clubId); }),
       ];
     }
     default: {

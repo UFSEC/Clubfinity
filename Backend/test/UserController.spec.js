@@ -250,7 +250,7 @@ describe('Users', () => {
         password: 'diffpassword',
       };
 
-      const resp = await http.put(`/api/user/${oldUser._id}`, newUserData);
+      const resp = await http.put(`/api/user/update/${oldUser._id}`, newUserData);
       isOk(resp);
 
       resp.body.data.should.deep.include(newUserData);
@@ -267,12 +267,12 @@ describe('Users', () => {
       events: [],
     };
 
-    describe('PUT /user/follow/:clubId', async () => {
+    describe('PUT /user/follow/', async () => {
       it('should add a club to the list of followed clubs for the current user', async () => {
         const club = await clubDAO.create(baseClubParams);
         const jsonClub = JSON.parse(JSON.stringify(club));
 
-        const resp = await http.put(`/api/user/follow/${club._id}`);
+        const resp = await http.put(`/api/user/follow?clubId=${club._id}`);
         isOk(resp);
         resp.body.data.clubs.should.deep.include(jsonClub);
 
@@ -285,19 +285,19 @@ describe('Users', () => {
         const club = await clubDAO.create(baseClubParams);
         const jsonClub = JSON.parse(JSON.stringify(club));
 
-        const resp = await http.put(`/api/user/follow/${club._id}`);
+        const resp = await http.put(`/api/user/follow?clubId=${club._id}`);
         isOk(resp);
         resp.body.data.clubs.should.have.length(1);
         resp.body.data.clubs.should.deep.include(jsonClub);
 
-        const resp2 = await http.put(`/api/user/follow/${club._id}`);
+        const resp2 = await http.put(`/api/user/follow?clubId=${club._id}`);
         isOk(resp2);
         resp2.body.data.clubs.should.have.length(1);
         resp2.body.data.clubs.should.deep.include(jsonClub);
       });
 
       it('should return an error if the clubId does not exist', async () => {
-        const resp = await http.put(`/api/user/follow/${fakeId}`);
+        const resp = await http.put('/api/user/follow?clubId=cat');
         isNotOk(resp, 422);
 
         resp.body.validationErrors.should.have.length(1);
@@ -311,7 +311,7 @@ describe('Users', () => {
         currentUser.clubs.push(club);
         currentUser.save();
 
-        const resp = await http.put(`/api/user/unfollow/${club._id}`);
+        const resp = await http.put(`/api/user/unfollow?clubId=${club._id}`);
         isOk(resp);
         resp.body.data.clubs.should.be.empty;
 
@@ -326,11 +326,11 @@ describe('Users', () => {
         currentUser.clubs.push(clubId);
         currentUser.save();
 
-        const resp = await http.put(`/api/user/unfollow/${clubId}`);
+        const resp = await http.put(`/api/user/unfollow?clubId=${clubId}`);
         isOk(resp);
         resp.body.data.clubs.should.be.empty;
 
-        const resp2 = await http.put(`/api/user/unfollow/${clubId}`);
+        const resp2 = await http.put(`/api/user/unfollow?clubId=${clubId}`);
         isOk(resp2);
         resp2.body.data.clubs.should.be.empty;
       });
