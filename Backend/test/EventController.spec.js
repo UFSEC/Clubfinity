@@ -42,7 +42,6 @@ const clubNotFollowingParams = {
 const baseEventParams = {
   name: 'Event',
   location: 'Marston',
-  majorOfInterest: 'Computer Science',
   description: 'This is an event',
   date: DateTime.local(2020, 1, 1),
   club: '',
@@ -214,6 +213,23 @@ describe('Events', () => {
       const { data } = resp.body;
       data.should.have.length(1);
       data[0].name.should.equal('Event');
+    });
+  });
+
+  describe('POST /', async () => {
+    it('should be able to create a new event', async () => {
+      const { _id: clubId } = await clubDAO.create(clubParams);
+      const eventParams = {
+        ...baseEventParams,
+        club: clubId,
+      };
+      const resp = await http.post('/api/event', eventParams);
+
+      isOk(resp);
+
+      const { _id: eventId } = resp.body.data;
+      const event = await eventDAO.get(eventId);
+      event.should.not.be.null;
     });
   });
 });

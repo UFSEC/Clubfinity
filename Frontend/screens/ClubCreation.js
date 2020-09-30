@@ -15,6 +15,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import ClubsApi from '../api/ClubsApi';
 import colors from '../util/colors';
+import { isValidFacebookUrl, isValidUrl } from '../util/validation';
 
 const clubCategories = [
   { label: 'Computer Science', value: 'Computer Science' },
@@ -139,8 +140,8 @@ export default class ClubCreation extends Component {
     errorData.clubName = clubName === '' || clubName.length < 3;
     errorData.clubDescription = clubDescription === '' || clubDescription.length > 280;
     errorData.clubCategory = clubCategory === '' || clubCategory.length < 3;
-    errorData.thumbnailUrl = !!thumbnailUrl && !this.validURL(thumbnailUrl);
-    errorData.facebookLink = !!facebookLink && !this.validFacebookUrl(facebookLink);
+    errorData.thumbnailUrl = !!thumbnailUrl && !isValidUrl(thumbnailUrl);
+    errorData.facebookLink = !!facebookLink && !isValidFacebookUrl(facebookLink);
     errorData.position = position === '';
     errorData.tags = tags === '';
 
@@ -152,21 +153,6 @@ export default class ClubCreation extends Component {
     });
     return { valid: validRequest, errors };
   };
-
-  validURL = (str) => {
-    const pattern = new RegExp(
-      '^(https?:\\/\\/)?' // protocol
-      + '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' // domain name
-      + '((\\d{1,3}\\.){3}\\d{1,3}))' // OR ip (v4) address
-      + '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' // port and path
-      + '(\\?[;&a-z\\d%_.~+=-]*)?' // query string
-        + '(\\#[-a-z\\d_]*)?$',
-      'i',
-    ); // fragment locator
-    return !!pattern.test(str);
-  };
-
-  validFacebookUrl = (str) => this.validURL(str) && str.toLowerCase().includes('facebook');
 
   render() {
     const {

@@ -1,19 +1,22 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, AsyncStorage } from 'react-native';
 import {
   Button,
-  Text,
   Container,
   Content,
   Form,
+  Input,
   Item,
   Label,
-  Input,
+  Text,
   Textarea,
 } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import DatePicker from 'react-native-datepicker';
+import { DateTime } from 'luxon';
 import colors from '../util/colors';
+import { isValidFacebookUrl } from '../util/validation';
+import EventsApi from '../api/EventsApi';
 
 export default class EventCreation extends Component {
   static navigationOptions = {
@@ -58,6 +61,29 @@ export default class EventCreation extends Component {
     this.setState({
       errors: { arePresent: false, data: validRequest.errors },
     });
+
+    const {
+      eventName,
+      eventDescription,
+      location,
+      selectedDate,
+      selectedTime,
+    } = this.state;
+    const parsedDate = this.combineAndParseDateTime(selectedDate, selectedTime);
+
+    const userToken = await AsyncStorage.getItem('userToken');
+    await EventsApi.create(userToken, {
+      club: '99cb91bdc3464f14678934ca',
+      name: eventName,
+      description: eventDescription,
+      date: parsedDate.toISO(),
+      location,
+    });
+  };
+
+  combineAndParseDateTime = (date, time) => {
+    const combined = `${date} ${time}`;
+    return DateTime.fromFormat(combined, 'MMM d yyyy hh:mm a');
   };
 
   isRequestValid = () => {
@@ -75,7 +101,7 @@ export default class EventCreation extends Component {
     errorData.selectedDate = selectedDate === '';
     errorData.selectedTime = selectedTime === '';
     errorData.location = location === '' || location.length < 3;
-    errorData.facebookLink = !!facebookLink && !this.validURL(facebookLink);
+    errorData.facebookLink = !!facebookLink && !isValidFacebookUrl(facebookLink);
     errorData.eventDescription = eventDescription.length > 280;
     let validRequest = true;
     Object.keys(errorData).forEach((input) => {
@@ -84,19 +110,6 @@ export default class EventCreation extends Component {
       }
     });
     return { valid: validRequest, errors };
-  };
-
-  validURL = (str) => {
-    const pattern = new RegExp(
-      '^(https?:\\/\\/)?' // protocol
-      + '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' // domain name
-      + '((\\d{1,3}\\.){3}\\d{1,3}))' // OR ip (v4) address
-      + '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' // port and path
-      + '(\\?[;&a-z\\d%_.~+=-]*)?' // query string
-        + '(\\#[-a-z\\d_]*)?$',
-      'i',
-    ); // fragment locator
-    return !!pattern.test(str) && str.toLowerCase().includes('facebook');
   };
 
   render() {
@@ -171,8 +184,8 @@ export default class EventCreation extends Component {
                 placeholder={errors.arePresent && errors.data.selectedDate
                   ? 'Invalid date'
                   : 'Select a Date'}
-                format="MMM Do YYYY"
-                minDate="01-01-2020"
+                format="MMM D yyyy"
+                minDate="Jan 1 2020"
                 confirmBtnText="Set Date"
                 cancelBtnText="Cancel"
                 showIcon={false}

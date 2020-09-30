@@ -29,3 +29,11 @@ exports.getInMonth = async (bearerToken, date) => {
 
   return transformEvents(resp.data.data);
 };
+
+exports.create = async (bearerToken, eventData) => {
+  await API.post('/api/event', eventData, {
+    headers: {
+      Authorization: `Bearer ${bearerToken}`,
+    },
+  });
+};
