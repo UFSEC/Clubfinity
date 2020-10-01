@@ -80,7 +80,8 @@ export default class DiscoverScr extends Component {
         searchBar
         style={{
           borderBottomWidth: 0,
-          backgroundColor: 'transparent',
+          backgroundColor: '#f5f6fa',
+          elevation: 0,
         }}
       >
         <Item
