@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AsyncStorage, View } from 'react-native';
+import { AsyncStorage, View, Platform } from 'react-native';
 import {
   Button,
   Text,
@@ -78,13 +78,13 @@ export default class ClubCreation extends Component {
     this.setState({
       clubCategory: value,
     });
-  }
+  };
 
   onPositionChange = (value) => {
     this.setState({
       position: value,
     });
-  }
+  };
 
   createClub = async () => {
     const {
@@ -156,10 +156,10 @@ export default class ClubCreation extends Component {
   validURL = (str) => {
     const pattern = new RegExp(
       '^(https?:\\/\\/)?' // protocol
-      + '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' // domain name
-      + '((\\d{1,3}\\.){3}\\d{1,3}))' // OR ip (v4) address
-      + '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' // port and path
-      + '(\\?[;&a-z\\d%_.~+=-]*)?' // query string
+        + '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' // domain name
+        + '((\\d{1,3}\\.){3}\\d{1,3}))' // OR ip (v4) address
+        + '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' // port and path
+        + '(\\?[;&a-z\\d%_.~+=-]*)?' // query string
         + '(\\#[-a-z\\d_]*)?$',
       'i',
     ); // fragment locator
@@ -243,11 +243,13 @@ export default class ClubCreation extends Component {
                 >
                   {positionList}
                 </Picker>
-                <Ionicons
-                  name="md-arrow-dropdown"
-                  size={20}
-                  style={{ paddingTop: '1%' }}
-                />
+                {Platform.OS === 'ios' ? (
+                  <Ionicons
+                    name="md-arrow-dropdown"
+                    size={20}
+                    style={{ paddingTop: '1%' }}
+                  />
+                ) : null}
               </Item>
             ) : (
               <Item
@@ -266,11 +268,13 @@ export default class ClubCreation extends Component {
                 >
                   {positionList}
                 </Picker>
-                <Ionicons
-                  name="md-arrow-dropdown"
-                  size={20}
-                  style={{ paddingTop: '1%' }}
-                />
+                {Platform.OS === 'ios' ? (
+                  <Ionicons
+                    name="md-arrow-dropdown"
+                    size={20}
+                    style={{ paddingTop: '1%' }}
+                  />
+                ) : null}
               </Item>
             )}
             {errors.arePresent && errors.data.clubCategory ? (
@@ -290,11 +294,13 @@ export default class ClubCreation extends Component {
                 >
                   {categories}
                 </Picker>
-                <Ionicons
-                  name="md-arrow-dropdown"
-                  size={20}
-                  style={{ paddingTop: '1%' }}
-                />
+                {Platform.OS === 'ios' ? (
+                  <Ionicons
+                    name="md-arrow-dropdown"
+                    size={20}
+                    style={{ paddingTop: '1%' }}
+                  />
+                ) : null}
               </Item>
             ) : (
               <Item
@@ -313,11 +319,13 @@ export default class ClubCreation extends Component {
                 >
                   {categories}
                 </Picker>
-                <Ionicons
-                  name="md-arrow-dropdown"
-                  size={20}
-                  style={{ paddingTop: '1%' }}
-                />
+                {Platform.OS === 'ios' ? (
+                  <Ionicons
+                    name="md-arrow-dropdown"
+                    size={20}
+                    style={{ paddingTop: '1%' }}
+                  />
+                ) : null}
               </Item>
             )}
             {errors.arePresent && errors.data.thumbnailUrl ? (
@@ -446,6 +454,7 @@ export default class ClubCreation extends Component {
               justifyContent: 'center',
               alignItems: 'center',
               marginRight: '1%',
+              marginBottom: '5%',
             }}
             onPress={this.createClub}
           >
