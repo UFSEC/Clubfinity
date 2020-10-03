@@ -1,8 +1,6 @@
 import React from 'react';
 import {
-  View,
-  FlatList,
-  TouchableOpacity,
+  View, FlatList, TouchableOpacity,
 } from 'react-native';
 import {
   Card,
@@ -56,6 +54,7 @@ export default class ProfileScr extends React.Component {
         style={{
           borderBottomWidth: 0,
           backgroundColor: 'transparent',
+          elevation: 0,
         }}
       >
         <Item
