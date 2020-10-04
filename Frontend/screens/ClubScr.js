@@ -93,16 +93,19 @@ export default class ClubScr extends React.Component {
     super(props);
     this.state = {
       isFollowing: false,
+      isAdmin: false,
     };
   }
 
   componentDidMount() {
     const { navigation } = this.props;
     const club = navigation.getParam('club', 'NO-CLUB');
-    console.log(club);
     const { user } = this.context;
-    if (user.clubs.includes(club._id)) {
+    if ((user.clubs).includes(club._id)) {
       this.setState({ isFollowing: true });
+    }
+    if ((club.admins).includes(user._id)) {
+      this.setState({ isAdmin: true });
     }
   }
 
@@ -141,6 +144,7 @@ export default class ClubScr extends React.Component {
   render() {
     const { navigation } = this.props;
     const { isFollowing } = this.state;
+    const { isAdmin } = this.state;
     const events = evData;
     const posts = postData;
     const club = navigation.getParam('club', 'NO-CLUB');
@@ -165,33 +169,35 @@ export default class ClubScr extends React.Component {
               {club.name}
             </H1>
             <Text style={{ paddingBottom: '5%' }}>{club.category}</Text>
-            {isFollowing ? (
+
+            <Button
+              style={{
+                alignSelf: 'center',
+                backgroundColor: isFollowing ? colors.accent2 : colors.accent0,
+                width: '85%',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              onPress={this.followBtnHandler}
+            >
+              {isFollowing ? <Text>Following</Text> : <Text>Follow</Text>}
+            </Button>
+
+            {isAdmin ? (
               <Button
                 style={{
-                  alignSelf: 'center',
-                  backgroundColor: colors.accent2,
-                  width: '85%',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-                onPress={this.followBtnHandler}
-              >
-                <Text>Following</Text>
-              </Button>
-            ) : (
-              <Button
-                style={{
+                  marginTop: '5%',
                   alignSelf: 'center',
                   backgroundColor: colors.accent0,
                   width: '85%',
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}
-                onPress={this.followBtnHandler}
+                onPress={() => navigation.navigate('AdminDashboard', { club })}
               >
-                <Text>Follow</Text>
+                <Text>Manage</Text>
               </Button>
-            )}
+            ) : false}
 
             {/**
              * Connect

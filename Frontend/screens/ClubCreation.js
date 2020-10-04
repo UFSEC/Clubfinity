@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AsyncStorage, View } from 'react-native';
+import { AsyncStorage, View, Platform } from 'react-native';
 import {
   Button,
   Text,
@@ -79,13 +79,13 @@ export default class ClubCreation extends Component {
     this.setState({
       clubCategory: value,
     });
-  }
+  };
 
   onPositionChange = (value) => {
     this.setState({
       position: value,
     });
-  }
+  };
 
   createClub = async () => {
     const {
@@ -212,153 +212,134 @@ export default class ClubCreation extends Component {
                 }
               />
             </Item>
-            {errors.arePresent && errors.data.position ? (
-              <Item
-                picker
-                fixedLabel
-                style={{ width: '95%', marginBottom: '5%' }}
+            <Item
+              picker
+              fixedLabel
+              style={{ width: '95%', marginBottom: '5%' }}
+            >
+              <Label
+                style={
+                  errors.arePresent && errors.data.position
+                    ? { color: colors.error }
+                    : { color: colors.grayScale10 }
+                }
               >
-                <Label style={{ color: colors.error }}>Position*</Label>
-                <Picker
-                  mode="dropdown"
-                  style={{ width: undefined }}
-                  placeholderStyle={{ color: colors.error }}
-                  placeholder="Select position"
-                  selectedValue={position}
-                  onValueChange={(value) => this.onPositionChange(value)}
-                >
-                  {positionList}
-                </Picker>
+                Position*
+              </Label>
+              <Picker
+                mode="dropdown"
+                style={{ width: undefined }}
+                placeholderStyle={
+                  errors.arePresent && errors.data.position
+                    ? { color: colors.error }
+                    : { color: colors.grayScale10 }
+                }
+                placeholder="Select position"
+                selectedValue={position}
+                onValueChange={(value) => this.onPositionChange(value)}
+              >
+                {positionList}
+              </Picker>
+              {Platform.OS === 'ios' ? (
                 <Ionicons
                   name="md-arrow-dropdown"
                   size={20}
                   style={{ paddingTop: '1%' }}
                 />
-              </Item>
-            ) : (
-              <Item
-                picker
-                fixedLabel
-                style={{ width: '95%', marginBottom: '5%' }}
+              ) : null}
+            </Item>
+            <Item
+              picker
+              fixedLabel
+              style={{ width: '95%', marginBottom: '5%' }}
+            >
+              <Label
+                style={
+                  errors.arePresent && errors.data.clubCategory
+                    ? { color: colors.error }
+                    : { color: colors.grayScale10 }
+                }
               >
-                <Label>Position*</Label>
-                <Picker
-                  mode="dropdown"
-                  style={{ width: undefined }}
-                  placeholderStyle={{ color: colors.grayScale10 }}
-                  placeholder="Select position"
-                  selectedValue={position}
-                  onValueChange={(value) => this.onPositionChange(value)}
-                >
-                  {positionList}
-                </Picker>
+                Category*
+              </Label>
+              <Picker
+                mode="dropdown"
+                style={{ width: undefined }}
+                placeholderStyle={
+                  errors.arePresent && errors.data.clubCategory
+                    ? { color: colors.error }
+                    : { color: colors.grayScale10 }
+                }
+                placeholder="Select club category"
+                selectedValue={clubCategory}
+                onValueChange={(value) => this.onCategoryChange(value)}
+              >
+                {categories}
+              </Picker>
+              {Platform.OS === 'ios' ? (
                 <Ionicons
                   name="md-arrow-dropdown"
                   size={20}
                   style={{ paddingTop: '1%' }}
                 />
-              </Item>
-            )}
-            {errors.arePresent && errors.data.clubCategory ? (
-              <Item
-                picker
-                fixedLabel
-                style={{ width: '95%', marginBottom: '5%' }}
+              ) : null}
+            </Item>
+            <Item
+              fixedLabel
+              style={{ width: '95%', height: 45, marginBottom: '5%' }}
+            >
+              <Label
+                style={
+                  errors.arePresent && errors.data.thumbnailUrl
+                    ? { color: colors.error }
+                    : { color: colors.grayScale10 }
+                }
               >
-                <Label style={{ color: colors.error }}>Category*</Label>
-                <Picker
-                  mode="dropdown"
-                  style={{ width: undefined }}
-                  placeholderStyle={{ color: colors.error }}
-                  placeholder="Select club category"
-                  selectedValue={clubCategory}
-                  onValueChange={(value) => this.onCategoryChange(value)}
-                >
-                  {categories}
-                </Picker>
-                <Ionicons
-                  name="md-arrow-dropdown"
-                  size={20}
-                  style={{ paddingTop: '1%' }}
-                />
-              </Item>
-            ) : (
-              <Item
-                picker
-                fixedLabel
-                style={{ width: '95%', marginBottom: '5%' }}
+                Thumbnail URL
+              </Label>
+              <Input
+                onChangeText={(value) => this.setState({ thumbnailUrl: value })}
+                style={{ textAlign: 'right' }}
+                placeholderTextColor={
+                  errors.arePresent && errors.data.position
+                    ? { color: colors.error }
+                    : { color: colors.grayScale10 }
+                }
+                placeholder={
+                  errors.arePresent && errors.data.thumbnailUrl
+                    ? 'Invalid Link'
+                    : 'Thumbnail URL'
+                }
+              />
+            </Item>
+            <Item
+              fixedLabel
+              style={{ width: '95%', height: 45, marginBottom: '5%' }}
+            >
+              <Label
+                style={
+                  errors.arePresent && errors.data.facebookLink
+                    ? { color: colors.error }
+                    : { color: colors.grayScale10 }
+                }
               >
-                <Label>Category*</Label>
-                <Picker
-                  mode="dropdown"
-                  style={{ width: undefined }}
-                  placeholderStyle={{ color: colors.grayScale10 }}
-                  placeholder="Select club category"
-                  selectedValue={clubCategory}
-                  onValueChange={(value) => this.onCategoryChange(value)}
-                >
-                  {categories}
-                </Picker>
-                <Ionicons
-                  name="md-arrow-dropdown"
-                  size={20}
-                  style={{ paddingTop: '1%' }}
-                />
-              </Item>
-            )}
-            {errors.arePresent && errors.data.thumbnailUrl ? (
-              <Item
-                fixedLabel
-                style={{ width: '95%', height: 45, marginBottom: '5%' }}
-              >
-                <Label style={{ color: colors.error }}>Thumbnail URL</Label>
-                <Input
-                  onChangeText={(value) => this.setState({ thumbnailUrl: value })}
-                  style={{ textAlign: 'right' }}
-                  placeholderTextColor={colors.error}
-                  placeholder="Invalid Link"
-                />
-              </Item>
-            ) : (
-              <Item
-                fixedLabel
-                style={{ width: '95%', height: 45, marginBottom: '5%' }}
-              >
-                <Label>Thumbnail URL</Label>
-                <Input
-                  onChangeText={(value) => this.setState({ thumbnailUrl: value })}
-                  style={{ textAlign: 'right' }}
-                  placeholder=""
-                />
-              </Item>
-            )}
-            {errors.arePresent && errors.data.facebookLink ? (
-              <Item
-                fixedLabel
-                style={{ width: '95%', height: 45, marginBottom: '5%' }}
-              >
-                <Label style={{ color: colors.error }}>Facebook</Label>
-                <Input
-                  onChangeText={(value) => this.setState({ facebookLink: value })}
-                  style={{ textAlign: 'right' }}
-                  placeholderTextColor={colors.error}
-                  placeholder="Invalid Link"
-                />
-              </Item>
-            ) : (
-              <Item
-                fixedLabel
-                style={{ width: '95%', height: 45, marginBottom: '5%' }}
-              >
-                <Label>Facebook</Label>
-                <Input
-                  onChangeText={(value) => this.setState({ facebookLink: value })}
-                  style={{ textAlign: 'right' }}
-                  placeholder=""
-                />
-              </Item>
-            )}
-
+                Facebook
+              </Label>
+              <Input
+                onChangeText={(value) => this.setState({ facebookLink: value })}
+                style={{ textAlign: 'right' }}
+                placeholderTextColor={
+                  errors.arePresent && errors.data.facebookLink
+                    ? { color: colors.error }
+                    : { color: colors.grayScale10 }
+                }
+                placeholder={
+                  errors.arePresent && errors.data.thumbnailUrl
+                    ? 'Invalid Link'
+                    : 'Facebook URL'
+                }
+              />
+            </Item>
             <Item
               fixedLabel
               style={{ width: '95%', height: 45, marginBottom: '5%' }}
@@ -373,27 +354,40 @@ export default class ClubCreation extends Component {
               <Label>Slack</Label>
               <Input style={{ textAlign: 'right' }} />
             </Item>
-            {errors.arePresent && errors.data.clubDescription ? (
-              <View
+
+            <View
+              style={{
+                width: '100%',
+              }}
+            >
+              <Textarea
+                rowSpan={5}
+                bordered
+                borderColor={
+                  errors.arePresent && errors.data.clubDescription
+                    ? colors.error
+                    : colors.grayScale3
+                }
+                placeholderTextColor={
+                  errors.arePresent && errors.data.clubDescription
+                    ? colors.error
+                    : null
+                }
+                placeholder={
+                  errors.arePresent && errors.data.clubDescription
+                    ? 'Invalid description*'
+                    : 'Description*'
+                }
+                value={clubDescription}
+                onChangeText={(value) => this.setState({ clubDescription: value })}
                 style={{
-                  width: '100%',
+                  alignSelf: 'center',
+                  width: '95%',
+                  paddingBottom: '5%',
+                  marginLeft: '4%',
                 }}
-              >
-                <Textarea
-                  rowSpan={5}
-                  bordered
-                  borderColor={colors.error}
-                  placeholderTextColor={colors.error}
-                  placeholder="Invalid description*"
-                  value={clubDescription}
-                  onChangeText={(value) => this.setState({ clubDescription: value })}
-                  style={{
-                    alignSelf: 'center',
-                    width: '95%',
-                    paddingBottom: '5%',
-                    marginLeft: '4%',
-                  }}
-                />
+              />
+              {errors.arePresent && errors.data.clubDescription ? (
                 <Text
                   style={{
                     color: colors.error,
@@ -406,23 +400,8 @@ export default class ClubCreation extends Component {
                 >
                   Must be less than 280 characters
                 </Text>
-              </View>
-            ) : (
-              <Textarea
-                rowSpan={5}
-                bordered
-                placeholder="Description (Max 280 characters)*"
-                value={clubDescription}
-                onChangeText={(value) => this.setState({ clubDescription: value })}
-                placeholderStyle={{ color: colors.grayScale10 }}
-                style={{
-                  alignSelf: 'center',
-                  width: '95%',
-                  paddingBottom: '5%',
-                  marginLeft: '4%',
-                }}
-              />
-            )}
+              ) : null}
+            </View>
           </Form>
           <Button
             style={{
@@ -432,6 +411,7 @@ export default class ClubCreation extends Component {
               justifyContent: 'center',
               alignItems: 'center',
               marginRight: '1%',
+              marginBottom: '5%',
             }}
             onPress={this.createClub}
           >

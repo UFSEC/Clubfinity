@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, Platform } from 'react-native';
 import {
   Button,
   Text,
@@ -77,11 +77,7 @@ export default class EditProfile extends Component {
     });
     const userToken = await AsyncStorage.getItem('userToken');
     const {
-      firstName,
-      lastName,
-      major,
-      classYear,
-      username,
+      firstName, lastName, major, classYear, username,
     } = this.state;
     const { user, setUser } = this.context;
 
@@ -90,7 +86,11 @@ export default class EditProfile extends Component {
     user.major = major;
     user.year = classYear;
 
-    const updateUserResponse = await UserApi.updateUser(user._id, userToken, user);
+    const updateUserResponse = await UserApi.updateUser(
+      user._id,
+      userToken,
+      user,
+    );
 
     if (updateUserResponse.error) {
       alert('Unable to update user');
@@ -158,52 +158,76 @@ export default class EditProfile extends Component {
           <Form
             style={{
               width: '95%',
+              alignItems: 'center',
+              justifyContent: 'center',
               paddingTop: '5%',
               paddingBottom: '5%',
             }}
           >
-
-            <Item style={{ width: '95%', height: 45, marginBottom: '5%' }} stackedLabel>
-              <Label style={{
-                color:
-                  errors.arePresent && errors.data.username
-                    ? colors.error
-                    : colors.grayScale10,
+            <Item
+              style={{
+                width: '95%',
+                height: 45,
+                marginBottom: '5%',
+                marginTop: '7%',
               }}
+              stackedLabel
+            >
+              <Label
+                style={{
+                  color:
+                    errors.arePresent && errors.data.username
+                      ? colors.error
+                      : colors.grayScale10,
+                }}
               >
                 Username
               </Label>
-              <Input onChangeText={(value) => this.setState({ username: value })}>
-                { username }
+              <Input
+                onChangeText={(value) => this.setState({ username: value })}
+              >
+                {username}
               </Input>
             </Item>
-            <Item style={{ width: '95%', height: 45, marginBottom: '5%' }} stackedLabel>
-              <Label style={{
-                color:
-                  errors.arePresent && errors.data.firstName
-                    ? colors.error
-                    : colors.grayScale10,
-              }}
+            <Item
+              style={{ width: '95%', height: 45, marginBottom: '5%' }}
+              stackedLabel
+            >
+              <Label
+                style={{
+                  color:
+                    errors.arePresent && errors.data.firstName
+                      ? colors.error
+                      : colors.grayScale10,
+                }}
               >
                 First name
               </Label>
-              <Input onChangeText={(value) => this.setState({ firstName: value })}>
-                { firstName }
+              <Input
+                onChangeText={(value) => this.setState({ firstName: value })}
+              >
+                {firstName}
               </Input>
             </Item>
 
-            <Item style={{ width: '95%', height: 45, marginBottom: '5%' }} stackedLabel>
-              <Label style={{
-                color:
-                  errors.arePresent && errors.data.lastName
-                    ? colors.error
-                    : colors.grayScale10,
-              }}
+            <Item
+              style={{ width: '95%', height: 45, marginBottom: '5%' }}
+              stackedLabel
+            >
+              <Label
+                style={{
+                  color:
+                    errors.arePresent && errors.data.lastName
+                      ? colors.error
+                      : colors.grayScale10,
+                }}
               >
                 Last name
               </Label>
-              <Input onChangeText={(value) => this.setState({ lastName: value })}>
-                { lastName }
+              <Input
+                onChangeText={(value) => this.setState({ lastName: value })}
+              >
+                {lastName}
               </Input>
             </Item>
             <Item
@@ -211,12 +235,13 @@ export default class EditProfile extends Component {
               fixedLabel
               style={{ width: '95%', marginBottom: '5%' }}
             >
-              <Label style={{
-                color:
-                  errors.arePresent && errors.data.major
-                    ? colors.error
-                    : colors.grayScale10,
-              }}
+              <Label
+                style={{
+                  color:
+                    errors.arePresent && errors.data.major
+                      ? colors.error
+                      : colors.grayScale10,
+                }}
               >
                 Major
               </Label>
@@ -230,23 +255,26 @@ export default class EditProfile extends Component {
               >
                 {majorCategories}
               </Picker>
-              <Ionicons
-                name="md-arrow-dropdown"
-                size={20}
-                style={{ paddingTop: '1%' }}
-              />
+              {Platform.OS === 'ios' ? (
+                <Ionicons
+                  name="md-arrow-dropdown"
+                  size={20}
+                  style={{ paddingTop: '1%' }}
+                />
+              ) : null}
             </Item>
             <Item
               picker
               fixedLabel
               style={{ width: '95%', marginBottom: '5%' }}
             >
-              <Label style={{
-                color:
-                  errors.arePresent && errors.data.classYear
-                    ? colors.error
-                    : colors.grayScale10,
-              }}
+              <Label
+                style={{
+                  color:
+                    errors.arePresent && errors.data.classYear
+                      ? colors.error
+                      : colors.grayScale10,
+                }}
               >
                 Class Year
               </Label>
@@ -260,28 +288,34 @@ export default class EditProfile extends Component {
               >
                 {classYearCategories}
               </Picker>
-              <Ionicons
-                name="md-arrow-dropdown"
-                size={20}
-                style={{ paddingTop: '1%' }}
-              />
+              {Platform.OS === 'ios' ? (
+                <Ionicons
+                  name="md-arrow-dropdown"
+                  size={20}
+                  style={{ paddingTop: '1%' }}
+                />
+              ) : null}
             </Item>
-            <Button
-              style={{
-                alignSelf: 'center',
-                backgroundColor: colors.accent0,
-                width: '90%',
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginRight: '1%',
-              }}
-              onPress={this.editProfile}
-            >
-              <Text style={{ alignSelf: 'center' }}>
-                {processingRequest.status ? processingRequest.message : 'Update Profile'}
-              </Text>
-            </Button>
           </Form>
+          <Button
+            style={{
+              alignSelf: 'center',
+              backgroundColor: colors.accent0,
+              width: '90%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginRight: '1%',
+              marginBottom: '5%',
+              marginTop: '5%',
+            }}
+            onPress={this.editProfile}
+          >
+            <Text style={{ alignSelf: 'center' }}>
+              {processingRequest.status
+                ? processingRequest.message
+                : 'Update Profile'}
+            </Text>
+          </Button>
         </Content>
       </Container>
     );
