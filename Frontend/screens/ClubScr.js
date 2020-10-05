@@ -169,33 +169,19 @@ export default class ClubScr extends React.Component {
               {club.name}
             </H1>
             <Text style={{ paddingBottom: '5%' }}>{club.category}</Text>
-            {isFollowing ? (
-              <Button
-                style={{
-                  alignSelf: 'center',
-                  backgroundColor: colors.accent2,
-                  width: '85%',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-                onPress={this.followBtnHandler}
-              >
-                <Text>Following</Text>
-              </Button>
-            ) : (
-              <Button
-                style={{
-                  alignSelf: 'center',
-                  backgroundColor: colors.accent0,
-                  width: '85%',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-                onPress={this.followBtnHandler}
-              >
-                <Text>Follow</Text>
-              </Button>
-            )}
+
+            <Button
+              style={{
+                alignSelf: 'center',
+                backgroundColor: isFollowing ? colors.accent2 : colors.accent0,
+                width: '85%',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              onPress={this.followBtnHandler}
+            >
+              {isFollowing ? <Text>Following</Text> : <Text>Follow</Text>}
+            </Button>
 
             {isAdmin ? (
               <Button
