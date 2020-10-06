@@ -297,7 +297,7 @@ describe('Users', () => {
       });
 
       it('should return an error if the clubId does not exist', async () => {
-        const resp = await http.put('/api/user/follow?clubId=cat');
+        const resp = await http.put(`/api/user/follow?clubId=${fakeId}`);
         isNotOk(resp, 422);
 
         resp.body.validationErrors.should.have.length(1);
