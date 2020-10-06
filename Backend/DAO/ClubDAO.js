@@ -1,5 +1,5 @@
-const Club = require("../Model/Club.js").Model;
-const { NotFoundError } = require("../util/errors/validationError");
+const Club = require('../Model/Club.js').Model;
+const { NotFoundError } = require('../util/errors/validationError');
 
 exports.create = async (clubParams) => await new Club(clubParams).save();
 
