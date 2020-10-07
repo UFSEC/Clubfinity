@@ -101,7 +101,7 @@ export default class ClubScr extends React.Component {
     const { navigation } = this.props;
     const club = navigation.getParam('club', 'NO-CLUB');
     const { user } = this.context;
-    if ((user.clubs).includes(club._id)) {
+    if (user.clubs.map((currentClub) => currentClub._id).includes(club._id)) {
       this.setState({ isFollowing: true });
     }
     if ((club.admins).includes(user._id)) {
