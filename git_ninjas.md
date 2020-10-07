@@ -10,7 +10,7 @@ Add you names under like `* <your name>`
 * Matthew Flippen
 * Masen Beliveau
 * Cameron Newborn
-* Michel El Chalfoun
+* Michel Chalfoun
 * Jacob Bleser
 * Azhar Baig
 * Americos Perez
