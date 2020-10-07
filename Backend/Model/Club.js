@@ -7,6 +7,8 @@ const Schema = new mongoose.Schema({
     ref: 'User',
   }],
   facebookLink: String,
+  instagramLink: String,
+  slackLink: String,
   description: String,
   category: String,
   thumbnailUrl: String,
