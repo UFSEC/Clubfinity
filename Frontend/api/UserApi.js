@@ -77,3 +77,23 @@ exports.followClub = async (clubId, bearerToken) => {
     });
   return axiosResponse;
 };
+
+exports.unfollowClub = async (clubId, bearerToken) => {
+  const axiosResponse = await API.put(
+    `/api/user/unfollow?clubId=${clubId}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+      },
+    },
+  )
+    .then(async (response) => response)
+    .catch((error) => {
+      if (error) {
+        return error;
+      }
+      return { error: 'Unable to unfollow club' };
+    });
+  return axiosResponse;
+};
