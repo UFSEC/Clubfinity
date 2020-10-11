@@ -1,5 +1,5 @@
-const { DateTime } = require('luxon');
 const { validationResult, body, param } = require('express-validator');
+const { DateTime } = require('luxon');
 const eventDAO = require('../DAO/EventDAO');
 const { ValidationError } = require('../util/errors/validationError');
 const { catchErrors, getCurrentUser } = require('../util/httpUtil');
@@ -50,6 +50,7 @@ exports.update = async (req, res) => catchErrors(res, async () => {
 exports.create = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);
 
+  req.body.date = DateTime.fromISO(req.body.date);
   return eventDAO.create(req.body);
 });
 
@@ -87,7 +88,6 @@ exports.validate = (type) => {
       return [
         body('name', 'Event name does not exist').exists(),
         body('location', 'Location does not exist').exists(),
-        body('majorOfInterest', 'Major of interest does not exist').exists(),
         body('description', 'Description does not exist').exists(),
         body('date', 'Date does not exist').exists(),
         body('club', 'Club id does not exist').exists(),
