@@ -1,5 +1,5 @@
-const Club = require("../Model/Club.js").Model;
-const { NotFoundError } = require("../util/errors/validationError");
+const Club = require('../Model/Club.js').Model;
+const { NotFoundError } = require('../util/errors/validationError');
 
 exports.create = async (clubParams) => await new Club(clubParams).save();
 
@@ -17,7 +17,13 @@ exports.get = async (id) => {
   return club;
 };
 
-exports.exists = async (id) => await Club.exists({ _id: id });
+exports.exists = async (id) => {
+  try {
+    return await Club.exists({ _id: id });
+  } catch (error) {
+    return false;
+  }
+};
 
 exports.update = async (id, updateData) => {
   await Club.findOneAndUpdate({ _id: id }, updateData, {
