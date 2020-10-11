@@ -1,7 +1,11 @@
 const chai = require('chai');
+const chaiHttp = require('chai-http');
 const clubDAO = require('../DAO/ClubDAO');
 
 chai.should();
+chai.use(chaiHttp);
+
+require('../app');
 
 describe('ClubDAO', () => {
   const baseClubParams = {
@@ -9,6 +13,8 @@ describe('ClubDAO', () => {
     thumbnailUrl: 'https://thumbnail.url',
     admins: [],
     facebookLink: 'facebook',
+    instagramLink: 'instagram',
+    slackLink: 'slack',
     description: 'This is a club',
     category: 'Crafts',
   };
@@ -22,7 +28,6 @@ describe('ClubDAO', () => {
       await clubDAO.create(baseClubParams);
 
       const clubs = await clubDAO.getAll();
-
       clubs.should.have.length(1);
       clubs[0].should.deep.include(baseClubParams);
     });
@@ -45,6 +50,8 @@ describe('ClubDAO', () => {
         name: 'Painting Club',
         admins: [],
         facebookLink: 'http://facebook.com/other',
+        instagramLink: 'http://instagram.com/other',
+        slackLink: 'http://slack.com/other',
         description: 'This is not a club',
         category: 'Arts',
       };
@@ -69,6 +76,24 @@ describe('ClubDAO', () => {
       await clubDAO.delete(newClub._id);
       const clubs = await clubDAO.getAll();
       clubs.should.have.length(0);
+    });
+  });
+
+  describe('create club with empty links', () => {
+    it('should be able to create a club with instagram and slack fields empty', async () => {
+      const clubParams = {
+        name: 'Woodworking Club',
+        thumbnailUrl: 'https://thumbnail.url',
+        admins: [],
+        facebookLink: 'facebook',
+        instagramLink: null,
+        slackLink: null,
+        description: 'This is a club',
+        category: 'Crafts',
+      };
+      const newClub = await clubDAO.create(clubParams);
+      const club = await clubDAO.get(newClub._id);
+      club.should.deep.include(clubParams);
     });
   });
 });
