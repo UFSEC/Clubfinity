@@ -1,6 +1,6 @@
-const userDAO = require("../DAO/UserDAO");
-const { ValidationError } = require("./errors/validationError");
-const { NotFoundError } = require("./errors/notFoundError");
+const userDAO = require('../DAO/UserDAO');
+const { ValidationError } = require('./errors/validationError');
+const { NotFoundError } = require('./errors/notFoundError');
 
 exports.catchErrors = async (res, f) => {
   try {
