@@ -18,7 +18,7 @@ import colors from '../util/colors';
 const evData = {
   id: 1,
   name: 'GBM 2',
-  date: '10/8/20',
+  date: 'FEB 02 2020',
   time: '7:00',
   location: 'Zoom',
   facebookLink: 'https://www.facebook.com/events/3684185941606080',
