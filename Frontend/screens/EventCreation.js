@@ -142,6 +142,7 @@ export default class EventCreation extends Component {
               <Input
                 onChangeText={(value) => this.setState({ eventName: value })}
                 style={{ textAlign: 'right' }}
+                height="50%"
                 placeholderTextColor={colors.error}
                 placeholder={
                   errors.arePresent && errors.data.eventName
@@ -281,6 +282,7 @@ export default class EventCreation extends Component {
               <Input
                 onChangeText={(value) => this.setState({ location: value })}
                 style={{ textAlign: 'right' }}
+                height="50%"
                 placeholderTextColor={colors.error}
                 placeholder={
                   errors.arePresent && errors.data.location
@@ -311,6 +313,7 @@ export default class EventCreation extends Component {
                 <Input
                   onChangeText={(value) => this.setState({ facebookLink: value })}
                   style={{ textAlign: 'right' }}
+                  height="50%"
                   placeholder=""
                 />
               </Item>
