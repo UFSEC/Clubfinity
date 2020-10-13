@@ -57,7 +57,6 @@ export default class EditEvent extends Component {
 
   componentDidMount() {
     const event = evData;
-    console.log(event);
 
     this.setState({
       eventName: event.name,
@@ -67,7 +66,6 @@ export default class EditEvent extends Component {
       facebookLink: event.facebookLink,
       eventDescription: event.eventDescription,
     });
-    console.log(this.state);
   }
 
   editEvent = async () => {
@@ -161,7 +159,6 @@ export default class EditEvent extends Component {
               >
                 Event Name
               </Label>
-              {console.log(errors)}
               <Input
                 onChangeText={(value) => this.setState({ eventName: value })}
                 style={{ textAlign: 'right' }}
