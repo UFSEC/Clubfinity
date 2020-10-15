@@ -8,7 +8,6 @@ import {
   Dimensions,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { club } from '../assets/styles/stylesheet';
 import UserContext from '../util/UserContext';
 
 const STATUS_BAR_HEIGHT = StatusBar.currentHeight;
@@ -74,7 +73,8 @@ class AdminDashboard extends Component {
   };
 
   render() {
-    const { clubName } = this.props;
+    const { clubName, navigation } = this.props;
+    const club = navigation.getParam('club', 'NO-CLUB');
 
     return (
       <View style={styles.container}>
@@ -94,7 +94,7 @@ class AdminDashboard extends Component {
           <TouchableOpacity style={styles.button} onPress={() => {}}>
             <Text style={styles.buttonText}>Edit Admins</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => {}}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('EventList', { club })}>
             <Text style={styles.buttonText}>Events</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={() => {}}>
