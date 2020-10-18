@@ -1,4 +1,4 @@
-﻿# SEC's Awesome Dev Roster 😤
+# SEC's Awesome Dev Roster 😤
 
 Add you names under like `* <your name>`
 
@@ -14,3 +14,4 @@ Add you names under like `* <your name>`
 * Jacob Bleser
 * Azhar Baig
 * Americos Perez
+* Pranay Raman

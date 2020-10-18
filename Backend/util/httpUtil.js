@@ -8,9 +8,11 @@ exports.catchErrors = async (res, f) => {
     res.send({ ok: true, data: result });
   } catch (e) {
     if (e instanceof ValidationError) {
-      res.status(e.httpErrorCode).send(
-        { ok: false, error: e.message, validationErrors: e.validationErrors },
-      );
+      res.status(e.httpErrorCode).send({
+        ok: false,
+        error: e.message,
+        validationErrors: e.validationErrors,
+      });
     } else if (e instanceof NotFoundError) {
       res.status(e.httpErrorCode).send({ ok: false, error: e.message });
     } else {
