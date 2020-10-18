@@ -15,15 +15,15 @@ import { Ionicons } from '@expo/vector-icons';
 import DatePicker from 'react-native-datepicker';
 import colors from '../util/colors';
 
-const evData = {
-  id: 1,
-  name: 'GBM 2',
-  date: 'FEB 02 2020',
-  time: '7:00',
-  location: 'Zoom',
-  facebookLink: 'https://www.facebook.com/events/3684185941606080',
-  eventDescription: 'New officers introduction!',
-};
+// const evData = {
+//   id: 1,
+//   name: 'GBM 2',
+//   date: 'FEB 02 2020',
+//   time: '7:00',
+//   location: 'Zoom',
+//   facebookLink: 'https://www.facebook.com/events/3684185941606080',
+//   eventDescription: 'New officers introduction!',
+// };
 
 export default class EditEvent extends Component {
   static navigationOptions = {
@@ -56,15 +56,15 @@ export default class EditEvent extends Component {
   }
 
   componentDidMount() {
-    const event = evData;
+    //const event = evData;
 
     this.setState({
-      eventName: event.name,
-      selectedDate: event.date,
-      selectedTime: event.time,
-      location: event.location,
-      facebookLink: event.facebookLink,
-      eventDescription: event.eventDescription,
+      eventName: "",
+      selectedDate: "",
+      selectedTime: "",
+      location: "",
+      facebookLink: "",
+      eventDescription: "",
     });
   }
 
