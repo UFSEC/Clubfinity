@@ -14,16 +14,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import DatePicker from 'react-native-datepicker';
 import colors from '../util/colors';
-
-// const evData = {
-//   id: 1,
-//   name: 'GBM 2',
-//   date: 'FEB 02 2020',
-//   time: '7:00',
-//   location: 'Zoom',
-//   facebookLink: 'https://www.facebook.com/events/3684185941606080',
-//   eventDescription: 'New officers introduction!',
-// };
+import { isValidFacebookUrl } from '../util/validation';
 
 export default class EditEvent extends Component {
   static navigationOptions = {
@@ -56,15 +47,13 @@ export default class EditEvent extends Component {
   }
 
   componentDidMount() {
-    //const event = evData;
-
     this.setState({
-      eventName: "",
-      selectedDate: "",
-      selectedTime: "",
-      location: "",
-      facebookLink: "",
-      eventDescription: "",
+      eventName: '',
+      selectedDate: '',
+      selectedTime: '',
+      location: '',
+      facebookLink: '',
+      eventDescription: '',
     });
   }
 
@@ -98,7 +87,7 @@ export default class EditEvent extends Component {
     errorData.selectedDate = selectedDate === '';
     errorData.selectedTime = selectedTime === '';
     errorData.location = location === '' || location.length < 3;
-    errorData.facebookLink = !!facebookLink && !this.validURL(facebookLink);
+    errorData.facebookLink = !!facebookLink && !isValidFacebookUrl(facebookLink);
     errorData.eventDescription = eventDescription.length > 280;
     let validRequest = true;
     Object.keys(errorData).forEach((input) => {
@@ -107,19 +96,6 @@ export default class EditEvent extends Component {
       }
     });
     return { valid: validRequest, errors };
-  };
-
-  validURL = (str) => {
-    const pattern = new RegExp(
-      '^(https?:\\/\\/)?' // protocol
-      + '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' // domain name
-      + '((\\d{1,3}\\.){3}\\d{1,3}))' // OR ip (v4) address
-      + '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' // port and path
-      + '(\\?[;&a-z\\d%_.~+=-]*)?' // query string
-        + '(\\#[-a-z\\d_]*)?$',
-      'i',
-    ); // fragment locator
-    return !!pattern.test(str) && str.toLowerCase().includes('facebook');
   };
 
   render() {
@@ -133,6 +109,9 @@ export default class EditEvent extends Component {
       facebookLink,
       eventDescription,
     } = this.state;
+
+    const today = new Date();
+
     return (
       <Container>
         <Content>
@@ -196,7 +175,7 @@ export default class EditEvent extends Component {
                   ? 'Invalid date'
                   : 'Select a Date'}
                 format="MMM Do YYYY"
-                minDate="01-01-2020"
+                minDate={today}
                 confirmBtnText="Set Date"
                 cancelBtnText="Cancel"
                 showIcon={false}
@@ -258,6 +237,7 @@ export default class EditEvent extends Component {
                 cancelBtnText="Cancel"
                 minuteInterval={10}
                 showIcon={false}
+                minDate={today}
                 customStyles={{
                   dateIcon: {
                     position: 'absolute',
