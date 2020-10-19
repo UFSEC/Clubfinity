@@ -74,7 +74,7 @@ class AdminDashboard extends Component {
   };
 
   render() {
-    const { clubName } = this.props;
+    const { clubName, navigation } = this.props;
 
     return (
       <View style={styles.container}>
@@ -97,7 +97,7 @@ class AdminDashboard extends Component {
           <TouchableOpacity style={styles.button} onPress={() => {}}>
             <Text style={styles.buttonText}>Events</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => {}}>
+          <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('EditAnnouncements'); }}>
             <Text style={styles.buttonText}>Announcements</Text>
           </TouchableOpacity>
         </View>
