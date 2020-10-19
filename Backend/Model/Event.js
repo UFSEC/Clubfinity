@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const Schema = new mongoose.Schema({
   name: String,
   location: String,
-  majorOfInterest: String,
   description: String,
   date: {
     type: Date,

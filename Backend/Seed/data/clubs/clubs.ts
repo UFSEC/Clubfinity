@@ -3,6 +3,8 @@ import { Types } from 'mongoose';
 interface Club {
   name: String;
   facebookLink: string;
+  instagramLink: string;
+  slackLink: string;
   description: string;
   thumbnailUrl: string;
   category: String;
@@ -14,6 +16,8 @@ const clubsData: Club[] = [
   {
     name: 'Software Engineering Club',
     facebookLink: 'http://facebook.com',
+    instagramLink: 'http://instagram.com',
+    slackLink: 'http//slack.com',
     description: 'A fun club',
     category: 'Computer Science',
     thumbnailUrl: 'https://i.ibb.co/F4rHdKN/sec-club-img.jpg',
@@ -24,6 +28,8 @@ const clubsData: Club[] = [
     name: 'Puppy Club',
     admins: [new Types.ObjectId('27cb91bdc3464f14678934ca')],
     facebookLink: 'http://facebook.com',
+    instagramLink: 'http://instagram.com',
+    slackLink: 'http//slack.com',
     description: 'We talk about puppies',
     thumbnailUrl: 'https://i.ibb.co/F0hqL1X/puppy-club-img.jpg',
     category: 'Fun',
@@ -34,6 +40,8 @@ const clubsData: Club[] = [
     admins: [new Types.ObjectId('17cb91bdc3464f14678934ca')],
     category: 'Engineering',
     facebookLink: 'http://facebook.com',
+    instagramLink: 'http://instagram.com',
+    slackLink: 'http//slack.com',
     description: 'We talk about puppies',
     thumbnailUrl: 'https://i.ibb.co/F4rHdKN/sec-club-img.jpg',
     _id: new Types.ObjectId('99ce91bdc3464f14678934ca'),

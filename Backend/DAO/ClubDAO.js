@@ -5,6 +5,11 @@ exports.create = async (clubParams) => await new Club(clubParams).save();
 
 exports.getAll = async () => await Club.find({}).exec();
 
+exports.getRandom = async () => {
+  const clubs = await Club.find({});
+  const index = Math.floor(Math.random() * clubs.length);
+  return clubs[index];
+};
 exports.get = async (id) => {
   const club = await Club.findById(id);
   if (!club) throw new NotFoundError();
@@ -12,7 +17,13 @@ exports.get = async (id) => {
   return club;
 };
 
-exports.exists = async (id) => await Club.exists({ _id: id });
+exports.exists = async (id) => {
+  try {
+    return await Club.exists({ _id: id });
+  } catch (error) {
+    return false;
+  }
+};
 
 exports.update = async (id, updateData) => {
   await Club.findOneAndUpdate({ _id: id }, updateData, {
