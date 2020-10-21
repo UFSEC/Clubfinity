@@ -4,12 +4,10 @@ import {
   Container,
   Text,
   Thumbnail,
-  ListItem,
   Content,
-  Left,
 } from 'native-base';
-import colors from '../util/colors';
 import { Ionicons } from '@expo/vector-icons';
+import colors from '../util/colors';
 import DefaultPic from '../assets/images/profile-icon.png';
 
 export default class AdminList extends React.Component {
@@ -52,34 +50,37 @@ export default class AdminList extends React.Component {
             <FlatList
               data={admins}
               renderItem={({ item }) => (
-                  <View
+                <View
+                  style={{
+                    borderBottomColor: colors.grayScale3,
+                    borderBottomWidth: 1,
+                  }}
+                >
+                  <TouchableOpacity
                     style={{
-                      borderBottomColor: colors.grayScale3,
-                      borderBottomWidth: 1,
-                    }}
-                  >
-                    <TouchableOpacity
-                      style={{
                       flex: 1,
-                      flexDirection: "row",
+                      flexDirection: 'row',
                       padding: 5,
                     }}
-                    >
-                      <View style={{flex:1, flexDirection: "row", justifyContent:'center'}}>
-                        <Thumbnail small source={DefaultPic} />
-                      </View>
-                      <View style={{flex:3, flexDirection: "row", justifyContent:'flex-start'}}>
-                        <Text style={{fontSize: 16, margin:10}}>{item.name}</Text>
-                      </View>
-                      <View style={{flex:1, flexDirection: "row", justifyContent:'center', paddingTop:10}}>
-                        <Ionicons
-                          name="md-arrow-forward"
-                          size={25}
-                          color={colors.grayScale8}
-                        />
-                      </View>
-                      </TouchableOpacity>
+                  >
+                    <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
+                      <Thumbnail small source={DefaultPic} />
                     </View>
+                    <View style={{ flex: 3, flexDirection: 'row', justifyContent: 'flex-start' }}>
+                      <Text style={{ fontSize: 16, margin: 10 }}>{item.name}</Text>
+                    </View>
+                    <View style={{
+                      flex: 1, flexDirection: 'row', justifyContent: 'center', paddingTop: 10,
+                    }}
+                    >
+                      <Ionicons
+                        name="md-arrow-forward"
+                        size={25}
+                        color={colors.grayScale8}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                </View>
               )}
               keyExtractor={(item) => item.name}
             />
