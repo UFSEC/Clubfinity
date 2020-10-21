@@ -138,7 +138,7 @@ export default class EditEvent extends Component {
               <Input
                 onChangeText={(value) => this.setState({ eventName: value })}
                 style={{ textAlign: 'right' }}
-                height="50%"
+                // height="50%"
                 placeholderTextColor={colors.error}
                 placeholder={
                   errors.arePresent && errors.data.eventName
