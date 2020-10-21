@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
 import {
   Button,
   Text,
@@ -79,7 +78,6 @@ export default class EditEvent extends Component {
       selectedTime,
       location,
       facebookLink,
-      eventDescription,
       errors,
     } = this.state;
     const errorData = errors.data;
@@ -88,7 +86,6 @@ export default class EditEvent extends Component {
     errorData.selectedTime = selectedTime === '';
     errorData.location = location === '' || location.length < 3;
     errorData.facebookLink = !!facebookLink && !isValidFacebookUrl(facebookLink);
-    errorData.eventDescription = eventDescription.length > 280;
     let validRequest = true;
     Object.keys(errorData).forEach((input) => {
       if (errorData[input] && input !== 'data' && input !== 'arePresent') {
@@ -256,9 +253,9 @@ export default class EditEvent extends Component {
                   placeholderText: {
                     fontSize: 17,
                     color:
-                        errors.arePresent && errors.data.eventName
-                          ? colors.error
-                          : colors.grayScale10,
+                      errors.arePresent && errors.data.eventName
+                        ? colors.error
+                        : colors.grayScale10,
                   },
                 }}
                 onDateChange={(time) => this.setState({ selectedTime: time })}
@@ -325,56 +322,20 @@ export default class EditEvent extends Component {
                 </Input>
               </Item>
             )}
-            {errors.arePresent && errors.data.eventDescription ? (
-              <View
-                style={{
-                  width: '100%',
-                }}
-              >
-                <Textarea
-                  rowSpan={5}
-                  bordered
-                  borderColor={colors.error}
-                  placeholderTextColor={colors.error}
-                  placeholder="Invalid description*"
-                  value={eventDescription}
-                  onChangeText={(value) => this.setState({ eventDescription: value })}
-                  style={{
-                    alignSelf: 'center',
-                    width: '95%',
-                    paddingBottom: '5%',
-                    marginLeft: '4%',
-                  }}
-                />
-                <Text
-                  style={{
-                    color: colors.error,
-                    fontSize: 14,
-                    alignSelf: 'center',
-                    width: '95%',
-                    paddingBottom: '5%',
-                    marginLeft: '4%',
-                  }}
-                >
-                  Must be less than 280 characters
-                </Text>
-              </View>
-            ) : (
-              <Textarea
-                rowSpan={5}
-                bordered
-                placeholder="Description (Max 280 characters*)"
-                value={eventDescription}
-                onChangeText={(value) => this.setState({ eventDescription: value })}
-                placeholderStyle={{ color: colors.grayScale10 }}
-                style={{
-                  alignSelf: 'center',
-                  width: '95%',
-                  paddingBottom: '5%',
-                  marginLeft: '4%',
-                }}
-              />
-            )}
+            <Textarea
+              rowSpan={5}
+              bordered
+              placeholder="Description"
+              value={eventDescription}
+              onChangeText={(value) => this.setState({ eventDescription: value })}
+              placeholderStyle={{ color: colors.grayScale10 }}
+              style={{
+                alignSelf: 'center',
+                width: '95%',
+                paddingBottom: '5%',
+                marginLeft: '4%',
+              }}
+            />
           </Form>
           <Button
             style={{
