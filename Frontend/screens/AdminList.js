@@ -58,28 +58,28 @@ export default class AdminList extends React.Component {
                 >
                   <TouchableOpacity
                     style={{
+                      display: 'flex',
                       flex: 1,
                       flexDirection: 'row',
                       padding: 5,
+                      justifyContent: 'space-between',
+                      alignContent: 'space-between',
                     }}
                   >
-                    <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
+                    <View style={{ flexDirection: 'row' }}>
                       <Thumbnail small source={DefaultPic} />
+                      <Text style={{ fontSize: 16, margin: 10 }}>
+                        {item.name}
+                      </Text>
                     </View>
-                    <View style={{ flex: 3, flexDirection: 'row', justifyContent: 'flex-start' }}>
-                      <Text style={{ fontSize: 16, margin: 10 }}>{item.name}</Text>
-                    </View>
-                    <View style={{
-                      flex: 1, flexDirection: 'row', justifyContent: 'center', paddingTop: 10,
-                    }}
-                    >
-                      <Ionicons
-                        name="md-arrow-forward"
-                        size={25}
-                        color={colors.grayScale8}
-                      />
-                    </View>
+                    <Ionicons
+                      name="md-arrow-forward"
+                      size={25}
+                      color={colors.grayScale8}
+                      style={{ alignSelf: 'center' }}
+                    />
                   </TouchableOpacity>
+
                 </View>
               )}
               keyExtractor={(item) => item.name}
