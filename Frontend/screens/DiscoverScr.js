@@ -42,7 +42,7 @@ export default class DiscoverScr extends Component {
   componentDidMount() {
     const { navigation } = this.props;
     navigation.addListener('willFocus', this.onFocus);
-    this.load();
+    this.onFocus();
   }
 
   onFocus = async () => {
