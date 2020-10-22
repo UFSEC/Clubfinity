@@ -39,7 +39,7 @@ describe('Users', () => {
         name: { first: 'Test', last: 'McTester' },
         major: 'Computer Science',
         year: 2021,
-        email: 'test@test.com',
+        email: 'test@ufl.edu',
         username: 'tester',
         password: 'password123',
       };
@@ -47,7 +47,7 @@ describe('Users', () => {
         name: { first: 'Jimmy', last: 'John' },
         major: 'Computer Science',
         year: 2021,
-        email: 'jimmy@john.com',
+        email: 'jimmy@ufl.edu',
         username: 'jimmy',
         password: 'password123',
       };
@@ -78,7 +78,7 @@ describe('Users', () => {
         name: { first: 'Test', last: 'McTester' },
         major: 'Computer Science',
         year: 2021,
-        email: 'test@test.com',
+        email: 'test@ufl.edu',
         username: 'tester',
         password: 'password123',
         clubs: [],
@@ -106,7 +106,7 @@ describe('Users', () => {
         name: { first: 'New', last: 'User' },
         major: 'Computer Science',
         year: 2021,
-        email: 'new@user.com',
+        email: 'new@ufl.edu',
         username: 'newusername',
         password: 'password',
       };
@@ -124,7 +124,7 @@ describe('Users', () => {
         name: { first: 'Test', last: 'McTester' },
         major: 'Computer Science',
         year: 2021,
-        email: 'test@test.com',
+        email: 'test@ufl.edu',
         username: 'testmctester',
         password: 'password123',
       };
@@ -143,7 +143,7 @@ describe('Users', () => {
       isNotOk(resp, 422);
 
       const errorMessages = resp.body.validationErrors.map((e) => e.msg);
-      errorMessages.should.have.length(11);
+      errorMessages.should.have.length(12);
 
       errorMessages.should.include.all.members([
         'First name does not exist',
@@ -161,7 +161,7 @@ describe('Users', () => {
         name: { first: 'Jimmy', last: 'John' },
         major: 'Computer Science',
         year: 2021,
-        email: 'jimmy@john.com',
+        email: 'jimmy@ufl.edu',
         username: 'short',
         password: 'short',
       };
@@ -201,7 +201,7 @@ describe('Users', () => {
         name: { first: 'Jimmy', last: 'John' },
         major: 'Computer Science',
         year: 2021,
-        email: 'jimmy@john.com',
+        email: 'jimmy@ufl.edu',
         username: 'thisusernameiswaytoolong',
         password: 'password123',
       };
@@ -218,7 +218,7 @@ describe('Users', () => {
         name: { first: 'Jimmy', last: 'John' },
         major: 'Computer Science',
         year: 2021,
-        email: 'jimmy@john.com',
+        email: 'jimmy@ufl.edu',
         username: 'a username',
         password: 'password123',
       };
@@ -235,7 +235,7 @@ describe('Users', () => {
         name: { first: 'Jimmy', last: 'John' },
         year: 'not a year',
         major: 'Computer Science',
-        email: 'jimmy@john.com',
+        email: 'jimmy@ufl.edu',
         username: 'ausername',
         password: 'password123',
       };
@@ -254,7 +254,7 @@ describe('Users', () => {
         name: { first: 'Test', last: 'McTester' },
         major: 'Computer Science',
         year: 2021,
-        email: 'test@test.com',
+        email: 'test@ufl.edu',
         username: 'tester',
         password: 'password123',
       };
@@ -264,7 +264,7 @@ describe('Users', () => {
         name: { first: 'DifferentFirst', last: 'DifferentLast' },
         major: 'Computer Science',
         year: 2021,
-        email: 'different@different.com',
+        email: 'different@ufl.edu',
         username: 'diffusrnme',
         password: 'diffpassword',
       };

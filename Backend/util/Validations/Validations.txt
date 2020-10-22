@@ -1,0 +1,13 @@
+Requirements for a user:
+
+1) Name (first,last) must be within allowed characters, [a-zA-Z()] and also cannot be null
+
+2) Major cannot be null must exist
+
+3) Year cannot be an empty string and must be a number
+
+4) Email must end with '@ufl.edu'
+
+5) Username must be greater than 6 characters and less than 20 characters and cannot contain a space
+
+6) Password must be greater than 6 characters

@@ -116,7 +116,7 @@ exports.validate = (type) => {
           .custom((year) => validateYear(year)),
         body('email', 'Email does not exist or is invalid')
           .exists()
-          .isEmail(),
+          .isEmail().contains('@ufl.edu'),
         body('username', 'Username does not exist')
           .exists()
           .custom((username) => validateUser(username)),
