@@ -86,6 +86,15 @@ function validateYear(year) {
   return true;
 }
 
+// Name must be within allowed characters
+function validateName(name) {
+  const regex = /^[a-zA-Z()]+$/;
+  if (regex.test(name)) {
+    return true;
+  }
+  throw new Error('Name contains invalid characters');
+}
+
 // Club ID must belong to a club that exists in FB
 async function validateClubId(clubId) {
   const clubExists = await clubDAO.exists(clubId);
@@ -99,8 +108,8 @@ exports.validate = (type) => {
   switch (type) {
     case 'validateUserInfo': {
       return [
-        body('name.first', 'First name does not exist').exists(),
-        body('name.last', 'Last name does not exist').exists(),
+        body('name.first', 'First name does not exist').exists().custom(validateName),
+        body('name.last', 'Last name does not exist').exists().custom(validateName),
         body('major', 'Major does not exist or is invalid').exists(),
         body('year', 'Year does not exist or is invalid')
           .exists()

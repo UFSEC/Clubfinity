@@ -166,6 +166,25 @@ describe('Users', () => {
         password: 'short',
       };
 
+      // validation for valid characters
+      it('should return an error when there are invalid characters in the name', async () => {
+        const invalidCharacter = {
+          name: { first: 'Bi7lly', last: 'Johnson' },
+          major: 'Accounting',
+          year: 2024,
+          email: 'billy101@ufl.edu',
+          username: 'user3',
+          password: 'password12',
+        };
+
+        const resp = await http.post('/api/user', invalidCharacter);
+        // console.log(resp.body.validationErrors);
+        isNotOk(resp, 422);
+
+        resp.body.validationErrors.should.have.length(1);
+        resp.body.validationErrors[0].msg.should.equal('Name contains invalid characters');
+      });
+
       const resp = await http.post('/api/user', shortUsernameAndPassword);
       isNotOk(resp, 422);
 
