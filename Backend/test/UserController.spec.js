@@ -178,7 +178,6 @@ describe('Users', () => {
         };
 
         const resp = await http.post('/api/user', invalidCharacter);
-        // console.log(resp.body.validationErrors);
         isNotOk(resp, 422);
 
         resp.body.validationErrors.should.have.length(1);

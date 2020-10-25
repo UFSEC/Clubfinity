@@ -3,6 +3,10 @@ const userDAO = require('../DAO/UserDAO');
 const clubDAO = require('../DAO/ClubDAO');
 const { ValidationError } = require('../util/errors/validationError');
 const { catchErrors } = require('../util/httpUtil');
+// var validate1 = require('../util/Validations/Validations');
+const {
+  validateName, validatePassword, validateUsername, validateYear,
+} = require('../util/Validations/Validations.js');
 
 const validateData = (req) => {
   const errors = validationResult(req);
@@ -52,49 +56,6 @@ exports.create = async (req, res) => catchErrors(res, async () => {
 
 exports.delete = async (req, res) => catchErrors(res, async () => userDAO.delete(req.userId));
 
-// Username must be within 6 and 20 characters
-// Username must not contain empty spaces
-function validateUser(user) {
-  if (user.length < 6) {
-    throw new Error('Username is too short (less than 6 characters)');
-  }
-  if (user.length > 20) {
-    throw new Error('Username is too long (more than 20 characters)');
-  }
-  if (user.indexOf(' ') !== -1) {
-    throw new Error('Username contains a space');
-  }
-  return true;
-}
-
-// Password must be longer than 6 characters
-function validatePassword(password) {
-  if (password.length < 6) {
-    throw new Error('Password is too short (less than 6 characters)');
-  }
-  return true;
-}
-
-// Year cannot be an empty string
-// Year must be a number
-function validateYear(year) {
-  if (year === '') {
-    throw new Error('Year cannot be empty');
-  } else if (Number.isNaN(Number(year))) {
-    throw new Error('Year must be a number');
-  }
-  return true;
-}
-
-// Name must be within allowed characters
-function validateName(name) {
-  const regex = /^[a-zA-Z()]+$/;
-  if (regex.test(name)) {
-    return true;
-  }
-  throw new Error('Name contains invalid characters');
-}
-
 // Club ID must belong to a club that exists in FB
 async function validateClubId(clubId) {
   const clubExists = await clubDAO.exists(clubId);
@@ -104,6 +65,7 @@ async function validateClubId(clubId) {
   return clubExists;
 }
 
+// functions imported from util/Validation/Validations.js
 exports.validate = (type) => {
   switch (type) {
     case 'validateUserInfo': {
@@ -119,7 +81,7 @@ exports.validate = (type) => {
           .isEmail().contains('@ufl.edu'),
         body('username', 'Username does not exist')
           .exists()
-          .custom((username) => validateUser(username)),
+          .custom((username) => validateUsername(username)),
         body('password', 'Password does not exist')
           .exists()
           .custom((password) => validatePassword(password)),
