@@ -19,7 +19,6 @@ import EditProfile from "../screens/EditProfile";
 import ClubCreation from "../screens/ClubCreation";
 import SettingScr from "../screens/SettingScr";
 import AdminDashboard from "../screens/AdminDashboard";
-import EditAnnouncements from "../screens/EditAnnouncements"
 
 const HomeStack = createStackNavigator(
   {
@@ -97,7 +96,6 @@ const DiscoverStack = createStackNavigator(
     Discover: DiscoverScr,
     Club: ClubScr,
     AdminDashboard: AdminDashboard,
-    EditAnnouncements: EditAnnouncements,
   },
   {
     initialRouteName: "Discover",

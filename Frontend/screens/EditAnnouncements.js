@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, StatusBar } from 'react-native';
+import { Text, StyleSheet, StatusBar, EventSubscriptionVendor } from 'react-native';
 import {
   Button,
   Container,
@@ -8,6 +8,7 @@ import {
   Item,
   Input,
 } from 'native-base';
+import colors from "../util/colors"
 
 const STATUS_BAR_HEIGHT = StatusBar.currentHeight;
 
@@ -19,6 +20,14 @@ const styles = StyleSheet.create({
     display: 'flex',
     backgroundColor: '#ecf0f1',
     alignItems: 'center',
+  },
+  formStyle: {
+    width: '95%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingBottom: '5%',
+    paddingTop: '5%',
+    marginBottom: '5%'
   },
   headerLeft: {
     marginLeft: 10,
@@ -43,6 +52,42 @@ const styles = StyleSheet.create({
   },
 });
 export default class EditAnnouncements extends Component {
+    
+
+    constructor(props){
+      super(props);
+      const defaultError = {
+        title: false,
+        description: false
+      }
+      this.state = {
+        title: '',
+        description: '',
+        errors: {arePresent: false, data: defaultError}
+      }
+    }
+
+    editAnnouncement = async () => {
+      const validRequest = this.isRequestValid();
+      if (!validRequest.valid) {
+        await this.setState({
+          errors: { arePresent: true, data: validRequest.errors },
+        });
+        return;
+      }
+    }
+
+    isRequestValid = () => {
+      const {title,description} = this.state;
+      const errorData = {title: false,description: false}
+      errorData.title = title === ''
+      errorData.description = description === '';
+      const validRequest = !(errorData.title || errorData.description)
+      return {valid: validRequest,errors:errorData}
+    }
+
+
+
     static navigationOptions = ({ navigation }) => ({
       headerTitle: 'Edit Announcement',
       headerRight: (
@@ -61,29 +106,46 @@ export default class EditAnnouncements extends Component {
     })
 
     render() {
-      const { navigation } = this.props;
+      const {errors} =this.state
       return (
-
         <Container>
           <Content>
             <Form
-              style={{
-                width: '95%',
-                alignItems: 'center',
-                justifyContent: 'center',
-                paddingTop: '5%',
-                paddingBottom: '5%',
-              }}
+              style={styles.formStyle}
             >
-              <Item>
-                <Input placeholder="Edit Title" />
+              <Item style = {{
+                marginBottom: '8%'
+              }}>
+                <Input 
+                onChangeText = {(value) => this.setState({title: value})}
+                placeholderTextColor = {
+                  errors.arePresent && errors.data.title
+                  ? colors.error
+                  : colors.grayScale10
+                }
+                placeholder= {
+                  errors.arePresent && errors.data.title
+                  ? 'No Title Given'
+                  : 'Edit Title'
+                } />
               </Item>
               <Item>
-                <Input placeholder="Edit Description" />
+                <Input 
+                onChangeText = {(value) => this.setState({ description: value})}
+                placeholderTextColor = {
+                    errors.arePresent && errors.data.description 
+                    ? colors.error
+                    : colors.grayScale10
+                }
+                placeholder= {
+                  errors.arePresent && errors.data.description 
+                  ? 'No Description Given'
+                  : 'Edit Description'
+                } />
               </Item>
             </Form>
             <Button
-              onPress={() => navigation.navigate('AdminDashboard')}
+              onPress={() => this.editAnnouncement()}
               style={styles.SaveButtonStyle}
               block
               info
