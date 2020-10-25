@@ -15,7 +15,9 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import ClubsApi from '../api/ClubsApi';
 import colors from '../util/colors';
-import { isValidFacebookUrl, isValidUrl } from '../util/validation';
+import {
+  isValidFacebookUrl, isValidUrl, isValidInstagramUrl, isValidSlackUrl,
+} from '../util/validation';
 
 const clubCategories = [
   { label: 'Computer Science', value: 'Computer Science' },
@@ -60,6 +62,8 @@ export default class ClubCreation extends Component {
       tags: false,
       thumbnailUrl: false,
       facebookLink: false,
+      instagramLink: false,
+      slackLink: false,
     };
     this.state = {
       clubName: '',
@@ -69,6 +73,8 @@ export default class ClubCreation extends Component {
       tags: 'placeholder',
       thumbnailUrl: '',
       facebookLink: '',
+      instagramLink: '',
+      slackLink: '',
       processingRequest: false,
       createdClub: false,
       errors: { arePresent: false, data: errors },
@@ -95,6 +101,8 @@ export default class ClubCreation extends Component {
       tags,
       thumbnailUrl,
       facebookLink,
+      instagramLink,
+      slackLink,
     } = this.state;
     const validRequest = this.isRequestValid();
     if (!validRequest.valid) {
@@ -116,6 +124,8 @@ export default class ClubCreation extends Component {
       tags,
       thumbnailUrl,
       facebookLink,
+      instagramLink,
+      slackLink,
     );
     if (createClubResponse.successfulRequest) {
       this.setState({ createdClub: true, processingRequest: false });
@@ -133,6 +143,8 @@ export default class ClubCreation extends Component {
       tags,
       thumbnailUrl,
       facebookLink,
+      instagramLink,
+      slackLink,
       position,
       errors,
     } = this.state;
@@ -142,6 +154,8 @@ export default class ClubCreation extends Component {
     errorData.clubCategory = clubCategory === '' || clubCategory.length < 3;
     errorData.thumbnailUrl = !!thumbnailUrl && !isValidUrl(thumbnailUrl);
     errorData.facebookLink = !!facebookLink && !isValidFacebookUrl(facebookLink);
+    errorData.instagramLink = !!instagramLink && !isValidInstagramUrl(instagramLink);
+    errorData.slackLink = !!slackLink && !isValidSlackUrl(slackLink);
     errorData.position = position === '';
     errorData.tags = tags === '';
 
@@ -344,15 +358,57 @@ export default class ClubCreation extends Component {
               fixedLabel
               style={{ width: '95%', height: 45, marginBottom: '5%' }}
             >
-              <Label>Instagram</Label>
-              <Input style={{ textAlign: 'right' }} />
+              <Label
+                style={
+                  errors.arePresent && errors.data.instagramLink
+                    ? { color: colors.error }
+                    : { color: colors.grayScale10 }
+                }
+              >
+                Instagram
+              </Label>
+              <Input
+                onChangeText={(value) => this.setState({ instagramLink: value })}
+                style={{ textAlign: 'right' }}
+                placeholderTextColor={
+                  errors.arePresent && errors.data.instagramLink
+                    ? { color: colors.error }
+                    : { color: colors.grayScale10 }
+                }
+                placeholder={
+                  errors.arePresent && errors.data.instagramUrl
+                    ? 'Invalid Link'
+                    : 'Instagram URL'
+                }
+              />
             </Item>
             <Item
               fixedLabel
-              style={{ width: '95%', height: 45, marginBottom: '10%' }}
+              style={{ width: '95%', height: 45, marginBottom: '5%' }}
             >
-              <Label>Slack</Label>
-              <Input style={{ textAlign: 'right' }} />
+              <Label
+                style={
+                  errors.arePresent && errors.data.slackink
+                    ? { color: colors.error }
+                    : { color: colors.grayScale10 }
+                }
+              >
+                Slack
+              </Label>
+              <Input
+                onChangeText={(value) => this.setState({ slackLink: value })}
+                style={{ textAlign: 'right' }}
+                placeholderTextColor={
+                  errors.arePresent && errors.data.slackLink
+                    ? { color: colors.error }
+                    : { color: colors.grayScale10 }
+                }
+                placeholder={
+                  errors.arePresent && errors.data.slackUrl
+                    ? 'Invalid Link'
+                    : 'Slack URL'
+                }
+              />
             </Item>
 
             <View
