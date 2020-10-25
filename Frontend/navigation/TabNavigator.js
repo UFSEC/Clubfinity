@@ -99,7 +99,7 @@ const DiscoverStack = createStackNavigator(
     Discover: DiscoverScr,
     Club: ClubScr,
     AdminDashboard: AdminDashboard,
-    EditAnnouncements: EditAnnouncements
+    EditAnnouncements: EditAnnouncements,
     EventList: EventList
   },
   {
