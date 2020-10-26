@@ -166,7 +166,6 @@ describe('Users', () => {
         password: 'short',
       };
 
-      // validation for valid characters
       it('should return an error when there are invalid characters in the name', async () => {
         const invalidCharacter = {
           name: { first: 'Bi7lly', last: 'Johnson' },
