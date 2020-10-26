@@ -3,7 +3,6 @@ const userDAO = require('../DAO/UserDAO');
 const clubDAO = require('../DAO/ClubDAO');
 const { ValidationError } = require('../util/errors/validationError');
 const { catchErrors } = require('../util/httpUtil');
-// var validate1 = require('../util/Validations/Validations');
 const {
   validateName, validatePassword, validateUsername, validateYear,
 } = require('../util/Validations/Validations.js');
