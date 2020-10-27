@@ -9,6 +9,7 @@ import {
   Form,
   Item,
   Input,
+  Label,
 } from 'native-base';
 import colors from '../util/colors';
 
@@ -54,11 +55,11 @@ const styles = StyleSheet.create({
   },
 });
 export default class EditAnnouncements extends Component {
-  static navigationOptions = ({ navigation }) => ({
+  static navigationOptions = () => ({
     headerTitle: 'Edit Announcement',
     headerRight: (
       <Button
-        onPress={() => navigation.navigate('AdminDashboard')}
+        onPress={() => {}}
         style={styles.headerRight}
         transparent
       >
@@ -67,7 +68,7 @@ export default class EditAnnouncements extends Component {
     ),
     headerLeft: () => (
       <Button
-        onPress={() => navigation.navigate('AdminDashboard')}
+        onPress={() => {}}
         style={styles.headerLeft}
         transparent
       >
@@ -122,32 +123,45 @@ export default class EditAnnouncements extends Component {
                 marginBottom: '8%',
               }}
               >
+                <Label
+                  style={{
+                    color:
+                      errors.arePresent && errors.data.title
+                        ? colors.error
+                        : colors.grayScale10,
+                  }}
+                >
+                  Edit Title
+                </Label>
                 <Input
                   onChangeText={(value) => this.setState({ title: value })}
-                  placeholderTextColor={
-                  errors.arePresent && errors.data.title
-                    ? colors.error
-                    : colors.grayScale10
-                }
+                  style={{ textAlign: 'right' }}
+                  placeholderTextColor={colors.error}
                   placeholder={
                   errors.arePresent && errors.data.title
                     ? 'No Title Given'
-                    : 'Edit Title'
+                    : ''
                 }
                 />
               </Item>
               <Item>
-                <Input
-                  onChangeText={(value) => this.setState({ description: value })}
-                  placeholderTextColor={
+                <Label style={{
+                  color:
                     errors.arePresent && errors.data.description
                       ? colors.error
-                      : colors.grayScale10
-                }
+                      : colors.grayScale10,
+                }}
+                >
+                  Edit Description
+                </Label>
+                <Input
+                  onChangeText={(value) => this.setState({ description: value })}
+                  style={{ textAlign: 'right' }}
+                  placeholderTextColor={colors.error}
                   placeholder={
                   errors.arePresent && errors.data.description
                     ? 'No Description Given'
-                    : 'Edit Description'
+                    : ''
                 }
                 />
               </Item>
