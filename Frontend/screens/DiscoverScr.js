@@ -39,7 +39,13 @@ export default class DiscoverScr extends Component {
     };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    const { navigation } = this.props;
+    navigation.addListener('willFocus', this.onFocus);
+    this.onFocus();
+  }
+
+  onFocus = async () => {
     try {
       const response = await API.get('/api/club');
       const { data } = response.data;
