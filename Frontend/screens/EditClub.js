@@ -43,7 +43,7 @@ const positions = [
 
 export default class EditClub extends Component {
   static navigationOptions = {
-    title: 'Edit club',
+    title: 'Edit Club',
     headerStyle: { backgroundColor: '#7e947f' },
     headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
     headerTintColor: 'white',
