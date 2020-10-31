@@ -15,3 +15,7 @@ export function isValidUrl(url) {
 export function isValidFacebookUrl(url) {
   return isValidUrl(url) && url.toLowerCase().includes('facebook');
 }
+
+export function isValidSlackUrl(url) {
+  return isValidUrl(url) && url.toLowerCase().includes('slack');
+}
