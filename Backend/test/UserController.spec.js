@@ -39,7 +39,7 @@ describe('Users', () => {
         name: { first: 'Test', last: 'McTester' },
         major: 'Computer Science',
         year: 2021,
-        email: 'test@test.com',
+        email: 'test@ufl.edu',
         username: 'tester',
         password: 'password123',
       };
@@ -47,7 +47,7 @@ describe('Users', () => {
         name: { first: 'Jimmy', last: 'John' },
         major: 'Computer Science',
         year: 2021,
-        email: 'jimmy@john.com',
+        email: 'jimmy@ufl.edu',
         username: 'jimmy',
         password: 'password123',
       };
@@ -78,7 +78,7 @@ describe('Users', () => {
         name: { first: 'Test', last: 'McTester' },
         major: 'Computer Science',
         year: 2021,
-        email: 'test@test.com',
+        email: 'test@ufl.edu',
         username: 'tester',
         password: 'password123',
         clubs: [],
@@ -106,7 +106,7 @@ describe('Users', () => {
         name: { first: 'New', last: 'User' },
         major: 'Computer Science',
         year: 2021,
-        email: 'new@user.com',
+        email: 'new@ufl.edu',
         username: 'newusername',
         password: 'password',
       };
@@ -124,7 +124,7 @@ describe('Users', () => {
         name: { first: 'Test', last: 'McTester' },
         major: 'Computer Science',
         year: 2021,
-        email: 'test@test.com',
+        email: 'test@ufl.edu',
         username: 'testmctester',
         password: 'password123',
       };
@@ -143,7 +143,7 @@ describe('Users', () => {
       isNotOk(resp, 422);
 
       const errorMessages = resp.body.validationErrors.map((e) => e.msg);
-      errorMessages.should.have.length(11);
+      errorMessages.should.have.length(12);
 
       errorMessages.should.include.all.members([
         'First name does not exist',
@@ -161,10 +161,27 @@ describe('Users', () => {
         name: { first: 'Jimmy', last: 'John' },
         major: 'Computer Science',
         year: 2021,
-        email: 'jimmy@john.com',
+        email: 'jimmy@ufl.edu',
         username: 'short',
         password: 'short',
       };
+
+      it('should return an error when there are invalid characters in the name', async () => {
+        const invalidCharacter = {
+          name: { first: 'Bi7lly', last: 'Johnson' },
+          major: 'Accounting',
+          year: 2024,
+          email: 'billy101@ufl.edu',
+          username: 'user3',
+          password: 'password12',
+        };
+
+        const resp = await http.post('/api/user', invalidCharacter);
+        isNotOk(resp, 422);
+
+        resp.body.validationErrors.should.have.length(1);
+        resp.body.validationErrors[0].msg.should.equal('Name contains invalid characters');
+      });
 
       const resp = await http.post('/api/user', shortUsernameAndPassword);
       isNotOk(resp, 422);
@@ -182,7 +199,7 @@ describe('Users', () => {
         name: { first: 'Jimmy', last: 'John' },
         major: 'Computer Science',
         year: 2021,
-        email: 'jimmy@john.com',
+        email: 'jimmy@ufl.edu',
         username: 'thisusernameiswaytoolong',
         password: 'password123',
       };
@@ -199,7 +216,7 @@ describe('Users', () => {
         name: { first: 'Jimmy', last: 'John' },
         major: 'Computer Science',
         year: 2021,
-        email: 'jimmy@john.com',
+        email: 'jimmy@ufl.edu',
         username: 'a username',
         password: 'password123',
       };
@@ -216,7 +233,7 @@ describe('Users', () => {
         name: { first: 'Jimmy', last: 'John' },
         year: 'not a year',
         major: 'Computer Science',
-        email: 'jimmy@john.com',
+        email: 'jimmy@ufl.edu',
         username: 'ausername',
         password: 'password123',
       };
@@ -235,7 +252,7 @@ describe('Users', () => {
         name: { first: 'Test', last: 'McTester' },
         major: 'Computer Science',
         year: 2021,
-        email: 'test@test.com',
+        email: 'test@ufl.edu',
         username: 'tester',
         password: 'password123',
       };
@@ -245,7 +262,7 @@ describe('Users', () => {
         name: { first: 'DifferentFirst', last: 'DifferentLast' },
         major: 'Computer Science',
         year: 2021,
-        email: 'different@different.com',
+        email: 'different@ufl.edu',
         username: 'diffusrnme',
         password: 'diffpassword',
       };
