@@ -91,7 +91,7 @@ class AdminDashboard extends Component {
           <TouchableOpacity style={styles.button} onPress={() => {}}>
             <Text style={styles.buttonText}>Edit Club Information</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => {}}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('AdminList', { club })}>
             <Text style={styles.buttonText}>Edit Admins</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('EventList', { club })}>
