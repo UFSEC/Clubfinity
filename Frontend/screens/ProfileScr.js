@@ -25,16 +25,31 @@ import colors from '../util/colors';
 export default class ProfileScr extends React.Component {
   static contextType = UserContext;
 
-  static navigationOptions = {
+  static navigationOptions = ({ navigation }) => ({
     title: 'My Profile',
     headerStyle: { backgroundColor: '#7e947f' },
     headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
-  };
+    headerTintColor: 'white',
+    headerRight:
+  <View style={{ flexDirection: 'row', justifyContent: 'flex-end', paddingRight: 15 }}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('Settings')}
+      style={{
+        paddingTop: '2%',
+        paddingRight: '2%',
+        alignSelf: 'flex-end',
+      }}
+    >
+      <Ionicons name="md-settings" size={30} color="white" />
+    </TouchableOpacity>
+  </View>,
+  })
 
   constructor(props) {
     super(props);
     this.state = {
       searchText: '',
+      settings: false,
     };
   }
 
@@ -100,7 +115,10 @@ export default class ProfileScr extends React.Component {
 
   render() {
     const { navigation } = this.props;
-
+    const { settings } = this.state;
+    if (settings) {
+      navigation.navigate('Settings');
+    }
     return (
       <UserContext.Consumer>
         {({ user }) => (
@@ -125,16 +143,6 @@ export default class ProfileScr extends React.Component {
                 borderBottomLeftRadius: 20,
               }}
             >
-              <TouchableOpacity
-                onPress={() => navigation.navigate('Settings')}
-                style={{
-                  paddingTop: '2%',
-                  paddingRight: '2%',
-                  alignSelf: 'flex-end',
-                }}
-              >
-                <Ionicons name="md-settings" size={30} color={colors.grayScale10} />
-              </TouchableOpacity>
               <View style={{ paddingTop: '2%' }}>
                 <StyleProvider style={getTheme(thumbnailTheme)}>
                   <Thumbnail source={DefaultPic} small />
