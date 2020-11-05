@@ -77,13 +77,15 @@ export default class CalendarScr extends React.Component {
 
   render() {
     const { selectedDate, events } = this.state;
-
+    const dates = { };
+    events.forEach((event) => { dates[event.date.toISODate()] = { marked: true }; });
+    dates[selectedDate.toISODate()] = { selected: true };
     return (
       <View style={style.container}>
         <View style={style.calContainer}>
           <Calendar
             hideArrows={false}
-            markedDates={{ [selectedDate.toISODate()]: { selected: true } }}
+            markedDates={dates}
             onDayPress={this.handleDayPress}
             onMonthChange={this.handleMonthChange}
           />
