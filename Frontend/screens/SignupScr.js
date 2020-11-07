@@ -133,15 +133,18 @@ export default class SignupScr extends React.Component {
 
     const { setUser } = this.context;
     const {
-      firstName, lastName, username, password, email,
+      firstName, lastName, username, password, email, major, classYear,
     } = this.state;
 
     const createUserResponse = await UserApi.createUser(
       { first: firstName, last: lastName },
+      major,
+      classYear,
       username,
       password,
       email,
     );
+
     if (createUserResponse.error) {
       alert('Unable to sign up! Please try again later');
       console.log(createUserResponse.error);
