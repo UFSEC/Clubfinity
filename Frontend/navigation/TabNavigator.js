@@ -20,7 +20,6 @@ import ClubCreation from "../screens/ClubCreation";
 import SettingScr from "../screens/SettingScr";
 import AdminDashboard from "../screens/AdminDashboard";
 import EventList from "../screens/EventList";
-
 const HomeStack = createStackNavigator(
   {
     Home: HomeScr,
