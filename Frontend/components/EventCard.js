@@ -1,10 +1,20 @@
 import React, { Component } from 'react';
-import { Text, View, Image } from 'react-native';
+import {
+  Text, View, Image, StyleSheet,
+} from 'react-native';
 import PropTypes from 'prop-types';
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
+import { Card } from 'native-base';
 import { card } from '../assets/styles/stylesheet';
-import GoingButton from './GoingButton';
 import NotGoingButton from './NotGoingButton';
 import SECIcon from '../assets/images/sec-icon.png';
+
+const styles = StyleSheet.create({
+
+  interestedButton: {
+    marginLeft: 5,
+  },
+});
 
 export default class EventCard extends Component {
   static propTypes = {
@@ -36,34 +46,55 @@ export default class EventCard extends Component {
     const containerStyle = goingChecked ? card.goingMarked : card.container;
     // const iconImagePath = `../assets/images/${this.props.data.icon}`;
     return (
-      <View style={containerStyle}>
+      <Card style={containerStyle}>
+
         <View style={card.banner}>
           <Image style={card.bannerIcon} source={SECIcon} />
-          <Text style={card.title}>{name}</Text>
+          <View>
+            <Text style={card.title}>
+              {' '}
+              {name}
+            </Text>
+            <Text style={card.clubname}> ClubName</Text>
+          </View>
         </View>
         <View style={card.body}>
-          <Text style={card.location}>{location}</Text>
+          <Text style={card.location}>
+            Oct 22
+            {'   '}
+            {location}
+          </Text>
           <Text style={card.bodyText}>{description}</Text>
           <View
             style={{
               flexDirection: 'row',
-              justifyContent: 'space-between',
               marginTop: 10,
+              justifyContent: 'space-evenly',
             }}
           >
+
+            <FontAwesome.Button
+              name="check-square-o"
+              backgroundColor="#16a085"
+              onPress={this._eventHandler}
+            >
+              Going
+            </FontAwesome.Button>
+
+            <Ionicons.Button style={styles.interestedButton} name="ios-star-outline" backgroundColor="#50adf9">
+              Interested
+            </Ionicons.Button>
+
             <NotGoingButton
               clickHandler={this.notGoingHandler}
               name="Not Going"
               btnColor="#ff8080"
             />
-            <GoingButton
-              clickHandler={this.goingBtnHandler}
-              name="Going"
-              btnColor="#16a085"
-            />
           </View>
         </View>
-      </View>
+
+      </Card>
+
     );
   }
 }

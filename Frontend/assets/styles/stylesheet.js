@@ -59,11 +59,14 @@ export const card = StyleSheet.create({
     fontWeight: 'bold',
     flex: 5,
   },
+  clubname: {
+    color: '#2980b9',
+  },
+
   location: {
     color: 'teal',
     fontWeight: '700',
-    marginTop: 5,
-    marginBottom: 5,
+    margin: 5,
   },
   container: {
     backgroundColor: '#f5f6fa',
@@ -90,7 +93,11 @@ export const card = StyleSheet.create({
     elevation: 3,
   },
 
-  bodyText: primary.bodyText,
+  bodyText: {
+    color: primary.bodyText.color,
+    fontSize: primary.bodyText.fontSize,
+    marginLeft: 4,
+  },
   agendaText: {
     color: '#636e72',
     fontSize: 13,
@@ -98,12 +105,10 @@ export const card = StyleSheet.create({
   },
   banner: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     flex: 1,
     marginBottom: 10,
   },
   bannerIcon: {
-    flex: 1,
     resizeMode: 'center',
     borderRadius: 25,
     marginRight: 10,
