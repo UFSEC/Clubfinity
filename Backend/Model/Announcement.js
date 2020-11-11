@@ -6,7 +6,13 @@ const Schema = new mongoose.Schema({
   description: String,
   date: {
     type: Date,
-    set: (dt) => dt.toJSDate(),
+    set: (dt) => {
+      if (dt instanceof DateTime) {
+        return dt.toJSDate();
+      }
+
+      return new Date(dt);
+    },
     get: (d) => DateTime.fromJSDate(d),
   },
   club: {

@@ -110,31 +110,41 @@ describe('Announcements', () => {
   });
 
   describe('PUT /:id', async () => {
-    // This is not working for some reason, please take a look
+    it('should be able to update an existing announcement', async () => {
+      const { _id: clubId } = await clubDAO.create(clubParams);
+      const announcementParams = {
+        ...baseAnnouncementParams,
+        club: clubId,
+      };
+      const oldAnnouncement = await announcementDAO.create(announcementParams);
 
-    // it('should be able to update an existing announcement', async () => {
-    //   const { _id: clubId } = await clubDAO.create(clubParams);
-    //   const announcementParams = {
-    //     ...baseAnnouncementParams,
-    //     club: clubId,
-    //   };
-    //   const oldAnnouncement = await announcementDAO.create(announcementParams);
-    //
-    //   const newAnnouncementParams = {
-    //     ...announcementParams,
-    //     title: 'Different title',
-    //     description: 'Different description',
-    //   };
-    //
-    //   const resp = await http.put(
-    //     `/api/announcement/${oldAnnouncement._id}`,
-    //     newAnnouncementParams
-    //   );
-    //
-    //   isOk(resp);
-    //
-    //   resp.body.data.should.deep.include(newAnnouncementParams);
-    // });
+      const newAnnouncementParams = {
+        ...announcementParams,
+        title: 'Different title',
+        description: 'Different description',
+      };
+
+      const resp = await http.put(
+        `/api/announcement/${oldAnnouncement._id}`,
+        newAnnouncementParams,
+      );
+
+      isOk(resp);
+
+      resp.body.data.should.deep.include({
+        title: 'Different title',
+        description: 'Different description',
+      });
+
+      const getResp = await http.get(`/api/announcement/${oldAnnouncement._id}`);
+
+      isOk(getResp);
+
+      getResp.body.data.should.deep.include({
+        title: 'Different title',
+        description: 'Different description',
+      });
+    });
   });
 
   describe('DELETE /:id', async () => {
