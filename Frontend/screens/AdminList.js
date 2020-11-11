@@ -11,7 +11,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import colors from '../util/colors';
 import DefaultPic from '../assets/images/profile-icon.png';
-import API from '../api/BaseApi';
+import UserApi from '../api/UserApi';
 
 export default class AdminList extends React.Component {
     static navigationOptions = {
@@ -42,14 +42,10 @@ export default class AdminList extends React.Component {
     async componentDidMount() {
       const bearerToken = await AsyncStorage.getItem('userToken');
       const { navigation } = this.props;
-      const club = navigation.getParam('club', 'NO-CLUB');
+      const clubId = navigation.getParam('club', 'NO-CLUB');
       const admins = [];
-      (club.admins).forEach(async (item) => {
-        const resp = await API.get(`/api/user/${item}`, {
-          headers: {
-            Authorization: `Bearer ${bearerToken}`,
-          },
-        });
+      (clubId.admins).forEach(async (item) => {
+        const resp = await UserApi.getAdmin(item, bearerToken);
         admins.push(resp.data.data.name);
         this.setState({ admins });
       });
