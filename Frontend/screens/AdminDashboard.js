@@ -75,7 +75,6 @@ class AdminDashboard extends Component {
   render() {
     const { clubName, navigation } = this.props;
     const club = navigation.getParam('club', 'NO-CLUB');
-
     return (
       <View style={styles.container}>
         <View>
