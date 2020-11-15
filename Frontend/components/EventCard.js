@@ -1,18 +1,37 @@
 import React, { Component } from 'react';
 import {
-  Text, View, Image, StyleSheet,
+  Text, View, Image, StyleSheet, TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { Card } from 'native-base';
-import { card } from '../assets/styles/stylesheet';
+import { card, primary } from '../assets/styles/stylesheet';
 import NotGoingButton from './NotGoingButton';
 import SECIcon from '../assets/images/sec-icon.png';
+import colors from '../util/colors';
 
 const styles = StyleSheet.create({
-
   interestedButton: {
     marginLeft: 5,
+  },
+  clubname: {
+    color: colors.accent2,
+  },
+  date: {
+    color: 'teal',
+    flex: 1,
+    textAlign: 'right',
+    fontSize: 23,
+  },
+  location: {
+    color: 'teal',
+    fontWeight: '700',
+    margin: 5,
+  },
+  bodyText: {
+    color: primary.bodyText.color,
+    fontSize: primary.bodyText.fontSize,
+    marginLeft: 4,
   },
 });
 
@@ -40,6 +59,10 @@ export default class EventCard extends Component {
 
   notGoingHandler = () => {};
 
+  goingHandler = () => {}
+
+  interestedBtnHandler = () => {}
+
   render() {
     const { goingChecked } = this.state;
     const { name, location, description } = this.props;
@@ -55,16 +78,15 @@ export default class EventCard extends Component {
               {' '}
               {name}
             </Text>
-            <Text style={card.clubname}> ClubName</Text>
+            <Text style={styles.clubname}> ClubName</Text>
           </View>
+          <Text style={styles.date}>Oct 22</Text>
         </View>
         <View style={card.body}>
-          <Text style={card.location}>
-            Oct 22
-            {'   '}
+          <Text style={styles.location}>
             {location}
           </Text>
-          <Text style={card.bodyText}>{description}</Text>
+          <Text style={styles.bodyText}>{description}</Text>
           <View
             style={{
               flexDirection: 'row',
@@ -72,19 +94,24 @@ export default class EventCard extends Component {
               justifyContent: 'space-evenly',
             }}
           >
+            <TouchableOpacity>
+              <FontAwesome.Button
+                name="check-square-o"
+                backgroundColor="#16a085"
+                onPress={this.goingHandler}
+              >
+                Going
+              </FontAwesome.Button>
+            </TouchableOpacity>
 
-            <FontAwesome.Button
-              name="check-square-o"
-              backgroundColor="#16a085"
-              onPress={this._eventHandler}
+            <Ionicons.Button
+              style={styles.interestedButton}
+              name="ios-star-outline"
+              backgroundColor="#50adf9"
+              onPress={this.interestedBtnHandler}
             >
-              Going
-            </FontAwesome.Button>
-
-            <Ionicons.Button style={styles.interestedButton} name="ios-star-outline" backgroundColor="#50adf9">
               Interested
             </Ionicons.Button>
-
             <NotGoingButton
               clickHandler={this.notGoingHandler}
               name="Not Going"
