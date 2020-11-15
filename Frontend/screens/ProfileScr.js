@@ -49,7 +49,6 @@ export default class ProfileScr extends React.Component {
     super(props);
     this.state = {
       searchText: '',
-      settings: false,
     };
   }
 
@@ -114,11 +113,6 @@ export default class ProfileScr extends React.Component {
   };
 
   render() {
-    const { navigation } = this.props;
-    const { settings } = this.state;
-    if (settings) {
-      navigation.navigate('Settings');
-    }
     return (
       <UserContext.Consumer>
         {({ user }) => (
