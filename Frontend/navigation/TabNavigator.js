@@ -96,7 +96,7 @@ const DiscoverStack = createStackNavigator(
     Discover: DiscoverScr,
     Club: ClubScr,
     AdminDashboard: AdminDashboard,
-    EventList: EventList
+    EventList: EventList, 
   },
   {
     initialRouteName: "Discover",

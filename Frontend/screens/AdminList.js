@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, FlatList, TouchableOpacity } from 'react-native';
+import {
+  AsyncStorage, View, FlatList, TouchableOpacity,
+} from 'react-native';
 import {
   Container,
   Text,
@@ -9,6 +11,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import colors from '../util/colors';
 import DefaultPic from '../assets/images/profile-icon.png';
+import UserApi from '../api/UserApi';
 
 export default class AdminList extends React.Component {
     static navigationOptions = {
@@ -32,8 +35,20 @@ export default class AdminList extends React.Component {
     constructor() {
       super();
       this.state = {
-        admins: [{ name: 'FirstName Lastname' }, { name: 'Firstname Lastname' }],
+        admins: [],
       };
+    }
+
+    async componentDidMount() {
+      const bearerToken = await AsyncStorage.getItem('userToken');
+      const { navigation } = this.props;
+      const clubId = navigation.getParam('club', 'NO-CLUB');
+      const admins = [];
+      (clubId.admins).forEach(async (item) => {
+        const resp = await UserApi.getAdmin(item, bearerToken);
+        admins.push(resp.data.data.name);
+        this.setState({ admins });
+      });
     }
 
     render() {
@@ -69,7 +84,7 @@ export default class AdminList extends React.Component {
                     <View style={{ flexDirection: 'row' }}>
                       <Thumbnail small source={DefaultPic} />
                       <Text style={{ fontSize: 16, margin: 10 }}>
-                        {item.name}
+                        {`${item.first} ${item.last}`}
                       </Text>
                     </View>
                     <Ionicons
