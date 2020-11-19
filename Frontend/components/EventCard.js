@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Text, View, Image, StyleSheet, TouchableOpacity,
+  Text, View, Image, StyleSheet,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
@@ -23,12 +23,12 @@ const styles = StyleSheet.create({
   location: {
     color: 'teal',
     fontWeight: '700',
-    marginLeft: '2%'
+    marginLeft: '2%',
   },
   bodyText: {
     color: primary.bodyText.color,
     fontSize: primary.bodyText.fontSize,
-    marginLeft: '2%'
+    marginLeft: '2%',
   },
 });
 
@@ -89,13 +89,13 @@ export default class EventCard extends Component {
               justifyContent: 'space-evenly',
             }}
           >
-              <FontAwesome.Button
-                name="check-square-o"
-                backgroundColor="#16a085"
-                onPress={this.goingHandler}
-              >
-                Going
-              </FontAwesome.Button>
+            <FontAwesome.Button
+              name="check-square-o"
+              backgroundColor="#16a085"
+              onPress={this.goingHandler}
+            >
+              Going
+            </FontAwesome.Button>
             <Ionicons.Button
               name="ios-star-outline"
               backgroundColor="#50adf9"
