@@ -11,9 +11,6 @@ import SECIcon from '../assets/images/sec-icon.png';
 import colors from '../util/colors';
 
 const styles = StyleSheet.create({
-  interestedButton: {
-    marginLeft: 5,
-  },
   clubname: {
     color: colors.accent2,
   },
@@ -26,12 +23,12 @@ const styles = StyleSheet.create({
   location: {
     color: 'teal',
     fontWeight: '700',
-    margin: 5,
+    marginLeft: '2%'
   },
   bodyText: {
     color: primary.bodyText.color,
     fontSize: primary.bodyText.fontSize,
-    marginLeft: 4,
+    marginLeft: '2%'
   },
 });
 
@@ -64,10 +61,8 @@ export default class EventCard extends Component {
   interestedBtnHandler = () => {}
 
   render() {
-    const { goingChecked } = this.state;
     const { name, location, description } = this.props;
-    const containerStyle = goingChecked ? card.goingMarked : card.container;
-    // const iconImagePath = `../assets/images/${this.props.data.icon}`;
+    const containerStyle = card.container;
     return (
       <Card style={containerStyle}>
 
@@ -94,7 +89,6 @@ export default class EventCard extends Component {
               justifyContent: 'space-evenly',
             }}
           >
-            <TouchableOpacity>
               <FontAwesome.Button
                 name="check-square-o"
                 backgroundColor="#16a085"
@@ -102,10 +96,7 @@ export default class EventCard extends Component {
               >
                 Going
               </FontAwesome.Button>
-            </TouchableOpacity>
-
             <Ionicons.Button
-              style={styles.interestedButton}
               name="ios-star-outline"
               backgroundColor="#50adf9"
               onPress={this.interestedBtnHandler}
@@ -119,9 +110,7 @@ export default class EventCard extends Component {
             />
           </View>
         </View>
-
       </Card>
-
     );
   }
 }
