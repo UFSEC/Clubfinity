@@ -15,13 +15,13 @@ const styles = StyleSheet.create({
     color: colors.accent2,
   },
   date: {
-    color: 'teal',
+    color: colors.sucess,
     flex: 1,
     textAlign: 'right',
     fontSize: 23,
   },
   location: {
-    color: 'teal',
+    color: colors.sucess,
     fontWeight: '700',
     marginLeft: '2%',
   },
