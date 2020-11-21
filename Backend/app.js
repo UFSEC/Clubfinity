@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const userRoute = require('./Routes/UserRoute');
 const eventRoute = require('./Routes/EventRoute');
 const clubRoute = require('./Routes/ClubRoute');
+const announcementRoutes = require('./Routes/AnnouncementRoutes');
 const authRoute = require('./Routes/AuthRoutes');
 const config = require('./Config/config.js');
 const database = require('./Database/Database.js');
@@ -24,6 +25,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api/user', userRoute);
 app.use('/api/event', eventRoute);
 app.use('/api/club', clubRoute);
+app.use('/api/announcement', announcementRoutes);
 app.use('/auth', authRoute);
 
 database.connect();

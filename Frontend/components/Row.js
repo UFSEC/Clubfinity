@@ -23,7 +23,7 @@ export default class Row extends Component {
     return (
       <TouchableOpacity
         style={{
-          width: '90%',
+          width: '100%',
           alignSelf: 'center',
           marginBottom: '5%',
         }}
@@ -44,7 +44,7 @@ export default class Row extends Component {
           <View style={{ marginRight: 'auto' }}>
             <Text>
               {date}
-              {' '}
+              {'    '}
               <Text style={{ fontWeight: 'bold' }}>{text}</Text>
             </Text>
           </View>

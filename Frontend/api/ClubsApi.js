@@ -17,6 +17,8 @@ exports.createClub = async (
   tags,
   thumbnailUrl,
   facebookLink,
+  instagramLink,
+  slackLink,
 ) => {
   const newClubData = {
     name: clubName,
@@ -29,6 +31,12 @@ exports.createClub = async (
   }
   if (facebookLink) {
     newClubData.facebookLink = facebookLink;
+  }
+  if (instagramLink) {
+    newClubData.instagramLink = instagramLink;
+  }
+  if (slackLink) {
+    newClubData.slackLink = slackLink;
   }
   try {
     await API.post('/api/club/', newClubData, {

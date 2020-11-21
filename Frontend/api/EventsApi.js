@@ -30,6 +30,16 @@ exports.getInMonth = async (bearerToken, date) => {
   return transformEvents(resp.data.data);
 };
 
+exports.getForClub = async (bearerToken, clubId) => {
+  const resp = await API.get(`/api/event/club/${clubId}`, {
+    headers: {
+      Authorization: `Bearer ${bearerToken}`,
+    },
+  });
+
+  return transformEvents(resp.data.data);
+};
+
 exports.create = async (bearerToken, eventData) => {
   await API.post('/api/event', eventData, {
     headers: {

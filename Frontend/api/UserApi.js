@@ -97,3 +97,12 @@ exports.unfollowClub = async (clubId, bearerToken) => {
     });
   return axiosResponse;
 };
+
+exports.getAdmin = async (adminId, bearerToken) => {
+  const axiosResponse = await API.get(`/api/user/${adminId}`, {
+    headers: {
+      Authorization: `Bearer ${bearerToken}`,
+    },
+  });
+  return axiosResponse;
+};
