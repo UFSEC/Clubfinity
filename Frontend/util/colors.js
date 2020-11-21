@@ -24,6 +24,7 @@ const colors = {
   error: '#ce4445',
   warning: '#f28154',
   info: '#a0afa0',
+  link: '#5e95fc',
 };
 
 export default colors;

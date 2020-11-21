@@ -17,12 +17,16 @@ export default class AdminRow extends Component {
 
   static yearToString(year) {
     switch (year) {
-      case 1:
+      case 2024:
         return '1st Year';
-      case 2:
+      case 2023:
         return '2nd Year';
-      case 3:
+      case 2022:
         return '3rd Year';
+      case 2021:
+        return '4th Year';
+      case 2020:
+        return '5th Year';
       default:
         return `${year}th Year`;
     }

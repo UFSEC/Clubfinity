@@ -3,7 +3,7 @@ const { NotFoundError } = require('../util/errors/validationError');
 
 exports.create = async (clubParams) => await new Club(clubParams).save();
 
-exports.getAll = async () => await Club.find({}).exec();
+exports.getAll = async () => await Club.find({}).populate('admins').exec();
 
 exports.getRandom = async () => {
   const clubs = await Club.find({});
@@ -11,7 +11,7 @@ exports.getRandom = async () => {
   return clubs[index];
 };
 exports.get = async (id) => {
-  const club = await Club.findById(id);
+  const club = await Club.findById(id)
   if (!club) throw new NotFoundError();
 
   return club;
