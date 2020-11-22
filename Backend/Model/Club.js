@@ -14,7 +14,7 @@ const Schema = new mongoose.Schema({
   thumbnailUrl: String,
   tags: [{
     type: String,
-  }]
+  }],
 });
 
 exports.Model = mongoose.model('Club', Schema);

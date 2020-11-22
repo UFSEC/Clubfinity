@@ -11,7 +11,7 @@ exports.getRandom = async () => {
   return clubs[index];
 };
 exports.get = async (id) => {
-  const club = await Club.findById(id)
+  const club = await Club.findById(id);
   if (!club) throw new NotFoundError();
 
   return club;
