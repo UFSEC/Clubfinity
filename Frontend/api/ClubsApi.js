@@ -49,3 +49,36 @@ exports.createClub = async (
     return { successfulRequest: false, error };
   }
 };
+
+exports.updateClub = async (clubID, bearerToken, club) => {
+  try {
+    await API.put(`/api/club/${clubID}`, club, {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+      },
+    });
+    return { successfulRequest: true };
+  } catch (error) {
+    return { successfulRequest: false, error };
+  }
+};
+
+exports.test = async (clubID, bearerToken, club) => {
+  const axiosResponse = await API.put(
+    `/api/club/${clubID}`,
+    club,
+    {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+      },
+    },
+  )
+    .then(async (response) => response)
+    .catch((error) => {
+      if (error) {
+        return { successfulRequest: false, error };
+      }
+      return { successfulRequest: true };
+    });
+  return axiosResponse;
+};
