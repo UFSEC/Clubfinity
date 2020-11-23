@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  AsyncStorage, View, Platform, TouchableOpacity,
+  AsyncStorage, View,
 } from 'react-native';
 import {
   Button,
@@ -10,7 +10,6 @@ import {
   Form,
   H1,
   Item,
-  Picker,
   Input,
   Textarea,
   Thumbnail,
@@ -26,31 +25,6 @@ import ClubsApi from '../api/ClubsApi';
 import {
   isValidFacebookUrl, isValidSlackUrl, isValidInstagramUrl, isValidUrl,
 } from '../util/validation';
-
-const clubCategories = [
-  { label: 'Computer Science', value: 'Computer Science' },
-  { label: 'Research', value: 'Research' },
-  { label: 'Business', value: 'Business' },
-  { label: 'Arts', value: 'Arts' },
-  { label: 'Engineering', value: 'Engineering' },
-  { label: 'Health', value: 'Health' },
-  { label: 'Journalism', value: 'Journalism' },
-  { label: 'Liberal Arts', value: 'Liberal Arts' },
-  { label: 'Cultural', value: 'Cultural' },
-  { label: 'Honor Society', value: 'Honor Society' },
-  { label: 'Media', value: 'Media' },
-  { label: 'Professional/Career', value: 'Professional/Career' },
-  { label: 'Religious/Spiritual', value: 'Religious/Spiritual' },
-  { label: 'Sport Clubs', value: 'Sport Clubs' },
-  { label: 'Student Government', value: 'Student Government' },
-];
-
-const positions = [
-  { label: 'President', value: 'President' },
-  { label: 'Vice President', value: 'Vice President' },
-  { label: 'Treasurer', value: 'Treasurer' },
-  { label: 'Other', value: 'Other' },
-];
 
 export default class EditClub extends Component {
   static navigationOptions = {
@@ -98,18 +72,6 @@ export default class EditClub extends Component {
     });
   }
 
-  onCategoryChange = (value) => {
-    this.setState({
-      clubCategory: value,
-    });
-  };
-
-  onPositionChange = (value) => {
-    this.setState({
-      position: value,
-    });
-  };
-
   editClub = async () => {
     const {
       clubDescription,
@@ -117,12 +79,9 @@ export default class EditClub extends Component {
       facebookLink,
       instagramLink,
       slackLink,
-      errors,
     } = this.state;
 
     const validRequest = this.isRequestValid();
-    console.log(errors);
-    console.log('test');
     if (!validRequest.valid) {
       this.setState({
         processingRequest: false,
@@ -138,7 +97,6 @@ export default class EditClub extends Component {
     const userToken = await AsyncStorage.getItem('userToken');
     const { navigation } = this.props;
     const club = navigation.getParam('club', 'NO-CLUB');
-    console.log(club);
 
     club.thumbnailUrl = thumbnailUrl;
     club.description = clubDescription;
@@ -150,12 +108,9 @@ export default class EditClub extends Component {
       userToken,
       club,
     );
-    console.log('test');
     if (editedClubResponse.successfulRequest) {
       this.setState({ editedClub: true, processingRequest: false });
-      console.log('success');
     } else {
-      console.log('fail');
       console.log(editedClubResponse.error);
       this.setState({ processingRequest: false });
     }
@@ -214,12 +169,6 @@ export default class EditClub extends Component {
         clubImage,
       });
     }
-    const categories = clubCategories.map((s) => (
-      <Picker.Item value={s.value} label={s.label} />
-    ));
-    const positionList = positions.map((s) => (
-      <Picker.Item value={s.value} label={s.label} />
-    ));
     return (
       <Container>
         <Content>
