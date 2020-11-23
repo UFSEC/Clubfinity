@@ -1,20 +1,27 @@
 import React, { Component } from 'react';
-import { View, Platform } from 'react-native';
+import { AsyncStorage, View, Platform, TouchableOpacity } from 'react-native';
 import {
   Button,
   Text,
   Container,
   Content,
   Form,
+  H1,
   Item,
   Picker,
-  Label,
   Input,
   Textarea,
+  Thumbnail,
+  StyleProvider,
 } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
+import getTheme from '../native-base-theme/components';
+import thumbnailTheme from '../native-base-theme/components/Thumbnail';
 import colors from '../util/colors';
-import { isValidFacebookUrl, isValidSlackUrl, isValidUrl } from '../util/validation';
+import UserContext from '../util/UserContext';
+import ClubfinityLogo from '../assets/images/ClubfinityLogo.png';
+import ClubsApi from '../api/ClubsApi';
+import { isValidFacebookUrl, isValidSlackUrl, isValidInstagramUrl, isValidUrl } from '../util/validation';
 
 const clubCategories = [
   { label: 'Computer Science', value: 'Computer Science' },
@@ -43,37 +50,48 @@ const positions = [
 
 export default class EditClub extends Component {
   static navigationOptions = {
-    title: 'Edit Club',
+    title: 'Manage Club',
     headerStyle: { backgroundColor: '#7e947f' },
     headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
     headerTintColor: 'white',
   };
+
+  static contextType = UserContext;
 
   constructor(props) {
     super(props);
     const errors = {
       clubName: false,
       clubDescription: false,
-      clubCategory: false,
-      position: false,
-      tags: false,
       thumbnailUrl: false,
       facebookLink: false,
       slackLink: false,
+      instagramLink: false,
     };
     this.state = {
       clubName: '',
       clubDescription: '',
-      clubCategory: '',
-      position: '',
-      tags: 'placeholder',
       thumbnailUrl: '',
       facebookLink: '',
+      instagramLink: '',
       slackLink: '',
       processingRequest: false,
       editedClub: false,
       errors: { arePresent: false, data: errors },
     };
+  }
+
+  componentDidMount() {
+    const { navigation } = this.props;
+    const club = navigation.getParam('club', 'NO-CLUB');
+    this.setState({
+      clubName: club.name,
+      thumbnailUrl: club.thumbnailUrl,
+      clubDescription: club.description,
+      facebookLink: club.facebookLink,
+      slackLink: club.slackLink,
+      instagramLink: club.instagramLink,
+    });
   }
 
   onCategoryChange = (value) => {
@@ -89,10 +107,21 @@ export default class EditClub extends Component {
   };
 
   editClub = async () => {
+    const {
+      clubDescription,
+      thumbnailUrl,
+      facebookLink,
+      instagramLink,
+      slackLink,
+      errors,
+    } = this.state;
+    
     const validRequest = this.isRequestValid();
-    console.log();
+    console.log(errors)
+    console.log('test')
     if (!validRequest.valid) {
       this.setState({
+        processingRequest: false,
         errors: { arePresent: true, data: validRequest.errors },
       });
       return;
@@ -101,29 +130,50 @@ export default class EditClub extends Component {
       processingRequest: true,
       errors: { arePresent: false, data: validRequest.errors },
     });
+    
+    const userToken = await AsyncStorage.getItem('userToken');
+    const { navigation } = this.props;
+    const club = navigation.getParam('club', 'NO-CLUB');
+    console.log(club)
+
+    club.thumbnailUrl = thumbnailUrl;
+    club.description = clubDescription;
+    club.instagramLink = instagramLink;
+    club.facebookLink = facebookLink;
+    club.slackLink = slackLink;
+    const editedClubResponse = await ClubsApi.updateClub(
+      club._id,
+      userToken,
+      club,
+    );
+    console.log('test')
+    if (editedClubResponse.successfulRequest) {
+      this.setState({ editedClub: true, processingRequest: false });
+      console.log('success')
+    } else {
+      console.log('fail')
+      console.log(editedClubResponse.error);
+      this.setState({ processingRequest: false });
+    }
   };
 
   isRequestValid = () => {
     const {
       clubName,
-      clubCategory,
       clubDescription,
-      tags,
       thumbnailUrl,
       facebookLink,
       slackLink,
-      position,
+      instagramLink,
       errors,
     } = this.state;
     const errorData = errors;
     errorData.clubName = clubName === '' || clubName.length < 3;
     errorData.clubDescription = clubDescription === '' || clubDescription.length > 280;
-    errorData.clubCategory = clubCategory === '' || clubCategory.length < 3;
     errorData.thumbnailUrl = !!thumbnailUrl && !isValidUrl(thumbnailUrl);
     errorData.facebookLink = !!facebookLink && !isValidFacebookUrl(facebookLink);
     errorData.slackLink = !!slackLink && !isValidSlackUrl(slackLink);
-    errorData.position = position === '';
-    errorData.tags = tags === '';
+    errorData.instagramLink = !!instagramLink && !isValidInstagramUrl(instagramLink);
 
     let validRequest = true;
     Object.keys(errorData).forEach((input) => {
@@ -136,18 +186,29 @@ export default class EditClub extends Component {
 
   render() {
     const {
+      clubName,
+      thumbnailUrl,
       errors,
       processingRequest,
       editedClub,
-      position,
-      clubCategory,
+      facebookLink,
+      slackLink,
+      instagramLink,
       clubDescription,
     } = this.state;
+    const { navigation } = this.props;
+    const club = navigation.getParam('club', 'NO-CLUB');
     if (editedClub) {
-      return (
-        // Add routing to admin club management screen
-        <Text>Successfully edited club!</Text>
-      );
+      var clubImage = "";
+      if (!club.thumbnailUrl){
+        clubImage = { uri: club.thumbnailUrl };
+      }else{
+        clubImage = ClubfinityLogo;
+      }
+      navigation.navigate('Club', {
+        club,
+        clubImage,
+      });
     }
     const categories = clubCategories.map((s) => (
       <Picker.Item value={s.value} label={s.label} />
@@ -167,211 +228,42 @@ export default class EditClub extends Component {
               paddingBottom: '5%',
             }}
           >
+            <View style={{ paddingTop: '10%' }}>
+              <StyleProvider style={getTheme(thumbnailTheme)}>
+                <Thumbnail source={{ uri: thumbnailUrl }} large />
+              </StyleProvider>
+            </View>
+            <H1 style={{ paddingBottom: '2%', paddingTop: '5%' }}>
+              {clubName}
+              </H1>
             <Item
               fixedLabel
               style={{ width: '95%', height: 45, marginBottom: '5%' }}
             >
-              <Label
-                style={{
-                  color:
-                    errors.arePresent && errors.data.clubName
-                      ? colors.error
-                      : colors.grayScale10,
-                }}
-              >
-                Club Name*
-              </Label>
-              <Input
-                onChangeText={(value) => this.setState({ clubName: value })}
-                style={{ textAlign: 'right' }}
-                placeholderTextColor={colors.error}
-                height="50%"
-                placeholder={
-                  errors.arePresent && errors.data.clubName
-                    ? 'Invalid club name'
-                    : ''
-                }
-              />
-            </Item>
-            <Item
-              picker
-              fixedLabel
-              style={{ width: '95%', marginBottom: '5%' }}
-            >
-              <Label
-                style={
-                  errors.arePresent && errors.data.position
-                    ? { color: colors.error }
-                    : { color: colors.grayScale10 }
-                }
-              >
-                Position*
-              </Label>
-              <Picker
-                mode="dropdown"
-                style={{ width: undefined }}
-                placeholderStyle={
-                  errors.arePresent && errors.data.position
-                    ? { color: colors.error }
-                    : { color: colors.grayScale10 }
-                }
-                placeholder="Select position"
-                selectedValue={position}
-                onValueChange={(value) => this.onPositionChange(value)}
-              >
-                {positionList}
-              </Picker>
-              {Platform.OS === 'ios' ? (
-                <Ionicons
-                  name="md-arrow-dropdown"
-                  size={20}
-                  style={{ paddingTop: '1%' }}
-                />
-              ) : null}
-            </Item>
-            <Item
-              picker
-              fixedLabel
-              style={{ width: '95%', marginBottom: '5%' }}
-            >
-              <Label
-                style={
-                  errors.arePresent && errors.data.clubCategory
-                    ? { color: colors.error }
-                    : { color: colors.grayScale10 }
-                }
-              >
-                Category*
-              </Label>
-              <Picker
-                mode="dropdown"
-                style={{ width: undefined }}
-                placeholderStyle={
-                  errors.arePresent && errors.data.clubCategory
-                    ? { color: colors.error }
-                    : { color: colors.grayScale10 }
-                }
-                placeholder="Select club category"
-                selectedValue={clubCategory}
-                onValueChange={(value) => this.onCategoryChange(value)}
-              >
-                {categories}
-              </Picker>
-              {Platform.OS === 'ios' ? (
-                <Ionicons
-                  name="md-arrow-dropdown"
-                  size={20}
-                  style={{ paddingTop: '1%' }}
-                />
-              ) : null}
-            </Item>
-            <Item
-              fixedLabel
-              style={{ width: '95%', height: 45, marginBottom: '5%' }}
-            >
-              <Label
-                style={
-                  errors.arePresent && errors.data.thumbnailUrl
-                    ? { color: colors.error }
-                    : { color: colors.grayScale10 }
-                }
-              >
-                Thumbnail URL
-              </Label>
               <Input
                 onChangeText={(value) => this.setState({ thumbnailUrl: value })}
-                style={{ textAlign: 'right' }}
-                height="50%"
                 placeholderTextColor={
-                  errors.arePresent && errors.data.position
+                  errors.arePresent && errors.data.thumbnailUrl
                     ? { color: colors.error }
                     : { color: colors.grayScale10 }
                 }
+                height="50%"
                 placeholder={
                   errors.arePresent && errors.data.thumbnailUrl
-                    ? 'Invalid Link'
+                    ? 'Invalid website'
                     : 'Thumbnail URL'
                 }
-              />
-            </Item>
-            <Item
-              fixedLabel
-              style={{ width: '95%', height: 45, marginBottom: '5%' }}
-            >
-              <Label
-                style={
-                  errors.arePresent && errors.data.facebookLink
-                    ? { color: colors.error }
-                    : { color: colors.grayScale10 }
-                }
               >
-                Facebook
-              </Label>
-              <Input
-                onChangeText={(value) => this.setState({ facebookLink: value })}
-                style={{ textAlign: 'right' }}
-                height="50%"
-                placeholderTextColor={
-                  errors.arePresent && errors.data.facebookLink
-                    ? { color: colors.error }
-                    : { color: colors.grayScale10 }
-                }
-                placeholder={
-                  errors.arePresent && errors.data.thumbnailUrl
-                    ? 'Invalid Link'
-                    : 'Facebook URL'
-                }
-              />
+                {thumbnailUrl}
+                </Input>
             </Item>
-            <Item
-              fixedLabel
-              style={{ width: '95%', height: 45, marginBottom: '5%' }}
-            >
-              <Label>Instagram</Label>
-              <Input
-                style={{ textAlign: 'right' }}
-                height="50%"
-                placeholderTextColor={{ color: colors.grayScale10 }}
-                placeholder="Instagram Username"
-              />
-            </Item>
-            <Item
-              fixedLabel
-              style={{ width: '95%', height: 45, marginBottom: '10%' }}
-            >
-              <Label
-                style={
-                  errors.arePresent && errors.data.slackLink
-                    ? { color: colors.error }
-                    : { color: colors.grayScale10 }
-                }
-              >
-                Slack
-              </Label>
-              <Input
-                onChangeText={(value) => this.setState({ slackLink: value })}
-                style={{ textAlign: 'right' }}
-                height="50%"
-                placeholderTextColor={
-                  errors.arePresent && errors.data.slackLink
-                    ? { color: colors.error }
-                    : { color: colors.grayScale10 }
-                }
-                placeholder={
-                  errors.arePresent && errors.data.thumbnailUrl
-                    ? 'Invalid Link'
-                    : 'Slack URL'
-                }
-              />
-            </Item>
-
             <View
               style={{
                 width: '100%',
               }}
             >
               <Textarea
-                rowSpan={5}
+                rowSpan={8}
                 bordered
                 borderColor={
                   errors.arePresent && errors.data.clubDescription
@@ -395,8 +287,10 @@ export default class EditClub extends Component {
                   width: '95%',
                   paddingBottom: '5%',
                   marginLeft: '4%',
+                  marginBottom: '5%',
                 }}
-              />
+              >
+                </Textarea>
               {errors.arePresent && errors.data.clubDescription ? (
                 <Text
                   style={{
@@ -412,6 +306,78 @@ export default class EditClub extends Component {
                 </Text>
               ) : null}
             </View>
+            <Item
+              fixedLabel
+              style={{ width: '95%', height: 45, marginBottom: '5%' }}
+            >
+              <Ionicons
+                name="logo-slack"
+                size={27}
+                style={{ marginRight: '4%' }}
+              />
+              <Input
+                onChangeText={(value) => this.setState({ slackLink: value })}
+                height="50%"
+                placeholderTextColor={
+                  errors.arePresent && errors.data.slackLink
+                    ? { color: colors.error }
+                    : { color: colors.grayScale10 }
+                }
+                placeholder={
+                  errors.arePresent && errors.data.slackLink
+                    ? 'Invalid Link'
+                    : 'Slack URL'
+                }
+              >
+                {slackLink}
+                </Input>
+            </Item>
+            <Item
+              fixedLabel
+              style={{ width: '95%', height: 45, marginBottom: '5%' }}
+            >
+              <Ionicons
+                name="logo-facebook"
+                size={27}
+                style={{ marginRight: '4%' }}
+              />
+              <Input
+                onChangeText={(value) => this.setState({ facebookLink: value })}
+                height="50%"
+                placeholderTextColor={
+                  errors.arePresent && errors.data.facebookLink
+                    ? { color: colors.error }
+                    : { color: colors.grayScale10 }
+                }
+                placeholder={
+                  errors.arePresent && errors.data.facebookLink
+                    ? 'Invalid Link'
+                    : 'Facebook URL'
+                }
+              >
+                {facebookLink}
+                </Input>
+            </Item>
+            <Item
+              fixedLabel
+              style={{ width: '95%', height: 45, marginBottom: '5%' }}
+            >
+              <Ionicons
+                name="logo-instagram"
+                size={27}
+                style={{ marginRight: '4%' }}
+              />
+              <Input
+                height="50%"
+                placeholderTextColor={{ color: colors.grayScale10 }}
+                placeholder="Instagram Username"
+              >
+                {instagramLink}
+                </Input>
+            </Item>
+
+
+
           </Form>
           <Button
             style={{
@@ -426,7 +392,22 @@ export default class EditClub extends Component {
             onPress={this.editClub}
           >
             <Text style={{ alignSelf: 'center' }}>
-              {processingRequest ? 'Editing...' : 'Edit Club'}
+              {processingRequest ? 'Editing...' : 'Save'}
+            </Text>
+          </Button>
+          <Button
+            style={{
+              alignSelf: 'center',
+              backgroundColor: colors.grayScale4,
+              width: '90%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginRight: '1%',
+              marginBottom: '5%',
+            }}
+          >
+            <Text style={{ alignSelf: 'center', color: 'black' }}>
+              Cancel
             </Text>
           </Button>
         </Content>
