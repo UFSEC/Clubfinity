@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { AsyncStorage, View, Platform, TouchableOpacity } from 'react-native';
+import {
+  AsyncStorage, View, Platform, TouchableOpacity,
+} from 'react-native';
 import {
   Button,
   Text,
@@ -21,7 +23,9 @@ import colors from '../util/colors';
 import UserContext from '../util/UserContext';
 import ClubfinityLogo from '../assets/images/ClubfinityLogo.png';
 import ClubsApi from '../api/ClubsApi';
-import { isValidFacebookUrl, isValidSlackUrl, isValidInstagramUrl, isValidUrl } from '../util/validation';
+import {
+  isValidFacebookUrl, isValidSlackUrl, isValidInstagramUrl, isValidUrl,
+} from '../util/validation';
 
 const clubCategories = [
   { label: 'Computer Science', value: 'Computer Science' },
@@ -115,10 +119,10 @@ export default class EditClub extends Component {
       slackLink,
       errors,
     } = this.state;
-    
+
     const validRequest = this.isRequestValid();
-    console.log(errors)
-    console.log('test')
+    console.log(errors);
+    console.log('test');
     if (!validRequest.valid) {
       this.setState({
         processingRequest: false,
@@ -130,11 +134,11 @@ export default class EditClub extends Component {
       processingRequest: true,
       errors: { arePresent: false, data: validRequest.errors },
     });
-    
+
     const userToken = await AsyncStorage.getItem('userToken');
     const { navigation } = this.props;
     const club = navigation.getParam('club', 'NO-CLUB');
-    console.log(club)
+    console.log(club);
 
     club.thumbnailUrl = thumbnailUrl;
     club.description = clubDescription;
@@ -146,12 +150,12 @@ export default class EditClub extends Component {
       userToken,
       club,
     );
-    console.log('test')
+    console.log('test');
     if (editedClubResponse.successfulRequest) {
       this.setState({ editedClub: true, processingRequest: false });
-      console.log('success')
+      console.log('success');
     } else {
-      console.log('fail')
+      console.log('fail');
       console.log(editedClubResponse.error);
       this.setState({ processingRequest: false });
     }
@@ -199,10 +203,10 @@ export default class EditClub extends Component {
     const { navigation } = this.props;
     const club = navigation.getParam('club', 'NO-CLUB');
     if (editedClub) {
-      var clubImage = "";
-      if (!club.thumbnailUrl){
+      let clubImage = '';
+      if (!club.thumbnailUrl) {
         clubImage = { uri: club.thumbnailUrl };
-      }else{
+      } else {
         clubImage = ClubfinityLogo;
       }
       navigation.navigate('Club', {
@@ -235,7 +239,7 @@ export default class EditClub extends Component {
             </View>
             <H1 style={{ paddingBottom: '2%', paddingTop: '5%' }}>
               {clubName}
-              </H1>
+            </H1>
             <Item
               fixedLabel
               style={{ width: '95%', height: 45, marginBottom: '5%' }}
@@ -255,7 +259,7 @@ export default class EditClub extends Component {
                 }
               >
                 {thumbnailUrl}
-                </Input>
+              </Input>
             </Item>
             <View
               style={{
@@ -289,8 +293,7 @@ export default class EditClub extends Component {
                   marginLeft: '4%',
                   marginBottom: '5%',
                 }}
-              >
-                </Textarea>
+              />
               {errors.arePresent && errors.data.clubDescription ? (
                 <Text
                   style={{
@@ -330,7 +333,7 @@ export default class EditClub extends Component {
                 }
               >
                 {slackLink}
-                </Input>
+              </Input>
             </Item>
             <Item
               fixedLabel
@@ -356,7 +359,7 @@ export default class EditClub extends Component {
                 }
               >
                 {facebookLink}
-                </Input>
+              </Input>
             </Item>
             <Item
               fixedLabel
@@ -373,10 +376,8 @@ export default class EditClub extends Component {
                 placeholder="Instagram Username"
               >
                 {instagramLink}
-                </Input>
+              </Input>
             </Item>
-
-
 
           </Form>
           <Button
