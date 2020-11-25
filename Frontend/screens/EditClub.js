@@ -328,8 +328,7 @@ export default class EditClub extends Component {
                       : 'Facebook URL'
                   }
                   value={facebookLink}
-                >
-                </Input>
+                />
               </Item>
               {errors.arePresent && errors.data.facebookLink ? (
                 <Text
@@ -362,8 +361,7 @@ export default class EditClub extends Component {
                   placeholderTextColor={{ color: colors.grayScale10 }}
                   placeholder="Instagram Username"
                   value={instagramLink}
-                >
-                </Input>
+                />
               </Item>
               {errors.arePresent && errors.data.instagramLink ? (
                 <Text
