@@ -18,11 +18,11 @@ import AuthScr from "../screens/AuthScr";
 import EditProfile from "../screens/EditProfile";
 import ClubCreation from "../screens/ClubCreation";
 import SettingScr from "../screens/SettingScr";
-import AdminDashboard from "../screens/AdminDashboard";
 import EventList from "../screens/EventList";
 import EventCreation from "../screens/EventCreation";
 import CreateAnnouncementScr from "../screens/CreateAnnouncementScr"
 import AdminList from "../screens/AdminList"
+import EditClub from "../screens/EditClub"
 
 const HomeStack = createStackNavigator(
   {
@@ -99,7 +99,7 @@ const DiscoverStack = createStackNavigator(
   {
     Discover: DiscoverScr,
     Club: ClubScr,
-    AdminDashboard: AdminDashboard,
+    EditClub: EditClub,
     EventList: EventList,
     EventCreation: EventCreation,
     CreateAnnouncementScr: CreateAnnouncementScr,

@@ -46,9 +46,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  bolded: {
-    fontWeight: 'bold',
-  },
 });
 
 export default class ClubScr extends React.Component {
@@ -150,7 +147,7 @@ export default class ClubScr extends React.Component {
               <>
                 <Button
                   style={styles.adminButton}
-                  onPress={() => navigation.navigate('AdminDashboard', { club })}
+                  onPress={() => navigation.navigate('EditClub', { club })}
                 >
                   <Text>Manage</Text>
                 </Button>
