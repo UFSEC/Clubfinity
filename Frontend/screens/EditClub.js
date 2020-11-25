@@ -258,76 +258,128 @@ export default class EditClub extends Component {
                 </Text>
               ) : null}
             </View>
-            <Item
-              fixedLabel
-              style={{ width: '95%', height: 45, marginBottom: '5%' }}
-            >
-              <Ionicons
-                name="logo-slack"
-                size={27}
-                style={{ marginRight: '4%' }}
-              />
-              <Input
-                onChangeText={(value) => this.setState({ slackLink: value })}
-                height="50%"
-                placeholderTextColor={
-                  errors.arePresent && errors.data.slackLink
-                    ? { color: colors.error }
-                    : { color: colors.grayScale10 }
-                }
-                placeholder={
-                  errors.arePresent && errors.data.slackLink
-                    ? 'Invalid Link'
-                    : 'Slack URL'
-                }
+            <View>
+              <Item
+                fixedLabel
+                style={{ width: '95%', height: 45, marginBottom: '2%' }}
               >
-                {slackLink}
-              </Input>
-            </Item>
-            <Item
-              fixedLabel
-              style={{ width: '95%', height: 45, marginBottom: '5%' }}
-            >
-              <Ionicons
-                name="logo-facebook"
-                size={27}
-                style={{ marginRight: '4%' }}
-              />
-              <Input
-                onChangeText={(value) => this.setState({ facebookLink: value })}
-                height="50%"
-                placeholderTextColor={
-                  errors.arePresent && errors.data.facebookLink
-                    ? { color: colors.error }
-                    : { color: colors.grayScale10 }
-                }
-                placeholder={
-                  errors.arePresent && errors.data.facebookLink
-                    ? 'Invalid Link'
-                    : 'Facebook URL'
-                }
+                <Ionicons
+                  name="logo-slack"
+                  size={27}
+                  style={{ marginRight: '4%' }}
+                />
+                <Input
+                  onChangeText={(value) => this.setState({ slackLink: value })}
+                  height="50%"
+                  error={
+                    errors.arePresent && errors.data.slackLink
+                      ? colors.error
+                      : colors.grayScale3
+                  }
+                  placeholderTextColor={
+                    errors.arePresent && errors.data.slackLink
+                      ? colors.error
+                      : colors.grayScale10
+                  }
+                  placeholder={
+                    errors.arePresent && errors.data.slackLink
+                      ? 'Invalid Link'
+                      : 'Slack URL'
+                  }
+                  value={slackLink}
+                />
+              </Item>
+              {errors.arePresent && errors.data.slackLink ? (
+                <Text
+                  style={{
+                    color: colors.error,
+                    fontSize: 14,
+                    alignSelf: 'left',
+                    width: '95%',
+                    paddingBottom: '2%',
+                    marginLeft: '4%',
+                  }}
+                >
+                  Invalid Slack Link
+                </Text>
+              ) : null}
+            </View>
+            <View>
+              <Item
+                fixedLabel
+                style={{ width: '95%', height: 45, marginBottom: '2%' }}
               >
-                {facebookLink}
-              </Input>
-            </Item>
-            <Item
-              fixedLabel
-              style={{ width: '95%', height: 45, marginBottom: '5%' }}
-            >
-              <Ionicons
-                name="logo-instagram"
-                size={27}
-                style={{ marginRight: '4%' }}
-              />
-              <Input
-                height="50%"
-                placeholderTextColor={{ color: colors.grayScale10 }}
-                placeholder="Instagram Username"
+                <Ionicons
+                  name="logo-facebook"
+                  size={27}
+                  style={{ marginRight: '4%' }}
+                />
+                <Input
+                  onChangeText={(value) => this.setState({ facebookLink: value })}
+                  height="50%"
+                  placeholderTextColor={
+                    errors.arePresent && errors.data.facebookLink
+                      ? { color: colors.error }
+                      : { color: colors.grayScale10 }
+                  }
+                  placeholder={
+                    errors.arePresent && errors.data.facebookLink
+                      ? 'Invalid Link'
+                      : 'Facebook URL'
+                  }
+                  value={facebookLink}
+                >
+                </Input>
+              </Item>
+              {errors.arePresent && errors.data.facebookLink ? (
+                <Text
+                  style={{
+                    color: colors.error,
+                    fontSize: 14,
+                    alignSelf: 'left',
+                    width: '95%',
+                    paddingBottom: '2%',
+                    marginLeft: '4%',
+                  }}
+                >
+                  Invalid Facebook Link
+                </Text>
+              ) : null}
+            </View>
+            <View>
+              <Item
+                fixedLabel
+                style={{ width: '95%', height: 45, marginBottom: '2%' }}
               >
-                {instagramLink}
-              </Input>
-            </Item>
-
+                <Ionicons
+                  name="logo-instagram"
+                  size={27}
+                  style={{ marginRight: '4%' }}
+                />
+                <Input
+                  onChangeText={(value) => this.setState({ instagramLink: value })}
+                  height="50%"
+                  placeholderTextColor={{ color: colors.grayScale10 }}
+                  placeholder="Instagram Username"
+                  value={instagramLink}
+                >
+                </Input>
+              </Item>
+              {errors.arePresent && errors.data.instagramLink ? (
+                <Text
+                  style={{
+                    color: colors.error,
+                    fontSize: 14,
+                    alignSelf: 'left',
+                    width: '95%',
+                    paddingBottom: '2%',
+                    marginLeft: '4%',
+                  }}
+                >
+                  Invalid Instagram Link
+                </Text>
+              ) : null}
+            </View>
           </Form>
           <Button
             style={{
@@ -343,21 +395,6 @@ export default class EditClub extends Component {
           >
             <Text style={{ alignSelf: 'center' }}>
               {processingRequest ? 'Editing...' : 'Save'}
-            </Text>
-          </Button>
-          <Button
-            style={{
-              alignSelf: 'center',
-              backgroundColor: colors.grayScale4,
-              width: '90%',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginRight: '1%',
-              marginBottom: '5%',
-            }}
-          >
-            <Text style={{ alignSelf: 'center', color: 'black' }}>
-              Cancel
             </Text>
           </Button>
         </Content>
