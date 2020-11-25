@@ -59,12 +59,6 @@ export const card = StyleSheet.create({
     fontWeight: 'bold',
     flex: 5,
   },
-  location: {
-    color: 'teal',
-    fontWeight: '700',
-    marginTop: 5,
-    marginBottom: 5,
-  },
   container: {
     backgroundColor: '#f5f6fa',
     padding: 15,
@@ -89,8 +83,6 @@ export const card = StyleSheet.create({
     borderWidth: 4,
     elevation: 3,
   },
-
-  bodyText: primary.bodyText,
   agendaText: {
     color: '#636e72',
     fontSize: 13,
@@ -98,12 +90,10 @@ export const card = StyleSheet.create({
   },
   banner: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     flex: 1,
     marginBottom: 10,
   },
   bannerIcon: {
-    flex: 1,
     resizeMode: 'center',
     borderRadius: 25,
     marginRight: 10,
