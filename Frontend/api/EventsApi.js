@@ -1,14 +1,5 @@
-import { DateTime } from 'luxon';
 import API from './BaseApi';
-
-const transformEvents = (events) => events.map((event) => {
-  const date = DateTime.fromISO(event.date);
-
-  return {
-    ...event,
-    date,
-  };
-});
+import transformDate from '../util/transform';
 
 exports.getFollowing = async (bearerToken) => {
   const resp = await API.get('/api/event/following', {
@@ -17,7 +8,7 @@ exports.getFollowing = async (bearerToken) => {
     },
   });
 
-  return transformEvents(resp.data.data);
+  return transformDate(resp.data.data);
 };
 
 exports.getInMonth = async (bearerToken, date) => {
@@ -27,7 +18,7 @@ exports.getInMonth = async (bearerToken, date) => {
     },
   });
 
-  return transformEvents(resp.data.data);
+  return transformDate(resp.data.data);
 };
 
 exports.getForClub = async (bearerToken, clubId) => {
@@ -37,7 +28,7 @@ exports.getForClub = async (bearerToken, clubId) => {
     },
   });
 
-  return transformEvents(resp.data.data);
+  return transformDate(resp.data.data);
 };
 
 exports.create = async (bearerToken, eventData) => {

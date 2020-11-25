@@ -15,10 +15,6 @@ const Schema = new mongoose.Schema({
   tags: [{
     type: String,
   }],
-  events: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Event',
-  }],
 });
 
 exports.Model = mongoose.model('Club', Schema);
