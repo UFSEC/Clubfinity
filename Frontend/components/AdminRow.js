@@ -62,7 +62,7 @@ export default class AdminRow extends Component {
             paddingBottom: '2%',
           }}
         >
-          <Thumbnail source={{ uri: thumbnailUrl }} />
+          <Thumbnail style={{ margin: '2%' }} source={{ uri: thumbnailUrl }} />
           <View
             style={{
               marginLeft: '3%',

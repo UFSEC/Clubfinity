@@ -146,44 +146,44 @@ export default class ClubScr extends React.Component {
             </H1>
             <Text style={{ paddingBottom: '5%' }}>{club.category}</Text>
 
-            <Button
-              style={{
-                alignSelf: 'center',
-                backgroundColor: isFollowing ? colors.accent2 : colors.accent0,
-                width: '85%',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              onPress={this.followBtnHandler}
-            >
-              { isFollowing
-                ? <Text style={styles.bolded}>Following</Text> : <Text style={styles.bolded}>Follow</Text>}
-            </Button>
-
             {isAdmin ? (
               <>
                 <Button
                   style={styles.adminButton}
                   onPress={() => navigation.navigate('AdminDashboard', { club })}
                 >
-                  <Text style={styles.bolded}>Manage</Text>
+                  <Text>Manage</Text>
                 </Button>
 
                 <Button
                   style={styles.adminButton}
                   onPress={() => navigation.navigate('CreateAnnouncementScr', { club })}
                 >
-                  <Text style={styles.bolded}>Make an announcement</Text>
+                  <Text>Make an announcement</Text>
                 </Button>
 
                 <Button
                   style={styles.adminButton}
                   onPress={() => navigation.navigate('EventCreation', { club })}
                 >
-                  <Text style={styles.bolded}>Create a new event</Text>
+                  <Text>Create a new event</Text>
                 </Button>
               </>
-            ) : false}
+            ) : (
+              <Button
+                style={{
+                  alignSelf: 'center',
+                  backgroundColor: isFollowing ? colors.accent2 : colors.accent0,
+                  width: '85%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+                onPress={this.followBtnHandler}
+              >
+                { isFollowing
+                  ? <Text>Following</Text> : <Text>Follow</Text>}
+              </Button>
+            )}
 
             {/**
              * Connect
@@ -339,7 +339,7 @@ export default class ClubScr extends React.Component {
                               alignItems: 'center',
                             }}
                           >
-                            <Text style={{ marginLeft: '0%' }}>
+                            <Text numberOfLines={1} style={{ marginRight: '1%' }}>
                               {item.title}
                             </Text>
                             <Ionicons name="md-arrow-dropright" size={30} />
