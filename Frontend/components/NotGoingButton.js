@@ -19,7 +19,7 @@ export default class NotGoingButton extends Component {
         backgroundColor="#ff8080"
         onPress={this._eventHandler}
       >
-        Remove
+        Mute
       </FontAwesome.Button>
     );
   }

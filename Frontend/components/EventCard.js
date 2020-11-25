@@ -1,10 +1,36 @@
 import React, { Component } from 'react';
-import { Text, View, Image } from 'react-native';
+import {
+  Text, View, Image, StyleSheet,
+} from 'react-native';
 import PropTypes from 'prop-types';
-import { card } from '../assets/styles/stylesheet';
-import GoingButton from './GoingButton';
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
+import { Card } from 'native-base';
+import { card, primary } from '../assets/styles/stylesheet';
 import NotGoingButton from './NotGoingButton';
 import SECIcon from '../assets/images/sec-icon.png';
+import colors from '../util/colors';
+
+const styles = StyleSheet.create({
+  clubname: {
+    color: colors.accent2,
+  },
+  date: {
+    color: colors.sucess,
+    flex: 1,
+    textAlign: 'right',
+    fontSize: 23,
+  },
+  location: {
+    color: colors.sucess,
+    fontWeight: '700',
+    marginLeft: '2%',
+  },
+  bodyText: {
+    color: primary.bodyText.color,
+    fontSize: primary.bodyText.fontSize,
+    marginLeft: '2%',
+  },
+});
 
 export default class EventCard extends Component {
   static propTypes = {
@@ -30,40 +56,61 @@ export default class EventCard extends Component {
 
   notGoingHandler = () => {};
 
+  goingHandler = () => {}
+
+  interestedBtnHandler = () => {}
+
   render() {
-    const { goingChecked } = this.state;
     const { name, location, description } = this.props;
-    const containerStyle = goingChecked ? card.goingMarked : card.container;
-    // const iconImagePath = `../assets/images/${this.props.data.icon}`;
+    const containerStyle = card.container;
     return (
-      <View style={containerStyle}>
+      <Card style={containerStyle}>
+
         <View style={card.banner}>
           <Image style={card.bannerIcon} source={SECIcon} />
-          <Text style={card.title}>{name}</Text>
+          <View>
+            <Text style={card.title}>
+              {' '}
+              {name}
+            </Text>
+            <Text style={styles.clubname}> ClubName</Text>
+          </View>
+          <Text style={styles.date}>Oct 22</Text>
         </View>
         <View style={card.body}>
-          <Text style={card.location}>{location}</Text>
-          <Text style={card.bodyText}>{description}</Text>
+          <Text style={styles.location}>
+            {location}
+          </Text>
+          <Text style={styles.bodyText}>{description}</Text>
           <View
             style={{
               flexDirection: 'row',
-              justifyContent: 'space-between',
               marginTop: 10,
+              justifyContent: 'space-evenly',
             }}
           >
+            <FontAwesome.Button
+              name="check-square-o"
+              backgroundColor="#16a085"
+              onPress={this.goingHandler}
+            >
+              Going
+            </FontAwesome.Button>
+            <Ionicons.Button
+              name="ios-star-outline"
+              backgroundColor="#50adf9"
+              onPress={this.interestedBtnHandler}
+            >
+              Interested
+            </Ionicons.Button>
             <NotGoingButton
               clickHandler={this.notGoingHandler}
               name="Not Going"
               btnColor="#ff8080"
             />
-            <GoingButton
-              clickHandler={this.goingBtnHandler}
-              name="Going"
-              btnColor="#16a085"
-            />
           </View>
         </View>
-      </View>
+      </Card>
     );
   }
 }
