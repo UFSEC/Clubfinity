@@ -8,8 +8,8 @@ import { card, primary } from '../assets/styles/stylesheet';
 import MuteButton from './MuteButton';
 import SECIcon from '../assets/images/sec-icon.png';
 import colors from '../util/colors';
-import GoingButton from '../components/GoingButton'
-import InterestedButton from '../components/InterestedButton'
+import GoingButton from './GoingButton';
+import InterestedButton from './InterestedButton';
 
 const styles = StyleSheet.create({
   clubname: {
@@ -42,11 +42,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 4,
     elevation: 2,
-  }
+  },
 });
 
 export default class EventCard extends Component {
-  
   static propTypes = {
     name: PropTypes.string.isRequired,
     location: PropTypes.string.isRequired,
@@ -57,64 +56,68 @@ export default class EventCard extends Component {
     super(props);
     this.state = {
       mute: false,
-      going: false, 
+      going: false,
       interested: false,
     };
   }
 
   muteHandler = () => {
-    const newMute = !this.state.mute
+    const { mute } = this.state;
     this.setState({
-      mute: newMute
-    }) 
-    if (newMute) {
+      mute: !mute,
+    });
+    if (!mute) {
       this.setState(
         {
-          going: false, 
-          interested: false 
-        }
-      )
+          going: false,
+          interested: false,
+        },
+      );
     }
   };
 
   goingHandler = async () => {
-    const newGoing = !this.state.going
+    const { going } = this.state;
     await this.setState({
-      going: newGoing
-    })
-    if (newGoing) {
+      going: !going,
+    });
+    if (!going) {
       this.setState({
-          mute: false
-      })
+        mute: false,
+      });
     }
   }
 
   interestedHandler = () => {
-    const newInterested = !this.state.interested
+    const { interested } = this.state;
     this.setState({
-      interested: newInterested
-    })
-    if(newInterested) {
+      interested: !interested,
+    });
+    if (!interested) {
       this.setState({
-        mute: false
-      })
+        mute: false,
+      });
     }
   }
 
   render() {
-    const { 
-      name, 
+    const {
+      name,
       location,
-      description 
+      description,
     } = this.props;
     const {
-      mute, 
-      going, 
-      interested, 
-    } = this.state
-    const {mutedContainer,bodyText,date, clubname} = styles 
-    const {container,title,bannerIcon,banner,body} = card 
-    const containerStyle = mute ? mutedContainer : container
+      mute,
+      going,
+      interested,
+    } = this.state;
+    const {
+      mutedContainer, bodyText, date, clubname,
+    } = styles;
+    const {
+      container, title, bannerIcon, banner, body,
+    } = card;
+    const containerStyle = mute ? mutedContainer : container;
     return (
       <Card style={containerStyle}>
         <View style={banner}>
@@ -129,7 +132,7 @@ export default class EventCard extends Component {
           <Text style={date}>Oct 22</Text>
         </View>
         <View style={body}>
-          <Text style={this.location}>
+          <Text style={styles.location}>
             {location}
           </Text>
           <Text style={bodyText}>{description}</Text>
@@ -141,16 +144,16 @@ export default class EventCard extends Component {
             }}
           >
             <GoingButton
-              clickHandler = {this.goingHandler}
-              isGoing = {going}
+              clickHandler={this.goingHandler}
+              isGoing={going}
             />
             <InterestedButton
-              clickHandler = {this.interestedHandler}
-              isInterested = {interested}
+              clickHandler={this.interestedHandler}
+              isInterested={interested}
             />
             <MuteButton
               clickHandler={this.muteHandler}
-              isMuted = {mute}
+              isMuted={mute}
             />
           </View>
         </View>
