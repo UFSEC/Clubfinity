@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
-import {
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import {
-  Text,
-} from 'native-base';
+import { Text } from 'native-base';
 import PropTypes from 'prop-types';
 import colors from '../util/colors';
 
@@ -41,11 +36,20 @@ export default class Row extends Component {
             borderBottomWidth: 0.3,
           }}
         >
-          <View style={{ marginRight: 'auto' }}>
-            <Text>
+          <View
+            style={{
+              display: 'flex',
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Text numberOfLines={1} style={{ alignSelf: 'flex-start' }}>
               {date}
-              {'    '}
-              <Text style={{ fontWeight: 'bold' }}>{text}</Text>
+              {'        '}
+              <Text style={{ fontWeight: 'bold', alignSelf: 'center' }}>
+                {text}
+              </Text>
             </Text>
           </View>
           <View style={{ marginLeft: 'auto' }}>
