@@ -16,14 +16,26 @@ exports.create = async (userParams) => {
 exports.getAll = async () => await User.find({}).exec();
 
 exports.get = async (id) => {
-  const user = await User.findById(id).populate('clubs').exec();
+  const user = await User.findById(id).populate({
+    path: 'clubs',
+    populate: {
+      path: 'admins',
+      model: 'User',
+    },
+  }).exec();
   if (!user) throw new NotFoundError();
 
   return user;
 };
 
 exports.getByUsername = async (username) => {
-  const user = await User.findOne({ username }).populate('clubs').exec();
+  const user = await User.findOne({ username }).populate({
+    path: 'clubs',
+    populate: {
+      path: 'admins',
+      model: 'User',
+    },
+  }).exec();
   if (!user) throw new NotFoundError();
 
   return user;
