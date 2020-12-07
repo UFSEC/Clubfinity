@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, AsyncStorage } from 'react-native';
 import {
   Button,
   Text,
@@ -11,8 +11,10 @@ import {
   Input,
   Textarea,
 } from 'native-base';
+import { DateTime } from 'luxon';
 
 import colors from '../util/colors';
+import AnnouncementApi from '../api/AnnouncementApi';
 
 export default class CreateAnnouncementScr extends Component {
   static navigationOptions = {
@@ -42,20 +44,31 @@ export default class CreateAnnouncementScr extends Component {
     this.setState({ description: text });
   };
 
-  handleCreateAnnouncement = () => {
+  handleCreateAnnouncement = async () => {
+    const { navigation } = this.props;
     const { title, description } = this.state;
+    const club = navigation.getParam('club', 'NO-CLUB');
 
     if (!title || title.length < 1) {
       this.setState({ titleError: true });
-    } else {
-      this.setState({ titleError: false });
+      return;
     }
+    this.setState({ titleError: false });
 
     if (!description || description.length < 1) {
       this.setState({ descriptionError: true });
-    } else {
-      this.setState({ descriptionError: false });
+      return;
     }
+    this.setState({ descriptionError: false });
+
+    const bearerToken = await AsyncStorage.getItem('userToken');
+    await AnnouncementApi.create(bearerToken, {
+      title,
+      description,
+      date: DateTime.local(),
+      club: club._id,
+    });
+    navigation.navigate('Club', { club });
   };
 
   render() {

@@ -1,34 +1,38 @@
-import React from "react";
-import { Platform } from "react-native";
+import React from 'react';
+import { Platform } from 'react-native';
 import {
   createStackNavigator,
   createBottomTabNavigator,
   createAppContainer,
   createSwitchNavigator,
-} from "react-navigation";
-import { Ionicons } from "@expo/vector-icons";
-import CalendarScr from "../screens/CalendarScr";
-import HomeScr from "../screens/HomeScr";
-import DiscoverScr from "../screens/DiscoverScr";
-import ProfileScr from "../screens/ProfileScr";
-import ClubScr from "../screens/ClubScr";
-import SignupScr from "../screens/SignupScr";
-import SigninScr from "../screens/SigninScr";
-import AuthScr from "../screens/AuthScr";
-import EditProfile from "../screens/EditProfile";
-import ClubCreation from "../screens/ClubCreation";
-import SettingScr from "../screens/SettingScr";
-import AdminDashboard from "../screens/AdminDashboard";
-import EventList from "../screens/EventList";
+} from 'react-navigation';
+import { Ionicons } from '@expo/vector-icons';
+import CalendarScr from '../screens/CalendarScr';
+import HomeScr from '../screens/HomeScr';
+import DiscoverScr from '../screens/DiscoverScr';
+import ProfileScr from '../screens/ProfileScr';
+import ClubScr from '../screens/ClubScr';
+import SignupScr from '../screens/SignupScr';
+import SigninScr from '../screens/SigninScr';
+import AuthScr from '../screens/AuthScr';
+import EditProfile from '../screens/EditProfile';
+import ClubCreation from '../screens/ClubCreation';
+import SettingScr from '../screens/SettingScr';
+import EventList from '../screens/EventList';
+import EventCreation from '../screens/EventCreation';
+import CreateAnnouncementScr from '../screens/CreateAnnouncementScr';
+import AdminList from '../screens/AdminList';
+import EditClub from '../screens/EditClub';
+
 const HomeStack = createStackNavigator(
   {
     Home: HomeScr,
   },
   {
     navigationOptions: {
-      title: "Home",
+      title: 'Home',
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
-        const iconName = Platform.OS === "ios" ? "ios-home" : "md-home";
+        const iconName = Platform.OS === 'ios' ? 'ios-home' : 'md-home';
         return (
           <Ionicons
             name={iconName}
@@ -38,10 +42,10 @@ const HomeStack = createStackNavigator(
         );
       },
       headerStyle: {
-        backgroundColor: "white",
-        color: "black",
+        backgroundColor: 'white',
+        color: 'black',
       },
-      headerTintColor: "black",
+      headerTintColor: 'black',
     },
   }
 );
@@ -54,7 +58,7 @@ const CalendarStack = createStackNavigator(
     navigationOptions: {
       header: null,
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
-        const iconName = Platform.OS === "ios" ? "ios-calendar" : "md-calendar";
+        const iconName = Platform.OS === 'ios' ? 'ios-calendar' : 'md-calendar';
         return (
           <Ionicons
             name={iconName}
@@ -78,7 +82,7 @@ const ProfileStack = createStackNavigator(
     navigationOptions: {
       header: null,
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
-        const iconName = Platform.OS === "ios" ? "ios-happy" : "md-happy";
+        const iconName = Platform.OS === 'ios' ? 'ios-happy' : 'md-happy';
         return (
           <Ionicons
             name={iconName}
@@ -95,15 +99,18 @@ const DiscoverStack = createStackNavigator(
   {
     Discover: DiscoverScr,
     Club: ClubScr,
-    AdminDashboard: AdminDashboard,
-    EventList: EventList, 
+    EditClub: EditClub,
+    EventList: EventList,
+    EventCreation: EventCreation,
+    CreateAnnouncementScr: CreateAnnouncementScr,
+    AdminList: AdminList,
   },
   {
-    initialRouteName: "Discover",
+    initialRouteName: 'Discover',
     navigationOptions: {
       header: null,
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
-        const iconName = Platform.OS === "ios" ? "ios-search" : "md-search";
+        const iconName = Platform.OS === 'ios' ? 'ios-search' : 'md-search';
         return (
           <Ionicons
             name={iconName}
@@ -125,10 +132,10 @@ const AppStack = createBottomTabNavigator(
     Profile: ProfileStack,
   },
   {
-    headerLayoutPreset: "center",
+    headerLayoutPreset: 'center',
     tabBarOptions: {
-      activeTintColor: "#7e947f",
-      inactiveTintColor: "#bdc3c7",
+      activeTintColor: '#7e947f',
+      inactiveTintColor: '#bdc3c7',
       showLabel: false,
     },
   }
@@ -141,7 +148,7 @@ const AuthStack = createStackNavigator(
     SignUp: SignupScr,
   },
   {
-    initialRouteName: "SignIn",
+    initialRouteName: 'SignIn',
   }
 );
 
@@ -153,7 +160,7 @@ const ContainerNavigator = createSwitchNavigator(
     App: AppStack,
   },
   {
-    initialRouteName: "AuthLoading", // This component determines which stack to route to initially
+    initialRouteName: 'AuthLoading', // This component determines which stack to route to initially
   }
 );
 
