@@ -1,6 +1,9 @@
 import React from 'react';
 import {
-  View, FlatList, TouchableOpacity,
+  View,
+  FlatList,
+  TouchableOpacity,
+  AsyncStorage,
 } from 'react-native';
 import {
   Card,
@@ -21,6 +24,7 @@ import DefaultPic from '../assets/images/profile-icon.png';
 import thumbnailTheme from '../native-base-theme/components/Thumbnail';
 import getTheme from '../native-base-theme/components';
 import colors from '../util/colors';
+import ClubsApi from '../api/ClubsApi';
 
 export default class ProfileScr extends React.Component {
   static contextType = UserContext;
@@ -48,8 +52,18 @@ export default class ProfileScr extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      managingClubs: [],
       searchText: '',
     };
+  }
+
+  async componentDidMount() {
+    const bearerToken = await AsyncStorage.getItem('userToken');
+    const managingClubs = await ClubsApi.getManaging(bearerToken);
+
+    this.setState({
+      managingClubs,
+    });
   }
 
   filterFollowing = (followedClubs) => {
@@ -107,12 +121,114 @@ export default class ProfileScr extends React.Component {
     );
   };
 
+  renderClubList = (clubs, headerText, emptyStateText) => (clubs.length > 0
+    ? this.renderClubTouchableList(clubs, headerText)
+    : this.renderClubListEmptyState(emptyStateText))
+
+  renderClubTouchableList = (clubs, headerText) => (
+    <FlatList
+      data={this.filterFollowing(clubs)}
+      contentContainerStyle={{ flexGrow: 1 }}
+      renderItem={({ item }) => (
+        <TouchableOpacity
+          onPress={() => this.handleClubSelect(item)}
+          style={{
+            width: '95%',
+            alignSelf: 'center',
+          }}
+        >
+          <View
+            style={{
+              width: '100%',
+              alignSelf: 'center',
+              display: 'flex',
+              flexDirection: 'row',
+            }}
+          >
+            <Card
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                width: '100%',
+                alignItems: 'center',
+              }}
+            >
+              <ListItem avatar style={{ paddingTop: 0 }}>
+                <Left style={{ paddingTop: 0 }}>
+                  <Thumbnail source={{ uri: item.thumbnailUrl }} />
+                </Left>
+              </ListItem>
+              <View style={{ display: 'flex', flexDirection: 'column' }}>
+                <CardItem
+                  header
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignContent: 'flex-start',
+                    alignItems: 'flex-start',
+                    paddingTop: '1%',
+                    paddingBottom: '1%',
+                  }}
+                >
+                  <Text style={{ paddingTop: '2%' }}>{item.name}</Text>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      color: colors.grayScale8,
+                    }}
+                  >
+                    {item.category}
+                  </Text>
+                </CardItem>
+                <CardItem body>
+                  <Text
+                    style={{ fontSize: 14, color: colors.grayScale8 }}
+                  >
+                    {item.description}
+                  </Text>
+                </CardItem>
+              </View>
+              <View style={{ marginLeft: 'auto' }}>
+                <Ionicons
+                  name="md-arrow-dropright"
+                  size={30}
+                  style={{ paddingRight: '5%' }}
+                />
+              </View>
+            </Card>
+          </View>
+        </TouchableOpacity>
+      )}
+      numColumns={1}
+      keyExtractor={(item) => item._id}
+      ListHeaderComponent={() => (
+        <Text style={{ marginLeft: '4%', color: colors.grayScale7 }}>{ headerText }</Text>
+      )}
+    />
+  )
+
+  renderClubListEmptyState = (message) => (
+    <View
+      style={{
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingTop: '35%',
+      }}
+    >
+      <Text style={{ color: colors.grayScale8 }}>
+        {/* You are not following any clubs yet! */}
+        { message }
+      </Text>
+    </View>
+  );
+
   handleClubSelect = (club) => {
     const { navigation } = this.props;
     navigation.navigate('Club', { club });
   };
 
   render() {
+    const { managingClubs } = this.state;
     return (
       <UserContext.Consumer>
         {({ user }) => (
@@ -150,100 +266,10 @@ export default class ProfileScr extends React.Component {
 
             {/* Grid */}
 
-            { user.clubs.length > 0 ? (
+            { this.renderSearch() }
 
-              <FlatList
-                data={this.filterFollowing(user.clubs)}
-                contentContainerStyle={{ flexGrow: 1 }}
-                renderItem={({ item }) => (
-                  <TouchableOpacity
-                    onPress={() => this.handleClubSelect(item)}
-                    style={{
-                      width: '95%',
-                      alignSelf: 'center',
-                    }}
-                  >
-                    <View
-                      style={{
-                        width: '100%',
-                        alignSelf: 'center',
-                        display: 'flex',
-                        flexDirection: 'row',
-                      }}
-                    >
-                      <Card
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          width: '100%',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <ListItem avatar style={{ paddingTop: 0 }}>
-                          <Left style={{ paddingTop: 0 }}>
-                            <Thumbnail source={{ uri: item.thumbnailUrl }} />
-                          </Left>
-                        </ListItem>
-                        <View style={{ display: 'flex', flexDirection: 'column' }}>
-                          <CardItem
-                            header
-                            style={{
-                              display: 'flex',
-                              flexDirection: 'column',
-                              alignContent: 'flex-start',
-                              alignItems: 'flex-start',
-                              paddingTop: '1%',
-                              paddingBottom: '1%',
-                            }}
-                          >
-                            <Text style={{ paddingTop: '2%' }}>{item.name}</Text>
-                            <Text
-                              style={{
-                                fontSize: 12,
-                                color: colors.grayScale8,
-                              }}
-                            >
-                              {item.category}
-                            </Text>
-                          </CardItem>
-                          <CardItem body>
-                            <Text
-                              style={{ fontSize: 14, color: colors.grayScale8 }}
-                            >
-                              {item.description}
-                            </Text>
-                          </CardItem>
-                        </View>
-                        <View style={{ marginLeft: 'auto' }}>
-                          <Ionicons
-                            name="md-arrow-dropright"
-                            size={30}
-                            style={{ paddingRight: '5%' }}
-                          />
-                        </View>
-                      </Card>
-                    </View>
-                  </TouchableOpacity>
-                )}
-                numColumns={1}
-                keyExtractor={(item) => item._id}
-                ListHeaderComponent={this.renderSearch}
-              />
-
-            ) : (
-
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  paddingTop: '35%',
-                }}
-              >
-                <Text style={{ color: colors.grayScale8 }}>
-                  You are not following any clubs yet!
-                </Text>
-              </View>
-            )}
+            { this.renderClubList(managingClubs, 'Managing', 'You are not managing any clubs yet!') }
+            { this.renderClubList(user.clubs, 'Following', 'You are not following any clubs yet!') }
 
           </View>
         )}

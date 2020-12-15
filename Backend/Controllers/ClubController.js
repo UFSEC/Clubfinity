@@ -21,6 +21,11 @@ exports.getFollowing = async (req, res) => catchErrors(res, async () => {
   return user.clubs;
 });
 
+exports.getManaging = async (req, res) => catchErrors(res, async () => {
+  const user = await getCurrentUser(req);
+  return clubDAO.getManagedBy(user._id);
+});
+
 exports.update = async (req, res) => catchErrors(res, async () => {
   validateClubData(req);
 
