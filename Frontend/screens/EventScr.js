@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { AsyncStorage, Platform } from 'react-native';
 import {
   Button,
   Text,
@@ -7,16 +6,12 @@ import {
   Content,
   Form,
   Item,
-  Picker,
   Label,
   Input,
 } from 'native-base';
-import { Ionicons } from '@expo/vector-icons';
+import { DateTime } from 'luxon';
 import colors from '../util/colors';
-import Majors from '../data/Majors';
-import ClassYears from '../data/ClassYears';
 import UserContext from '../util/UserContext';
-import EventsApi from '../api/EventsApi';
 
 export default class EventScr extends Component {
   static navigationOptions = {
@@ -28,21 +23,16 @@ export default class EventScr extends Component {
 
   static contextType = UserContext;
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      title: '',
-      description: '',
-      location: '',
-      date: '',
-    };
-  }
-
-  componentDidMount() {
-    const { user } = this.context;
-  }
 
   render() {
+    const {
+      navigation,
+    } = this.props;
+    const title = navigation.getParam('title', '');
+    const description = navigation.getParam('description', '');
+    const location = navigation.getParam('location', '');
+    const date = navigation.getParam('date', '');
+    const id = navigation.getParam('id', '');
     return (
       <Container>
         <Content>
@@ -64,28 +54,26 @@ export default class EventScr extends Component {
               }}
               stackedLabel
             >
-              <Label
-              >
+              <Label>
                 Title
               </Label>
               <Input
-                onChangeText={(value) => {}}
+                disabled
               >
-                {'username'}
+                {title}
               </Input>
             </Item>
             <Item
               style={{ width: '95%', height: 45, marginBottom: '5%' }}
               stackedLabel
             >
-              <Label
-              >
+              <Label>
                 Description
               </Label>
               <Input
-                onChangeText={(value) => {}}
+                disabled
               >
-                {'firstName'}
+                {description}
               </Input>
             </Item>
 
@@ -93,32 +81,30 @@ export default class EventScr extends Component {
               style={{ width: '95%', height: 45, marginBottom: '5%' }}
               stackedLabel
             >
-              <Label
-              >
+              <Label>
                 Location
               </Label>
               <Input
-                onChangeText={(value) => {}}
+                disabled
               >
-                {'lastName'}
+                {location}
               </Input>
             </Item>
             <Item
               style={{ width: '95%', height: 45, marginBottom: '5%' }}
               stackedLabel
             >
-              <Label
-              >
+              <Label>
                 Date
               </Label>
               <Input
-                onChangeText={(value) => {}}
+                disabled
               >
-                {'lastName'}
+                {DateTime.fromISO(date).toLocaleString(DateTime.DATETIME_MED)}
               </Input>
             </Item>
           </Form>
-          
+
           <Button
             style={{
               alignSelf: 'center',
@@ -130,7 +116,9 @@ export default class EventScr extends Component {
               marginBottom: '5%',
               marginTop: '5%',
             }}
-            onPress={() => {}}
+            onPress={() => navigation.navigate('EditEvent', {
+              id, title, description, location, date,
+            })}
           >
             <Text style={{ alignSelf: 'center' }}>
               Edit

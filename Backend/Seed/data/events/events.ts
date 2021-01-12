@@ -21,7 +21,7 @@ const eventsData: Event[] = [
     date: DateTime.local(2020, 3, 23),
     goingUsers: [Types.ObjectId('16cb91bdc3464f14678934ca')],
     club: new Types.ObjectId('99cb91bdc3464f14678934ca'),
-    _id: new Types.ObjectId(),
+    _id: new Types.ObjectId('99cb91bdc3464f14678934ff'),
   },
   {
     name: 'Hash Code',

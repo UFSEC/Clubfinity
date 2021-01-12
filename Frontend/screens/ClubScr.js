@@ -68,7 +68,13 @@ export default class ClubScr extends React.Component {
     };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    const { navigation } = this.props;
+    navigation.addListener('willFocus', this.onFocus);
+    this.onFocus();
+  }
+
+  onFocus = async () => {
     const { navigation } = this.props;
     const { user } = this.context;
     const club = navigation.getParam('club', 'NO-CLUB');
@@ -275,7 +281,14 @@ export default class ClubScr extends React.Component {
                       data={events}
                       style={{ width: '100%' }}
                       renderItem={({ item }) => (
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('EventScr', {
+                          id: item._id,
+                          title: item.name,
+                          description: item.description,
+                          location: item.location,
+                          date: item.date,
+                        })}
+                        >
                           <View
                             style={{
                               width: '100%',
