@@ -353,18 +353,4 @@ describe('Users', () => {
       });
     });
   });
-
-  describe('DELETE /user/', async () => {
-    it('should delete a user and return it', async () => {
-      const resp = await http.delete('/api/user');
-      isOk(resp);
-
-      resp.body.data.should.deep.include(currentUserParams);
-
-      const getResp = await http.get(`/api/user/${currentUser._id}`);
-      isNotOk(getResp, 404);
-
-      getResp.body.error.should.contain('Id not found');
-    });
-  });
 });
