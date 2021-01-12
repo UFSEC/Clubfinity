@@ -23,7 +23,6 @@ export default class EventScr extends Component {
 
   static contextType = UserContext;
 
-
   render() {
     const {
       navigation,
