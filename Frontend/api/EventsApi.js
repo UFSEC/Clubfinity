@@ -38,3 +38,23 @@ exports.create = async (bearerToken, eventData) => {
     },
   });
 };
+
+exports.update = async (eventId, bearerToken, event) => {
+  const axiosResponse = await API.put(
+    `/api/event/${eventId}`,
+    event,
+    {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+      },
+    },
+  )
+    .then(async (response) => response)
+    .catch((error) => {
+      if (error) {
+        return error;
+      }
+      return { error: 'Unable to update event' };
+    });
+  return axiosResponse;
+};

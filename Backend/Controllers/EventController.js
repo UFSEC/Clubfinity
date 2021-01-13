@@ -93,6 +93,14 @@ exports.validate = (type) => {
         body('club', 'Club id does not exist').exists(),
       ];
     }
+    case 'validateUpdateEventInfo': {
+      return [
+        body('name', 'Event name does not exist').exists(),
+        body('location', 'Location does not exist').exists(),
+        body('description', 'Description does not exist').exists(),
+        body('date', 'Date does not exist').exists(),
+      ];
+    }
     case 'validateExistingEvent': {
       return [
         param('id', 'Event id does not exist or invalid')

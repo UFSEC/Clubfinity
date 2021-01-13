@@ -13,10 +13,10 @@ import {
 } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import DatePicker from 'react-native-datepicker';
-import { DateTime } from 'luxon';
 import colors from '../util/colors';
 import { isValidFacebookUrl } from '../util/validation';
 import EventsApi from '../api/EventsApi';
+import { combineAndParseDateTime, DATE_PICKER_FORMAT, TIME_PICKER_FORMAT } from '../util/dateUtil';
 
 export default class EventCreation extends Component {
   static navigationOptions = {
@@ -69,7 +69,7 @@ export default class EventCreation extends Component {
       selectedDate,
       selectedTime,
     } = this.state;
-    const parsedDate = this.combineAndParseDateTime(selectedDate, selectedTime);
+    const parsedDate = combineAndParseDateTime(selectedDate, selectedTime);
 
     const userToken = await AsyncStorage.getItem('userToken');
     await EventsApi.create(userToken, {
@@ -79,11 +79,6 @@ export default class EventCreation extends Component {
       date: parsedDate.toISO(),
       location,
     });
-  };
-
-  combineAndParseDateTime = (date, time) => {
-    const combined = `${date} ${time}`;
-    return DateTime.fromFormat(combined, 'MMM d yyyy hh:mm a');
   };
 
   isRequestValid = () => {
@@ -186,7 +181,7 @@ export default class EventCreation extends Component {
                 placeholder={errors.arePresent && errors.data.selectedDate
                   ? 'Invalid date'
                   : 'Select a Date'}
-                format="MMM D yyyy"
+                format={DATE_PICKER_FORMAT}
                 minDate={today}
                 confirmBtnText="Set Date"
                 cancelBtnText="Cancel"
@@ -243,7 +238,7 @@ export default class EventCreation extends Component {
                 placeholder={errors.arePresent && errors.data.selectedTime
                   ? 'Invalid time'
                   : 'Select a Time'}
-                format="hh:mm A"
+                format={TIME_PICKER_FORMAT}
                 confirmBtnText="Set Time"
                 minDate={today}
                 cancelBtnText="Cancel"
