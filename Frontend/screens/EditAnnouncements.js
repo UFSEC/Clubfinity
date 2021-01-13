@@ -12,7 +12,7 @@ import {
   Label,
 } from 'native-base';
 import colors from '../util/colors';
-import AnnouncementApi from '../api/AnnouncementApi';
+import AnnouncementsApi from '../api/AnnouncementsApi';
 
 const STATUS_BAR_HEIGHT = StatusBar.currentHeight;
 
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
 
 /* Update for later: announcement should be passed in as navigation parameter */
 const baseClubParameters = {
-  _id: '5fb533f3f3f2886eac0ef879',
+  _id: '5ffefe807bf5a75b18edb39f',
   title: 'CodeForChange date will be changing!',
   description:
   'The CodeForChange will be changing due to conflicts with a few other events going on at the same time.'
@@ -68,11 +68,11 @@ const baseClubParameters = {
 };
 
 export default class EditAnnouncements extends Component {
+  // Update for later: navigate back to previous screen when pressed
   static navigationOptions = ({ navigation }) => ({
     headerTitle: 'Edit Announcement',
     headerRight: (
       <Button
-        // Update for later: navigate back to previous screen when pressed
         onPress={() => { navigation.navigate('Club'); }}
         style={styles.headerRight}
         transparent
@@ -109,7 +109,6 @@ export default class EditAnnouncements extends Component {
   }
 
     editAnnouncement = async () => {
-      console.log(baseClubParameters);
       const validRequest = this.isRequestValid();
       if (!validRequest.valid) {
         this.setState({
@@ -128,13 +127,13 @@ export default class EditAnnouncements extends Component {
       } = this.state;
       baseClubParameters.description = description;
       baseClubParameters.title = title;
-      const updateAnnouncementResponse = await AnnouncementApi.updateAnnouncement(
-        baseClubParameters._id,
+      const updateAnnouncementResponse = await AnnouncementsApi.update(
         bearerToken,
+        baseClubParameters._id,
         baseClubParameters,
       );
       if (updateAnnouncementResponse.error) {
-        alert('Unable to update announcement');
+        alert('Unable to update user');
         console.log(updateAnnouncementResponse.error);
         return;
       }
