@@ -2,7 +2,7 @@ import React from 'react';
 import {
   FlatList,
   View,
-  TouchableOpacity,
+  AsyncStorage,
 } from 'react-native';
 import {
   Root,
@@ -13,6 +13,9 @@ import {
 } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import colors from '../util/colors';
+import UserContext from '../util/UserContext';
+import ClubsApi from '../api/ClubsApi';
+import UserApi from '../api/UserApi';
 
 export default class AdminList extends React.Component {
     static navigationOptions = {
@@ -21,6 +24,8 @@ export default class AdminList extends React.Component {
       headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
       headerTintColor: 'white',
     };
+
+    static contextType = UserContext;
 
     static yearToString(year) {
       switch (year) {
@@ -39,40 +44,69 @@ export default class AdminList extends React.Component {
       }
     }
 
-    render() {
+    constructor(props) {
+      super(props);
+      this.state = {
+        admins: [],
+        isAdmin: false,
+      };
+    }
+
+    async componentDidMount() {
+      const { navigation } = this.props;
+      const { user } = this.context;
+      const club = navigation.getParam('club', 'NO-CLUB');
+      const bearerToken = await AsyncStorage.getItem('userToken');
+      const adminIds = await ClubsApi.getAdmins(bearerToken, club._id);
+      const promises = [];
+      for (let i = 0; i < adminIds.length; i += 1) {
+        promises.push(UserApi.getAdmin(adminIds[i], bearerToken));
+      }
+      const admins = await Promise.all(promises);
+      this.setState({ admins });
+      if ((club.admins.map((admin) => admin._id)).includes(user._id)) {
+        this.setState({ isAdmin: true });
+      }
+    }
+
+    removeAdminHandler = (adminId) => {
       const { navigation } = this.props;
       const club = navigation.getParam('club', 'NO-CLUB');
-      const defaultAdminUrl = 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png';
+      let index = -1;
+      for (let i = 0; i < (club.admins).length; i += 1) {
+        if (((club.admins)[i])._id === adminId) {
+          index = i;
+        }
+      }
+      if (index > -1) {
+        (club.admins).splice(index, 1);
+      }
+      this.handleRemove(club);
+      this.setState({ admins: club.admins });
+    };
 
+    handleRemove = async (club) => {
+      const bearerToken = await AsyncStorage.getItem('userToken');
+      const authResponse = await ClubsApi.updateClub(club._id, bearerToken, club);
+      return authResponse;
+    }
+
+    render() {
+      const { isAdmin, admins } = this.state;
+      const defaultAdminUrl = 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png';
       return (
         <Root>
           <List style={{ paddingTop: 20, width: '100%' }}>
             <FlatList
-              data={club.admins}
+              data={admins}
               style={{ width: '100%' }}
               renderItem={({ item }) => (
-                <TouchableOpacity
+                <View
                   style={{
                     width: '100%',
                     marginBottom: '3%',
                     paddingHorizontal: 20,
                   }}
-                  onPress={() => ActionSheet.show({
-                    options: ['Remove Admin', 'Cancel'],
-                    cancelButtonIndex: 1,
-                    destructiveButtonIndex: 0,
-                  },
-                  (buttonIndex) => {
-                  /* to be updated: remove admin on press */
-                    switch (buttonIndex) {
-                      case 0:
-                        break;
-                      case 1:
-                        break;
-                      default:
-                        break;
-                    }
-                  })}
                 >
                   <View style={{
                     width: '100%',
@@ -110,11 +144,33 @@ export default class AdminList extends React.Component {
                         </Text>
                       </View>
                     </View>
-                    <View>
-                      <MaterialCommunityIcons name="account-minus-outline" size={30} color={colors.grayScale6} />
-                    </View>
+                    {isAdmin ? (
+                      <View>
+                        <MaterialCommunityIcons
+                          name="account-minus-outline"
+                          size={30}
+                          color={colors.grayScale6}
+                          onPress={() => ActionSheet.show({
+                            options: ['Remove Admin', 'Cancel'],
+                            cancelButtonIndex: 1,
+                            destructiveButtonIndex: 0,
+                          },
+                          (buttonIndex) => {
+                            switch (buttonIndex) {
+                              case 0:
+                                this.removeAdminHandler(item._id);
+                                break;
+                              case 1:
+                                break;
+                              default:
+                                break;
+                            }
+                          })}
+                        />
+                      </View>
+                    ) : null}
                   </View>
-                </TouchableOpacity>
+                </View>
               )}
             />
           </List>
