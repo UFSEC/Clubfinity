@@ -2,6 +2,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const passportJWT = require('passport-jwt');
 const userDAO = require('../DAO/UserDAO');
+const { validatePasswordHash } = require('../util/authUtil');
 
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
@@ -14,12 +15,12 @@ passport.use(
       usernameField: 'username',
       passwordField: 'password',
     },
-    ((username, password, done) => {
+    ((username, passwordAttempt, done) => {
       userDAO
         .getByUsername(username)
         .then((userModel) => {
           if (userModel) {
-            if (userModel.password === password) {
+            if (validatePasswordHash(userModel, passwordAttempt)) {
               return done(null, userModel, {
                 message: 'Logged in successfully',
               });
