@@ -63,7 +63,12 @@ export default class EventCard extends Component {
       interested: false,
     };
   }
+  componentDidMount() {
+    if(this.props.name ==='Hash Code' || this.props.name === 'CodeForChange') {
+      console.log({eventName: this.props.name,goingUsers: this.props.goingUsers, userID: this.props.user._id})
 
+    }
+  }
   muteHandler = async () => {
     const { mute } = this.state;
     this.setState({
@@ -93,7 +98,8 @@ export default class EventCard extends Component {
     const {eventID} = this.props
     if(!going){
       console.log('added user')
-      await EventsApi.addGoingUser(eventID,bearerToken)
+      const response = await EventsApi.addGoingUser(eventID,bearerToken)
+      console.log({response})
     }
     else {
       console.log('removing user')

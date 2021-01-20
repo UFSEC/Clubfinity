@@ -75,6 +75,17 @@ exports.update = async (id, updatedData) => {
   return exports.get(id)
 };
 
+exports.addUserEventStatus = async(id,data) => {
+  let event = await exports.get(id)
+  if(data.insertTo === 'goingUsers') {
+    if(event.goingUsers.includes(data.goingUser)) return event
+    event.goingUsers.push(data.goingUser);
+  }
+  await event.save()
+  console.log('main data manipulation is over...')
+  return exports.get(id)
+}
+
 exports.delete = async (id) => {
   const event = await Event.findByIdAndDelete(id);
   if (!event) throw new NotFoundError();

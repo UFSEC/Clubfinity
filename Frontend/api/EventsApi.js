@@ -60,6 +60,7 @@ exports.update = async (eventId, bearerToken, event) => {
 };
 
 exports.addGoingUser = async(eventId, bearerToken) => {
+  console.log('sending request...')
   const axiosResponse = await API.post(
     `/api/event/${eventId}/going-users`,
     {
@@ -68,6 +69,7 @@ exports.addGoingUser = async(eventId, bearerToken) => {
       },
     },
   )
+  console.log('recieved data.. sending to you...')
   return axiosResponse
 }
 

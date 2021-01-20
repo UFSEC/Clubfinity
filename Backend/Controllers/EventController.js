@@ -61,9 +61,10 @@ exports.getGoingUsers = async (req, res) => catchErrors(res, async () => {
 });
 
 exports.addGoingUser = async (req, res) => catchErrors(res, async () => {
+  console.log('starting validation')
   validateEventData(req);
-
-  return eventDAO.update(req.params.id, { $addToSet: { goingUsers: req.userId } });
+  console.log('carrying out main data manipulation')
+  return eventDAO.addUserEventStatus(req.params.id,{ goingUser: req.userId, insertTo: 'goingUsers' } );
 });
 
 exports.removeGoingUser = async (req, res) => catchErrors(res, async () => {
