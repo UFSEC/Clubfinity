@@ -58,3 +58,27 @@ exports.update = async (eventId, bearerToken, event) => {
     });
   return axiosResponse;
 };
+
+exports.addGoingUser = async(eventId, bearerToken) => {
+  const axiosResponse = await API.post(
+    `/api/event/${eventId}/going-users`,
+    {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+      },
+    },
+  )
+  return axiosResponse
+}
+
+exports.removeGoingUser = async(eventId, bearerToken) => {
+  const axiosResponse = await API.delete(
+    `/api/event/${eventId}/going-users`,
+    {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+      },
+    }
+  )
+  return axiosResponse
+}

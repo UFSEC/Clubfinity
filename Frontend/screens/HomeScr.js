@@ -50,6 +50,7 @@ class HomeScr extends Component {
     }
 
     const events = await EventsApi.getFollowing(bearerToken);
+    console.log({events, user } )
     this.setState({
       events,
       isLoading: false,
@@ -97,6 +98,9 @@ class HomeScr extends Component {
               name={item.name}
               location={item.location}
               description={item.description}
+              user = {this.context.user}
+              goingUsers = {item.goingUsers}
+              eventID = {item._id}
             />
           )}
           keyExtractor={(item) => item._id.toString()}

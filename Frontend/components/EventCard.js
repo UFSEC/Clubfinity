@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Text, View, Image, StyleSheet,
+  Text, View, Image, StyleSheet, AsyncStorage
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { Card } from 'native-base';
@@ -10,7 +10,7 @@ import SECIcon from '../assets/images/sec-icon.png';
 import colors from '../util/colors';
 import GoingButton from './GoingButton';
 import InterestedButton from './InterestedButton';
-
+import EventsApi from '../api/EventsApi'
 const styles = StyleSheet.create({
   clubname: {
     color: colors.accent2,
@@ -50,18 +50,21 @@ export default class EventCard extends Component {
     name: PropTypes.string.isRequired,
     location: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
+    user: PropTypes.object.isRequired,
+    goingUsers: PropTypes.object.isRequired,
+    eventID: PropTypes.string.isRequired
   };
 
   constructor(props) {
     super(props);
     this.state = {
       mute: false,
-      going: false,
+      going: this.props.goingUsers.includes(this.props.user._id),
       interested: false,
     };
   }
 
-  muteHandler = () => {
+  muteHandler = async () => {
     const { mute } = this.state;
     this.setState({
       mute: !mute,
@@ -86,6 +89,17 @@ export default class EventCard extends Component {
         mute: false,
       });
     }
+    const bearerToken = await AsyncStorage.getItem('userToken')
+    const {eventID} = this.props
+    if(!going){
+      console.log('added user')
+      await EventsApi.addGoingUser(eventID,bearerToken)
+    }
+    else {
+      console.log('removing user')
+      await EventsApi.removeGoingUser(eventID,bearerToken)
+    }
+    
   }
 
   interestedHandler = () => {
