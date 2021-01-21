@@ -96,7 +96,7 @@ export default class EditAnnouncements extends Component {
   componentDidMount() {
     const { navigation } = this.props;
     this.setState({
-      id: navigation.getParam('id', ''),
+      // id: navigation.getParam('id', ''),
       title: navigation.getParam('title', ''),
       description: navigation.getParam('description', ''),
     });

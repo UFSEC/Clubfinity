@@ -341,7 +341,8 @@ export default class ClubScr extends React.Component {
                           id: item._id,
                           title: item.title,
                           description: item.description,
-                        })}>
+                        })}
+                        >
                           <View
                             style={{
                               width: '100%',
