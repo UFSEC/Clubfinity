@@ -25,6 +25,8 @@ import AdminList from '../screens/AdminList';
 import EditClub from '../screens/EditClub';
 import EditEvent from '../screens/EditEvent'
 import EventScr from '../screens/EventScr'
+import AnnouncementScr from '../screens/AnnouncementScr'
+import EditAnnouncement from '../screens/EditAnnouncements'
 
 const HomeStack = createStackNavigator(
   {
@@ -107,7 +109,9 @@ const DiscoverStack = createStackNavigator(
     CreateAnnouncementScr: CreateAnnouncementScr,
     AdminList: AdminList,
     EventScr: EventScr,
-    EditEvent: EditEvent
+    AnnouncementScr: AnnouncementScr,
+    EditEvent: EditEvent,
+    EditAnnouncement: EditAnnouncement
   },
   {
     initialRouteName: 'Discover',

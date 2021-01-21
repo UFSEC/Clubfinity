@@ -93,90 +93,99 @@ export default class EditAnnouncements extends Component {
     };
   }
 
-    editAnnouncement = async () => {
-      const validRequest = this.isRequestValid();
-      if (!validRequest.valid) {
-        await this.setState({
-          errors: { arePresent: true, data: validRequest.errors },
-        });
-      }
-    }
+  componentDidMount() {
+    const { navigation } = this.props;
+    this.setState({
+      id: navigation.getParam('id', ''),
+      title: navigation.getParam('title', ''),
+      description: navigation.getParam('description', ''),
+    });
+  }
 
-    isRequestValid = () => {
-      const { title, description } = this.state;
-      const errorData = { title: false, description: false };
-      errorData.title = title === '';
-      errorData.description = description === '';
-      const validRequest = !(errorData.title || errorData.description);
-      return { valid: validRequest, errors: errorData };
+  editAnnouncement = async () => {
+    const validRequest = this.isRequestValid();
+    if (!validRequest.valid) {
+      await this.setState({
+        errors: { arePresent: true, data: validRequest.errors },
+      });
     }
+  }
 
-    render() {
-      const { errors } = this.state;
-      return (
-        <Container>
-          <Content>
-            <Form
-              style={styles.formStyle}
+  isRequestValid = () => {
+    const { title, description } = this.state;
+    const errorData = { title: false, description: false };
+    errorData.title = title === '';
+    errorData.description = description === '';
+    const validRequest = !(errorData.title || errorData.description);
+    return { valid: validRequest, errors: errorData };
+  }
+
+  render() {
+    const { errors } = this.state;
+    return (
+      <Container>
+        <Content>
+          <Form
+            style={styles.formStyle}
+          >
+            <Item style={{
+              marginBottom: '8%',
+            }}
             >
-              <Item style={{
-                marginBottom: '8%',
-              }}
-              >
-                <Label
-                  style={{
-                    color:
-                      errors.arePresent && errors.data.title
-                        ? colors.error
-                        : colors.grayScale10,
-                  }}
-                >
-                  Edit Title
-                </Label>
-                <Input
-                  onChangeText={(value) => this.setState({ title: value })}
-                  style={{ textAlign: 'right' }}
-                  placeholderTextColor={colors.error}
-                  placeholder={
-                  errors.arePresent && errors.data.title
-                    ? 'No Title Given'
-                    : ''
-                }
-                />
-              </Item>
-              <Item>
-                <Label style={{
+              <Label
+                style={{
                   color:
-                    errors.arePresent && errors.data.description
+                    errors.arePresent && errors.data.title
                       ? colors.error
                       : colors.grayScale10,
                 }}
-                >
-                  Edit Description
-                </Label>
-                <Input
-                  onChangeText={(value) => this.setState({ description: value })}
-                  style={{ textAlign: 'right' }}
-                  placeholderTextColor={colors.error}
-                  placeholder={
+              >
+                Edit Title
+              </Label>
+              <Input
+                onChangeText={(value) => this.setState({ title: value })}
+                style={{ textAlign: 'right' }}
+                placeholderTextColor={colors.error}
+                placeholder={
+                errors.arePresent && errors.data.title
+                  ? 'No Title Given'
+                  : ''
+              }
+              />
+            </Item>
+            <Item>
+              <Label style={{
+                color:
                   errors.arePresent && errors.data.description
-                    ? 'No Description Given'
-                    : ''
-                }
-                />
-              </Item>
-            </Form>
-            <Button
-              onPress={() => this.editAnnouncement()}
-              style={styles.SaveButtonStyle}
-              block
-              info
-            >
-              <Text style={styles.buttonText}>Save</Text>
-            </Button>
-          </Content>
-        </Container>
+                    ? colors.error
+                    : colors.grayScale10,
+              }}
+              >
+                Edit Description
+              </Label>
+              <Input
+                onChangeText={(value) => this.setState({ description: value })}
+                style={{ textAlign: 'right' }}
+                placeholderTextColor={colors.error}
+                placeholder={
+                errors.arePresent && errors.data.description
+                  ? 'No Description Given'
+                  : ''
+              }
+              />
+            </Item>
+          </Form>
+          <Button
+            onPress={() => this.editAnnouncement()}
+            style={styles.SaveButtonStyle}
+            block
+            info
+          >
+            <Text style={styles.buttonText}>Save</Text>
+          </Button>
+        </Content>
+      </Container>
 
-      );
-    }
+    );
+  }
 }
