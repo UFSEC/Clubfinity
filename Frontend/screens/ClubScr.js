@@ -142,7 +142,7 @@ export default class ClubScr extends React.Component {
           >
             <View style={{ paddingTop: '10%' }}>
               <StyleProvider style={getTheme(thumbnailTheme)}>
-              <Thumbnail source={club.thumbnailUrl ? { uri: club.thumbnailUrl } : ClubfinityLogo} large />
+                <Thumbnail source={club.thumbnailUrl ? { uri: club.thumbnailUrl } : ClubfinityLogo} large />
               </StyleProvider>
             </View>
             <H1 style={{ paddingBottom: '2%', paddingTop: '5%' }}>
