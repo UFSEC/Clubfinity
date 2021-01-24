@@ -17,7 +17,7 @@ import {
 } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import UserContext from '../util/UserContext';
-import DefaultPic from '../assets/images/profile-icon.png';
+import DefaultPic from '../assets/images/ProfilePicture1.png';
 import thumbnailTheme from '../native-base-theme/components/Thumbnail';
 import getTheme from '../native-base-theme/components';
 import colors from '../util/colors';
