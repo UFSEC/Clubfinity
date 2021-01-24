@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Text, StyleSheet, StatusBar,
+  AsyncStorage, Text, StyleSheet, StatusBar,
 } from 'react-native';
 import {
   Button,
@@ -12,6 +12,7 @@ import {
   Label,
 } from 'native-base';
 import colors from '../util/colors';
+import AnnouncementsApi from '../api/AnnouncementsApi';
 
 const STATUS_BAR_HEIGHT = StatusBar.currentHeight;
 
@@ -54,12 +55,25 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 });
+
+/* Update for later: announcement should be passed in as navigation parameter */
+const baseClubParameters = {
+  _id: '5ffefe807bf5a75b18edb39f',
+  title: 'CodeForChange date will be changing!',
+  description:
+  'The CodeForChange will be changing due to conflicts with a few other events going on at the same time.'
+  + 'Make sure to check out the schedule for updates about the new date.',
+  date: '2020-10-01T04:00:00.000Z',
+  club: '99cb91bdc3464f14678934ca',
+};
+
 export default class EditAnnouncements extends Component {
-  static navigationOptions = () => ({
+  // Update for later: navigate back to previous screen when pressed
+  static navigationOptions = ({ navigation }) => ({
     headerTitle: 'Edit Announcement',
     headerRight: (
       <Button
-        onPress={() => {}}
+        onPress={() => { navigation.navigate('Club'); }}
         style={styles.headerRight}
         transparent
       >
@@ -68,7 +82,7 @@ export default class EditAnnouncements extends Component {
     ),
     headerLeft: () => (
       <Button
-        onPress={() => {}}
+        onPress={() => { navigation.navigate('Club'); }}
         style={styles.headerLeft}
         transparent
       >
@@ -89,6 +103,7 @@ export default class EditAnnouncements extends Component {
     this.state = {
       title: '',
       description: '',
+      processingRequest: { status: false, message: '' },
       errors: { arePresent: false, data: defaultError },
     };
   }
@@ -96,10 +111,35 @@ export default class EditAnnouncements extends Component {
     editAnnouncement = async () => {
       const validRequest = this.isRequestValid();
       if (!validRequest.valid) {
-        await this.setState({
+        this.setState({
+          processingRequest: { status: false, message: '' },
           errors: { arePresent: true, data: validRequest.errors },
         });
+        return;
       }
+      this.setState({
+        processingRequest: { status: true, message: 'Updating...' },
+        errors: { arePresent: false, data: validRequest.errors },
+      });
+      const bearerToken = await AsyncStorage.getItem('userToken');
+      const {
+        title, description,
+      } = this.state;
+      baseClubParameters.description = description;
+      baseClubParameters.title = title;
+      const updateAnnouncementResponse = await AnnouncementsApi.update(
+        bearerToken,
+        baseClubParameters._id,
+        baseClubParameters,
+      );
+      if (updateAnnouncementResponse.error) {
+        alert('Unable to update user');
+        console.log(updateAnnouncementResponse.error);
+        return;
+      }
+      this.setState({
+        processingRequest: { status: true, message: 'Saved!' },
+      });
     }
 
     isRequestValid = () => {
@@ -112,7 +152,7 @@ export default class EditAnnouncements extends Component {
     }
 
     render() {
-      const { errors } = this.state;
+      const { errors, processingRequest } = this.state;
       return (
         <Container>
           <Content>
@@ -172,7 +212,11 @@ export default class EditAnnouncements extends Component {
               block
               info
             >
-              <Text style={styles.buttonText}>Save</Text>
+              <Text style={styles.buttonText}>
+                {processingRequest.status
+                  ? processingRequest.message
+                  : 'Save'}
+              </Text>
             </Button>
           </Content>
         </Container>
