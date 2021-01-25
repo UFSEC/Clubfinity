@@ -72,19 +72,19 @@ exports.getEventsUserIsGoingTo = async (userId) => await Event.find({ goingUsers
 
 exports.update = async (id, updatedData) => {
   await Event.findOneAndUpdate({ _id: id }, updatedData, { upsert: true, useFindAndModify: false });
-  return exports.get(id)
+  return exports.get(id);
 };
 
-exports.addUserEventStatus = async(id,data) => {
-  let event = await exports.get(id)
-  if(data.insertTo === 'goingUsers') {
-    if(event.goingUsers.includes(data.goingUser)) return event
+exports.addUserEventStatus = async (id, data) => {
+  const event = await exports.get(id);
+  if (data.insertTo === 'goingUsers') {
+    if (event.goingUsers.includes(data.goingUser)) return event;
     event.goingUsers.push(data.goingUser);
   }
-  await event.save()
-  console.log('main data manipulation is over...')
-  return exports.get(id)
-}
+  await event.save();
+  console.log('main data manipulation is over...');
+  return exports.get(id);
+};
 
 exports.delete = async (id) => {
   const event = await Event.findByIdAndDelete(id);

@@ -22,11 +22,11 @@ const Schema = new mongoose.Schema({
   }],
   mutedUsers: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
   }],
   interestedUsers: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
   }],
   club: {
     type: mongoose.Schema.Types.ObjectId,

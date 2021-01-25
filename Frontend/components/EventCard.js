@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Text, View, Image, StyleSheet, AsyncStorage
+  Text, View, Image, StyleSheet, AsyncStorage,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { Card } from 'native-base';
@@ -10,7 +10,8 @@ import SECIcon from '../assets/images/sec-icon.png';
 import colors from '../util/colors';
 import GoingButton from './GoingButton';
 import InterestedButton from './InterestedButton';
-import EventsApi from '../api/EventsApi'
+import EventsApi from '../api/EventsApi';
+
 const styles = StyleSheet.create({
   clubname: {
     color: colors.accent2,
@@ -50,30 +51,32 @@ export default class EventCard extends Component {
     name: PropTypes.string.isRequired,
     location: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-    user: PropTypes.object.isRequired,
-    goingUsers: PropTypes.object.isRequired,
-    eventID: PropTypes.string.isRequired
+    userID: PropTypes.string.isRequired,
+    goingUsers: PropTypes.array.isRequired,
+    mutedUsers: PropTypes.array.isRequired,
+    interestedUsers: PropTypes.array.isRequired,
+    eventID: PropTypes.string.isRequired,
   };
 
   constructor(props) {
     super(props);
+    const {
+      mutedUsers, goingUsers, interestedUsers, userID,
+    } = this.props;
     this.state = {
-      mute: false,
-      going: this.props.goingUsers.includes(this.props.user._id),
-      interested: false,
+      mute: mutedUsers.includes(userID),
+      going: goingUsers.includes(userID),
+      interested: interestedUsers.includes(userID),
     };
   }
-  componentDidMount() {
-    if(this.props.name ==='Hash Code' || this.props.name === 'CodeForChange') {
-      console.log({eventName: this.props.name,goingUsers: this.props.goingUsers, userID: this.props.user._id})
 
-    }
-  }
   muteHandler = async () => {
     const { mute } = this.state;
     this.setState({
       mute: !mute,
     });
+    const bearerToken = await AsyncStorage.getItem('userToken');
+    const { eventID } = this.props;
     if (!mute) {
       this.setState(
         {
@@ -81,7 +84,10 @@ export default class EventCard extends Component {
           interested: false,
         },
       );
-    }
+      await EventsApi.addMutedUser(eventID, bearerToken);
+      await EventsApi.removeGoingUser(eventID, bearerToken);
+      await EventsApi.removeInterestedUser(eventID, bearerToken);
+    } else await EventsApi.removeMutedUser(eventID, bearerToken);
   };
 
   goingHandler = async () => {
@@ -89,35 +95,35 @@ export default class EventCard extends Component {
     await this.setState({
       going: !going,
     });
+    const bearerToken = await AsyncStorage.getItem('userToken');
+    const { eventID } = this.props;
     if (!going) {
       this.setState({
         mute: false,
+        interested: false,
       });
-    }
-    const bearerToken = await AsyncStorage.getItem('userToken')
-    const {eventID} = this.props
-    if(!going){
-      console.log('added user')
-      const response = await EventsApi.addGoingUser(eventID,bearerToken)
-      console.log({response})
-    }
-    else {
-      console.log('removing user')
-      await EventsApi.removeGoingUser(eventID,bearerToken)
-    }
-    
+      await EventsApi.addGoingUser(eventID, bearerToken);
+      await EventsApi.removeInterestedUser(eventID, bearerToken);
+      await EventsApi.removeMutedUser(eventID, bearerToken);
+    } else await EventsApi.removeGoingUser(eventID, bearerToken);
   }
 
-  interestedHandler = () => {
+  interestedHandler = async () => {
     const { interested } = this.state;
     this.setState({
       interested: !interested,
     });
+    const bearerToken = await AsyncStorage.getItem('userToken');
+    const { eventID } = this.props;
     if (!interested) {
       this.setState({
         mute: false,
+        going: false,
       });
-    }
+      await EventsApi.addInterestedUser(eventID, bearerToken);
+      await EventsApi.removeGoingUser(eventID, bearerToken);
+      await EventsApi.removeMutedUser(eventID, bearerToken);
+    } else await EventsApi.removeInterestedUser(eventID, bearerToken);
   }
 
   render() {

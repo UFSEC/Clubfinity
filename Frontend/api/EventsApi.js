@@ -40,15 +40,13 @@ exports.create = async (bearerToken, eventData) => {
 };
 
 exports.update = async (eventId, bearerToken, event) => {
-  const axiosResponse = await API.put(
-    `/api/event/${eventId}`,
+  const axiosResponse = await API.put(`/api/event/${eventId}`,
     event,
     {
       headers: {
         Authorization: `Bearer ${bearerToken}`,
       },
-    },
-  )
+    })
     .then(async (response) => response)
     .catch((error) => {
       if (error) {
@@ -59,28 +57,77 @@ exports.update = async (eventId, bearerToken, event) => {
   return axiosResponse;
 };
 
-exports.addGoingUser = async(eventId, bearerToken) => {
-  console.log('sending request...')
+exports.addGoingUser = async (eventId, bearerToken) => {
   const axiosResponse = await API.post(
-    `/api/event/${eventId}/going-users`,
+    `/api/event/${eventId}/going-users`, {},
     {
       headers: {
         Authorization: `Bearer ${bearerToken}`,
       },
     },
-  )
-  console.log('recieved data.. sending to you...')
-  return axiosResponse
-}
+  );
+  return axiosResponse;
+};
 
-exports.removeGoingUser = async(eventId, bearerToken) => {
+exports.removeGoingUser = async (eventId, bearerToken) => {
   const axiosResponse = await API.delete(
     `/api/event/${eventId}/going-users`,
     {
       headers: {
         Authorization: `Bearer ${bearerToken}`,
       },
-    }
-  )
-  return axiosResponse
-}
+    },
+  );
+  return axiosResponse;
+};
+
+exports.addInterestedUser = async (eventId, bearerToken) => {
+  const axiosResponse = await API.post(
+    `/api/event/${eventId}/interested-users`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+      },
+    },
+  );
+
+  return axiosResponse;
+};
+
+exports.removeInterestedUser = async (eventId, bearerToken) => {
+  const axiosResponse = await API.delete(
+    `/api/event/${eventId}/interested-users`,
+    {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+      },
+    },
+  );
+  return axiosResponse;
+};
+
+exports.addMutedUser = async (eventId, bearerToken) => {
+  const axiosResponse = await API.post(
+    `/api/event/${eventId}/muted-users`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+      },
+    },
+  );
+  return axiosResponse;
+};
+
+exports.removeMutedUser = async (eventId, bearerToken) => {
+  const axiosResponse = await API.delete(
+    `/api/event/${eventId}/muted-users`,
+    {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+      },
+    },
+  );
+  return axiosResponse;
+};

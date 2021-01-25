@@ -50,7 +50,6 @@ class HomeScr extends Component {
     }
 
     const events = await EventsApi.getFollowing(bearerToken);
-    console.log({events, user } )
     this.setState({
       events,
       isLoading: false,
@@ -84,6 +83,7 @@ class HomeScr extends Component {
 
   eventListView() {
     const { events } = this.state;
+    const { user } = this.context;
     return (
       <View style={[primary.container, primary.bodyText]}>
         <Text style={primary.headerText}>
@@ -98,9 +98,11 @@ class HomeScr extends Component {
               name={item.name}
               location={item.location}
               description={item.description}
-              user = {this.context.user}
-              goingUsers = {item.goingUsers}
-              eventID = {item._id}
+              userID={user._id}
+              goingUsers={item.goingUsers}
+              eventID={item._id}
+              interestedUsers={item.interestedUsers}
+              mutedUsers={item.mutedUsers}
             />
           )}
           keyExtractor={(item) => item._id.toString()}
