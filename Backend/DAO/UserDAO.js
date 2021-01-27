@@ -1,5 +1,6 @@
 const User = require('../Model/User.js').Model;
 const { NotFoundError } = require('../util/errors/notFoundError');
+const { hashPassword } = require('../util/authUtil');
 
 // TODO
 // 1. Add support for a prod/dev config without hardcoded vars
@@ -10,7 +11,12 @@ exports.create = async (userParams) => {
     throw Error('username already taken');
   }
 
-  return await new User(userParams).save();
+  const passwordHashData = hashPassword(userParams.password);
+
+  return await new User({
+    ...userParams,
+    password: passwordHashData,
+  }).save();
 };
 
 exports.getAll = async () => await User.find({}).exec();
