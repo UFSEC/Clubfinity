@@ -79,6 +79,7 @@ const ProfileStack = createStackNavigator(
     EditProfileScr: EditProfile,
     Settings: SettingScr,
     ClubCreationScr: ClubCreation,
+    ClubScr : ClubScr,
   },
   {
     navigationOptions: {

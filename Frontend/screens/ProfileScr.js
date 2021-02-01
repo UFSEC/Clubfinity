@@ -109,7 +109,7 @@ export default class ProfileScr extends React.Component {
 
   handleClubSelect = (club) => {
     const { navigation } = this.props;
-    navigation.navigate('Club', { club });
+    navigation.navigate('ClubScr', { club });
   };
 
   render() {
