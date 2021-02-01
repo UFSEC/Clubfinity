@@ -1,5 +1,5 @@
-import React from "react";
-import { Image, View, Platform } from "react-native";
+import React from 'react';
+import { Image, View, Platform } from 'react-native';
 import {
   Button,
   Text,
@@ -10,15 +10,15 @@ import {
   Label,
   Picker,
   Input,
-} from "native-base";
-import { Ionicons } from "@expo/vector-icons";
-import AuthApi from "../api/AuthApi";
-import UserApi from "../api/UserApi";
-import colors from "../util/colors";
-import Majors from "../data/Majors";
-import ClassYears from "../data/ClassYears";
-import UserContext from "../util/UserContext";
-import ClubfinityLogo from "../assets/images/ClubfinityLogo.png";
+} from 'native-base';
+import { Ionicons } from '@expo/vector-icons';
+import AuthApi from '../api/AuthApi';
+import UserApi from '../api/UserApi';
+import colors from '../util/colors';
+import Majors from '../data/Majors';
+import ClassYears from '../data/ClassYears';
+import UserContext from '../util/UserContext';
+import ClubfinityLogo from '../assets/images/ClubfinityLogo.png';
 
 export default class SignupScr extends React.Component {
   static navigationOptions = {
@@ -30,14 +30,14 @@ export default class SignupScr extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstName: "",
-      lastName: "",
-      major: "",
-      classYear: "",
-      username: "",
-      email: "",
-      password: "",
-      verifyPassword: "",
+      firstName: '',
+      lastName: '',
+      major: '',
+      classYear: '',
+      username: '',
+      email: '',
+      password: '',
+      verifyPassword: '',
       processingRequest: false,
       errors: {
         arePresent: false,
@@ -68,20 +68,17 @@ export default class SignupScr extends React.Component {
       verifyPassword,
     } = this.state;
     const errorsData = { ...errors.data };
-    errorsData.firstName = firstName === "" || !/^[a-z ,.-]+$/i.test(firstName);
-    errorsData.lastName = lastName === "" || !/^[a-z ,.-]+$/i.test(lastName);
-    errorsData.major = major === "" || major === null;
-    errorsData.classYear =
-      classYear === "" || classYear === null || Number.isNaN(Number(classYear));
-    errorsData.username =
-      username === "" ||
-      !/^[a-zA-Z0-9]+([_-]?[a-zA-Z0-9])*$/.test(username) ||
-      username.length < 6 ||
-      username.length > 20;
-    errorsData.email = email === "" || !email.endsWith("@ufl.edu");
-    errorsData.password = password === "" || password < 6;
-    errorsData.verifyPassword =
-      verifyPassword === "" || verifyPassword !== password;
+    errorsData.firstName = firstName === '' || !/^[a-z ,.-]+$/i.test(firstName);
+    errorsData.lastName = lastName === '' || !/^[a-z ,.-]+$/i.test(lastName);
+    errorsData.major = major === '' || major === null;
+    errorsData.classYear = classYear === '' || classYear === null || Number.isNaN(Number(classYear));
+    errorsData.username = username === ''
+      || !/^[a-zA-Z0-9]+([_-]?[a-zA-Z0-9])*$/.test(username)
+      || username.length < 6
+      || username.length > 20;
+    errorsData.email = email === '' || !email.endsWith('@ufl.edu');
+    errorsData.password = password === '' || password < 6;
+    errorsData.verifyPassword = verifyPassword === '' || verifyPassword !== password;
 
     let validRequest = true;
     Object.keys(errorsData).forEach((input) => {
@@ -123,11 +120,11 @@ export default class SignupScr extends React.Component {
       classYear,
       username,
       password,
-      email
+      email,
     );
 
     if (createUserResponse.error) {
-      alert("Unable to sign up! Please try again later");
+      alert('Unable to sign up! Please try again later');
       console.log(createUserResponse.error);
       this.setState({ processingRequest: false });
       return;
@@ -139,7 +136,7 @@ export default class SignupScr extends React.Component {
     if (authResponse.token) {
       setUser(authResponse.user);
       const { navigation } = this.props;
-      await navigation.navigate("App");
+      await navigation.navigate('App');
     } else {
       console.log(authResponse.error);
     }
@@ -147,7 +144,7 @@ export default class SignupScr extends React.Component {
 
   signIn = async () => {
     const { navigation } = this.props;
-    navigation.navigate("SignIn");
+    navigation.navigate('SignIn');
   };
 
   setFirstName = (name) => {
@@ -183,7 +180,9 @@ export default class SignupScr extends React.Component {
   };
 
   render() {
-    const { errors, major, classYear, processingRequest } = this.state;
+    const {
+      errors, major, classYear, processingRequest,
+    } = this.state;
     const majors = Majors.map((s) => (
       <Picker.Item value={s.value} label={s.label} />
     ));
@@ -196,8 +195,8 @@ export default class SignupScr extends React.Component {
           <View
             style={{
               flex: 1,
-              justifyContent: "space-between",
-              alignItems: "center",
+              justifyContent: 'space-between',
+              alignItems: 'center',
             }}
           >
             <Image
@@ -213,7 +212,7 @@ export default class SignupScr extends React.Component {
           <Form isCentered>
             <Item
               fixedLabel
-              style={{ width: "95%", height: 45, marginBottom: "5%" }}
+              style={{ width: '95%', height: 45, marginBottom: '5%' }}
             >
               <Label
                 style={{
@@ -227,17 +226,17 @@ export default class SignupScr extends React.Component {
               </Label>
               <Input
                 onChangeText={(value) => this.setState({ email: value })}
-                style={{ textAlign: "right" }}
+                style={{ textAlign: 'right' }}
                 placeholderTextColor={colors.error}
                 placeholder={
-                  errors.arePresent && errors.data.email ? "Invalid Email" : ""
+                  errors.arePresent && errors.data.email ? 'Invalid Email' : ''
                 }
               />
             </Item>
 
             <Item
               fixedLabel
-              style={{ width: "95%", height: 45, marginBottom: "5%" }}
+              style={{ width: '95%', height: 45, marginBottom: '5%' }}
             >
               <Label
                 style={{
@@ -251,19 +250,19 @@ export default class SignupScr extends React.Component {
               </Label>
               <Input
                 onChangeText={(value) => this.setState({ username: value })}
-                style={{ textAlign: "right" }}
+                style={{ textAlign: 'right' }}
                 placeholderTextColor={colors.error}
                 placeholder={
                   errors.arePresent && errors.data.username
-                    ? "Invalid Username"
-                    : ""
+                    ? 'Invalid Username'
+                    : ''
                 }
               />
             </Item>
 
             <Item
               fixedLabel
-              style={{ width: "95%", height: 45, marginBottom: "5%" }}
+              style={{ width: '95%', height: 45, marginBottom: '5%' }}
             >
               <Label
                 style={{
@@ -277,19 +276,19 @@ export default class SignupScr extends React.Component {
               </Label>
               <Input
                 onChangeText={(value) => this.setState({ firstName: value })}
-                style={{ textAlign: "right" }}
+                style={{ textAlign: 'right' }}
                 placeholderTextColor={colors.error}
                 placeholder={
                   errors.arePresent && errors.data.firstName
-                    ? "Invalid First Name"
-                    : ""
+                    ? 'Invalid First Name'
+                    : ''
                 }
               />
             </Item>
 
             <Item
               fixedLabel
-              style={{ width: "95%", height: 45, marginBottom: "5%" }}
+              style={{ width: '95%', height: 45, marginBottom: '5%' }}
             >
               <Label
                 style={{
@@ -303,12 +302,12 @@ export default class SignupScr extends React.Component {
               </Label>
               <Input
                 onChangeText={(value) => this.setState({ lastName: value })}
-                style={{ textAlign: "right" }}
+                style={{ textAlign: 'right' }}
                 placeholderTextColor={colors.error}
                 placeholder={
                   errors.arePresent && errors.data.lastName
-                    ? "Invalid Last Name"
-                    : ""
+                    ? 'Invalid Last Name'
+                    : ''
                 }
               />
             </Item>
@@ -316,7 +315,7 @@ export default class SignupScr extends React.Component {
             <Item
               picker
               fixedLabel
-              style={{ width: "95%", marginBottom: "5%" }}
+              style={{ width: '95%', marginBottom: '5%' }}
             >
               <Label
                 style={
@@ -341,11 +340,11 @@ export default class SignupScr extends React.Component {
               >
                 {majors}
               </Picker>
-              {Platform.OS === "ios" ? (
+              {Platform.OS === 'ios' ? (
                 <Ionicons
                   name="md-arrow-dropdown"
                   size={20}
-                  style={{ paddingTop: "1%" }}
+                  style={{ paddingTop: '1%' }}
                 />
               ) : null}
             </Item>
@@ -353,7 +352,7 @@ export default class SignupScr extends React.Component {
             <Item
               picker
               fixedLabel
-              style={{ width: "95%", marginBottom: "5%" }}
+              style={{ width: '95%', marginBottom: '5%' }}
             >
               <Label
                 style={
@@ -378,18 +377,18 @@ export default class SignupScr extends React.Component {
               >
                 {classYears}
               </Picker>
-              {Platform.OS === "ios" ? (
+              {Platform.OS === 'ios' ? (
                 <Ionicons
                   name="md-arrow-dropdown"
                   size={20}
-                  style={{ paddingTop: "1%" }}
+                  style={{ paddingTop: '1%' }}
                 />
               ) : null}
             </Item>
 
             <Item
               fixedLabel
-              style={{ width: "95%", height: 45, marginBottom: "5%" }}
+              style={{ width: '95%', height: 45, marginBottom: '5%' }}
             >
               <Label
                 style={{
@@ -404,19 +403,19 @@ export default class SignupScr extends React.Component {
               <Input
                 secureTextEntry
                 onChangeText={(value) => this.setState({ password: value })}
-                style={{ textAlign: "right" }}
+                style={{ textAlign: 'right' }}
                 placeholderTextColor={colors.error}
                 placeholder={
                   errors.arePresent && errors.data.password
-                    ? "Invalid Password"
-                    : ""
+                    ? 'Invalid Password'
+                    : ''
                 }
               />
             </Item>
 
             <Item
               fixedLabel
-              style={{ width: "95%", height: 45, marginBottom: "5%" }}
+              style={{ width: '95%', height: 45, marginBottom: '5%' }}
             >
               <Label
                 style={{
@@ -430,40 +429,39 @@ export default class SignupScr extends React.Component {
               </Label>
               <Input
                 secureTextEntry
-                onChangeText={(value) =>
-                  this.setState({ verifyPassword: value })
-                }
-                style={{ textAlign: "right" }}
+                onChangeText={(value) => this.setState({ verifyPassword: value })}
+                style={{ textAlign: 'right' }}
                 placeholderTextColor={colors.error}
                 placeholder={
                   errors.arePresent && errors.data.verifyPassword
-                    ? "Invalid Confirm Password"
-                    : ""
+                    ? 'Invalid Confirm Password'
+                    : ''
                 }
               />
             </Item>
             <Button
               style={{
-                alignSelf: "center",
+                alignSelf: 'center',
                 backgroundColor: colors.accent0,
-                width: "90%",
-                justifyContent: "center",
-                alignItems: "center",
-                marginBottom: "2%",
-                marginTop: "5%",
+                width: '90%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginBottom: '2%',
+                marginTop: '5%',
               }}
               onPress={this.signupHandler}
             >
-              <Text style={{ alignSelf: "center" }}>
-                {processingRequest ? "Signing Up..." : "Sign Up"}
+              <Text style={{ alignSelf: 'center' }}>
+                {processingRequest ? 'Signing Up...' : 'Sign Up'}
               </Text>
             </Button>
             <Text
-              style={{ alignSelf: "center", opacity: 0.7, marginBottom: "5%" }}
+              style={{ alignSelf: 'center', opacity: 0.7, marginBottom: '5%' }}
             >
-              Already have an account?{" "}
+              Already have an account?
+              {' '}
               <Text
-                style={{ textDecorationLine: "underline" }}
+                style={{ textDecorationLine: 'underline' }}
                 onPress={this.signIn}
               >
                 Sign In
