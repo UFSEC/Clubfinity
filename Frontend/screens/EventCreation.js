@@ -17,14 +17,10 @@ import colors from '../util/colors';
 import { isValidFacebookUrl } from '../util/validation';
 import EventsApi from '../api/EventsApi';
 import { combineAndParseDateTime, DATE_PICKER_FORMAT, TIME_PICKER_FORMAT } from '../util/dateUtil';
+import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
 export default class EventCreation extends Component {
-  static navigationOptions = {
-    title: 'Create an event',
-    headerStyle: { backgroundColor: '#7e947f' },
-    headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
-    headerTintColor: 'white',
-  };
+  static navigationOptions = buildNavigationsOptions('Create an event')
 
   constructor(props) {
     super(props);

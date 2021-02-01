@@ -16,16 +16,12 @@ import colors from '../util/colors';
 import UserContext from '../util/UserContext';
 import ClubsApi from '../api/ClubsApi';
 import UserApi from '../api/UserApi';
+import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
 export default class AdminList extends React.Component {
-    static navigationOptions = {
-      headerTitle: 'Admins',
-      headerStyle: { backgroundColor: '#7e947f' },
-      headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
-      headerTintColor: 'white',
-    };
-
     static contextType = UserContext;
+
+    static navigationOptions = buildNavigationsOptions('Admin List')
 
     static yearToString(year) {
       switch (year) {

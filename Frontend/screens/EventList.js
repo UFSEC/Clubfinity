@@ -9,14 +9,10 @@ import { DateTime } from 'luxon';
 
 import EventsApi from '../api/EventsApi';
 import Row from '../components/Row';
+import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
 class EventList extends Component {
-  static navigationOptions = {
-    headerTitle: 'Event List',
-    headerStyle: { backgroundColor: '#7e947f' },
-    headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
-    headerTintColor: 'white',
-  }
+  static navigationOptions = buildNavigationsOptions('Event List')
 
   constructor(props) {
     super(props);
