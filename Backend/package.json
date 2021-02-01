@@ -22,7 +22,8 @@
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "pbkdf2": "^3.1.1"
   },
   "devDependencies": {
     "@types/luxon": "^1.22.0",

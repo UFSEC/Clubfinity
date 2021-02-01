@@ -18,3 +18,19 @@ exports.getForClub = async (bearerToken, clubId) => {
 
   return transformDate(resp.data.data);
 };
+
+exports.update = async (bearerToken, announcementId, params) => {
+  const resp = await API.put(`/api/announcement/${announcementId}`, params, {
+    headers: {
+      Authorization: `Bearer ${bearerToken}`,
+    },
+  })
+    .then(async (response) => response)
+    .catch((error) => {
+      if (error) {
+        return error;
+      }
+      return { error: 'Unable to update announcement' };
+    });
+  return resp;
+};

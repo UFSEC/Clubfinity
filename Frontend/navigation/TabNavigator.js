@@ -19,6 +19,7 @@ import EditProfile from '../screens/EditProfile';
 import ClubCreation from '../screens/ClubCreation';
 import SettingScr from '../screens/SettingScr';
 import EventList from '../screens/EventList';
+import AnnouncementList from '../screens/AnnouncementList';
 import EventCreation from '../screens/EventCreation';
 import CreateAnnouncementScr from '../screens/CreateAnnouncementScr';
 import AdminList from '../screens/AdminList';
@@ -105,6 +106,7 @@ const DiscoverStack = createStackNavigator(
     Club: ClubScr,
     EditClub: EditClub,
     EventList: EventList,
+    AnnouncementList: AnnouncementList,
     EventCreation: EventCreation,
     CreateAnnouncementScr: CreateAnnouncementScr,
     AdminList: AdminList,

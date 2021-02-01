@@ -63,10 +63,16 @@ describe('Users', () => {
       data.should.have.length(3);
 
       const first = data[1];
+      // TODO: remove this whenever password is removed from http response
+      delete first.password;
+      delete firstUser.password;
       first.should.deep.include(firstUser);
       first.should.include.all.keys('_id', 'clubs');
 
       const second = data[2];
+      // TODO: remove this whenever password is removed from http response
+      delete second.password;
+      delete secondUser.password;
       second.should.deep.include(secondUser);
       second.should.include.all.keys('_id', 'clubs');
     });
@@ -89,7 +95,13 @@ describe('Users', () => {
       const resp = await http.get(`/api/user/${user._id}`);
       isOk(resp);
 
-      resp.body.data.should.deep.include(userData);
+      const responseData = resp.body.data;
+
+      // TODO: remove this whenever password is removed from http response
+      delete responseData.password;
+      delete userData.password;
+
+      responseData.should.deep.include(userData);
     });
 
     it('returns an error when the id is not found', async () => {
@@ -115,8 +127,29 @@ describe('Users', () => {
       isOk(resp);
 
       const { data } = resp.body;
+
+      delete data.password;
+      delete newUserData.password;
+
       data.should.deep.include(newUserData);
       data.should.include.all.keys('_id', 'clubs');
+    });
+
+    it('should create a password hash when creating a new user', async () => {
+      const newUserData = {
+        name: { first: 'New', last: 'User' },
+        major: 'Computer Science',
+        year: 2021,
+        email: 'new@ufl.edu',
+        username: 'newusername',
+        password: 'password',
+      };
+
+      const resp = await http.post('/api/user', newUserData);
+      isOk(resp);
+
+      const databaseUser = await userDAO.get(resp.body.data._id);
+      databaseUser.password.should.include.all.keys('hash', 'salt');
     });
 
     it('should return an error if username is taken', async () => {

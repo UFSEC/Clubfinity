@@ -29,6 +29,7 @@ import UserApi from '../api/UserApi';
 import EventsApi from '../api/EventsApi';
 import AnnouncementsApi from '../api/AnnouncementsApi';
 import AdminRow from '../components/AdminRow';
+import ClubfinityLogo from '../assets/images/ClubfinityLogo.png';
 
 const styles = StyleSheet.create({
   clubView: {
@@ -141,7 +142,7 @@ export default class ClubScr extends React.Component {
           >
             <View style={{ paddingTop: '10%' }}>
               <StyleProvider style={getTheme(thumbnailTheme)}>
-                <Thumbnail source={{ uri: club.thumbnailUrl }} large />
+                <Thumbnail source={club.thumbnailUrl ? { uri: club.thumbnailUrl } : ClubfinityLogo} large />
               </StyleProvider>
             </View>
             <H1 style={{ paddingBottom: '2%', paddingTop: '5%' }}>
@@ -326,7 +327,7 @@ export default class ClubScr extends React.Component {
             >
               <CardItem header style={{ justifyContent: 'space-between' }}>
                 <Text style={{ alignSelf: 'flex-end' }}>Announcements</Text>
-                <TouchableOpacity onPress={() => {}}>
+                <TouchableOpacity onPress={() => { navigation.navigate('AnnouncementList', { club }); }}>
                   <Text style={{ alignSelf: 'flex-end', color: colors.link }}>View all</Text>
                 </TouchableOpacity>
               </CardItem>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Text, StyleSheet, StatusBar,
+  AsyncStorage, Text, StyleSheet, StatusBar,
 } from 'react-native';
 import {
   Button,
@@ -12,6 +12,7 @@ import {
   Label,
 } from 'native-base';
 import colors from '../util/colors';
+import AnnouncementsApi from '../api/AnnouncementsApi';
 
 const STATUS_BAR_HEIGHT = StatusBar.currentHeight;
 
@@ -54,12 +55,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 });
+
 export default class EditAnnouncements extends Component {
-  static navigationOptions = () => ({
+  // Update for later: navigate back to previous screen when pressed
+  static navigationOptions = ({ navigation }) => ({
     headerTitle: 'Edit Announcement',
     headerRight: (
       <Button
-        onPress={() => {}}
+        onPress={() => { navigation.navigate('Club'); }}
         style={styles.headerRight}
         transparent
       >
@@ -68,7 +71,7 @@ export default class EditAnnouncements extends Component {
     ),
     headerLeft: () => (
       <Button
-        onPress={() => {}}
+        onPress={() => { navigation.navigate('Club'); }}
         style={styles.headerLeft}
         transparent
       >
@@ -89,6 +92,7 @@ export default class EditAnnouncements extends Component {
     this.state = {
       title: '',
       description: '',
+      processingRequest: { status: false, message: '' },
       errors: { arePresent: false, data: defaultError },
     };
   }
@@ -96,7 +100,7 @@ export default class EditAnnouncements extends Component {
   componentDidMount() {
     const { navigation } = this.props;
     this.setState({
-      // id: navigation.getParam('id', ''),
+      id: navigation.getParam('id', ''),
       title: navigation.getParam('title', ''),
       description: navigation.getParam('description', ''),
     });
@@ -105,10 +109,33 @@ export default class EditAnnouncements extends Component {
   editAnnouncement = async () => {
     const validRequest = this.isRequestValid();
     if (!validRequest.valid) {
-      await this.setState({
+      this.setState({
+        processingRequest: { status: false, message: '' },
         errors: { arePresent: true, data: validRequest.errors },
       });
+      return;
     }
+    this.setState({
+      processingRequest: { status: true, message: 'Updating...' },
+      errors: { arePresent: false, data: validRequest.errors },
+    });
+    const bearerToken = await AsyncStorage.getItem('userToken');
+    const {
+      title, description, id,
+    } = this.state;
+    const updateAnnouncementResponse = await AnnouncementsApi.update(
+      bearerToken,
+      id,
+      { title, description },
+    );
+    if (updateAnnouncementResponse.error) {
+      alert('Unable to update user');
+      console.log(updateAnnouncementResponse.error);
+      return;
+    }
+    this.setState({
+      processingRequest: { status: true, message: 'Saved!' },
+    });
   }
 
   isRequestValid = () => {
@@ -121,7 +148,9 @@ export default class EditAnnouncements extends Component {
   }
 
   render() {
-    const { errors } = this.state;
+    const {
+      errors, title, description, processingRequest,
+    } = this.state;
     return (
       <Container>
         <Content>
@@ -151,7 +180,9 @@ export default class EditAnnouncements extends Component {
                   ? 'No Title Given'
                   : ''
               }
-              />
+              >
+                {title}
+              </Input>
             </Item>
             <Item>
               <Label style={{
@@ -172,7 +203,9 @@ export default class EditAnnouncements extends Component {
                   ? 'No Description Given'
                   : ''
               }
-              />
+              >
+                {description}
+              </Input>
             </Item>
           </Form>
           <Button
@@ -181,7 +214,11 @@ export default class EditAnnouncements extends Component {
             block
             info
           >
-            <Text style={styles.buttonText}>Save</Text>
+            <Text style={styles.buttonText}>
+              {processingRequest.status
+                ? processingRequest.message
+                : 'Save'}
+            </Text>
           </Button>
         </Content>
       </Container>
