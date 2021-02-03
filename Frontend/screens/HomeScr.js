@@ -13,16 +13,12 @@ import EventCard from '../components/EventCard';
 import EventsApi from '../api/EventsApi';
 import DiscoverButton from '../components/DiscoverButton';
 import UserContext from '../util/UserContext';
+import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
-// Event Feed App Module
 class HomeScr extends Component {
-  static contextType = UserContext;
+  static contextType = UserContext
 
-  static navigationOptions = {
-    title: 'Home',
-    headerStyle: { backgroundColor: '#7e947f' },
-    headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
-  };
+  static navigationOptions = buildNavigationsOptions('Home')
 
   constructor(props) {
     super(props);
