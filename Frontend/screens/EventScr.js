@@ -20,14 +20,15 @@ export default class EventScr extends Component {
   static navigationOptions = buildNavigationsOptions('Event Screen')
 
   render() {
-    const {
-      navigation,
-    } = this.props;
+    const { navigation } = this.props;
+
     const title = navigation.getParam('title', '');
     const description = navigation.getParam('description', '');
     const location = navigation.getParam('location', '');
     const date = navigation.getParam('date', '');
     const id = navigation.getParam('id', '');
+    const isAdmin = navigation.getParam('isAdmin', '');
+
     return (
       <Container>
         <Content>
@@ -36,7 +37,7 @@ export default class EventScr extends Component {
               width: '95%',
               alignItems: 'center',
               justifyContent: 'center',
-              paddingTop: '5%',
+              paddingTop: '10%',
               paddingBottom: '5%',
             }}
           >
@@ -49,76 +50,57 @@ export default class EventScr extends Component {
               }}
               stackedLabel
             >
-              <Label>
-                Title
-              </Label>
-              <Input
-                disabled
-              >
-                {title}
-              </Input>
+              <Label>Title</Label>
+              <Input disabled>{title}</Input>
             </Item>
             <Item
               style={{ width: '95%', height: 45, marginBottom: '5%' }}
               stackedLabel
             >
-              <Label>
-                Description
-              </Label>
-              <Input
-                disabled
-              >
-                {description}
-              </Input>
+              <Label>Description</Label>
+              <Input disabled>{description}</Input>
             </Item>
 
             <Item
               style={{ width: '95%', height: 45, marginBottom: '5%' }}
               stackedLabel
             >
-              <Label>
-                Location
-              </Label>
-              <Input
-                disabled
-              >
-                {location}
-              </Input>
+              <Label>Location</Label>
+              <Input disabled>{location}</Input>
             </Item>
             <Item
               style={{ width: '95%', height: 45, marginBottom: '5%' }}
               stackedLabel
             >
-              <Label>
-                Date
-              </Label>
-              <Input
-                disabled
-              >
+              <Label>Date</Label>
+              <Input disabled>
                 {DateTime.fromISO(date).toLocaleString(DateTime.DATETIME_MED)}
               </Input>
             </Item>
+            {isAdmin && (
+              <Button
+                style={{
+                  alignSelf: 'center',
+                  backgroundColor: colors.accent0,
+                  width: '90%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginRight: '1%',
+                  marginBottom: '5%',
+                  marginTop: '5%',
+                }}
+                onPress={() => navigation.navigate('EditEvent', {
+                  id,
+                  title,
+                  description,
+                  location,
+                  date,
+                })}
+              >
+                <Text style={{ alignSelf: 'center' }}>Edit</Text>
+              </Button>
+            )}
           </Form>
-
-          <Button
-            style={{
-              alignSelf: 'center',
-              backgroundColor: colors.accent0,
-              width: '90%',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginRight: '1%',
-              marginBottom: '5%',
-              marginTop: '5%',
-            }}
-            onPress={() => navigation.navigate('EditEvent', {
-              id, title, description, location, date,
-            })}
-          >
-            <Text style={{ alignSelf: 'center' }}>
-              Edit
-            </Text>
-          </Button>
         </Content>
       </Container>
     );
