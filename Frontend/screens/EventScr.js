@@ -41,7 +41,7 @@ export default class EventScr extends Component {
               width: '95%',
               alignItems: 'center',
               justifyContent: 'center',
-              paddingTop: '5%',
+              paddingTop: '10%',
               paddingBottom: '5%',
             }}
           >
@@ -81,31 +81,30 @@ export default class EventScr extends Component {
                 {DateTime.fromISO(date).toLocaleString(DateTime.DATETIME_MED)}
               </Input>
             </Item>
+            {isAdmin && (
+              <Button
+                style={{
+                  alignSelf: 'center',
+                  backgroundColor: colors.accent0,
+                  width: '90%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginRight: '1%',
+                  marginBottom: '5%',
+                  marginTop: '5%',
+                }}
+                onPress={() => navigation.navigate('EditEvent', {
+                  id,
+                  title,
+                  description,
+                  location,
+                  date,
+                })}
+              >
+                <Text style={{ alignSelf: 'center' }}>Edit</Text>
+              </Button>
+            )}
           </Form>
-
-          {isAdmin && (
-            <Button
-              style={{
-                alignSelf: 'center',
-                backgroundColor: colors.accent0,
-                width: '90%',
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginRight: '1%',
-                marginBottom: '5%',
-                marginTop: '5%',
-              }}
-              onPress={() => navigation.navigate('EditEvent', {
-                id,
-                title,
-                description,
-                location,
-                date,
-              })}
-            >
-              <Text style={{ alignSelf: 'center' }}>Edit</Text>
-            </Button>
-          )}
         </Content>
       </Container>
     );
