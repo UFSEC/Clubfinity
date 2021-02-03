@@ -29,6 +29,7 @@ import UserApi from '../api/UserApi';
 import EventsApi from '../api/EventsApi';
 import AnnouncementsApi from '../api/AnnouncementsApi';
 import AdminRow from '../components/AdminRow';
+import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
 const styles = StyleSheet.create({
   clubView: {
@@ -49,9 +50,9 @@ const styles = StyleSheet.create({
 });
 
 export default class ClubScr extends React.Component {
-  static contextType = UserContext
+  static contextType = UserContext;
 
-  static navigationOptions = buildNavigationsOptions('Club Page')
+  static navigationOptions = buildNavigationsOptions('Club Page');
 
   constructor(props) {
     super(props);
