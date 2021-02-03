@@ -11,16 +11,11 @@ import {
 } from 'native-base';
 import colors from '../util/colors';
 import UserContext from '../util/UserContext';
+import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
 export default class AnnouncementScr extends Component {
-  static navigationOptions = {
-    title: 'Event Screen',
-    headerStyle: { backgroundColor: '#7e947f' },
-    headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
-    headerTintColor: 'white',
-  };
-
   static contextType = UserContext;
+  static navigationOptions = buildNavigationsOptions('Announcement')
 
   render() {
     const {
