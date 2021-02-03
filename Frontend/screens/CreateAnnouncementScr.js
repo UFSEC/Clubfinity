@@ -15,14 +15,10 @@ import { DateTime } from 'luxon';
 
 import colors from '../util/colors';
 import AnnouncementApi from '../api/AnnouncementApi';
+import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
 export default class CreateAnnouncementScr extends Component {
-  static navigationOptions = {
-    title: 'Create an Announcement',
-    headerStyle: { backgroundColor: colors.primary0 },
-    headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
-    headerTintColor: 'white',
-  };
+  static navigationOptions = buildNavigationsOptions('Create an Announcement')
 
   constructor(props) {
     super(props);

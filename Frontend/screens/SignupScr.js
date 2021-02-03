@@ -1,55 +1,24 @@
 import React from 'react';
+import { Image, View, Platform } from 'react-native';
 import {
-  Dimensions, StyleSheet, Text, TouchableOpacity,
-} from 'react-native';
-import Form from '../components/Form/Form';
-import TextInputBox from '../components/Form/TextInputBox';
-import NativePicker from '../components/Form/NativePicker';
+  Button,
+  Text,
+  Form,
+  Item,
+  Container,
+  Content,
+  Label,
+  Picker,
+  Input,
+} from 'native-base';
+import { Ionicons } from '@expo/vector-icons';
 import AuthApi from '../api/AuthApi';
 import UserApi from '../api/UserApi';
+import colors from '../util/colors';
 import Majors from '../data/Majors';
 import ClassYears from '../data/ClassYears';
 import UserContext from '../util/UserContext';
-
-const MAX_FIELD_WIDTH = (Dimensions.get('screen').width * 3) / 4;
-const styles = StyleSheet.create({
-  error: {
-    color: 'red',
-    fontSize: 12,
-    paddingHorizontal: 10,
-  },
-  header: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#636e72',
-    alignSelf: 'center',
-  },
-  formContainer: {
-    paddingHorizontal: 10,
-    marginVertical: 5,
-    fontSize: 13,
-    flex: 10,
-  },
-  signupButton: {
-    padding: 10,
-    minWidth: MAX_FIELD_WIDTH,
-    backgroundColor: '#ACCBAC',
-    borderWidth: 1,
-    borderColor: '#ACCBAC',
-    borderRadius: 100,
-    marginHorizontal: 10,
-    marginVertical: 10,
-    elevation: 3,
-  },
-  nameField: {
-    marginLeft: 20,
-  },
-  signupButtonTxt: {
-    fontSize: 15,
-    color: '#FFF',
-    alignSelf: 'center',
-  },
-});
+import ClubfinityLogo from '../assets/images/ClubfinityLogo.png';
 
 export default class SignupScr extends React.Component {
   static navigationOptions = {
@@ -69,7 +38,7 @@ export default class SignupScr extends React.Component {
       email: '',
       password: '',
       verifyPassword: '',
-      triedSubmitting: false,
+      processingRequest: false,
       errors: {
         arePresent: false,
         data: {
@@ -99,11 +68,14 @@ export default class SignupScr extends React.Component {
       verifyPassword,
     } = this.state;
     const errorsData = { ...errors.data };
-    errorsData.firstName = firstName === '' || !/^[a-zA-Z()]+$/.test(firstName);
-    errorsData.lastName = lastName === '' || !/^[a-zA-Z()]+$/.test(lastName);
+    errorsData.firstName = firstName === '' || !/^[a-z ,.-]+$/i.test(firstName);
+    errorsData.lastName = lastName === '' || !/^[a-z ,.-]+$/i.test(lastName);
     errorsData.major = major === '' || major === null;
     errorsData.classYear = classYear === '' || classYear === null || Number.isNaN(Number(classYear));
-    errorsData.username = username === '' || username < 6 || username > 20;
+    errorsData.username = username === ''
+      || !/^[a-zA-Z0-9]+([_-]?[a-zA-Z0-9])*$/.test(username)
+      || username.length < 6
+      || username.length > 20;
     errorsData.email = email === '' || !email.endsWith('@ufl.edu');
     errorsData.password = password === '' || password < 6;
     errorsData.verifyPassword = verifyPassword === '' || verifyPassword !== password;
@@ -121,19 +93,25 @@ export default class SignupScr extends React.Component {
     const validRequest = this.isRequestValid();
     if (!validRequest.valid) {
       this.setState({
-        triedSubmitting: true,
+        processingRequest: false,
         errors: { arePresent: true, data: validRequest.errors },
       });
       return;
     }
     this.setState({
-      triedSubmitting: true,
+      processingRequest: true,
       errors: { arePresent: false, data: validRequest.errors },
     });
 
     const { setUser } = this.context;
     const {
-      firstName, lastName, username, password, email, major, classYear,
+      firstName,
+      lastName,
+      username,
+      password,
+      email,
+      major,
+      classYear,
     } = this.state;
 
     const createUserResponse = await UserApi.createUser(
@@ -148,8 +126,10 @@ export default class SignupScr extends React.Component {
     if (createUserResponse.error) {
       alert('Unable to sign up! Please try again later');
       console.log(createUserResponse.error);
+      this.setState({ processingRequest: false });
       return;
     }
+    this.setState({ processingRequest: false });
     console.log(`Successfully created user ${username}`);
 
     const authResponse = await AuthApi.authenticate(username, password);
@@ -160,6 +140,11 @@ export default class SignupScr extends React.Component {
     } else {
       console.log(authResponse.error);
     }
+  };
+
+  signIn = async () => {
+    const { navigation } = this.props;
+    navigation.navigate('SignIn');
   };
 
   setFirstName = (name) => {
@@ -195,80 +180,296 @@ export default class SignupScr extends React.Component {
   };
 
   render() {
-    const { triedSubmitting, errors } = this.state;
+    const {
+      errors, major, classYear, processingRequest,
+    } = this.state;
+    const majors = Majors.map((s) => (
+      <Picker.Item value={s.value} label={s.label} />
+    ));
+    const classYears = ClassYears.map((s) => (
+      <Picker.Item value={s.value} label={s.label} />
+    ));
     return (
-      <Form isCentered>
-        <Text style={styles.header}>Sign Up</Text>
-        {triedSubmitting && errors.data.firstName && (
-          <Text style={styles.error}>Please enter a valid name</Text>
-        )}
-        <TextInputBox placeholder="First Name" setValue={this.setFirstName} />
+      <Container>
+        <Content>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Image
+              style={{
+                width: 200,
+                height: 200,
+                margin: 30,
+                marginBottom: 80,
+              }}
+              source={ClubfinityLogo}
+            />
+          </View>
+          <Form isCentered>
+            <Item
+              fixedLabel
+              style={{ width: '95%', height: 45, marginBottom: '5%' }}
+            >
+              <Label
+                style={{
+                  color:
+                    errors.arePresent && errors.data.email
+                      ? colors.error
+                      : colors.grayScale10,
+                }}
+              >
+                Email
+              </Label>
+              <Input
+                onChangeText={(value) => this.setState({ email: value })}
+                style={{ textAlign: 'right' }}
+                placeholderTextColor={colors.error}
+                placeholder={
+                  errors.arePresent && errors.data.email ? 'Invalid Email' : ''
+                }
+              />
+            </Item>
 
-        {triedSubmitting && errors.data.lastName && (
-          <Text style={styles.error}>Please enter a valid name</Text>
-        )}
-        <TextInputBox placeholder="Last Name" setValue={this.setLastName} />
+            <Item
+              fixedLabel
+              style={{ width: '95%', height: 45, marginBottom: '5%' }}
+            >
+              <Label
+                style={{
+                  color:
+                    errors.arePresent && errors.data.username
+                      ? colors.error
+                      : colors.grayScale10,
+                }}
+              >
+                Username
+              </Label>
+              <Input
+                onChangeText={(value) => this.setState({ username: value })}
+                style={{ textAlign: 'right' }}
+                placeholderTextColor={colors.error}
+                placeholder={
+                  errors.arePresent && errors.data.username
+                    ? 'Invalid Username'
+                    : ''
+                }
+              />
+            </Item>
 
-        {triedSubmitting && errors.data.major && (
-          <Text style={styles.error}>Please select a major</Text>
-        )}
-        <NativePicker
-          items={Majors}
-          placeholder={{ label: 'Select major...' }}
-          setValue={this.setMajor}
-        />
+            <Item
+              fixedLabel
+              style={{ width: '95%', height: 45, marginBottom: '5%' }}
+            >
+              <Label
+                style={{
+                  color:
+                    errors.arePresent && errors.data.firstName
+                      ? colors.error
+                      : colors.grayScale10,
+                }}
+              >
+                First Name
+              </Label>
+              <Input
+                onChangeText={(value) => this.setState({ firstName: value })}
+                style={{ textAlign: 'right' }}
+                placeholderTextColor={colors.error}
+                placeholder={
+                  errors.arePresent && errors.data.firstName
+                    ? 'Invalid First Name'
+                    : ''
+                }
+              />
+            </Item>
 
-        {triedSubmitting && errors.data.classYear && (
-          <Text style={styles.error}>Please select your class year</Text>
-        )}
-        <NativePicker
-          items={ClassYears}
-          placeholder={{ label: 'Select year...' }}
-          setValue={this.setYear}
-        />
+            <Item
+              fixedLabel
+              style={{ width: '95%', height: 45, marginBottom: '5%' }}
+            >
+              <Label
+                style={{
+                  color:
+                    errors.arePresent && errors.data.lastName
+                      ? colors.error
+                      : colors.grayScale10,
+                }}
+              >
+                Last Name
+              </Label>
+              <Input
+                onChangeText={(value) => this.setState({ lastName: value })}
+                style={{ textAlign: 'right' }}
+                placeholderTextColor={colors.error}
+                placeholder={
+                  errors.arePresent && errors.data.lastName
+                    ? 'Invalid Last Name'
+                    : ''
+                }
+              />
+            </Item>
 
-        {triedSubmitting && errors.data.email && (
-          <Text style={styles.error}>Please enter a valid email</Text>
-        )}
-        <TextInputBox
-          placeholder="UFL Email Address"
-          setValue={this.setEmail}
-        />
+            <Item
+              picker
+              fixedLabel
+              style={{ width: '95%', marginBottom: '5%' }}
+            >
+              <Label
+                style={
+                  errors.arePresent && errors.data.major
+                    ? { color: colors.error }
+                    : { color: colors.grayScale10 }
+                }
+              >
+                Major
+              </Label>
+              <Picker
+                mode="dropdown"
+                style={{ width: undefined }}
+                placeholderStyle={
+                  errors.arePresent && errors.data.major
+                    ? { color: colors.error }
+                    : { color: colors.grayScale10 }
+                }
+                placeholder="Select major"
+                selectedValue={major}
+                onValueChange={(value) => this.setMajor(value)}
+              >
+                {majors}
+              </Picker>
+              {Platform.OS === 'ios' ? (
+                <Ionicons
+                  name="md-arrow-dropdown"
+                  size={20}
+                  style={{ paddingTop: '1%' }}
+                />
+              ) : null}
+            </Item>
 
-        {triedSubmitting && errors.data.username && (
-          <Text style={styles.error}>
-            Please enter a valid username (between 6 and 20 characters)
-          </Text>
-        )}
-        <TextInputBox placeholder="Username" setValue={this.setUserName} />
+            <Item
+              picker
+              fixedLabel
+              style={{ width: '95%', marginBottom: '5%' }}
+            >
+              <Label
+                style={
+                  errors.arePresent && errors.data.classYear
+                    ? { color: colors.error }
+                    : { color: colors.grayScale10 }
+                }
+              >
+                Class Year
+              </Label>
+              <Picker
+                mode="dropdown"
+                style={{ width: undefined }}
+                placeholderStyle={
+                  errors.arePresent && errors.data.classYear
+                    ? { color: colors.error }
+                    : { color: colors.grayScale10 }
+                }
+                placeholder="Select Class Year"
+                selectedValue={classYear}
+                onValueChange={(value) => this.setYear(value)}
+              >
+                {classYears}
+              </Picker>
+              {Platform.OS === 'ios' ? (
+                <Ionicons
+                  name="md-arrow-dropdown"
+                  size={20}
+                  style={{ paddingTop: '1%' }}
+                />
+              ) : null}
+            </Item>
 
-        {triedSubmitting && errors.data.password && (
-          <Text style={styles.error}>
-            Please enter a valid password (at least 6 characters)
-          </Text>
-        )}
-        <TextInputBox
-          isHidden
-          placeholder="Password"
-          setValue={this.setPassWord}
-        />
+            <Item
+              fixedLabel
+              style={{ width: '95%', height: 45, marginBottom: '5%' }}
+            >
+              <Label
+                style={{
+                  color:
+                    errors.arePresent && errors.data.password
+                      ? colors.error
+                      : colors.grayScale10,
+                }}
+              >
+                Password
+              </Label>
+              <Input
+                secureTextEntry
+                onChangeText={(value) => this.setState({ password: value })}
+                style={{ textAlign: 'right' }}
+                placeholderTextColor={colors.error}
+                placeholder={
+                  errors.arePresent && errors.data.password
+                    ? 'Invalid Password'
+                    : ''
+                }
+              />
+            </Item>
 
-        {triedSubmitting && errors.data.verifyPassword && (
-          <Text style={styles.error}>Passwords do not match</Text>
-        )}
-        <TextInputBox
-          isHidden
-          placeholder="Confirm Password"
-          setValue={this.setConfirmPassword}
-        />
-
-        <TouchableOpacity
-          style={styles.signupButton}
-          onPress={this.signupHandler}
-        >
-          <Text style={styles.signupButtonTxt}>Sign Up</Text>
-        </TouchableOpacity>
-      </Form>
+            <Item
+              fixedLabel
+              style={{ width: '95%', height: 45, marginBottom: '5%' }}
+            >
+              <Label
+                style={{
+                  color:
+                    errors.arePresent && errors.data.verifyPassword
+                      ? colors.error
+                      : colors.grayScale10,
+                }}
+              >
+                Confirm Password
+              </Label>
+              <Input
+                secureTextEntry
+                onChangeText={(value) => this.setState({ verifyPassword: value })}
+                style={{ textAlign: 'right' }}
+                placeholderTextColor={colors.error}
+                placeholder={
+                  errors.arePresent && errors.data.verifyPassword
+                    ? 'Invalid Confirm Password'
+                    : ''
+                }
+              />
+            </Item>
+            <Button
+              style={{
+                alignSelf: 'center',
+                backgroundColor: colors.accent0,
+                width: '90%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginBottom: '2%',
+                marginTop: '5%',
+              }}
+              onPress={this.signupHandler}
+            >
+              <Text style={{ alignSelf: 'center' }}>
+                {processingRequest ? 'Signing Up...' : 'Sign Up'}
+              </Text>
+            </Button>
+            <Text
+              style={{ alignSelf: 'center', opacity: 0.7, marginBottom: '5%' }}
+            >
+              Already have an account?
+              {' '}
+              <Text
+                style={{ textDecorationLine: 'underline' }}
+                onPress={this.signIn}
+              >
+                Sign In
+              </Text>
+            </Text>
+          </Form>
+        </Content>
+      </Container>
     );
   }
 }

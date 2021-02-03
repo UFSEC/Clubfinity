@@ -5,6 +5,7 @@ import { DateTime } from 'luxon';
 import AgendaContainer from '../components/AgendaContainer';
 import UserContext from '../util/UserContext';
 import EventsApi from '../api/EventsApi';
+import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
 const style = StyleSheet.create({
   container: {
@@ -33,11 +34,7 @@ const style = StyleSheet.create({
 export default class CalendarScr extends React.Component {
   static contextType = UserContext;
 
-  static navigationOptions = {
-    title: 'Calendar',
-    headerStyle: { backgroundColor: '#7e947f' },
-    headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
-  }
+  static navigationOptions = buildNavigationsOptions('Calendar')
 
   constructor(props) {
     super(props);

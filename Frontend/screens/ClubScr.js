@@ -30,6 +30,7 @@ import EventsApi from '../api/EventsApi';
 import AnnouncementsApi from '../api/AnnouncementsApi';
 import AdminRow from '../components/AdminRow';
 import ClubfinityLogo from '../assets/images/ClubfinityLogo.png';
+import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
 const styles = StyleSheet.create({
   clubView: {
@@ -50,14 +51,9 @@ const styles = StyleSheet.create({
 });
 
 export default class ClubScr extends React.Component {
-  static navigationOptions = {
-    title: 'Club Page',
-    headerStyle: { backgroundColor: '#7e947f' },
-    headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
-    headerTintColor: 'white',
-  };
+  static contextType = UserContext
 
-  static contextType = UserContext;
+  static navigationOptions = buildNavigationsOptions('Club Page')
 
   constructor(props) {
     super(props);
