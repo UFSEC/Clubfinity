@@ -4,14 +4,10 @@ import {
   Text, Container, Content, List, ListItem,
 } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
+import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
 export default class SettingScr extends React.Component {
-  static navigationOptions = {
-    title: 'Settings',
-    headerStyle: { backgroundColor: '#7e947f' },
-    headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
-    headerTintColor: 'white',
-  };
+  static navigationOptions = buildNavigationsOptions('Settings')
 
   signOut = async () => {
     await AsyncStorage.removeItem('userToken');

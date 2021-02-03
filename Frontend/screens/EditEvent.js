@@ -19,14 +19,10 @@ import {
   combineAndParseDateTime, extractDateAndTime, DATE_PICKER_FORMAT, TIME_PICKER_FORMAT,
 } from '../util/dateUtil';
 import EventsApi from '../api/EventsApi';
+import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
 export default class EditEvent extends Component {
-  static navigationOptions = {
-    title: 'Edit Event',
-    headerStyle: { backgroundColor: '#7e947f' },
-    headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
-    headerTintColor: 'white',
-  };
+  static navigationOptions = buildNavigationsOptions('Edit Event')
 
   constructor(props) {
     super(props);

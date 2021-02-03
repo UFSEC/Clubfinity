@@ -25,14 +25,10 @@ import ClubsApi from '../api/ClubsApi';
 import {
   isValidFacebookUrl, isValidSlackUrl, isValidInstagramUrl, isValidUrl,
 } from '../util/validation';
+import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
 export default class EditClub extends Component {
-  static navigationOptions = {
-    title: 'Manage Club',
-    headerStyle: { backgroundColor: '#7e947f' },
-    headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
-    headerTintColor: 'white',
-  };
+  static navigationOptions = buildNavigationsOptions('Manage Club')
 
   static contextType = UserContext;
 

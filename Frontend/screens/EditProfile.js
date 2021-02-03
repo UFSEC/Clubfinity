@@ -17,14 +17,10 @@ import Majors from '../data/Majors';
 import ClassYears from '../data/ClassYears';
 import UserContext from '../util/UserContext';
 import UserApi from '../api/UserApi';
+import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
 export default class EditProfile extends Component {
-  static navigationOptions = {
-    title: 'Edit Profile',
-    headerStyle: { backgroundColor: '#7e947f' },
-    headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
-    headerTintColor: 'white',
-  };
+  static navigationOptions = buildNavigationsOptions('Edit Profile')
 
   static contextType = UserContext;
 

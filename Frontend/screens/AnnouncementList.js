@@ -5,15 +5,10 @@ import {
 
 import AnnouncementsApi from '../api/AnnouncementsApi';
 import Row from '../components/Row';
-import colors from '../util/colors';
+import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
 class AnnouncementList extends Component {
-  static navigationOptions = {
-    headerTitle: 'Announcement List',
-    headerStyle: { backgroundColor: colors.primary0 },
-    headerTitleStyle: { color: colors.grayScale3 },
-    headerTintColor: colors.grayScale0,
-  };
+  static navigationOptions = buildNavigationsOptions('Announcement List')
 
   constructor(props) {
     super(props);
