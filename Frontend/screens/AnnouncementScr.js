@@ -15,6 +15,7 @@ import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
 export default class AnnouncementScr extends Component {
   static contextType = UserContext;
+
   static navigationOptions = buildNavigationsOptions('Announcement')
 
   render() {
