@@ -56,17 +56,6 @@ const styles = StyleSheet.create({
   },
 });
 
-/* Update for later: announcement should be passed in as navigation parameter */
-const baseClubParameters = {
-  _id: '5ffefe807bf5a75b18edb39f',
-  title: 'CodeForChange date will be changing!',
-  description:
-  'The CodeForChange will be changing due to conflicts with a few other events going on at the same time.'
-  + 'Make sure to check out the schedule for updates about the new date.',
-  date: '2020-10-01T04:00:00.000Z',
-  club: '99cb91bdc3464f14678934ca',
-};
-
 export default class EditAnnouncements extends Component {
   // Update for later: navigate back to previous screen when pressed
   static navigationOptions = ({ navigation }) => ({
@@ -108,119 +97,132 @@ export default class EditAnnouncements extends Component {
     };
   }
 
-    editAnnouncement = async () => {
-      const validRequest = this.isRequestValid();
-      if (!validRequest.valid) {
-        this.setState({
-          processingRequest: { status: false, message: '' },
-          errors: { arePresent: true, data: validRequest.errors },
-        });
-        return;
-      }
-      this.setState({
-        processingRequest: { status: true, message: 'Updating...' },
-        errors: { arePresent: false, data: validRequest.errors },
-      });
-      const bearerToken = await AsyncStorage.getItem('userToken');
-      const {
-        title, description,
-      } = this.state;
-      baseClubParameters.description = description;
-      baseClubParameters.title = title;
-      const updateAnnouncementResponse = await AnnouncementsApi.update(
-        bearerToken,
-        baseClubParameters._id,
-        baseClubParameters,
-      );
-      if (updateAnnouncementResponse.error) {
-        alert('Unable to update user');
-        console.log(updateAnnouncementResponse.error);
-        return;
-      }
-      this.setState({
-        processingRequest: { status: true, message: 'Saved!' },
-      });
-    }
+  componentDidMount() {
+    const { navigation } = this.props;
+    this.setState({
+      id: navigation.getParam('id', ''),
+      title: navigation.getParam('title', ''),
+      description: navigation.getParam('description', ''),
+    });
+  }
 
-    isRequestValid = () => {
-      const { title, description } = this.state;
-      const errorData = { title: false, description: false };
-      errorData.title = title === '';
-      errorData.description = description === '';
-      const validRequest = !(errorData.title || errorData.description);
-      return { valid: validRequest, errors: errorData };
+  editAnnouncement = async () => {
+    const validRequest = this.isRequestValid();
+    if (!validRequest.valid) {
+      this.setState({
+        processingRequest: { status: false, message: '' },
+        errors: { arePresent: true, data: validRequest.errors },
+      });
+      return;
     }
+    this.setState({
+      processingRequest: { status: true, message: 'Updating...' },
+      errors: { arePresent: false, data: validRequest.errors },
+    });
+    const bearerToken = await AsyncStorage.getItem('userToken');
+    const {
+      title, description, id,
+    } = this.state;
+    const updateAnnouncementResponse = await AnnouncementsApi.update(
+      bearerToken,
+      id,
+      { title, description },
+    );
+    if (updateAnnouncementResponse.error) {
+      alert('Unable to update user');
+      console.log(updateAnnouncementResponse.error);
+      return;
+    }
+    this.setState({
+      processingRequest: { status: true, message: 'Saved!' },
+    });
+  }
 
-    render() {
-      const { errors, processingRequest } = this.state;
-      return (
-        <Container>
-          <Content>
-            <Form
-              style={styles.formStyle}
+  isRequestValid = () => {
+    const { title, description } = this.state;
+    const errorData = { title: false, description: false };
+    errorData.title = title === '';
+    errorData.description = description === '';
+    const validRequest = !(errorData.title || errorData.description);
+    return { valid: validRequest, errors: errorData };
+  }
+
+  render() {
+    const {
+      errors, title, description, processingRequest,
+    } = this.state;
+    return (
+      <Container>
+        <Content>
+          <Form
+            style={styles.formStyle}
+          >
+            <Item style={{
+              marginBottom: '8%',
+            }}
             >
-              <Item style={{
-                marginBottom: '8%',
-              }}
-              >
-                <Label
-                  style={{
-                    color:
-                      errors.arePresent && errors.data.title
-                        ? colors.error
-                        : colors.grayScale10,
-                  }}
-                >
-                  Edit Title
-                </Label>
-                <Input
-                  onChangeText={(value) => this.setState({ title: value })}
-                  style={{ textAlign: 'right' }}
-                  placeholderTextColor={colors.error}
-                  placeholder={
-                  errors.arePresent && errors.data.title
-                    ? 'No Title Given'
-                    : ''
-                }
-                />
-              </Item>
-              <Item>
-                <Label style={{
+              <Label
+                style={{
                   color:
-                    errors.arePresent && errors.data.description
+                    errors.arePresent && errors.data.title
                       ? colors.error
                       : colors.grayScale10,
                 }}
-                >
-                  Edit Description
-                </Label>
-                <Input
-                  onChangeText={(value) => this.setState({ description: value })}
-                  style={{ textAlign: 'right' }}
-                  placeholderTextColor={colors.error}
-                  placeholder={
+              >
+                Edit Title
+              </Label>
+              <Input
+                onChangeText={(value) => this.setState({ title: value })}
+                style={{ textAlign: 'right' }}
+                placeholderTextColor={colors.error}
+                placeholder={
+                errors.arePresent && errors.data.title
+                  ? 'No Title Given'
+                  : ''
+              }
+              >
+                {title}
+              </Input>
+            </Item>
+            <Item>
+              <Label style={{
+                color:
                   errors.arePresent && errors.data.description
-                    ? 'No Description Given'
-                    : ''
-                }
-                />
-              </Item>
-            </Form>
-            <Button
-              onPress={() => this.editAnnouncement()}
-              style={styles.SaveButtonStyle}
-              block
-              info
-            >
-              <Text style={styles.buttonText}>
-                {processingRequest.status
-                  ? processingRequest.message
-                  : 'Save'}
-              </Text>
-            </Button>
-          </Content>
-        </Container>
+                    ? colors.error
+                    : colors.grayScale10,
+              }}
+              >
+                Edit Description
+              </Label>
+              <Input
+                onChangeText={(value) => this.setState({ description: value })}
+                style={{ textAlign: 'right' }}
+                placeholderTextColor={colors.error}
+                placeholder={
+                errors.arePresent && errors.data.description
+                  ? 'No Description Given'
+                  : ''
+              }
+              >
+                {description}
+              </Input>
+            </Item>
+          </Form>
+          <Button
+            onPress={() => this.editAnnouncement()}
+            style={styles.SaveButtonStyle}
+            block
+            info
+          >
+            <Text style={styles.buttonText}>
+              {processingRequest.status
+                ? processingRequest.message
+                : 'Save'}
+            </Text>
+          </Button>
+        </Content>
+      </Container>
 
-      );
-    }
+    );
+  }
 }

@@ -48,6 +48,7 @@ class AnnouncementList extends Component {
   );
 
   render() {
+    const { navigation } = this.props;
     const { announcements } = this.state;
 
     const listData = [];
@@ -64,7 +65,13 @@ class AnnouncementList extends Component {
             <Row
               date={item.date.toFormat('MMM dd yyyy')}
               text={item.title}
-              handler={() => {}}
+              handler={() => {
+                navigation.navigate('AnnouncementScr', {
+                  id: item._id,
+                  title: item.title,
+                  description: item.description,
+                });
+              }}
             />
           )}
           renderSectionHeader={({ section }) => this.renderSectionHeader(section)}

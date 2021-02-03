@@ -345,7 +345,12 @@ export default class ClubScr extends React.Component {
                       data={announcements}
                       style={{ width: '100%' }}
                       renderItem={({ item }) => (
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('AnnouncementScr', {
+                          id: item._id,
+                          title: item.title,
+                          description: item.description,
+                        })}
+                        >
                           <View
                             style={{
                               width: '100%',
