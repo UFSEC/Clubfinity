@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   adminButton: {
     marginTop: '4%',
     alignSelf: 'center',
-    backgroundColor: colors.accent0,
+    backgroundColor: colors.secondary0,
     width: '85%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -174,8 +174,8 @@ export default class ClubScr extends React.Component {
                 style={{
                   alignSelf: 'center',
                   backgroundColor: isFollowing
-                    ? colors.accent2
-                    : colors.accent0,
+                    ? colors.secondary2
+                    : colors.secondary0,
                   width: '85%',
                   justifyContent: 'center',
                   alignItems: 'center',

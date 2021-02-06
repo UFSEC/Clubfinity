@@ -153,7 +153,7 @@ export default class CreateAnnouncementScr extends Component {
           <Button
             style={{
               alignSelf: 'center',
-              backgroundColor: colors.accent0,
+              backgroundColor: colors.secondary0,
               width: '90%',
               justifyContent: 'center',
               alignItems: 'center',

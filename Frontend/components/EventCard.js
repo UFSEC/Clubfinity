@@ -13,7 +13,7 @@ import InterestedButton from './InterestedButton';
 
 const styles = StyleSheet.create({
   clubname: {
-    color: colors.accent2,
+    color: colors.secondary2,
   },
   date: {
     color: colors.sucess,
