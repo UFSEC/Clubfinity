@@ -16,7 +16,7 @@ import ClubfinityLogo from '../assets/images/ClubfinityLogo.png';
 import AuthApi from '../api/AuthApi';
 import ErrorText from '../components/ErrorText';
 import UserContext from '../util/UserContext';
-import Colors from '../util/colors';
+import colors from '../util/colors';
 
 const MAX_FIELD_WIDTH = (Dimensions.get('screen').width * 3) / 4;
 const STATUS_BAR_HEIGHT = StatusBar.currentHeight;
@@ -37,50 +37,33 @@ const styles = StyleSheet.create({
     marginVertical: 30,
   },
   field: {
-    borderBottomColor: Colors.grayScale1,
+    borderBottomColor: colors.grayScale1,
     borderBottomWidth: 2,
     minWidth: MAX_FIELD_WIDTH,
-    borderColor: Colors.grayScale1,
+    borderColor: colors.grayScale1,
     margin: 8,
     paddingVertical: 9,
   },
   loginButton: {
     padding: 10,
     minWidth: MAX_FIELD_WIDTH,
-    backgroundColor: Colors.primary0,
-    borderWidth: 1,
-    borderColor: Colors.primary1,
+    backgroundColor: colors.primary0,
+    borderColor: colors.primary1,
     borderRadius: 8,
     marginHorizontal: 10,
     marginVertical: 10,
     elevation: 3,
   },
-  signupButton: {
-    padding: 10,
-    minWidth: MAX_FIELD_WIDTH,
-    borderWidth: 1,
-    borderRadius: 100,
-    marginHorizontal: 10,
-    marginVertical: 10,
-  },
-  signupButtonTxt: {
-    fontSize: 15,
-    alignSelf: 'center',
-    color: Colors.primary0,
-  },
   loginButtonText: {
     fontSize: 15,
     alignSelf: 'center',
-    color: Colors.primary5,
+    color: colors.grayScale0,
   },
-  textSignUpButtom: {
-    color: Colors.primary0,
-    height: 15,
-  },
+
   signupLink: {
-    marginBottom: -1,
-    borderBottomColor: Colors.primary5,
+    borderBottomColor: colors.primary0,
     borderBottomWidth: 1,
+    top: 5
   },
 });
 
@@ -176,7 +159,7 @@ export default class SigninScr extends React.Component {
                 textAlign="left"
                 style={styles.field}
                 name="username"
-                placeholderTextColor={Colors.primary5}
+                placeholderTextColor={colors.primary5}
                 returnKeyType="next"
                 onChangeText={this.changeUsername}
                 autoCapitalize="none"
@@ -188,7 +171,7 @@ export default class SigninScr extends React.Component {
                 name="password"
                 secureTextEntry
                 autoCapitalize="none"
-                placeholderTextColor={Colors.primary5}
+                placeholderTextColor={colors.primary5}
                 onChangeText={this.changePassword}
                 value={password}
                 placeholder="Password"
@@ -198,24 +181,24 @@ export default class SigninScr extends React.Component {
 
             <View
               style={{
-                bottom: 80, flex: 1, display: 'flex', justifyContent: 'center',
+                 justifyContent: 'center', position: 'relative', bottom: 215
               }}
             >
               <TouchableOpacity
                 style={styles.loginButton}
                 onPress={this.signIn}
-                backgroundColor={Colors.primary0}
+                backgroundColor={colors.primary0}
               >
                 <Text style={styles.loginButtonText}>Sign In</Text>
               </TouchableOpacity>
 
-              <Text style={{ color: Colors.primary0, alignSelf: 'center' }}>
+              <Text style={{ color: colors.primary0, alignSelf: 'center', fontSize: 13 }}>
                 <Text>Don&apos;t have an account yet? </Text>
                 <TouchableOpacity
                   onPress={this.signUp}
                   style={styles.signupLink}
                 >
-                  <Text style={styles.textSignUpButtom}>Sign up</Text>
+                  <Text style={{color: colors.primary0, fontSize: 13, top: 2}}>Sign up</Text>
                 </TouchableOpacity>
               </Text>
 
