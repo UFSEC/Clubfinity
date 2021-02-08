@@ -128,7 +128,9 @@ export default class ProfileScr extends React.Component {
   );
 
   renderSectionHeader = (section) => (
-    <Text style={{ marginLeft: '4%', color: colors.grayScale7 }}>{section.title}</Text>
+    <Text style={{ paddingLeft: '4%', color: colors.grayScale7, backgroundColor: '#F5F6FA' }}>
+      {section.title}
+    </Text>
   )
 
   renderClubList = (managingClubs, followingClubs) => {
