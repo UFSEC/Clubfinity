@@ -20,34 +20,21 @@ import {
 } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import UserContext from '../util/UserContext';
-import DefaultPic from '../assets/images/profile-icon.png';
+import DefaultPic from '../assets/images/ProfilePicture1.png';
 import thumbnailTheme from '../native-base-theme/components/Thumbnail';
 import getTheme from '../native-base-theme/components';
 import colors from '../util/colors';
 import ClubsApi from '../api/ClubsApi';
+import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
 export default class ProfileScr extends React.Component {
   static contextType = UserContext;
 
-  static navigationOptions = ({ navigation }) => ({
-    title: 'My Profile',
-    headerStyle: { backgroundColor: '#7e947f' },
-    headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
-    headerTintColor: 'white',
-    headerRight:
-  <View style={{ flexDirection: 'row', justifyContent: 'flex-end', paddingRight: 15 }}>
-    <TouchableOpacity
-      onPress={() => navigation.navigate('Settings')}
-      style={{
-        paddingTop: '2%',
-        paddingRight: '2%',
-        alignSelf: 'flex-end',
-      }}
-    >
-      <Ionicons name="md-settings" size={30} color="white" />
-    </TouchableOpacity>
-  </View>,
-  })
+  static navigationOptions = ({ navigation }) => (
+    buildNavigationsOptions('My Profile', {
+      type: 'icon', iconName: 'md-settings', navigateTo: 'Settings', navigation,
+    })
+  )
 
   constructor(props) {
     super(props);
@@ -123,7 +110,7 @@ export default class ProfileScr extends React.Component {
 
   handleClubSelect = (club) => {
     const { navigation } = this.props;
-    navigation.navigate('Club', { club });
+    navigation.navigate('ClubScr', { club });
   };
 
   renderClubListEmptyState = () => (

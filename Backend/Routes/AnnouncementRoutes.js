@@ -8,7 +8,7 @@ router.get('/club/:clubId', passport.authenticate('loggedIn', { session: false }
 router.get('/following', passport.authenticate('loggedIn', { session: false }), controller.getFollowing);
 router.get('/:id', passport.authenticate('loggedIn', { session: false }), controller.validate('idParam'), controller.get);
 router.post('/', passport.authenticate('loggedIn', { session: false }), controller.validate('announcementBody'), controller.create);
-router.put('/:id', passport.authenticate('loggedIn', { session: false }), controller.validate('announcementBody'), controller.update);
+router.put('/:id', passport.authenticate('loggedIn', { session: false }), controller.validate('announcementUpdate'), controller.update);
 router.delete('/:id', passport.authenticate('loggedIn', { session: false }), controller.validate('idParam'), controller.delete);
 
 module.exports = router;

@@ -6,7 +6,7 @@ const Schema = new mongoose.Schema({
   year: Number,
   username: String,
   email: String,
-  password: String,
+  password: { hash: String, salt: String },
   clubs: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Club',

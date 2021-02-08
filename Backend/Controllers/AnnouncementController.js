@@ -58,6 +58,12 @@ exports.validate = (type) => {
         body('club', 'club id does not exist').exists(),
       ];
     }
+    case 'announcementUpdate': {
+      return [
+        body('title', 'title does not exist').exists(),
+        body('description', 'description does not exist').exists(),
+      ];
+    }
     case 'idParam': {
       return [
         param('id', 'id not given').exists(),

@@ -29,6 +29,7 @@ import UserApi from '../api/UserApi';
 import EventsApi from '../api/EventsApi';
 import AnnouncementsApi from '../api/AnnouncementsApi';
 import AdminRow from '../components/AdminRow';
+import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
 const styles = StyleSheet.create({
   clubView: {
@@ -49,14 +50,9 @@ const styles = StyleSheet.create({
 });
 
 export default class ClubScr extends React.Component {
-  static navigationOptions = {
-    title: 'Club Page',
-    headerStyle: { backgroundColor: '#7e947f' },
-    headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
-    headerTintColor: 'white',
-  };
-
   static contextType = UserContext;
+
+  static navigationOptions = buildNavigationsOptions('Club Page');
 
   constructor(props) {
     super(props);
@@ -68,7 +64,13 @@ export default class ClubScr extends React.Component {
     };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    const { navigation } = this.props;
+    navigation.addListener('willFocus', this.onFocus);
+    this.onFocus();
+  }
+
+  onFocus = async () => {
     const { navigation } = this.props;
     const { user } = this.context;
     const club = navigation.getParam('club', 'NO-CLUB');
@@ -77,13 +79,16 @@ export default class ClubScr extends React.Component {
     if (user.clubs.map((currentClub) => currentClub._id).includes(club._id)) {
       this.setState({ isFollowing: true });
     }
-    if ((club.admins.map((admin) => admin._id)).includes(user._id)) {
+    if (club.admins.map((admin) => admin._id).includes(user._id)) {
       this.setState({ isAdmin: true });
     }
     const events = await EventsApi.getForClub(bearerToken, club._id);
-    const announcements = await AnnouncementsApi.getForClub(bearerToken, club._id);
+    const announcements = await AnnouncementsApi.getForClub(
+      bearerToken,
+      club._id,
+    );
     this.setState({ events, announcements });
-  }
+  };
 
   followBtnHandler = () => {
     const { navigation } = this.props;
@@ -130,9 +135,7 @@ export default class ClubScr extends React.Component {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView showsVerticalScrollIndicator>
-          <View
-            style={styles.clubView}
-          >
+          <View style={styles.clubView}>
             <View style={{ paddingTop: '10%' }}>
               <StyleProvider style={getTheme(thumbnailTheme)}>
                 <Thumbnail source={{ uri: club.thumbnailUrl }} large />
@@ -170,15 +173,16 @@ export default class ClubScr extends React.Component {
               <Button
                 style={{
                   alignSelf: 'center',
-                  backgroundColor: isFollowing ? colors.accent2 : colors.accent0,
+                  backgroundColor: isFollowing
+                    ? colors.accent2
+                    : colors.accent0,
                   width: '85%',
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}
                 onPress={this.followBtnHandler}
               >
-                { isFollowing
-                  ? <Text>Following</Text> : <Text>Follow</Text>}
+                {isFollowing ? <Text>Following</Text> : <Text>Follow</Text>}
               </Button>
             )}
 
@@ -206,7 +210,9 @@ export default class ClubScr extends React.Component {
                   <Text>Slack</Text>
                 </CardItem>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => Linking.openURL(club.facebookLink)}>
+              <TouchableOpacity
+                onPress={() => Linking.openURL(club.facebookLink)}
+              >
                 <CardItem>
                   <Ionicons
                     name="logo-facebook"
@@ -216,7 +222,9 @@ export default class ClubScr extends React.Component {
                   <Text>Facebook</Text>
                 </CardItem>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => Linking.openURL(club.instagramLink)}>
+              <TouchableOpacity
+                onPress={() => Linking.openURL(club.instagramLink)}
+              >
                 <CardItem>
                   <Ionicons
                     name="logo-instagram"
@@ -244,9 +252,7 @@ export default class ClubScr extends React.Component {
               </CardItem>
               <CardItem>
                 <Body>
-                  <Text>
-                    { club.description }
-                  </Text>
+                  <Text>{club.description}</Text>
                 </Body>
               </CardItem>
             </Card>
@@ -264,8 +270,12 @@ export default class ClubScr extends React.Component {
             >
               <CardItem header style={{ justifyContent: 'space-between' }}>
                 <Text style={{ alignSelf: 'flex-end' }}>Events</Text>
-                <TouchableOpacity onPress={() => navigation.navigate('EventList', { club })}>
-                  <Text style={{ alignSelf: 'flex-end', color: colors.link }}>View all</Text>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('EventList', { club })}
+                >
+                  <Text style={{ alignSelf: 'flex-end', color: colors.link }}>
+                    View all
+                  </Text>
                 </TouchableOpacity>
               </CardItem>
               <CardItem style={{ paddingHorizontal: '0%' }}>
@@ -275,7 +285,16 @@ export default class ClubScr extends React.Component {
                       data={events}
                       style={{ width: '100%' }}
                       renderItem={({ item }) => (
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                          onPress={() => navigation.navigate('EventScr', {
+                            id: item._id,
+                            title: item.name,
+                            description: item.description,
+                            location: item.location,
+                            date: item.date,
+                            isAdmin,
+                          })}
+                        >
                           <View
                             style={{
                               width: '100%',
@@ -314,7 +333,9 @@ export default class ClubScr extends React.Component {
               <CardItem header style={{ justifyContent: 'space-between' }}>
                 <Text style={{ alignSelf: 'flex-end' }}>Announcements</Text>
                 <TouchableOpacity onPress={() => {}}>
-                  <Text style={{ alignSelf: 'flex-end', color: colors.link }}>View all</Text>
+                  <Text style={{ alignSelf: 'flex-end', color: colors.link }}>
+                    View all
+                  </Text>
                 </TouchableOpacity>
               </CardItem>
               <CardItem style={{ paddingHorizontal: '0%' }}>
@@ -324,7 +345,12 @@ export default class ClubScr extends React.Component {
                       data={announcements}
                       style={{ width: '100%' }}
                       renderItem={({ item }) => (
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('AnnouncementScr', {
+                          id: item._id,
+                          title: item.title,
+                          description: item.description,
+                        })}
+                        >
                           <View
                             style={{
                               width: '100%',
@@ -336,7 +362,10 @@ export default class ClubScr extends React.Component {
                               alignItems: 'center',
                             }}
                           >
-                            <Text numberOfLines={1} style={{ marginRight: '1%' }}>
+                            <Text
+                              numberOfLines={1}
+                              style={{ marginRight: '1%' }}
+                            >
                               {item.title}
                             </Text>
                             <Ionicons name="md-arrow-dropright" size={30} />
@@ -362,8 +391,12 @@ export default class ClubScr extends React.Component {
             >
               <CardItem header style={{ justifyContent: 'space-between' }}>
                 <Text style={{ alignSelf: 'flex-end' }}>Admins</Text>
-                <TouchableOpacity onPress={() => navigation.navigate('AdminList', { club })}>
-                  <Text style={{ alignSelf: 'flex-end', color: colors.link }}>View all</Text>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('AdminList', { club })}
+                >
+                  <Text style={{ alignSelf: 'flex-end', color: colors.link }}>
+                    View all
+                  </Text>
                 </TouchableOpacity>
               </CardItem>
               <CardItem style={{ paddingHorizontal: '0%' }}>

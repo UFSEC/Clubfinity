@@ -19,6 +19,15 @@ exports.getManaging = async (bearerToken) => {
   return resp.data.data;
 };
 
+exports.getAdmins = async (bearerToken, clubId) => {
+  const resp = await API.get(`/api/club/${clubId}`, {
+    headers: {
+      Authorization: `Bearer ${bearerToken}`,
+    },
+  });
+  return resp.data.data.admins;
+};
+
 exports.createClub = async (
   bearerToken,
   clubName,

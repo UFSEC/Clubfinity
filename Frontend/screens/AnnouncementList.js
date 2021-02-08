@@ -5,15 +5,10 @@ import {
 
 import AnnouncementsApi from '../api/AnnouncementsApi';
 import Row from '../components/Row';
-import colors from '../util/colors';
+import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
 class AnnouncementList extends Component {
-  static navigationOptions = {
-    headerTitle: 'Announcement List',
-    headerStyle: { backgroundColor: colors.primary0 },
-    headerTitleStyle: { color: colors.grayScale3 },
-    headerTintColor: colors.grayScale0,
-  };
+  static navigationOptions = buildNavigationsOptions('Announcement List')
 
   constructor(props) {
     super(props);
@@ -53,6 +48,7 @@ class AnnouncementList extends Component {
   );
 
   render() {
+    const { navigation } = this.props;
     const { announcements } = this.state;
 
     const listData = [];
@@ -69,7 +65,13 @@ class AnnouncementList extends Component {
             <Row
               date={item.date.toFormat('MMM dd yyyy')}
               text={item.title}
-              handler={() => {}}
+              handler={() => {
+                navigation.navigate('AnnouncementScr', {
+                  id: item._id,
+                  title: item.title,
+                  description: item.description,
+                });
+              }}
             />
           )}
           renderSectionHeader={({ section }) => this.renderSectionHeader(section)}

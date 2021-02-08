@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { AsyncStorage } from 'react-native';
 import {
   Button,
   Text,
@@ -14,14 +15,14 @@ import { Ionicons } from '@expo/vector-icons';
 import DatePicker from 'react-native-datepicker';
 import colors from '../util/colors';
 import { isValidFacebookUrl } from '../util/validation';
+import {
+  combineAndParseDateTime, extractDateAndTime, DATE_PICKER_FORMAT, TIME_PICKER_FORMAT,
+} from '../util/dateUtil';
+import EventsApi from '../api/EventsApi';
+import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
 export default class EditEvent extends Component {
-  static navigationOptions = {
-    title: 'Edit Event',
-    headerStyle: { backgroundColor: '#7e947f' },
-    headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
-    headerTintColor: 'white',
-  };
+  static navigationOptions = buildNavigationsOptions('Edit Event')
 
   constructor(props) {
     super(props);
@@ -34,6 +35,7 @@ export default class EditEvent extends Component {
       eventDescription: false,
     };
     this.state = {
+      id: '',
       eventName: '',
       selectedDate: '',
       selectedTime: '',
@@ -46,13 +48,16 @@ export default class EditEvent extends Component {
   }
 
   componentDidMount() {
+    const { navigation } = this.props;
+    const { date, time } = extractDateAndTime(navigation.getParam('date', ''));
     this.setState({
-      eventName: '',
-      selectedDate: '',
-      selectedTime: '',
-      location: '',
+      id: navigation.getParam('id', ''),
+      eventName: navigation.getParam('title', ''),
+      selectedDate: date,
+      selectedTime: time,
+      location: navigation.getParam('location', ''),
       facebookLink: '',
-      eventDescription: '',
+      eventDescription: navigation.getParam('description', ''),
     });
   }
 
@@ -69,6 +74,24 @@ export default class EditEvent extends Component {
       processingRequest: { status: false, message: 'Updating...' },
       errors: { arePresent: false, data: validRequest.errors.data },
     });
+    const userToken = await AsyncStorage.getItem('userToken');
+    const {
+      id, eventName, selectedDate, selectedTime, location, eventDescription,
+    } = this.state;
+    const parsedDate = combineAndParseDateTime(selectedDate, selectedTime);
+    const editedEventResponse = await EventsApi.update(id, userToken, {
+      name: eventName,
+      description: eventDescription,
+      date: parsedDate.toISO(),
+      location,
+    });
+    if (editedEventResponse.error) {
+      alert('Unable to edit user');
+    } else {
+      const { navigation } = this.props;
+      navigation.pop(2);
+    }
+    // Add error feedback
   };
 
   isRequestValid = () => {
@@ -138,7 +161,6 @@ export default class EditEvent extends Component {
               <Input
                 onChangeText={(value) => this.setState({ eventName: value })}
                 style={{ textAlign: 'right' }}
-                // height="50%"
                 placeholderTextColor={colors.error}
                 placeholder={
                   errors.arePresent && errors.data.eventName
@@ -171,7 +193,7 @@ export default class EditEvent extends Component {
                 placeholder={errors.arePresent && errors.data.selectedDate
                   ? 'Invalid date'
                   : 'Select a Date'}
-                format="MMM Do YYYY"
+                format={DATE_PICKER_FORMAT}
                 minDate={today}
                 confirmBtnText="Set Date"
                 cancelBtnText="Cancel"
@@ -229,7 +251,7 @@ export default class EditEvent extends Component {
                 placeholder={errors.arePresent && errors.data.selectedTime
                   ? 'Invalid time'
                   : 'Select a Time'}
-                format="hh:mm A"
+                format={TIME_PICKER_FORMAT}
                 confirmBtnText="Set Time"
                 cancelBtnText="Cancel"
                 minuteInterval={10}

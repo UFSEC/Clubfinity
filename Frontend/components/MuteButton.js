@@ -2,21 +2,21 @@ import React, { Component } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import PropTypes from 'prop-types';
 
-export default class GoingButton extends Component {
+export default class NotGoingButton extends Component {
   static propTypes = {
     clickHandler: PropTypes.func.isRequired,
-    isGoing: PropTypes.bool.isRequired,
+    isMuted: PropTypes.bool.isRequired,
   };
 
   render() {
-    const { isGoing, clickHandler } = this.props;
+    const { isMuted, clickHandler } = this.props;
     return (
       <Ionicons.Button
-        name={isGoing ? 'ios-checkmark-circle' : 'ios-checkmark-circle-outline'}
-        backgroundColor={isGoing ? '#0d5e4e' : '#16a085'}
+        name={isMuted ? 'ios-close-circle' : 'ios-close-circle-outline'}
+        backgroundColor={isMuted ? '#ab3a3a' : '#ff8080'}
         onPress={clickHandler}
       >
-        Going
+        Mute
       </Ionicons.Button>
     );
   }

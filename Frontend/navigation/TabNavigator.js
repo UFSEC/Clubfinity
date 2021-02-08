@@ -19,10 +19,15 @@ import EditProfile from '../screens/EditProfile';
 import ClubCreation from '../screens/ClubCreation';
 import SettingScr from '../screens/SettingScr';
 import EventList from '../screens/EventList';
+import AnnouncementList from '../screens/AnnouncementList';
 import EventCreation from '../screens/EventCreation';
 import CreateAnnouncementScr from '../screens/CreateAnnouncementScr';
 import AdminList from '../screens/AdminList';
 import EditClub from '../screens/EditClub';
+import EditEvent from '../screens/EditEvent'
+import EventScr from '../screens/EventScr'
+import AnnouncementScr from '../screens/AnnouncementScr'
+import EditAnnouncement from '../screens/EditAnnouncements'
 
 const HomeStack = createStackNavigator(
   {
@@ -77,6 +82,7 @@ const ProfileStack = createStackNavigator(
     EditProfileScr: EditProfile,
     Settings: SettingScr,
     ClubCreationScr: ClubCreation,
+    ClubScr : ClubScr,
   },
   {
     navigationOptions: {
@@ -101,9 +107,14 @@ const DiscoverStack = createStackNavigator(
     Club: ClubScr,
     EditClub: EditClub,
     EventList: EventList,
+    AnnouncementList: AnnouncementList,
     EventCreation: EventCreation,
     CreateAnnouncementScr: CreateAnnouncementScr,
     AdminList: AdminList,
+    EventScr: EventScr,
+    AnnouncementScr: AnnouncementScr,
+    EditEvent: EditEvent,
+    EditAnnouncement: EditAnnouncement
   },
   {
     initialRouteName: 'Discover',

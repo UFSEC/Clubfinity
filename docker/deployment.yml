@@ -18,5 +18,10 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
+        env:
+        - name: DATABASE_URL
+          value: $DATABASE_URL
+        - name: JWT_SECRET
+          value: $JWT_SECRET
       imagePullSecrets:
         - name: $API_IMAGE_TAG

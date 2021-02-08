@@ -21,13 +21,10 @@ import {
 import API from '../api/BaseApi';
 import ClubfinityLogo from '../assets/images/ClubfinityLogo.png';
 import colors from '../util/colors';
+import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
 export default class DiscoverScr extends Component {
-  static navigationOptions = {
-    title: 'Discover',
-    headerStyle: { backgroundColor: '#7e947f' },
-    headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
-  };
+  static navigationOptions = buildNavigationsOptions('Discover')
 
   constructor(props) {
     super(props);
