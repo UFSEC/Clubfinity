@@ -36,7 +36,8 @@ exports.create = async (req, res) => catchErrors(res, async () => {
     .split(',')
     .filter(Boolean);
 
-  return clubDAO.create(req.body);
+  const { _id: id } = await clubDAO.create(req.body);
+  return clubDAO.get(id);
 });
 
 exports.delete = async (req, res) => catchErrors(res, async () => clubDAO.delete(req.params.id));

@@ -48,12 +48,14 @@ exports.createClub = async (
     newClubData.slackLink = slackLink;
   }
   try {
-    await API.post('/api/club/', newClubData, {
+    const resp = await API.post('/api/club/', newClubData, {
       headers: {
         Authorization: `Bearer ${bearerToken}`,
       },
     });
-    return { successfulRequest: true };
+    return resp.data.ok
+      ? { successfulRequest: true, data: resp.data.data }
+      : { successfulRequest: false, error: resp.data.error };
   } catch (error) {
     return { successfulRequest: false, error };
   }
