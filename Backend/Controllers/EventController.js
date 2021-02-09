@@ -62,31 +62,37 @@ exports.getGoingUsers = async (req, res) => catchErrors(res, async () => {
 
 exports.addGoingUser = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);
+
   return eventDAO.update(req.params.id, { $addToSet: { goingUsers: req.userId } });
 });
 
 exports.removeGoingUser = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);
+
   return eventDAO.update(req.params.id, { $pull: { goingUsers: req.userId } });
 });
 
 exports.addInterestedUser = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);
+
   return eventDAO.update(req.params.id, { $addToSet: { interestedUsers: req.userId } });
 });
 
 exports.removeInterestedUser = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);
+
   return eventDAO.update(req.params.id, { $pull: { interestedUsers: req.userId } });
 });
 
 exports.addMutedUser = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);
+
   return eventDAO.update(req.params.id, { $addToSet: { mutedUsers: req.userId } });
 });
 
 exports.removeMutedUser = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);
+
   return eventDAO.update(req.params.id, { $pull: { mutedUsers: req.userId } });
 });
 exports.delete = async (req, res) => catchErrors(res, async () => eventDAO.delete(req.params.id));

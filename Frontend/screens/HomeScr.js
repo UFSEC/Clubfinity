@@ -98,7 +98,7 @@ class HomeScr extends Component {
               name={item.name}
               location={item.location}
               description={item.description}
-              userID={user._id}
+              userId={user._id}
               goingUsers={item.goingUsers}
               eventID={item._id}
               interestedUsers={item.interestedUsers}

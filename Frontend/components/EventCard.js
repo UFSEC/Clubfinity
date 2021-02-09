@@ -51,7 +51,7 @@ export default class EventCard extends Component {
     name: PropTypes.string.isRequired,
     location: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-    userID: PropTypes.string.isRequired,
+    userId: PropTypes.string.isRequired,
     goingUsers: PropTypes.array.isRequired,
     mutedUsers: PropTypes.array.isRequired,
     interestedUsers: PropTypes.array.isRequired,
@@ -61,12 +61,12 @@ export default class EventCard extends Component {
   constructor(props) {
     super(props);
     const {
-      mutedUsers, goingUsers, interestedUsers, userID,
+      mutedUsers, goingUsers, interestedUsers, userId,
     } = this.props;
     this.state = {
-      mute: mutedUsers.includes(userID),
-      going: goingUsers.includes(userID),
-      interested: interestedUsers.includes(userID),
+      mute: mutedUsers.includes(userId),
+      going: goingUsers.includes(userId),
+      interested: interestedUsers.includes(userId),
     };
   }
 
