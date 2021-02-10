@@ -104,5 +104,5 @@ exports.getAdmin = async (adminId, bearerToken) => {
       Authorization: `Bearer ${bearerToken}`,
     },
   });
-  return axiosResponse;
+  return axiosResponse.data.data;
 };

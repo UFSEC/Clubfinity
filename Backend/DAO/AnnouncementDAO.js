@@ -33,7 +33,8 @@ exports.create = async (params) => {
 };
 
 exports.update = async (id, params) => {
-  await Announcement.findOneAndUpdate({ _id: id }, params, {
+  const { title, description } = params;
+  await Announcement.findOneAndUpdate({ _id: id }, { title, description }, {
     upsert: true,
     useFindAndModify: false,
   });

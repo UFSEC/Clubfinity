@@ -18,6 +18,7 @@ import colors from '../util/colors';
 import {
   isValidFacebookUrl, isValidUrl, isValidInstagramUrl, isValidSlackUrl,
 } from '../util/validation';
+import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
 const clubCategories = [
   { label: 'Computer Science', value: 'Computer Science' },
@@ -45,12 +46,7 @@ const positions = [
 ];
 
 export default class ClubCreation extends Component {
-  static navigationOptions = {
-    title: 'Create a club',
-    headerStyle: { backgroundColor: '#7e947f' },
-    headerTitleStyle: { color: '#ecf0f1', letterSpacing: 2 },
-    headerTintColor: 'white',
-  };
+  static navigationOptions = buildNavigationsOptions('Create a club')
 
   constructor(props) {
     super(props);
