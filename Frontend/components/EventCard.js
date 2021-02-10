@@ -53,7 +53,7 @@ export default class EventCard extends Component {
     description: PropTypes.string.isRequired,
     userId: PropTypes.string.isRequired,
     goingUsers: PropTypes.array.isRequired,
-    mutedUsers: PropTypes.array.isRequired,
+    uninterestedUsers: PropTypes.array.isRequired,
     interestedUsers: PropTypes.array.isRequired,
     eventID: PropTypes.string.isRequired,
   };
@@ -61,10 +61,10 @@ export default class EventCard extends Component {
   constructor(props) {
     super(props);
     const {
-      mutedUsers, goingUsers, interestedUsers, userId,
+      uninterestedUsers, goingUsers, interestedUsers, userId,
     } = this.props;
     this.state = {
-      mute: mutedUsers.includes(userId),
+      mute: uninterestedUsers.includes(userId),
       going: goingUsers.includes(userId),
       interested: interestedUsers.includes(userId),
     };
@@ -84,10 +84,10 @@ export default class EventCard extends Component {
           interested: false,
         },
       );
-      await EventsApi.addMutedUser(eventID, bearerToken);
+      await EventsApi.addUninterestedUser(eventID, bearerToken);
       await EventsApi.removeGoingUser(eventID, bearerToken);
       await EventsApi.removeInterestedUser(eventID, bearerToken);
-    } else await EventsApi.removeMutedUser(eventID, bearerToken);
+    } else await EventsApi.removeUninterestedUser(eventID, bearerToken);
   };
 
   goingHandler = async () => {
@@ -104,7 +104,7 @@ export default class EventCard extends Component {
       });
       await EventsApi.addGoingUser(eventID, bearerToken);
       await EventsApi.removeInterestedUser(eventID, bearerToken);
-      await EventsApi.removeMutedUser(eventID, bearerToken);
+      await EventsApi.removeUninterestedUser(eventID, bearerToken);
     } else await EventsApi.removeGoingUser(eventID, bearerToken);
   }
 
@@ -122,7 +122,7 @@ export default class EventCard extends Component {
       });
       await EventsApi.addInterestedUser(eventID, bearerToken);
       await EventsApi.removeGoingUser(eventID, bearerToken);
-      await EventsApi.removeMutedUser(eventID, bearerToken);
+      await EventsApi.removeUninterestedUser(eventID, bearerToken);
     } else await EventsApi.removeInterestedUser(eventID, bearerToken);
   }
 

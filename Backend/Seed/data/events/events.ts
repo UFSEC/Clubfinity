@@ -8,6 +8,8 @@ interface Event {
   description: String;
   date: DateTime;
   goingUsers: Types.ObjectId[];
+  interestedUsers: Types.ObjectId[];
+  uninterestedUsers: Types.ObjectId[];
   club: Types.ObjectId;
   _id: Types.ObjectId;
 }
@@ -20,6 +22,8 @@ const eventsData: Event[] = [
     description: 'Join us for mini hackathon',
     date: DateTime.local(2020, 3, 23),
     goingUsers: [Types.ObjectId('16cb91bdc3464f14678934ca')],
+    uninterestedUsers: [],
+    interestedUsers: [],
     club: new Types.ObjectId('99cb91bdc3464f14678934ca'),
     _id: new Types.ObjectId('99cb91bdc3464f14678934ff'),
   },
@@ -30,6 +34,8 @@ const eventsData: Event[] = [
     description: 'We will be hosting google hashcode competition',
     date: DateTime.local(2020, 3, 20),
     goingUsers: [Types.ObjectId('16cb91bdc3464f14678934ca')],
+    uninterestedUsers: [],
+    interestedUsers: [],
     club: new Types.ObjectId('99cb91bdc3464f14678934ca'),
     _id: new Types.ObjectId(),
   },
@@ -40,6 +46,8 @@ const eventsData: Event[] = [
     description: 'Join us for mini hackathon',
     date: DateTime.local(2020, 3, 7),
     goingUsers: [Types.ObjectId('16cb91bdc3464f14678934ca')],
+    uninterestedUsers: [],
+    interestedUsers: [],
     club: new Types.ObjectId('99cb91bdc3464f14678934ca'),
     _id: new Types.ObjectId(),
   },
@@ -50,6 +58,8 @@ const eventsData: Event[] = [
     description: "We'll have various puppers to cuddle with! Join us :)",
     date: DateTime.local(2020, 3, 5),
     goingUsers: [],
+    uninterestedUsers: [],
+    interestedUsers: [],
     club: new Types.ObjectId('99cd91bdc3464f14678934ca'),
     _id: new Types.ObjectId(),
   },
@@ -60,6 +70,8 @@ const eventsData: Event[] = [
     description: 'Join us for an evening of good pasta.',
     date: DateTime.local(2020, 3, 5),
     goingUsers: [],
+    uninterestedUsers: [],
+    interestedUsers: [],
     club: new Types.ObjectId('99ce91bdc3464f14678934ca'),
     _id: new Types.ObjectId(),
   },

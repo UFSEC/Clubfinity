@@ -20,7 +20,7 @@ const Schema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   }],
-  mutedUsers: [{
+  uninterestedUsers: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   }],

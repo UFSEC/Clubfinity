@@ -107,9 +107,9 @@ exports.removeInterestedUser = async (eventId, bearerToken) => {
   return axiosResponse;
 };
 
-exports.addMutedUser = async (eventId, bearerToken) => {
+exports.addUninterestedUser = async (eventId, bearerToken) => {
   const axiosResponse = await API.post(
-    `/api/event/${eventId}/muted-users`,
+    `/api/event/${eventId}/uninterested-users`,
     {},
     {
       headers: {
@@ -120,9 +120,9 @@ exports.addMutedUser = async (eventId, bearerToken) => {
   return axiosResponse;
 };
 
-exports.removeMutedUser = async (eventId, bearerToken) => {
+exports.removeUninterestedUser = async (eventId, bearerToken) => {
   const axiosResponse = await API.delete(
-    `/api/event/${eventId}/muted-users`,
+    `/api/event/${eventId}/uninterested-users`,
     {
       headers: {
         Authorization: `Bearer ${bearerToken}`,

@@ -16,8 +16,8 @@ router.post('/:id/going-users', passport.authenticate('loggedIn', { session: fal
 router.delete('/:id/going-users', passport.authenticate('loggedIn', { session: false }), eventController.validate('validateExistingEvent'), eventController.removeGoingUser);
 router.post('/:id/interested-users', passport.authenticate('loggedIn', { session: false }), eventController.validate('validateExistingEvent'), eventController.addInterestedUser);
 router.delete('/:id/interested-users', passport.authenticate('loggedIn', { session: false }), eventController.validate('validateExistingEvent'), eventController.removeInterestedUser);
-router.post('/:id/muted-users', passport.authenticate('loggedIn', { session: false }), eventController.validate('validateExistingEvent'), eventController.addMutedUser);
-router.delete('/:id/muted-users', passport.authenticate('loggedIn', { session: false }), eventController.validate('validateExistingEvent'), eventController.removeMutedUser);
+router.post('/:id/uninterested-users', passport.authenticate('loggedIn', { session: false }), eventController.validate('validateExistingEvent'), eventController.addUninterestedUser);
+router.delete('/:id/uninterested-users', passport.authenticate('loggedIn', { session: false }), eventController.validate('validateExistingEvent'), eventController.removeUninterestedUser);
 router.delete('/:id', passport.authenticate('loggedIn', { session: false }), eventController.delete);
 
 module.exports = router;
