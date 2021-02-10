@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   signupLink: {
     borderBottomColor: colors.primary0,
     borderBottomWidth: 1,
-    top: 5
+    top: 5,
   },
 });
 
@@ -181,7 +181,7 @@ export default class SigninScr extends React.Component {
 
             <View
               style={{
-                 justifyContent: 'center', position: 'relative', bottom: 215
+                justifyContent: 'center', position: 'relative', bottom: 215,
               }}
             >
               <TouchableOpacity
@@ -198,7 +198,7 @@ export default class SigninScr extends React.Component {
                   onPress={this.signUp}
                   style={styles.signupLink}
                 >
-                  <Text style={{color: colors.primary0, fontSize: 13, top: 2}}>Sign up</Text>
+                  <Text style={{ color: colors.primary0, fontSize: 13, top: 2 }}>Sign up</Text>
                 </TouchableOpacity>
               </Text>
 
