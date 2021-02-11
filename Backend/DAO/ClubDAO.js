@@ -17,6 +17,8 @@ exports.get = async (id) => {
   return club;
 };
 
+exports.getManagedBy = async (userId) => Club.find({ admins: userId }).populate('admins').exec();
+
 exports.exists = async (id) => {
   try {
     return await Club.exists({ _id: id });
