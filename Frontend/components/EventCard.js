@@ -85,14 +85,12 @@ export default class EventCard extends Component {
         },
       );
       await EventsApi.addUninterestedUser(eventID, bearerToken);
-      await EventsApi.removeGoingUser(eventID, bearerToken);
-      await EventsApi.removeInterestedUser(eventID, bearerToken);
     } else await EventsApi.removeUninterestedUser(eventID, bearerToken);
   };
 
   goingHandler = async () => {
     const { going } = this.state;
-    await this.setState({
+    this.setState({
       going: !going,
     });
     const bearerToken = await AsyncStorage.getItem('userToken');
@@ -103,8 +101,6 @@ export default class EventCard extends Component {
         interested: false,
       });
       await EventsApi.addGoingUser(eventID, bearerToken);
-      await EventsApi.removeInterestedUser(eventID, bearerToken);
-      await EventsApi.removeUninterestedUser(eventID, bearerToken);
     } else await EventsApi.removeGoingUser(eventID, bearerToken);
   }
 
@@ -121,8 +117,6 @@ export default class EventCard extends Component {
         going: false,
       });
       await EventsApi.addInterestedUser(eventID, bearerToken);
-      await EventsApi.removeGoingUser(eventID, bearerToken);
-      await EventsApi.removeUninterestedUser(eventID, bearerToken);
     } else await EventsApi.removeInterestedUser(eventID, bearerToken);
   }
 

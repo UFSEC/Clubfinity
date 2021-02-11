@@ -50,8 +50,6 @@ class HomeScr extends Component {
       events,
       isLoading: false,
     });
-
-    console.log(events)
   }
 
   // This has to be a lambda in order to preserve the value of 'this.props'
@@ -82,19 +80,15 @@ class HomeScr extends Component {
   eventListView() {
     const { events } = this.state;
     const { user } = this.context;
-    console.log(user._id)
     return (
       <View style={[primary.container, primary.bodyText]}>
         <Text style={primary.headerText}>
           Hey Upcoming Events
           <Octicons name="megaphone" color="teal" size={24} />
         </Text>
-       { <FlatList
+        <FlatList
           data={events}
-          renderItem={({ item }) => {
-            console.log({item})
-          
-          return (
+          renderItem={({ item }) => (
             <EventCard
               key={item._id}
               name={item.name}
@@ -106,11 +100,9 @@ class HomeScr extends Component {
               interestedUsers={item.interestedUsers}
               uninterestedUsers={item.uninterestedUsers}
             />
-          )
-          
-          }}
+          )}
           keyExtractor={(item) => item._id.toString()}
-          /> }
+        />
       </View>
     );
   }
