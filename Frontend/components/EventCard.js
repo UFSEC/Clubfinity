@@ -13,16 +13,16 @@ import InterestedButton from './InterestedButton';
 
 const styles = StyleSheet.create({
   clubname: {
-    color: colors.secondary2,
+    color: colors.primary1,
   },
   date: {
-    color: colors.sucess,
+    color: colors.primary2,
     flex: 1,
     textAlign: 'right',
     fontSize: 23,
   },
   location: {
-    color: colors.sucess,
+    color: colors.primary2,
     fontWeight: '700',
     marginLeft: '2%',
   },
@@ -42,6 +42,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 4,
     elevation: 2,
+  },
+  title: {
+    color: colors.primary0,
+    fontSize: 20,
+    fontWeight: 'bold',
+    flex: 5,
   },
 });
 
@@ -112,10 +118,10 @@ export default class EventCard extends Component {
       interested,
     } = this.state;
     const {
-      mutedContainer, bodyText, date, clubname,
+      mutedContainer, bodyText, date, clubname, title
     } = styles;
     const {
-      container, title, bannerIcon, banner, body,
+      container, bannerIcon, banner, body,
     } = card;
     const containerStyle = mute ? mutedContainer : container;
     return (

@@ -28,6 +28,7 @@ import EditEvent from '../screens/EditEvent'
 import EventScr from '../screens/EventScr'
 import AnnouncementScr from '../screens/AnnouncementScr'
 import EditAnnouncement from '../screens/EditAnnouncements'
+import colors from '../util/colors';
 
 const HomeStack = createStackNavigator(
   {
@@ -145,8 +146,8 @@ const AppStack = createBottomTabNavigator(
   {
     headerLayoutPreset: 'center',
     tabBarOptions: {
-      activeTintColor: '#7e947f',
-      inactiveTintColor: '#bdc3c7',
+      activeTintColor: colors.primary2,
+      inactiveTintColor: colors.grayScale8,
       showLabel: false,
     },
   }
