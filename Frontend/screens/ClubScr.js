@@ -129,6 +129,9 @@ export default class ClubScr extends React.Component {
       events, announcements, isFollowing, isAdmin,
     } = this.state;
 
+    const announcementsEmpty = announcements.length === 0;
+    const eventsEmpty = events.length === 0;
+
     const club = navigation.getParam('club', 'NO-CLUB');
     const defaultAdminUrl = 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png';
 
@@ -270,51 +273,66 @@ export default class ClubScr extends React.Component {
             >
               <CardItem header style={{ justifyContent: 'space-between' }}>
                 <Text style={{ alignSelf: 'flex-end' }}>Events</Text>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('EventList', { club })}
-                >
-                  <Text style={{ alignSelf: 'flex-end', color: colors.link }}>
-                    View all
-                  </Text>
-                </TouchableOpacity>
+                {!announcementsEmpty && (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('EventList', { club })}
+                  >
+                    <Text style={{ alignSelf: 'flex-end', color: colors.link }}>
+                      View all
+                    </Text>
+                  </TouchableOpacity>
+                )}
               </CardItem>
               <CardItem style={{ paddingHorizontal: '0%' }}>
                 <Body style={{ paddingHorizontal: '0%', width: '100%' }}>
-                  <List style={{ width: '100%' }}>
-                    <FlatList
-                      data={events}
-                      style={{ width: '100%' }}
-                      renderItem={({ item }) => (
-                        <TouchableOpacity
-                          onPress={() => navigation.navigate('EventScr', {
-                            id: item._id,
-                            title: item.name,
-                            description: item.description,
-                            location: item.location,
-                            date: item.date,
-                            isAdmin,
-                          })}
-                        >
-                          <View
-                            style={{
-                              width: '100%',
-                              marginLeft: '0%',
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                              flexDirection: 'row',
-                              padding: '2%',
-                              alignItems: 'center',
-                            }}
+                  {!eventsEmpty ? (
+                    <List style={{ width: '100%' }}>
+                      <FlatList
+                        data={events}
+                        style={{ width: '100%' }}
+                        renderItem={({ item }) => (
+                          <TouchableOpacity
+                            onPress={() => navigation.navigate('EventScr', {
+                              id: item._id,
+                              title: item.name,
+                              description: item.description,
+                              location: item.location,
+                              date: item.date,
+                              isAdmin,
+                            })}
                           >
-                            <Text style={{ marginLeft: '0%' }}>
-                              {item.name}
-                            </Text>
-                            <Ionicons name="md-arrow-dropright" size={30} />
-                          </View>
-                        </TouchableOpacity>
-                      )}
-                    />
-                  </List>
+                            <View
+                              style={{
+                                width: '100%',
+                                marginLeft: '0%',
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                flexDirection: 'row',
+                                padding: '2%',
+                                alignItems: 'center',
+                              }}
+                            >
+                              <Text style={{ marginLeft: '0%' }}>
+                                {item.name}
+                              </Text>
+                              <Ionicons name="md-arrow-dropright" size={30} />
+                            </View>
+                          </TouchableOpacity>
+                        )}
+                      />
+                    </List>
+                  ) : (
+                    <Text
+                      style={{
+                        alignSelf: 'center',
+                        opacity: 0.7,
+                        marginBottom: '5%',
+                        fontSize: '14',
+                      }}
+                    >
+                      There are no events for this club.
+                    </Text>
+                  )}
                 </Body>
               </CardItem>
             </Card>
@@ -332,48 +350,65 @@ export default class ClubScr extends React.Component {
             >
               <CardItem header style={{ justifyContent: 'space-between' }}>
                 <Text style={{ alignSelf: 'flex-end' }}>Announcements</Text>
-                <TouchableOpacity onPress={() => {}}>
-                  <Text style={{ alignSelf: 'flex-end', color: colors.link }}>
-                    View all
-                  </Text>
-                </TouchableOpacity>
+
+                {!announcementsEmpty && (
+                  <TouchableOpacity onPress={() => {}}>
+                    <Text style={{ alignSelf: 'flex-end', color: colors.link }}>
+                      View all
+                    </Text>
+                  </TouchableOpacity>
+                )}
               </CardItem>
               <CardItem style={{ paddingHorizontal: '0%' }}>
                 <Body style={{ paddingHorizontal: '0%', width: '100%' }}>
-                  <List style={{ width: '100%' }}>
-                    <FlatList
-                      data={announcements}
-                      style={{ width: '100%' }}
-                      renderItem={({ item }) => (
-                        <TouchableOpacity onPress={() => navigation.navigate('AnnouncementScr', {
-                          id: item._id,
-                          title: item.title,
-                          description: item.description,
-                        })}
-                        >
-                          <View
-                            style={{
-                              width: '100%',
-                              marginLeft: '0%',
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                              flexDirection: 'row',
-                              padding: '2%',
-                              alignItems: 'center',
-                            }}
+                  {!announcementsEmpty ? (
+                    <List style={{ width: '100%' }}>
+                      <FlatList
+                        data={announcements}
+                        style={{ width: '100%' }}
+                        renderItem={({ item }) => (
+                          <TouchableOpacity
+                            onPress={() => navigation.navigate('AnnouncementScr', {
+                              id: item._id,
+                              title: item.title,
+                              description: item.description,
+                            })}
                           >
-                            <Text
-                              numberOfLines={1}
-                              style={{ marginRight: '1%' }}
+                            <View
+                              style={{
+                                width: '100%',
+                                marginLeft: '0%',
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                flexDirection: 'row',
+                                padding: '2%',
+                                alignItems: 'center',
+                              }}
                             >
-                              {item.title}
-                            </Text>
-                            <Ionicons name="md-arrow-dropright" size={30} />
-                          </View>
-                        </TouchableOpacity>
-                      )}
-                    />
-                  </List>
+                              <Text
+                                numberOfLines={1}
+                                style={{ marginRight: '1%' }}
+                              >
+                                {item.title}
+                              </Text>
+                              <Ionicons name="md-arrow-dropright" size={30} />
+                            </View>
+                          </TouchableOpacity>
+                        )}
+                      />
+                    </List>
+                  ) : (
+                    <Text
+                      style={{
+                        alignSelf: 'center',
+                        opacity: 0.7,
+                        marginBottom: '5%',
+                        fontSize: '14',
+                      }}
+                    >
+                      There are no announcements for this club.
+                    </Text>
+                  )}
                 </Body>
               </CardItem>
             </Card>
