@@ -5,11 +5,19 @@ const clubController = require('../Controllers/ClubController');
 const router = express.Router();
 
 router.get('/', clubController.getAll);
+
 router.get(
   '/following',
   passport.authenticate('loggedIn', { session: false }),
   clubController.getFollowing,
 );
+
+router.get(
+  '/managing',
+  passport.authenticate('loggedIn', { session: false }),
+  clubController.getManaging,
+);
+
 router.get('/:id', clubController.get);
 
 router.get('/random', clubController.getRandom);
@@ -20,6 +28,7 @@ router.put(
   clubController.validate('validateBaseClubInfo'),
   clubController.update,
 );
+
 router.post(
   '/',
   passport.authenticate('loggedIn', { session: false }),
@@ -27,6 +36,7 @@ router.post(
   clubController.validate('validateBaseClubInfo'),
   clubController.create,
 );
+
 router.delete(
   '/:id',
   passport.authenticate('loggedIn', { session: false }),
