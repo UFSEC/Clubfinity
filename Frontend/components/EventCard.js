@@ -12,7 +12,7 @@ import GoingButton from './GoingButton';
 import InterestedButton from './InterestedButton';
 import EventsApi from '../api/EventsApi';
 
-const styles = StyleSheet.create({
+  const styles = StyleSheet.create({
   clubname: {
     color: colors.accent2,
   },
