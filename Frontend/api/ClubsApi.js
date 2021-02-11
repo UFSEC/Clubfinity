@@ -9,6 +9,16 @@ exports.getFollowing = async (bearerToken) => {
   return resp.data.data;
 };
 
+exports.getManaging = async (bearerToken) => {
+  const resp = await API.get('/api/club/managing', {
+    headers: {
+      Authorization: `Bearer ${bearerToken}`,
+    },
+  });
+
+  return resp.data.data;
+};
+
 exports.getAdmins = async (bearerToken, clubId) => {
   const resp = await API.get(`/api/club/${clubId}`, {
     headers: {
