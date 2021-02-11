@@ -50,14 +50,16 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary0,
     borderColor: colors.primary1,
     borderRadius: 8,
-    marginHorizontal: 10,
-    marginVertical: 10,
+    marginHorizontal: 12,
+    marginVertical: 12,
+    minHeight: 42,
     elevation: 3,
   },
   loginButtonText: {
     fontSize: 15,
     alignSelf: 'center',
     color: colors.grayScale0,
+
   },
 
   signupLink: {
@@ -177,31 +179,30 @@ export default class SigninScr extends React.Component {
                 placeholder="Password"
               />
               {showError && <ErrorText errorMessage={errorMessage} />}
-            </View>
 
-            <View
-              style={{
-                flex: 2, justifyContent: 'flex-start', alignSelf: 'auto',
-              }}
-            >
-              <TouchableOpacity
-                style={styles.loginButton}
-                onPress={this.signIn}
-                backgroundColor={colors.primary0}
+              <View
+                style={{
+                  flex: 1,
+                }}
               >
-                <Text style={styles.loginButtonText}>Sign In</Text>
-              </TouchableOpacity>
-
-              <Text style={{ color: colors.primary0, alignSelf: 'center', fontSize: 13 }}>
-                <Text>Don&apos;t have an account yet? </Text>
                 <TouchableOpacity
-                  onPress={this.signUp}
-                  style={styles.signupLink}
+                  style={styles.loginButton}
+                  onPress={this.signIn}
+                  backgroundColor={colors.primary0}
                 >
-                  <Text style={{ color: colors.primary0, fontSize: 13, top: 2 }}>Sign up</Text>
+                  <Text style={styles.loginButtonText}>Sign In</Text>
                 </TouchableOpacity>
-              </Text>
 
+                <Text style={{ color: colors.primary0, alignSelf: 'center', fontSize: 13 }}>
+                  <Text>Don&apos;t have an account yet? </Text>
+                  <TouchableOpacity
+                    onPress={this.signUp}
+                    style={styles.signupLink}
+                  >
+                    <Text style={{ color: colors.primary0, fontSize: 13, top: 2 }}>Sign up</Text>
+                  </TouchableOpacity>
+                </Text>
+              </View>
             </View>
           </View>
         </SafeAreaView>
