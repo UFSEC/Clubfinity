@@ -134,18 +134,25 @@ export default class ProfileScr extends React.Component {
   )
 
   renderClubList = (managingClubs, followingClubs) => {
-    const listData = [];
-    if (managingClubs.length > 0) {
-      listData.push({ title: 'Managing', data: managingClubs });
+    const sectionListData = [];
+
+    const filteredManagingClubs = this.filterFollowing(managingClubs);
+    if (filteredManagingClubs.length > 0) {
+      sectionListData.push({ title: 'Managing', data: filteredManagingClubs });
     }
 
-    if (followingClubs.length > 0) {
-      listData.push({ title: 'Following', data: followingClubs });
+    const filteredFollowingClubs = this.filterFollowing(followingClubs);
+    const filteredFollowingDuplicatesRemoved = filteredFollowingClubs.filter(
+      (following) => !managingClubs.some((managing) => managing._id === following._id),
+    );
+
+    if (filteredFollowingDuplicatesRemoved.length > 0) {
+      sectionListData.push({ title: 'Following', data: filteredFollowingDuplicatesRemoved });
     }
 
     return (
       <SectionList
-        sections={listData}
+        sections={sectionListData}
         keyExtractor={(club) => club._id}
         ListEmptyComponent={this.renderClubListEmptyState}
         renderSectionHeader={({ section }) => this.renderSectionHeader(section)}
