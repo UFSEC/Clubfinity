@@ -10,11 +10,13 @@ import {
   Text,
   TextInput,
 } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import ClubfinityLogo from '../assets/images/ClubfinityLogo.png';
 
 import AuthApi from '../api/AuthApi';
 import ErrorText from '../components/ErrorText';
 import UserContext from '../util/UserContext';
+import colors from '../util/colors';
 
 const MAX_FIELD_WIDTH = (Dimensions.get('screen').width * 3) / 4;
 const STATUS_BAR_HEIGHT = StatusBar.currentHeight;
@@ -35,46 +37,35 @@ const styles = StyleSheet.create({
     marginVertical: 30,
   },
   field: {
-    backgroundColor: '#F4F4F4',
-    borderWidth: 1,
+    borderBottomColor: colors.grayScale1,
+    borderBottomWidth: 2,
     minWidth: MAX_FIELD_WIDTH,
-    borderRadius: 6,
-    borderColor: '#F4F4F4',
-    margin: 5,
-    paddingHorizontal: 20,
-    paddingVertical: 5,
+    borderColor: colors.grayScale1,
+    margin: 8,
+    paddingVertical: 9,
   },
   loginButton: {
     padding: 10,
     minWidth: MAX_FIELD_WIDTH,
-    backgroundColor: '#ACCBAC',
-    borderWidth: 1,
-    borderColor: '#ACCBAC',
-    borderRadius: 100,
-    marginHorizontal: 10,
-    marginVertical: 10,
+    backgroundColor: colors.primary0,
+    borderColor: colors.primary1,
+    borderRadius: 8,
+    marginHorizontal: 12,
+    marginVertical: 12,
+    minHeight: 42,
     elevation: 3,
   },
-  signupButton: {
-    padding: 10,
-    minWidth: MAX_FIELD_WIDTH,
-    backgroundColor: '#FFF',
-    borderWidth: 1,
-    borderColor: '#ACCBAC',
-    borderRadius: 100,
-    marginHorizontal: 10,
-    marginVertical: 10,
-  },
-  signupButtonTxt: {
-    fontSize: 15,
-    alignSelf: 'center',
-    color: '#ACCBAC',
-  },
   loginButtonText: {
-    // flex: 1,
     fontSize: 15,
     alignSelf: 'center',
-    color: '#fff',
+    color: colors.grayScale0,
+
+  },
+
+  signupLink: {
+    borderBottomColor: colors.primary0,
+    borderBottomWidth: 1,
+    top: 5,
   },
 });
 
@@ -143,68 +134,79 @@ export default class SigninScr extends React.Component {
       username, password, errorMessage, showError,
     } = this.state;
     return (
-      <SafeAreaView style={styles.mainContainer}>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <Image
-            style={{
-              width: 200,
-              height: 200,
-              margin: 30,
-              marginBottom: 80,
-            }}
-            source={ClubfinityLogo}
-          />
-          <View style={{ flex: 1 }}>
-            <TextInput
-              textAlign="left"
-              style={styles.field}
-              name="username"
-              placeholderTextColor="#8E8E93"
-              returnKeyType="next"
-              onChangeText={this.changeUsername}
-              autoCapitalize="none"
-              value={username}
-              placeholder="E-mail"
-            />
-            <TextInput
-              style={styles.field}
-              name="password"
-              secureTextEntry
-              autoCapitalize="none"
-              placeholderTextColor="#8E8E93"
-              onChangeText={this.changePassword}
-              value={password}
-              placeholder="Password"
-            />
-            {showError && <ErrorText errorMessage={errorMessage} />}
-          </View>
-
+      <KeyboardAwareScrollView
+        resetScrollToCoords={{ x: 0, y: 0 }}
+        contentContainerStyle={{ flex: 1 }}
+        scrollEnabled={false}
+      >
+        <SafeAreaView style={styles.mainContainer}>
           <View
-            style={{ flex: 1, display: 'flex', justifyContent: 'flex-start' }}
+            style={{
+              flex: 1,
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
           >
-            <TouchableOpacity
-              style={styles.loginButton}
-              onPress={this.signIn}
-              backgroundColor="#ACCBAC"
-            >
-              <Text style={styles.loginButtonText}>Login</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.signupButton}
-              onPress={this.signUp}
-              backgroundColor="#D4D4D4"
-            >
-              <Text style={styles.signupButtonTxt}>New here? Sign up</Text>
-            </TouchableOpacity>
+            <Image
+              style={{
+                width: 200,
+                height: 200,
+                margin: 30,
+                marginBottom: 80,
+              }}
+              source={ClubfinityLogo}
+            />
+            <View style={{ flex: 1 }}>
+              <TextInput
+                textAlign="left"
+                style={styles.field}
+                name="username"
+                placeholderTextColor={colors.primary5}
+                returnKeyType="next"
+                onChangeText={this.changeUsername}
+                autoCapitalize="none"
+                value={username}
+                placeholder="E-mail"
+              />
+              <TextInput
+                style={styles.field}
+                name="password"
+                secureTextEntry
+                autoCapitalize="none"
+                placeholderTextColor={colors.primary5}
+                onChangeText={this.changePassword}
+                value={password}
+                placeholder="Password"
+              />
+              {showError && <ErrorText errorMessage={errorMessage} />}
+
+              <View
+                style={{
+                  flex: 1,
+                }}
+              >
+                <TouchableOpacity
+                  style={styles.loginButton}
+                  onPress={this.signIn}
+                  backgroundColor={colors.primary0}
+                >
+                  <Text style={styles.loginButtonText}>Sign In</Text>
+                </TouchableOpacity>
+
+                <Text style={{ color: colors.primary0, alignSelf: 'center', fontSize: 13 }}>
+                  <Text>Don&apos;t have an account yet? </Text>
+                  <TouchableOpacity
+                    onPress={this.signUp}
+                    style={styles.signupLink}
+                  >
+                    <Text style={{ color: colors.primary0, fontSize: 13, top: 2 }}>Sign up</Text>
+                  </TouchableOpacity>
+                </Text>
+              </View>
+            </View>
           </View>
-        </View>
-      </SafeAreaView>
+        </SafeAreaView>
+      </KeyboardAwareScrollView>
     );
   }
 }
