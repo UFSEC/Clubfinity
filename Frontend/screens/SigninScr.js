@@ -181,7 +181,7 @@ export default class SigninScr extends React.Component {
 
             <View
               style={{
-                flex: 2, justifyContent: 'flex-start', alignContent: 'flex', alignSelf: 'auto',
+                flex: 2, justifyContent: 'flex-start', alignSelf: 'auto',
               }}
             >
               <TouchableOpacity
