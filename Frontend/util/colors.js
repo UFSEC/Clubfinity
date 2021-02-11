@@ -1,19 +1,7 @@
 const colors = {
-  // primary0: '#292961',
-  // primary1: '#57518f',
-  // primary2: '#000037',
- 
-  // secondary0: '#006aff',
-  // secondary1: '#6a97ff',
-  // secondary2: '#0041cb',
-
-  secondary0: '#292961',
-  secondary1: '#57518f',
-  secondary2: '#000037',
- 
-  primary0: '#006aff',
-  primary1: '#6a97ff',
-  primary2: '#0041cb',
+  text: "#2a2d34",
+  primary0: "#006aff",
+  secondary0: '#2dadff',
 
   grayScale0: '#ffffff',
   grayScale1: '#f8f8f9',
@@ -28,6 +16,7 @@ const colors = {
   grayScale10: '#58595b',
   grayScale11: '#414042',
   grayScale12: '#000000',
+
   success: '#2e7f79',
   error: '#ce4445',
   warning: '#f28154',

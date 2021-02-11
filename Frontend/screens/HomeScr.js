@@ -84,7 +84,7 @@ class HomeScr extends Component {
       <View style={[primary.container, primary.bodyText]}>
         <Text style={primary.headerText}>
           Hey Upcoming Events{' '}
-          <Octicons name="megaphone" color={colors.primary2} size={24} />
+          <Octicons name="megaphone" color={colors.primary0} size={24} />
         </Text>
         <FlatList
           data={events}

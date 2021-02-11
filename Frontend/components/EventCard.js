@@ -13,16 +13,16 @@ import InterestedButton from './InterestedButton';
 
 const styles = StyleSheet.create({
   clubname: {
-    color: colors.primary1,
+    color: colors.text,
   },
   date: {
-    color: colors.primary2,
+    color: colors.text,
     flex: 1,
     textAlign: 'right',
     fontSize: 23,
   },
   location: {
-    color: colors.primary2,
+    color: colors.text,
     fontWeight: '700',
     marginLeft: '2%',
   },
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   title: {
-    color: colors.primary0,
+    color: colors.text,
     fontSize: 20,
     fontWeight: 'bold',
     flex: 5,

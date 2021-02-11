@@ -146,7 +146,7 @@ const AppStack = createBottomTabNavigator(
   {
     headerLayoutPreset: 'center',
     tabBarOptions: {
-      activeTintColor: colors.primary2,
+      activeTintColor: colors.primary0,
       inactiveTintColor: colors.grayScale8,
       showLabel: false,
     },
