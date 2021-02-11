@@ -16,9 +16,9 @@ import UserContext from '../util/UserContext';
 import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
 class HomeScr extends Component {
-  static contextType = UserContext
+  static contextType = UserContext;
 
-  static navigationOptions = buildNavigationsOptions('Home')
+  static navigationOptions = buildNavigationsOptions('Home');
 
   constructor(props) {
     super(props);
@@ -91,6 +91,8 @@ class HomeScr extends Component {
             <EventCard
               key={item._id}
               name={item.name}
+              clubName={item.club.name}
+              eventDate={item.date}
               location={item.location}
               description={item.description}
             />
