@@ -296,7 +296,7 @@ export default class EditProfile extends Component {
           <Button
             style={{
               alignSelf: 'center',
-              backgroundColor: colors.secondary0,
+              backgroundColor: colors.info,
               width: '90%',
               justifyContent: 'center',
               alignItems: 'center',

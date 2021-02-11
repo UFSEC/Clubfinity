@@ -174,7 +174,7 @@ export default class ClubScr extends React.Component {
                 style={{
                   alignSelf: 'center',
                   backgroundColor: isFollowing
-                    ? colors.secondary2
+                    ? colors.success
                     : colors.secondary0,
                   width: '85%',
                   justifyContent: 'center',
