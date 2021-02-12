@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
 
 export default class EditAnnouncements extends Component {
   // Update for later: navigate back to previous screen when pressed
+  // TO-DO: Use navigationOptionsBuilder.js
   static navigationOptions = ({ navigation }) => ({
     headerTitle: 'Edit Announcement',
     headerRight: (
@@ -78,8 +79,8 @@ export default class EditAnnouncements extends Component {
         <Text style={styles.headerLeftText}>Cancel</Text>
       </Button>
     ),
-    headerStyle: { backgroundColor: '#7e947f' },
-    headerTitleStyle: { color: '#ecf0f1', size: 6 },
+    headerStyle: { backgroundColor: colors.primary0 },
+    headerTitleStyle: { color: colors.grayScale1, letterSpacing: 2 },
     headerTintColor: 'white',
   })
 

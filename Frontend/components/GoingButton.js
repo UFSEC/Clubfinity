@@ -16,7 +16,9 @@ export default class GoingButton extends Component {
         name={isGoing ? 'ios-checkmark-circle' : 'ios-checkmark-circle-outline'}
         backgroundColor={colors.success}
         onPress={clickHandler}
-        style={isGoing ? { borderWidth: '4%', borderColor: 'rgba(255, 255, 255, 0.6)' } : { borderWidth: '4%', borderStyle: 'hidden', borderColor: 'transparent' }}
+        style={isGoing
+          ? { borderWidth: '4%', borderColor: 'rgba(255, 255, 255, 0.6)' }
+          : { borderWidth: '4%', borderStyle: 'hidden', borderColor: 'transparent' }}
       >
         Going
       </Ionicons.Button>

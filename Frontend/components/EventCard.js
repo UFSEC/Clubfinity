@@ -56,6 +56,9 @@ const styles = StyleSheet.create({
 export default class EventCard extends Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
+    clubName: PropTypes.string.isRequired,
+    // eslint-disable-next-line react/forbid-prop-types
+    date: PropTypes.object.isRequired,
     location: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     userId: PropTypes.string.isRequired,
