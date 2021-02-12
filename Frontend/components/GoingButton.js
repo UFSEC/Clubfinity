@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import PropTypes from 'prop-types';
+import colors from '../util/colors';
 
 export default class GoingButton extends Component {
   static propTypes = {
@@ -13,8 +14,9 @@ export default class GoingButton extends Component {
     return (
       <Ionicons.Button
         name={isGoing ? 'ios-checkmark-circle' : 'ios-checkmark-circle-outline'}
-        backgroundColor={isGoing ? '#0d5e4e' : '#16a085'}
+        backgroundColor={colors.success}
         onPress={clickHandler}
+        style={isGoing ? { borderWidth: '4%', borderColor: 'rgba(255, 255, 255, 0.6)' } : { borderWidth: '4%', borderStyle: 'hidden', borderColor: 'transparent' }}
       >
         Going
       </Ionicons.Button>

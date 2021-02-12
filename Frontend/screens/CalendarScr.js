@@ -74,8 +74,8 @@ export default class CalendarScr extends React.Component {
   render() {
     const { selectedDate, events } = this.state;
     const dates = { };
-    events.forEach((event) => { dates[event.date.toISODate()] = { marked: true, dotColor: colors.primary1 }; });
-    dates[selectedDate.toISODate()] = { selected: true, selectedColor:colors.primary0 };
+    events.forEach((event) => { dates[event.date.toISODate()] = { marked: true, dotColor: colors.primary0 }; });
+    dates[selectedDate.toISODate()] = { selected: true, selectedColor: colors.primary0 };
     return (
       <View style={style.container}>
         <View style={style.calContainer}>
@@ -84,7 +84,7 @@ export default class CalendarScr extends React.Component {
             markedDates={dates}
             onDayPress={this.handleDayPress}
             onMonthChange={this.handleMonthChange}
-            theme={{arrowColor: colors.primary0}}
+            theme={{ arrowColor: colors.primary0 }}
           />
         </View>
         <AgendaContainer events={events} selectedDate={selectedDate} />

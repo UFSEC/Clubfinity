@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import PropTypes from 'prop-types';
-import colors from "../util/colors"
+import colors from '../util/colors';
 
 const styles = StyleSheet.create({
   button: {

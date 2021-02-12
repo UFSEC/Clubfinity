@@ -11,3 +11,8 @@ export function combineAndParseDateTime(date, time) {
 export function extractDateAndTime(dateTime) {
   return { date: dateTime.toFormat(DATE_PICKER_FORMAT), time: dateTime.toFormat(TIME_PICKER_FORMAT) };
 }
+
+export function formatToMonthAndDay(date) {
+  const dateTime = DateTime.fromISO(date);
+  return dateTime.toLocaleString({ month: 'short', day: 'numeric' });
+}

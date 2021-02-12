@@ -11,18 +11,19 @@ import colors from '../util/colors';
 import GoingButton from './GoingButton';
 import InterestedButton from './InterestedButton';
 import EventsApi from '../api/EventsApi';
+import { formatToMonthAndDay } from '../util/dateUtil';
 
 const styles = StyleSheet.create({
-  clubname: {
+  clubNameText: {
     color: colors.text,
   },
-  date: {
+  dateText: {
     color: colors.text,
     flex: 1,
     textAlign: 'right',
     fontSize: 23,
   },
-  location: {
+  locationText: {
     color: colors.text,
     fontWeight: '700',
     marginLeft: '2%',
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     elevation: 2,
   },
-  title: {
+  titleText: {
     color: colors.text,
     fontSize: 20,
     fontWeight: 'bold',
@@ -131,6 +132,8 @@ export default class EventCard extends Component {
       name,
       location,
       description,
+      clubName,
+      date,
     } = this.props;
     const {
       mute,
@@ -138,7 +141,7 @@ export default class EventCard extends Component {
       interested,
     } = this.state;
     const {
-      mutedContainer, bodyText, date, clubname, title
+      mutedContainer, bodyText, dateText, clubNameText, titleText, locationText,
     } = styles;
     const {
       container, bannerIcon, banner, body,
@@ -149,16 +152,16 @@ export default class EventCard extends Component {
         <View style={banner}>
           <Image style={bannerIcon} source={SECIcon} />
           <View>
-            <Text style={title}>
+            <Text style={titleText}>
               {' '}
               {name}
             </Text>
-            <Text style={clubname}> ClubName</Text>
+            <Text style={clubNameText}>{clubName}</Text>
           </View>
-          <Text style={date}>Oct 22</Text>
+          <Text style={dateText}>{formatToMonthAndDay(date)}</Text>
         </View>
         <View style={body}>
-          <Text style={styles.location}>
+          <Text style={locationText}>
             {location}
           </Text>
           <Text style={bodyText}>{description}</Text>

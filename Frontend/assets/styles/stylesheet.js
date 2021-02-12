@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import colors from '../../util/colors'
+import colors from '../../util/colors';
 
 // Primary Style Guide for entire application
 export const primary = StyleSheet.create({

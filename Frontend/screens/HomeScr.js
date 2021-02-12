@@ -84,14 +84,17 @@ class HomeScr extends Component {
     return (
       <View style={[primary.container, primary.bodyText]}>
         <Text style={primary.headerText}>
-          Hey Upcoming Events{' '}
+          Hey Upcoming Events
+          {' '}
           <Octicons name="megaphone" color={colors.primary0} size={24} />
         </Text>
         <FlatList
-          data={events}
+          data={events.sort((eventOne, eventTwo) => eventTwo.date - eventOne.date)}
           renderItem={({ item }) => (
             <EventCard
               key={item._id}
+              clubName={item.club.name}
+              date={item.date}
               name={item.name}
               location={item.location}
               description={item.description}
