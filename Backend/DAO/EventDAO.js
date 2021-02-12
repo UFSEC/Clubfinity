@@ -72,7 +72,6 @@ exports.getEventsUserIsGoingTo = async (userId) => await Event.find({ goingUsers
 
 exports.update = async (id, updatedData) => {
   await Event.findOneAndUpdate({ _id: id }, updatedData, { upsert: true, useFindAndModify: false });
-
   return exports.get(id);
 };
 
