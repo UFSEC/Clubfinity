@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { Card } from 'native-base';
+import { DateTime } from 'luxon';
 import { card, primary } from '../assets/styles/stylesheet';
 import MuteButton from './MuteButton';
 import SECIcon from '../assets/images/sec-icon.png';
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
     color: colors.sucess,
     flex: 1,
     textAlign: 'right',
-    fontSize: 23,
+    fontSize: 18,
   },
   location: {
     color: colors.sucess,
@@ -49,6 +50,8 @@ const styles = StyleSheet.create({
 export default class EventCard extends Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
+    clubName: PropTypes.string.isRequired,
+    eventDate: DateTime.isRequired,
     location: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     userId: PropTypes.string.isRequired,
@@ -122,15 +125,9 @@ export default class EventCard extends Component {
 
   render() {
     const {
-      name,
-      location,
-      description,
+      name, clubName, eventDate, location, description,
     } = this.props;
-    const {
-      mute,
-      going,
-      interested,
-    } = this.state;
+    const { mute, going, interested } = this.state;
     const {
       mutedContainer, bodyText, date, clubname,
     } = styles;
@@ -138,6 +135,11 @@ export default class EventCard extends Component {
       container, title, bannerIcon, banner, body,
     } = card;
     const containerStyle = mute ? mutedContainer : container;
+
+    const dateString = DateTime.fromISO(eventDate).toLocaleString(
+      DateTime.DATE_MED,
+    );
+
     return (
       <Card style={containerStyle}>
         <View style={banner}>
@@ -147,14 +149,17 @@ export default class EventCard extends Component {
               {' '}
               {name}
             </Text>
-            <Text style={clubname}> ClubName</Text>
+            <Text style={clubname}>
+              {' '}
+              {clubName}
+            </Text>
           </View>
-          <Text style={date}>Oct 22</Text>
+          <Text style={date}>
+            {dateString.substr(0, dateString.length - 6)}
+          </Text>
         </View>
         <View style={body}>
-          <Text style={styles.location}>
-            {location}
-          </Text>
+          <Text style={styles.location}>{location}</Text>
           <Text style={bodyText}>{description}</Text>
           <View
             style={{
@@ -163,18 +168,12 @@ export default class EventCard extends Component {
               justifyContent: 'space-evenly',
             }}
           >
-            <GoingButton
-              clickHandler={this.goingHandler}
-              isGoing={going}
-            />
+            <GoingButton clickHandler={this.goingHandler} isGoing={going} />
             <InterestedButton
               clickHandler={this.interestedHandler}
               isInterested={interested}
             />
-            <MuteButton
-              clickHandler={this.muteHandler}
-              isMuted={mute}
-            />
+            <MuteButton clickHandler={this.muteHandler} isMuted={mute} />
           </View>
         </View>
       </Card>
