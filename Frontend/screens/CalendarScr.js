@@ -6,17 +6,16 @@ import AgendaContainer from '../components/AgendaContainer';
 import UserContext from '../util/UserContext';
 import EventsApi from '../api/EventsApi';
 import buildNavigationsOptions from '../util/navigationOptionsBuilder';
+import colors from '../util/colors';
 
 const style = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    // paddingHorizontal: 10,
   },
 
   calContainer: {
     flex: 3,
-
   },
 
   agendaContainer: {
@@ -75,8 +74,8 @@ export default class CalendarScr extends React.Component {
   render() {
     const { selectedDate, events } = this.state;
     const dates = { };
-    events.forEach((event) => { dates[event.date.toISODate()] = { marked: true }; });
-    dates[selectedDate.toISODate()] = { selected: true };
+    events.forEach((event) => { dates[event.date.toISODate()] = { marked: true, dotColor: colors.primary0 }; });
+    dates[selectedDate.toISODate()] = { selected: true, selectedColor: colors.primary0 };
     return (
       <View style={style.container}>
         <View style={style.calContainer}>
@@ -85,11 +84,10 @@ export default class CalendarScr extends React.Component {
             markedDates={dates}
             onDayPress={this.handleDayPress}
             onMonthChange={this.handleMonthChange}
+            theme={{ arrowColor: colors.primary0 }}
           />
         </View>
-
         <AgendaContainer events={events} selectedDate={selectedDate} />
-
       </View>
     );
   }

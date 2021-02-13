@@ -13,6 +13,7 @@ const ICON_COLOR = 'white';
 const NONE = 'NONE';
 const ICON = 'icon';
 
+// TO-DO: convert to builder pattern
 const buildNavigationsOptions = (title, headerRight = NONE) => {
   const navigationOptions = {
     title,

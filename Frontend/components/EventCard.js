@@ -4,7 +4,6 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { Card } from 'native-base';
-import { DateTime } from 'luxon';
 import { card, primary } from '../assets/styles/stylesheet';
 import MuteButton from './MuteButton';
 import SECIcon from '../assets/images/sec-icon.png';
@@ -12,19 +11,20 @@ import colors from '../util/colors';
 import GoingButton from './GoingButton';
 import InterestedButton from './InterestedButton';
 import EventsApi from '../api/EventsApi';
+import { formatToMonthAndDay } from '../util/dateUtil';
 
 const styles = StyleSheet.create({
-  clubname: {
-    color: colors.accent2,
+  clubNameText: {
+    color: colors.text,
   },
-  date: {
-    color: colors.sucess,
+  dateText: {
+    color: colors.text,
     flex: 1,
     textAlign: 'right',
     fontSize: 18,
   },
-  location: {
-    color: colors.sucess,
+  locationText: {
+    color: colors.text,
     fontWeight: '700',
     marginLeft: '2%',
   },
@@ -45,13 +45,20 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     elevation: 2,
   },
+  titleText: {
+    color: colors.text,
+    fontSize: 20,
+    fontWeight: 'bold',
+    flex: 5,
+  },
 });
 
 export default class EventCard extends Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
     clubName: PropTypes.string.isRequired,
-    eventDate: DateTime.isRequired,
+    // eslint-disable-next-line react/forbid-prop-types
+    date: PropTypes.object.isRequired,
     location: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     userId: PropTypes.string.isRequired,
@@ -125,41 +132,38 @@ export default class EventCard extends Component {
 
   render() {
     const {
-      name, clubName, eventDate, location, description,
+      name,
+      location,
+      description,
+      clubName,
+      date,
     } = this.props;
     const { mute, going, interested } = this.state;
     const {
-      mutedContainer, bodyText, date, clubname,
+      mutedContainer, bodyText, dateText, clubNameText, titleText, locationText,
     } = styles;
     const {
-      container, title, bannerIcon, banner, body,
+      container, bannerIcon, banner, body,
     } = card;
     const containerStyle = mute ? mutedContainer : container;
-
-    const dateString = DateTime.fromISO(eventDate).toLocaleString(
-      DateTime.DATE_MED,
-    );
 
     return (
       <Card style={containerStyle}>
         <View style={banner}>
           <Image style={bannerIcon} source={SECIcon} />
           <View>
-            <Text style={title}>
+            <Text style={titleText}>
               {' '}
               {name}
             </Text>
-            <Text style={clubname}>
-              {' '}
-              {clubName}
-            </Text>
+            <Text style={clubNameText}>{clubName}</Text>
           </View>
-          <Text style={date}>
-            {dateString.substr(0, dateString.length - 6)}
-          </Text>
+          <Text style={dateText}>{formatToMonthAndDay(date)}</Text>
         </View>
         <View style={body}>
-          <Text style={styles.location}>{location}</Text>
+          <Text style={locationText}>
+            {location}
+          </Text>
           <Text style={bodyText}>{description}</Text>
           <View
             style={{

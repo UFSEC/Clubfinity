@@ -14,6 +14,7 @@ import EventsApi from '../api/EventsApi';
 import DiscoverButton from '../components/DiscoverButton';
 import UserContext from '../util/UserContext';
 import buildNavigationsOptions from '../util/navigationOptionsBuilder';
+import colors from '../util/colors';
 
 class HomeScr extends Component {
   static contextType = UserContext;
@@ -84,17 +85,17 @@ class HomeScr extends Component {
       <View style={[primary.container, primary.bodyText]}>
         <Text style={primary.headerText}>
           Hey Upcoming Events
-          <Octicons name="megaphone" color="teal" size={24} />
+          {' '}
+          <Octicons name="megaphone" color={colors.primary0} size={24} />
         </Text>
         <FlatList
-          style={{ loadingView: true }}
-          data={events}
+          data={events.sort((eventOne, eventTwo) => eventTwo.date - eventOne.date)}
           renderItem={({ item }) => (
             <EventCard
               key={item._id}
-              name={item.name}
               clubName={item.club.name}
-              eventDate={item.date}
+              date={item.date}
+              name={item.name}
               location={item.location}
               description={item.description}
               userId={user._id}
