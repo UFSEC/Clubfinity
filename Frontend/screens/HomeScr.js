@@ -96,8 +96,6 @@ class HomeScr extends Component {
               clubName={item.club.name}
               date={item.date}
               name={item.name}
-              clubName={item.club.name}
-              date={item.date}
               location={item.location}
               description={item.description}
               userId={user._id}

@@ -4,7 +4,6 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { Card } from 'native-base';
-import { DateTime } from 'luxon';
 import { card, primary } from '../assets/styles/stylesheet';
 import MuteButton from './MuteButton';
 import SECIcon from '../assets/images/sec-icon.png';
@@ -147,10 +146,6 @@ export default class EventCard extends Component {
       container, bannerIcon, banner, body,
     } = card;
     const containerStyle = mute ? mutedContainer : container;
-
-    const dateString = DateTime.fromISO(eventDate).toLocaleString(
-      DateTime.DATE_MED,
-    );
 
     return (
       <Card style={containerStyle}>
