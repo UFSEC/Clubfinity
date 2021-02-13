@@ -123,6 +123,59 @@ export default class ClubScr extends React.Component {
     return this.handleUpdate(UserApi.unfollowClub, clubId);
   }
 
+  renderSocialMediaLink = (link, icon, text) => {
+    const { name, size, marginRight } = icon;
+
+    return (
+      <TouchableOpacity onPress={() => Linking.openURL(link)}>
+        <CardItem>
+          <Ionicons
+            name={name}
+            size={size}
+            style={{ marginRight }}
+          />
+          <Text>{text}</Text>
+        </CardItem>
+      </TouchableOpacity>
+    );
+  };
+
+  renderConnectCard = (club) => {
+    if (!club.slackLink && !club.facebookLink && !club.instagramLink) {
+      return null;
+    }
+
+    return (
+      <Card
+        style={{
+          width: '85%',
+          marginTop: '10%',
+          borderTopColor: colors.primary0,
+          borderTopWidth: 10,
+        }}
+      >
+        <CardItem header>
+          <Text>Connect</Text>
+        </CardItem>
+        {!!club.slackLink && this.renderSocialMediaLink(
+          club.slackLink,
+          { name: 'logo-slack', size: 27, marginRight: '4%' },
+          'Slack',
+        )}
+        {!!club.facebookLink && this.renderSocialMediaLink(
+          club.facebookLink,
+          { name: 'logo-facebook', size: 30, marginRight: '5%' },
+          'Facebook',
+        )}
+        {!!club.instagramLink && this.renderSocialMediaLink(
+          club.instagramLink,
+          { name: 'logo-instagram', size: 30, marginRight: '5%' },
+          'Instagram',
+        )}
+      </Card>
+    );
+  };
+
   render() {
     const { navigation } = this.props;
     const {
@@ -186,55 +239,7 @@ export default class ClubScr extends React.Component {
               </Button>
             )}
 
-            {/**
-             * Connect
-             */}
-            <Card
-              style={{
-                width: '85%',
-                marginTop: '10%',
-                borderTopColor: colors.primary0,
-                borderTopWidth: 10,
-              }}
-            >
-              <CardItem header>
-                <Text>Connect</Text>
-              </CardItem>
-              <TouchableOpacity onPress={() => Linking.openURL(club.slackLink)}>
-                <CardItem>
-                  <Ionicons
-                    name="logo-slack"
-                    size={27}
-                    style={{ marginRight: '4%' }}
-                  />
-                  <Text>Slack</Text>
-                </CardItem>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => Linking.openURL(club.facebookLink)}
-              >
-                <CardItem>
-                  <Ionicons
-                    name="logo-facebook"
-                    size={30}
-                    style={{ marginRight: '5%' }}
-                  />
-                  <Text>Facebook</Text>
-                </CardItem>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => Linking.openURL(club.instagramLink)}
-              >
-                <CardItem>
-                  <Ionicons
-                    name="logo-instagram"
-                    size={30}
-                    style={{ marginRight: '5%' }}
-                  />
-                  <Text>Instagram</Text>
-                </CardItem>
-              </TouchableOpacity>
-            </Card>
+            {this.renderConnectCard(club)}
 
             {/**
              * Purpose

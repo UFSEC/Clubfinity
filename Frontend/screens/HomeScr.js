@@ -79,6 +79,7 @@ class HomeScr extends Component {
 
   eventListView() {
     const { events } = this.state;
+    const { user } = this.context;
     return (
       <View style={[primary.container, primary.bodyText]}>
         <Text style={primary.headerText}>
@@ -95,6 +96,11 @@ class HomeScr extends Component {
               eventDate={item.date}
               location={item.location}
               description={item.description}
+              userId={user._id}
+              goingUsers={item.goingUsers}
+              eventID={item._id}
+              interestedUsers={item.interestedUsers}
+              uninterestedUsers={item.uninterestedUsers}
             />
           )}
           keyExtractor={(item) => item._id.toString()}

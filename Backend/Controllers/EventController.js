@@ -63,6 +63,9 @@ exports.getGoingUsers = async (req, res) => catchErrors(res, async () => {
 exports.addGoingUser = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);
 
+  eventDAO.update(req.params.id, { $pull: { interestedUsers: req.userId } });
+  eventDAO.update(req.params.id, { $pull: { uninterestedUsers: req.userId } });
+
   return eventDAO.update(req.params.id, { $addToSet: { goingUsers: req.userId } });
 });
 
@@ -72,6 +75,35 @@ exports.removeGoingUser = async (req, res) => catchErrors(res, async () => {
   return eventDAO.update(req.params.id, { $pull: { goingUsers: req.userId } });
 });
 
+exports.addInterestedUser = async (req, res) => catchErrors(res, async () => {
+  validateEventData(req);
+
+  eventDAO.update(req.params.id, { $pull: { uninterestedUsers: req.userId } });
+  eventDAO.update(req.params.id, { $pull: { goingUsers: req.userId } });
+
+  return eventDAO.update(req.params.id, { $addToSet: { interestedUsers: req.userId } });
+});
+
+exports.removeInterestedUser = async (req, res) => catchErrors(res, async () => {
+  validateEventData(req);
+
+  return eventDAO.update(req.params.id, { $pull: { interestedUsers: req.userId } });
+});
+
+exports.addUninterestedUser = async (req, res) => catchErrors(res, async () => {
+  validateEventData(req);
+
+  eventDAO.update(req.params.id, { $pull: { goingUsers: req.userId } });
+  eventDAO.update(req.params.id, { $pull: { interestedUsers: req.userId } });
+
+  return eventDAO.update(req.params.id, { $addToSet: { uninterestedUsers: req.userId } });
+});
+
+exports.removeUninterestedUser = async (req, res) => catchErrors(res, async () => {
+  validateEventData(req);
+
+  return eventDAO.update(req.params.id, { $pull: { uninterestedUsers: req.userId } });
+});
 exports.delete = async (req, res) => catchErrors(res, async () => eventDAO.delete(req.params.id));
 
 async function validateEvent(id) {
