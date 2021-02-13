@@ -72,7 +72,6 @@ export default class ClubCreation extends Component {
       instagramLink: '',
       slackLink: '',
       processingRequest: false,
-      createdClub: false,
       errors: { arePresent: false, data: errors },
     };
   }
@@ -100,6 +99,9 @@ export default class ClubCreation extends Component {
       instagramLink,
       slackLink,
     } = this.state;
+
+    const { navigation } = this.props;
+
     const validRequest = this.isRequestValid();
     if (!validRequest.valid) {
       this.setState({
@@ -124,7 +126,10 @@ export default class ClubCreation extends Component {
       slackLink,
     );
     if (createClubResponse.successfulRequest) {
-      this.setState({ createdClub: true, processingRequest: false });
+      this.setState({ processingRequest: false });
+
+      // Navigate to the club screen of the created club, and when back is clicked go directly to settings page
+      navigation.replace('ClubScr', { club: createClubResponse.data });
     } else {
       console.log(createClubResponse.error);
       this.setState({ processingRequest: false });
@@ -168,17 +173,10 @@ export default class ClubCreation extends Component {
     const {
       errors,
       processingRequest,
-      createdClub,
       position,
       clubCategory,
       clubDescription,
     } = this.state;
-    if (createdClub) {
-      return (
-        // Add routing to admin club management screen
-        <Text>Successfully created club!</Text>
-      );
-    }
     const categories = clubCategories.map((s) => (
       <Picker.Item value={s.value} label={s.label} />
     ));

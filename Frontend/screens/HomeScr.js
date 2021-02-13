@@ -17,9 +17,9 @@ import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 import colors from '../util/colors';
 
 class HomeScr extends Component {
-  static contextType = UserContext
+  static contextType = UserContext;
 
-  static navigationOptions = buildNavigationsOptions('Home')
+  static navigationOptions = buildNavigationsOptions('Home');
 
   constructor(props) {
     super(props);
@@ -96,6 +96,8 @@ class HomeScr extends Component {
               clubName={item.club.name}
               date={item.date}
               name={item.name}
+              clubName={item.club.name}
+              date={item.date}
               location={item.location}
               description={item.description}
               userId={user._id}

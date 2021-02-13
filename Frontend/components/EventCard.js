@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { Card } from 'native-base';
+import { DateTime } from 'luxon';
 import { card, primary } from '../assets/styles/stylesheet';
 import MuteButton from './MuteButton';
 import SECIcon from '../assets/images/sec-icon.png';
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
     color: colors.text,
     flex: 1,
     textAlign: 'right',
-    fontSize: 23,
+    fontSize: 18,
   },
   locationText: {
     color: colors.text,
@@ -138,11 +139,7 @@ export default class EventCard extends Component {
       clubName,
       date,
     } = this.props;
-    const {
-      mute,
-      going,
-      interested,
-    } = this.state;
+    const { mute, going, interested } = this.state;
     const {
       mutedContainer, bodyText, dateText, clubNameText, titleText, locationText,
     } = styles;
@@ -150,6 +147,11 @@ export default class EventCard extends Component {
       container, bannerIcon, banner, body,
     } = card;
     const containerStyle = mute ? mutedContainer : container;
+
+    const dateString = DateTime.fromISO(eventDate).toLocaleString(
+      DateTime.DATE_MED,
+    );
+
     return (
       <Card style={containerStyle}>
         <View style={banner}>
@@ -175,18 +177,12 @@ export default class EventCard extends Component {
               justifyContent: 'space-evenly',
             }}
           >
-            <GoingButton
-              clickHandler={this.goingHandler}
-              isGoing={going}
-            />
+            <GoingButton clickHandler={this.goingHandler} isGoing={going} />
             <InterestedButton
               clickHandler={this.interestedHandler}
               isInterested={interested}
             />
-            <MuteButton
-              clickHandler={this.muteHandler}
-              isMuted={mute}
-            />
+            <MuteButton clickHandler={this.muteHandler} isMuted={mute} />
           </View>
         </View>
       </Card>
