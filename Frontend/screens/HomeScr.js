@@ -96,7 +96,7 @@ class HomeScr extends Component {
               description={item.description}
             />
           )}
-          contentContainerStyle={{ paddingBottom: 100 }}
+          contentContainerStyle={{ paddingBottom: 5 }}
           keyExtractor={(item) => item._id.toString()}
         />
       </View>
