@@ -42,56 +42,51 @@ exports.create = async (req, res) => catchErrors(res, async () => {
   return eventDAO.create(req.body);
 });
 
-exports.getGoingUsers = async (req, res) => catchErrors(res, async () => {
+exports.updateGoingUsers = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);
 
-  return eventDAO.getGoingUsers(req.params.id);
+  const { op } = req.query
+  if (op == 'add') {
+    eventDAO.update(req.params.id, { $pull: { interestedUsers: req.userId } });
+    eventDAO.update(req.params.id, { $pull: { uninterestedUsers: req.userId } });
+    await eventDAO.update(req.params.id, { $addToSet: { goingUsers: req.userId } });
+  } else if (op == 'remove') {
+    await eventDAO.update(req.params.id, { $pull: { goingUsers: req.userId } })
+  } else {
+    throw new Error(`Invalid operation ${op}`)
+  }
 });
 
-exports.addGoingUser = async (req, res) => catchErrors(res, async () => {
+exports.updateInterestedUsers = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);
 
-  eventDAO.update(req.params.id, { $pull: { interestedUsers: req.userId } });
-  eventDAO.update(req.params.id, { $pull: { uninterestedUsers: req.userId } });
-
-  return eventDAO.update(req.params.id, { $addToSet: { goingUsers: req.userId } });
+  const { op } = req.query
+  if (op == 'add') {
+    eventDAO.update(req.params.id, { $pull: { uninterestedUsers: req.userId } });
+    eventDAO.update(req.params.id, { $pull: { goingUsers: req.userId } });
+    await eventDAO.update(req.params.id, { $addToSet: { interestedUsers: req.userId } });
+  } else if (op == 'remove') {
+    await eventDAO.update(req.params.id, { $pull: { interestedUsers: req.userId } })
+  } else {
+    throw new Error(`Invalid operation ${op}`)
+  }
 });
 
-exports.removeGoingUser = async (req, res) => catchErrors(res, async () => {
+exports.updateUninterestedUsers = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);
 
-  return eventDAO.update(req.params.id, { $pull: { goingUsers: req.userId } });
+  const { op } = req.query
+  if (op == 'add') {
+    eventDAO.update(req.params.id, { $pull: { interestedUsers: req.userId } });
+    eventDAO.update(req.params.id, { $pull: { goingUsers: req.userId } });
+    await eventDAO.update(req.params.id, { $addToSet: { uninterestedUsers: req.userId } });
+  } else if (op == 'remove') {
+    await eventDAO.update(req.params.id, { $pull: { uninterestedUsers: req.userId } })
+  } else {
+    throw new Error(`Invalid operation ${op}`)
+  }
 });
 
-exports.addInterestedUser = async (req, res) => catchErrors(res, async () => {
-  validateEventData(req);
-
-  eventDAO.update(req.params.id, { $pull: { uninterestedUsers: req.userId } });
-  eventDAO.update(req.params.id, { $pull: { goingUsers: req.userId } });
-
-  return eventDAO.update(req.params.id, { $addToSet: { interestedUsers: req.userId } });
-});
-
-exports.removeInterestedUser = async (req, res) => catchErrors(res, async () => {
-  validateEventData(req);
-
-  return eventDAO.update(req.params.id, { $pull: { interestedUsers: req.userId } });
-});
-
-exports.addUninterestedUser = async (req, res) => catchErrors(res, async () => {
-  validateEventData(req);
-
-  eventDAO.update(req.params.id, { $pull: { goingUsers: req.userId } });
-  eventDAO.update(req.params.id, { $pull: { interestedUsers: req.userId } });
-
-  return eventDAO.update(req.params.id, { $addToSet: { uninterestedUsers: req.userId } });
-});
-
-exports.removeUninterestedUser = async (req, res) => catchErrors(res, async () => {
-  validateEventData(req);
-
-  return eventDAO.update(req.params.id, { $pull: { uninterestedUsers: req.userId } });
-});
 exports.delete = async (req, res) => catchErrors(res, async () => eventDAO.delete(req.params.id));
 
 const getInMonth = async (date, user, filter) => {

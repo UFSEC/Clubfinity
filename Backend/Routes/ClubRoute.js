@@ -4,7 +4,9 @@ const clubController = require('../Controllers/ClubController');
 
 const router = express.Router();
 
-router.get('/', passport.authenticate('loggedIn', { session: false }), clubController.getMultiple);
+router.get('/', passport.authenticate('loggedIn', { session: false }),
+  clubController.getMultiple
+);
 router.get('/:id', clubController.get);
 router.put('/:id', passport.authenticate('loggedIn', { session: false }), 
   clubController.validate('validateBaseClubInfo'),

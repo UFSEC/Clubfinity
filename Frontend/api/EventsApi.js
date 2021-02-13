@@ -57,9 +57,9 @@ exports.update = async (eventId, bearerToken, event) => {
   return axiosResponse;
 };
 
-exports.addGoingUser = async (eventId, bearerToken) => {
-  const axiosResponse = await API.post(
-    `/api/event/${eventId}/going-users`, {},
+exports.updateUsersList = async (eventId, bearerToken, userListType, op) => {
+  const axiosResponse = await API.patch(
+    `/api/event/${eventId}/${userListType}?op=${op}`, {},
     {
       headers: {
         Authorization: `Bearer ${bearerToken}`,
@@ -67,67 +67,28 @@ exports.addGoingUser = async (eventId, bearerToken) => {
     },
   );
   return axiosResponse;
+};
+
+exports.addGoingUser = async (eventId, bearerToken) => {
+  return await exports.updateUsersList(eventId, bearerToken, 'going-users', 'add')
 };
 
 exports.removeGoingUser = async (eventId, bearerToken) => {
-  const axiosResponse = await API.delete(
-    `/api/event/${eventId}/going-users`,
-    {
-      headers: {
-        Authorization: `Bearer ${bearerToken}`,
-      },
-    },
-  );
-  return axiosResponse;
+  return await exports.updateUsersList(eventId, bearerToken, 'going-users', 'remove')
 };
 
 exports.addInterestedUser = async (eventId, bearerToken) => {
-  const axiosResponse = await API.post(
-    `/api/event/${eventId}/interested-users`,
-    {},
-    {
-      headers: {
-        Authorization: `Bearer ${bearerToken}`,
-      },
-    },
-  );
-
-  return axiosResponse;
+  return await exports.updateUsersList(eventId, bearerToken, 'interested-users', 'add')
 };
 
 exports.removeInterestedUser = async (eventId, bearerToken) => {
-  const axiosResponse = await API.delete(
-    `/api/event/${eventId}/interested-users`,
-    {
-      headers: {
-        Authorization: `Bearer ${bearerToken}`,
-      },
-    },
-  );
-  return axiosResponse;
+  return await exports.updateUsersList(eventId, bearerToken, 'interested-users', 'remove')
 };
 
 exports.addUninterestedUser = async (eventId, bearerToken) => {
-  const axiosResponse = await API.post(
-    `/api/event/${eventId}/uninterested-users`,
-    {},
-    {
-      headers: {
-        Authorization: `Bearer ${bearerToken}`,
-      },
-    },
-  );
-  return axiosResponse;
+  return await exports.updateUsersList(eventId, bearerToken, 'uninterested-users', 'add')
 };
 
 exports.removeUninterestedUser = async (eventId, bearerToken) => {
-  const axiosResponse = await API.delete(
-    `/api/event/${eventId}/uninterested-users`,
-    {
-      headers: {
-        Authorization: `Bearer ${bearerToken}`,
-      },
-    },
-  );
-  return axiosResponse;
+  return await exports.updateUsersList(eventId, bearerToken, 'uninterested-users', 'remove')
 };
