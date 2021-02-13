@@ -105,6 +105,7 @@ class HomeScr extends Component {
               uninterestedUsers={item.uninterestedUsers}
             />
           )}
+          contentContainerStyle={{ paddingBottom: 5 }}
           keyExtractor={(item) => item._id.toString()}
         />
       </View>
