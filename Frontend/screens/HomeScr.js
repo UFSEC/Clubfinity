@@ -85,7 +85,6 @@ class HomeScr extends Component {
           Hey Upcoming Events
           <Octicons name="megaphone" color="teal" size={24} />
         </Text>
-        <View>
           <FlatList
             style={{ loadingView: true }}
             data={events}
@@ -100,8 +99,6 @@ class HomeScr extends Component {
             contentContainerStyle={{ paddingBottom: 100 }}
             keyExtractor={(item) => item._id.toString()}
           />
-        </View>
-
       </View>
     );
   }
