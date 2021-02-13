@@ -15,7 +15,6 @@ import EventsApi from '../api/EventsApi';
 import DiscoverButton from '../components/DiscoverButton';
 import UserContext from '../util/UserContext';
 import buildNavigationsOptions from '../util/navigationOptionsBuilder';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 class HomeScr extends Component {
   static contextType = UserContext
