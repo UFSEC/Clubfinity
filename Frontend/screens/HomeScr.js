@@ -85,20 +85,20 @@ class HomeScr extends Component {
           Hey Upcoming Events
           <Octicons name="megaphone" color="teal" size={24} />
         </Text>
-          <FlatList
-            style={{ loadingView: true }}
-            data={events}
-            renderItem={({ item }) => (
-              <EventCard
-                key={item._id}
-                name={item.name}
-                location={item.location}
-                description={item.description}
-              />
-            )}
-            contentContainerStyle={{ paddingBottom: 100 }}
-            keyExtractor={(item) => item._id.toString()}
-          />
+        <FlatList
+          style={{ loadingView: true }}
+          data={events}
+          renderItem={({ item }) => (
+            <EventCard
+              key={item._id}
+              name={item.name}
+              location={item.location}
+              description={item.description}
+            />
+          )}
+          contentContainerStyle={{ paddingBottom: 100 }}
+          keyExtractor={(item) => item._id.toString()}
+        />
       </View>
     );
   }
