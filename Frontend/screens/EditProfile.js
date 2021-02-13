@@ -77,15 +77,15 @@ export default class EditProfile extends Component {
     } = this.state;
     const { user, setUser } = this.context;
 
-    user.username = username;
-    user.name = { first: firstName, last: lastName };
-    user.major = major;
-    user.year = classYear;
+    // user.username = username;
+    // user.name = { first: firstName, last: lastName };
+    // user.major = major;
+    // user.year = classYear;
 
     const updateUserResponse = await UserApi.updateUser(
       user._id,
       userToken,
-      user,
+      { username, major, year: classYear, name: { first: firstName, last: lastName } },
     );
 
     if (updateUserResponse.error) {

@@ -1,7 +1,19 @@
 import API from './BaseApi';
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
+exports.getAllClubs = async () => {
+  const bearerToken = await AsyncStorage.getItem('userToken');
+  console.log(bearerToken)
+  const resp = await API.get("/api/clubs?type=all", {
+    headers: {
+      Authorization: `Bearer ${bearerToken}`,
+    },
+  });
+  return resp.data.data;
+};
 
 exports.getFollowing = async (bearerToken) => {
-  const resp = await API.get('/api/club/following', {
+  const resp = await API.get('/api/clubs/following', {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
     },
@@ -10,7 +22,7 @@ exports.getFollowing = async (bearerToken) => {
 };
 
 exports.getManaging = async (bearerToken) => {
-  const resp = await API.get('/api/club/managing', {
+  const resp = await API.get('/api/clubs?type=fromAdminId', {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
     },
@@ -20,7 +32,7 @@ exports.getManaging = async (bearerToken) => {
 };
 
 exports.getAdmins = async (bearerToken, clubId) => {
-  const resp = await API.get(`/api/club/${clubId}`, {
+  const resp = await API.get(`/api/clubs/${clubId}`, {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
     },
@@ -58,7 +70,7 @@ exports.createClub = async (
     newClubData.slackLink = slackLink;
   }
   try {
-    const resp = await API.post('/api/club/', newClubData, {
+    const resp = await API.post('/api/clubs/', newClubData, {
       headers: {
         Authorization: `Bearer ${bearerToken}`,
       },
@@ -73,7 +85,7 @@ exports.createClub = async (
 
 exports.updateClub = async (clubID, bearerToken, club) => {
   try {
-    await API.put(`/api/club/${clubID}`, club, {
+    await API.put(`/api/clubs/${clubID}`, club, {
       headers: {
         Authorization: `Bearer ${bearerToken}`,
       },

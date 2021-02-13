@@ -8,11 +8,16 @@ const validateClubData = (req) => {
   if (!errors.isEmpty()) throw new ValidationError(errors.array());
 };
 
-exports.getAll = async (req, res) => catchErrors(res, async () => clubDAO.getAll());
-
-exports.getRandom = async (req, res) => {
-  catchErrors(res, async () => clubDAO.getRandom());
-};
+exports.getMultiple = async (req, res) => catchErrors(res, async () => {
+  const { type } = req.query
+  if (type == 'all') {
+    return clubDAO.getAll()
+  } else if (type == 'fromAdminId') {
+    return clubDAO.getByAdminId(req.userId)
+  } else {
+    throw new Error('Invalid type');
+  }
+});
 
 exports.get = async (req, res) => catchErrors(res, async () => clubDAO.get(req.params.id));
 
@@ -21,10 +26,11 @@ exports.getFollowing = async (req, res) => catchErrors(res, async () => {
   return user.clubs;
 });
 
-exports.getManaging = async (req, res) => catchErrors(res, async () => {
-  const user = await getCurrentUser(req);
-  return clubDAO.getManagedBy(user._id);
-});
+// exports.getManaging = async (req, res) => catchErrors(res, async () => {
+//   const user = await getCurrentUser(req);
+//   console.log(user)
+//   return clubDAO.getManagedBy(user._id);
+// });
 
 exports.update = async (req, res) => catchErrors(res, async () => {
   validateClubData(req);

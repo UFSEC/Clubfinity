@@ -5,19 +5,24 @@ exports.create = async (clubParams) => await new Club(clubParams).save();
 
 exports.getAll = async () => await Club.find({}).populate('admins').exec();
 
-exports.getRandom = async () => {
-  const clubs = await Club.find({});
-  const index = Math.floor(Math.random() * clubs.length);
-  return clubs[index];
-};
 exports.get = async (id) => {
-  const club = await Club.findById(id).populate('admins').exec();
+  const club = await Club.findById(id).populate({
+    path: 'admins',
+    model: 'User',
+    select: { '_id': 1, 'name': 1, 'major': 1, 'year': 1 }
+  }).exec();
+  
   if (!club) throw new NotFoundError();
 
   return club;
 };
 
-exports.getManagedBy = async (userId) => Club.find({ admins: userId }).populate('admins').exec();
+exports.getByAdminId = async (userId) => Club.find({ admins: userId })
+  .populate({
+    path: 'admins',
+    model: 'User',
+    select: { '_id': 1, 'name': 1, 'major': 1, 'year': 1 }
+  })
 
 exports.exists = async (id) => {
   try {

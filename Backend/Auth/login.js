@@ -14,7 +14,8 @@ exports.authenticate = (request, response) => {
         response.send(loginError);
       }
       const token = authUtil.tokanizeUser(user);
-      return response.json({ token, user });
+      const userData = { name: user.name, _id: user._id, major: user.major, year: user.year, email: user.email, username: user.username, clubs: user.clubs }
+      return response.json({ token, user: userData });
     });
     return false;
   })(request, response);

@@ -22,10 +22,10 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use('/api/user', userRoute);
+app.use('/api/users', userRoute);
 app.use('/api/event', eventRoute);
-app.use('/api/club', clubRoute);
-app.use('/api/announcement', announcementRoutes);
+app.use('/api/clubs', clubRoute);
+app.use('/api/announcements', announcementRoutes);
 app.use('/auth', authRoute);
 
 database.connect();

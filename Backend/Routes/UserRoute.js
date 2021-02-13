@@ -4,15 +4,9 @@ const userController = require('../Controllers/UserController');
 
 const router = express.Router();
 
-// TODO:
-// Authorization
-
-router.get('/', passport.authenticate('loggedIn', { session: false }), userController.getAll);
-router.get('/:id', passport.authenticate('loggedIn', { session: false }), userController.get);
-router.post('/', userController.validate('validateUserInfo'), userController.create);
-router.put('/update/:id', passport.authenticate('loggedIn', { session: false }), userController.validate('validateUserInfo'), userController.update);
-router.put('/follow/', passport.authenticate('loggedIn', { session: false }), userController.validate('validateClubId'), userController.followClub);
-router.put('/unfollow/', passport.authenticate('loggedIn', { session: false }), userController.validate('validateClubId'), userController.unfollowClub);
-router.delete('/', passport.authenticate('loggedIn', { session: false }), userController.delete);
+router.post('/', userController.validate('validateFullUserInfo'), userController.create);
+router.get('/', passport.authenticate('loggedIn', { session: false }), userController.get);
+router.put('/', passport.authenticate('loggedIn', { session: false }), userController.validate('validateBaseUserInfo'), userController.update);
+router.patch('/clubs/:id', passport.authenticate('loggedIn', { session: false }), userController.validate('validateClubId'), userController.updateClub);
 
 module.exports = router;
