@@ -5,6 +5,7 @@ import {
   FlatList,
   Text,
   View,
+  Dimensions
 } from 'react-native';
 import { Octicons } from '@expo/vector-icons';
 import { primary, emptyEventList } from '../assets/styles/stylesheet';
@@ -14,6 +15,7 @@ import EventsApi from '../api/EventsApi';
 import DiscoverButton from '../components/DiscoverButton';
 import UserContext from '../util/UserContext';
 import buildNavigationsOptions from '../util/navigationOptionsBuilder';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 class HomeScr extends Component {
   static contextType = UserContext
@@ -85,7 +87,9 @@ class HomeScr extends Component {
           Hey Upcoming Events
           <Octicons name="megaphone" color="teal" size={24} />
         </Text>
+        <View>
         <FlatList
+          style={{loadingView: true}}
           data={events}
           renderItem={({ item }) => (
             <EventCard
@@ -95,8 +99,15 @@ class HomeScr extends Component {
               description={item.description}
             />
           )}
+          getItemLayout={(data, index) => {
+            const width = Dimensions.get('window').width;
+            return { length: 0, offset: width * index, index};
+          }}
+          contentContainerStyle={{ paddingBottom: 100 }}
           keyExtractor={(item) => item._id.toString()}
         />
+        </View>
+      
       </View>
     );
   }
