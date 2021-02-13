@@ -273,7 +273,7 @@ export default class ClubScr extends React.Component {
             >
               <CardItem header style={{ justifyContent: 'space-between' }}>
                 <Text style={{ alignSelf: 'flex-end' }}>Events</Text>
-                {!announcementsEmpty && (
+                {!eventsEmpty && (
                   <TouchableOpacity
                     onPress={() => navigation.navigate('EventList', { club })}
                   >
