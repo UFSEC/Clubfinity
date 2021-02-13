@@ -17,7 +17,7 @@ exports.getMultiple = async (req, res) => catchErrors(res, async () => {
   } else if (type == 'fromMonth') {
     const user = await getCurrentUser(req);
     const { date, filter } = req.query
-    return await getInMonth(user, date, filter)
+    return await getInMonth(date, user, filter)
   } else {
     throw new Error(`Invalid type ${type}`)
   }
@@ -28,12 +28,6 @@ exports.get = async (req, res) => catchErrors(res, async () => eventDAO.get(req.
 exports.getByClub = async (req, res) => catchErrors(
   res, async () => eventDAO.getByClubs([req.params.clubId]),
 );
-
-// exports.getFollowing = async (req, res) => catchErrors(res, async () => {
-//   const user = await getCurrentUser(req);
-
-//   return await eventDAO.getByClubs(user.clubs);
-// });
 
 exports.update = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);

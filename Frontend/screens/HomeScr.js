@@ -32,7 +32,6 @@ class HomeScr extends Component {
   async componentDidMount() {
     // Fetch list of Events from API
     const bearerToken = await AsyncStorage.getItem('userToken');
-    // const clubs = await ClubsApi.getFollowing(bearerToken);
     const { user } = this.context;
     const { clubs } = user;
     if (clubs.length === 0) {

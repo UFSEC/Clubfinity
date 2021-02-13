@@ -21,17 +21,6 @@ exports.getMultiple = async (req, res) => catchErrors(res, async () => {
 
 exports.get = async (req, res) => catchErrors(res, async () => clubDAO.get(req.params.id));
 
-exports.getFollowing = async (req, res) => catchErrors(res, async () => {
-  const user = await getCurrentUser(req);
-  return user.clubs;
-});
-
-// exports.getManaging = async (req, res) => catchErrors(res, async () => {
-//   const user = await getCurrentUser(req);
-//   console.log(user)
-//   return clubDAO.getManagedBy(user._id);
-// });
-
 exports.update = async (req, res) => catchErrors(res, async () => {
   validateClubData(req);
 
