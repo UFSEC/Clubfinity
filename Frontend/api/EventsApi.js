@@ -2,7 +2,7 @@ import API from './BaseApi';
 import transformDate from '../util/transform';
 
 exports.getFollowing = async (bearerToken) => {
-  const resp = await API.get('/api/event/following', {
+  const resp = await API.get('/api/event?type=fromUserId', {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
     },
@@ -12,7 +12,7 @@ exports.getFollowing = async (bearerToken) => {
 };
 
 exports.getInMonth = async (bearerToken, date) => {
-  const resp = await API.get(`/api/event/inMonth/${date.toISODate()}?filter=following`, {
+  const resp = await API.get(`/api/event?type=fromMonth&date=${date.toISODate()}?filter=following`, {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
     },

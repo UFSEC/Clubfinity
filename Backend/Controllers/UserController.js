@@ -5,7 +5,7 @@ const { ValidationError } = require('../util/errors/validationError');
 const { catchErrors } = require('../util/httpUtil');
 const {
   validateName, validatePassword, validateUsername, validateYear,
-} = require('../util/Validations/Validations.js');
+} = require('../util/validations/Validations.js');
 
 const validateData = (req) => {
   const errors = validationResult(req);
@@ -43,38 +43,12 @@ exports.updateClub = async (req, res) => catchErrors(res, async () => {
   return { name: updatedUser.name, _id: updatedUser._id, major: updatedUser.major, year: updatedUser.year, email: updatedUser.email, username: updatedUser.username, clubs: updatedUser.clubs }
 });
 
-// exports.followClub = async (req, res) => catchErrors(res, async () => {
-//   validateData(req);
-
-//   const { clubId } = req.query;
-//   const updatedUser = await userDAO.get(req.userId);
-//   if (updatedUser.clubs.some((club) => club._id.toString() === clubId)) return updatedUser;
-
-//   updatedUser.clubs.push(clubId);
-//   return userDAO.update(req.userId, updatedUser);
-// });
-
-// exports.unfollowClub = async (req, res) => catchErrors(res, async () => {
-//   validateData(req);
-
-//   const { clubId } = req.query;
-//   const user = await userDAO.get(req.userId);
-
-//   user.clubs.forEach((club, index, clubs) => {
-//     if (club._id.toString() === clubId) {
-//       clubs.splice(index, 1);
-//     }
-//   });
-//   return userDAO.update(req.userId, user);
-// });
-
 exports.create = async (req, res) => catchErrors(res, async () => {
   validateData(req);
   req.body.clubs = [];
   return userDAO.create(req.body);
 });
 
-// Club ID must belong to a club that exists in FB
 async function validateClubId(clubId) {
   const clubExists = await clubDAO.exists(clubId);
   if (!clubExists) {
@@ -83,7 +57,6 @@ async function validateClubId(clubId) {
   return clubExists;
 }
 
-// functions imported from util/Validation/Validations.js
 exports.validate = (type) => {
   const baseUserInfo = [
     body('name.first', 'First name does not exist').exists().custom(validateName),

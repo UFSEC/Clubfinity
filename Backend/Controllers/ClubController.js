@@ -15,7 +15,7 @@ exports.getMultiple = async (req, res) => catchErrors(res, async () => {
   } else if (type == 'fromAdminId') {
     return clubDAO.getByAdminId(req.userId)
   } else {
-    throw new Error('Invalid type');
+    throw new Error(`Invalid type ${type}`)
   }
 });
 

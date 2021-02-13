@@ -9,7 +9,19 @@ const validateEventData = (req) => {
   if (!errors.isEmpty()) throw new ValidationError(errors.array());
 };
 
-exports.getAll = async (req, res) => catchErrors(res, async () => eventDAO.getAll());
+exports.getMultiple = async (req, res) => catchErrors(res, async () => {
+  const { type } = req.query
+  if (type == 'fromUserId') {
+    const user = await getCurrentUser(req);
+    return eventDAO.getByClubs(user.clubs);
+  } else if (type == 'fromMonth') {
+    const user = await getCurrentUser(req);
+    const { date, filter } = req.query
+    return await getInMonth(user, date, filter)
+  } else {
+    throw new Error(`Invalid type ${type}`)
+  }
+});
 
 exports.get = async (req, res) => catchErrors(res, async () => eventDAO.get(req.params.id));
 
@@ -17,29 +29,11 @@ exports.getByClub = async (req, res) => catchErrors(
   res, async () => eventDAO.getByClubs([req.params.clubId]),
 );
 
-exports.getFollowing = async (req, res) => catchErrors(res, async () => {
-  const user = await getCurrentUser(req);
+// exports.getFollowing = async (req, res) => catchErrors(res, async () => {
+//   const user = await getCurrentUser(req);
 
-  return await eventDAO.getByClubs(user.clubs);
-});
-
-exports.getInMonth = async (req, res) => catchErrors(res, async () => {
-  const searchDate = DateTime.fromISO(req.params.date);
-  const user = await getCurrentUser(req);
-
-  switch (req.query.filter) {
-    case undefined:
-    case 'all':
-    case '':
-      return await eventDAO.getAllEventsInMonth(searchDate);
-    case 'following':
-      return await eventDAO.getEventsFromFollowedClubsInMonth(searchDate, user);
-    case 'going':
-      return await eventDAO.getGoingEventsInMonth(searchDate, user);
-    default:
-      throw new Error(`Filter '${req.query.filter}' does not exist`);
-  }
-});
+//   return await eventDAO.getByClubs(user.clubs);
+// });
 
 exports.update = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);
@@ -105,6 +99,22 @@ exports.removeUninterestedUser = async (req, res) => catchErrors(res, async () =
   return eventDAO.update(req.params.id, { $pull: { uninterestedUsers: req.userId } });
 });
 exports.delete = async (req, res) => catchErrors(res, async () => eventDAO.delete(req.params.id));
+
+const getInMonth = async (date, user, filter) => {
+  const searchDate = DateTime.fromISO(date);
+  switch (filter) {
+    case undefined:
+    case 'all':
+    case '':
+      return await eventDAO.getAllEventsInMonth(searchDate);
+    case 'following':
+      return await eventDAO.getEventsFromFollowedClubsInMonth(searchDate, user);
+    case 'going':
+      return await eventDAO.getGoingEventsInMonth(searchDate, user);
+    default:
+      throw new Error(`Filter '${req.query.filter}' does not exist`);
+  }
+};
 
 async function validateEvent(id) {
   try {
