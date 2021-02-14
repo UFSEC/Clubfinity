@@ -10,9 +10,6 @@ router.get('/', passport.authenticate('loggedIn', { session: false }),
 router.get('/:id', passport.authenticate('loggedIn', { session: false }),
     eventController.get
 );
-router.get('/clubs/:clubId', passport.authenticate('loggedIn', { session: false }),
-    eventController.getByClub
-);
 router.put('/:id', passport.authenticate('loggedIn', { session: false }),
     eventController.validate('validateUpdateEventInfo'), eventController.update
 );

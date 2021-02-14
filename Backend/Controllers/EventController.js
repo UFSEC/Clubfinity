@@ -10,24 +10,23 @@ const validateEventData = (req) => {
 };
 
 exports.getMultiple = async (req, res) => catchErrors(res, async () => {
-  const { type } = req.query
-  if (type == 'fromUserId') {
+  const { filterBy } = req.query
+  if (filterBy == 'userId') {
     const user = await getCurrentUser(req);
     return eventDAO.getByClubs(user.clubs);
-  } else if (type == 'fromMonth') {
+  } else if (filterBy == 'month') {
     const user = await getCurrentUser(req);
     const { date, filter } = req.query
-    return await getInMonth(date, user, filter)
+    return getInMonth(date, user, filter)
+  } else if (filterBy == 'club') {
+    const { clubId } = req.query
+    return eventDAO.getByClubs(clubId)
   } else {
     throw new Error(`Invalid type ${type}`)
   }
 });
 
 exports.get = async (req, res) => catchErrors(res, async () => eventDAO.get(req.params.id));
-
-exports.getByClub = async (req, res) => catchErrors(
-  res, async () => eventDAO.getByClubs([req.params.clubId]),
-);
 
 exports.update = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);

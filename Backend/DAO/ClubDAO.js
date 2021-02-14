@@ -3,7 +3,13 @@ const { NotFoundError } = require('../util/errors/validationError');
 
 exports.create = async (clubParams) => await new Club(clubParams).save();
 
-exports.getAll = async () => await Club.find({}).populate('admins').exec();
+exports.getAll = async () => await Club.find({})
+  .populate({
+    path: 'admins',
+    model: 'User',
+    select: { '_id': 1, 'name': 1, 'major': 1, 'year': 1 }
+  })
+  .exec();
 
 exports.get = async (id) => {
   const club = await Club.findById(id).populate({

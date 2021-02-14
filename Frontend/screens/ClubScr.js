@@ -26,8 +26,7 @@ import getTheme from '../native-base-theme/components';
 import colors from '../util/colors';
 import UserContext from '../util/UserContext';
 import UserApi from '../api/UserApi';
-import EventsApi from '../api/EventsApi';
-import AnnouncementsApi from '../api/AnnouncementsApi';
+import ClubsApi from '../api/ClubsApi';
 import AdminRow from '../components/AdminRow';
 import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
@@ -82,11 +81,7 @@ export default class ClubScr extends React.Component {
     if (club.admins.map((admin) => admin._id).includes(user._id)) {
       this.setState({ isAdmin: true });
     }
-    const events = await EventsApi.getForClub(bearerToken, club._id);
-    const announcements = await AnnouncementsApi.getForClub(
-      bearerToken,
-      club._id,
-    );
+    const { events, announcements } = await ClubsApi.getPosts(bearerToken, club._id);
     this.setState({ events, announcements });
   };
 

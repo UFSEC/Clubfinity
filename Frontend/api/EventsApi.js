@@ -2,7 +2,7 @@ import API from './BaseApi';
 import transformDate from '../util/transform';
 
 exports.getFollowing = async (bearerToken) => {
-  const resp = await API.get('/api/event?type=fromUserId', {
+  const resp = await API.get('/api/events?filterBy=userId', {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
     },
@@ -12,7 +12,7 @@ exports.getFollowing = async (bearerToken) => {
 };
 
 exports.getInMonth = async (bearerToken, date) => {
-  const resp = await API.get(`/api/event?type=fromMonth&date=${date.toISODate()}&filter=following`, {
+  const resp = await API.get(`/api/events?filterBy=month&date=${date.toISODate()}&filter=following`, {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
     },
@@ -22,7 +22,7 @@ exports.getInMonth = async (bearerToken, date) => {
 };
 
 exports.getForClub = async (bearerToken, clubId) => {
-  const resp = await API.get(`/api/event/club/${clubId}`, {
+  const resp = await API.get(`/api/events?filterBy=club&clubId=${clubId}`, {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
     },
@@ -32,7 +32,7 @@ exports.getForClub = async (bearerToken, clubId) => {
 };
 
 exports.create = async (bearerToken, eventData) => {
-  await API.post('/api/event', eventData, {
+  await API.post('/api/events', eventData, {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
     },
@@ -40,7 +40,7 @@ exports.create = async (bearerToken, eventData) => {
 };
 
 exports.update = async (eventId, bearerToken, event) => {
-  const axiosResponse = await API.put(`/api/event/${eventId}`,
+  const axiosResponse = await API.put(`/api/events/${eventId}`,
     event,
     {
       headers: {
@@ -59,7 +59,7 @@ exports.update = async (eventId, bearerToken, event) => {
 
 exports.updateUsersList = async (eventId, bearerToken, userListType, op) => {
   const axiosResponse = await API.patch(
-    `/api/event/${eventId}/${userListType}?op=${op}`, {},
+    `/api/events/${eventId}/${userListType}?op=${op}`, {},
     {
       headers: {
         Authorization: `Bearer ${bearerToken}`,

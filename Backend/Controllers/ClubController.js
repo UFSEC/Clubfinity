@@ -1,5 +1,7 @@
 const { validationResult, body } = require('express-validator');
 const clubDAO = require('../DAO/ClubDAO');
+const eventDAO = require('../DAO/EventDAO');
+const announcementDAO = require('../DAO/AnnouncementDAO');
 const { ValidationError } = require('../util/errors/validationError');
 const { catchErrors, getCurrentUser } = require('../util/httpUtil');
 
@@ -19,7 +21,20 @@ exports.getMultiple = async (req, res) => catchErrors(res, async () => {
   }
 });
 
-exports.get = async (req, res) => catchErrors(res, async () => clubDAO.get(req.params.id));
+exports.get = async (req, res) => catchErrors(res, async () => {
+  const { select } = req.query
+  const { id: clubId } = req.params
+  if (select == 'all') {
+    return clubDAO.get(clubId)
+  } else if (select == 'admins') {
+    return { admins: (await clubDAO.get(clubId)).admins }
+  } else if (select  == 'posts') {
+    return {
+      events: await eventDAO.getByClubs([clubId]),
+      announcements: await announcementDAO.getByClubs([clubId])
+    }
+  }
+});
 
 exports.update = async (req, res) => catchErrors(res, async () => {
   validateClubData(req);

@@ -12,15 +12,6 @@ exports.getAllClubs = async () => {
   return resp.data.data;
 };
 
-exports.getFollowing = async (bearerToken) => {
-  const resp = await API.get('/api/clubs/following', {
-    headers: {
-      Authorization: `Bearer ${bearerToken}`,
-    },
-  });
-  return resp.data.data;
-};
-
 exports.getManaging = async (bearerToken) => {
   const resp = await API.get('/api/clubs?type=fromAdminId', {
     headers: {
@@ -32,12 +23,21 @@ exports.getManaging = async (bearerToken) => {
 };
 
 exports.getAdmins = async (bearerToken, clubId) => {
-  const resp = await API.get(`/api/clubs/${clubId}`, {
+  const resp = await API.get(`/api/clubs/${clubId}?select=admins`, {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
     },
   });
   return resp.data.data.admins;
+};
+
+exports.getPosts = async (bearerToken, clubId) => {
+  const resp = await API.get(`/api/clubs/${clubId}?select=posts`, {
+    headers: {
+      Authorization: `Bearer ${bearerToken}`,
+    },
+  });
+  return resp.data.data;
 };
 
 exports.createClub = async (

@@ -53,13 +53,8 @@ export default class AdminList extends React.Component {
       const club = navigation.getParam('club', 'NO-CLUB');
       const bearerToken = await AsyncStorage.getItem('userToken');
       const admins = await ClubsApi.getAdmins(bearerToken, club._id);
-      // const promises = [];
-      // for (let i = 0; i < adminIds.length; i += 1) {
-      //   promises.push(UserApi.getAdmin(adminIds[i], bearerToken));
-      // }
-      // const admins = await Promise.all(promises);
       this.setState({ admins });
-      if ((club.admins.map((admin) => admin._id)).includes(user._id)) {
+      if ((admins.map((admin) => admin._id)).includes(user._id)) {
         this.setState({ isAdmin: true });
       }
     }
