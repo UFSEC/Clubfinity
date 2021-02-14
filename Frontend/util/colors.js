@@ -1,12 +1,8 @@
 const colors = {
-  primary0: '#7e947e',
-  primary1: '#3d4a3d',
-  primary2: '#a0afa0',
-  primary3: '#6e94a3',
-  primary4: '#3c6170',
-  accent0: '#2dadff',
-  accent1: '#0089d8',
-  accent2: '#0068b2',
+  text: '#2a2d34',
+  primary0: '#006aff',
+  secondary0: '#2dadff',
+
   grayScale0: '#ffffff',
   grayScale1: '#f8f8f9',
   grayScale2: '#f2f2f2',
@@ -20,10 +16,11 @@ const colors = {
   grayScale10: '#58595b',
   grayScale11: '#414042',
   grayScale12: '#000000',
-  sucess: '#2e7f79',
-  error: '#ce4445',
+
+  success: '#00C05E',
+  error: '#FC5858',
   warning: '#f28154',
-  info: '#a0afa0',
+  info: '#2DADFF',
   link: '#5e95fc',
 };
 

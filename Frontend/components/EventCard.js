@@ -11,19 +11,20 @@ import colors from '../util/colors';
 import GoingButton from './GoingButton';
 import InterestedButton from './InterestedButton';
 import EventsApi from '../api/EventsApi';
+import { formatToMonthAndDay } from '../util/dateUtil';
 
 const styles = StyleSheet.create({
-  clubname: {
-    color: colors.accent2,
+  clubNameText: {
+    color: colors.text,
   },
-  date: {
-    color: colors.sucess,
+  dateText: {
+    color: colors.text,
     flex: 1,
     textAlign: 'right',
-    fontSize: 23,
+    fontSize: 18,
   },
-  location: {
-    color: colors.sucess,
+  locationText: {
+    color: colors.text,
     fontWeight: '700',
     marginLeft: '2%',
   },
@@ -44,11 +45,20 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     elevation: 2,
   },
+  titleText: {
+    color: colors.text,
+    fontSize: 20,
+    fontWeight: 'bold',
+    flex: 5,
+  },
 });
 
 export default class EventCard extends Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
+    clubName: PropTypes.string.isRequired,
+    // eslint-disable-next-line react/forbid-prop-types
+    date: PropTypes.object.isRequired,
     location: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     userId: PropTypes.string.isRequired,
@@ -125,34 +135,33 @@ export default class EventCard extends Component {
       name,
       location,
       description,
+      clubName,
+      date,
     } = this.props;
+    const { mute, going, interested } = this.state;
     const {
-      mute,
-      going,
-      interested,
-    } = this.state;
-    const {
-      mutedContainer, bodyText, date, clubname,
+      mutedContainer, bodyText, dateText, clubNameText, titleText, locationText,
     } = styles;
     const {
-      container, title, bannerIcon, banner, body,
+      container, bannerIcon, banner, body,
     } = card;
     const containerStyle = mute ? mutedContainer : container;
+
     return (
       <Card style={containerStyle}>
         <View style={banner}>
           <Image style={bannerIcon} source={SECIcon} />
           <View>
-            <Text style={title}>
+            <Text style={titleText}>
               {' '}
               {name}
             </Text>
-            <Text style={clubname}> ClubName</Text>
+            <Text style={clubNameText}>{clubName}</Text>
           </View>
-          <Text style={date}>Oct 22</Text>
+          <Text style={dateText}>{formatToMonthAndDay(date)}</Text>
         </View>
         <View style={body}>
-          <Text style={styles.location}>
+          <Text style={locationText}>
             {location}
           </Text>
           <Text style={bodyText}>{description}</Text>
@@ -163,18 +172,12 @@ export default class EventCard extends Component {
               justifyContent: 'space-evenly',
             }}
           >
-            <GoingButton
-              clickHandler={this.goingHandler}
-              isGoing={going}
-            />
+            <GoingButton clickHandler={this.goingHandler} isGoing={going} />
             <InterestedButton
               clickHandler={this.interestedHandler}
               isInterested={interested}
             />
-            <MuteButton
-              clickHandler={this.muteHandler}
-              isMuted={mute}
-            />
+            <MuteButton clickHandler={this.muteHandler} isMuted={mute} />
           </View>
         </View>
       </Card>

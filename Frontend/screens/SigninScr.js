@@ -161,7 +161,7 @@ export default class SigninScr extends React.Component {
                 textAlign="left"
                 style={styles.field}
                 name="username"
-                placeholderTextColor={colors.primary5}
+                placeholderTextColor={colors.grayScale8}
                 returnKeyType="next"
                 onChangeText={this.changeUsername}
                 autoCapitalize="none"
@@ -173,7 +173,7 @@ export default class SigninScr extends React.Component {
                 name="password"
                 secureTextEntry
                 autoCapitalize="none"
-                placeholderTextColor={colors.primary5}
+                placeholderTextColor={colors.grayScale8}
                 onChangeText={this.changePassword}
                 value={password}
                 placeholder="Password"
@@ -193,13 +193,13 @@ export default class SigninScr extends React.Component {
                   <Text style={styles.loginButtonText}>Sign In</Text>
                 </TouchableOpacity>
 
-                <Text style={{ color: colors.primary0, alignSelf: 'center', fontSize: 13 }}>
+                <Text style={{ color: colors.text, alignSelf: 'center', fontSize: 13 }}>
                   <Text>Don&apos;t have an account yet? </Text>
                   <TouchableOpacity
                     onPress={this.signUp}
                     style={styles.signupLink}
                   >
-                    <Text style={{ color: colors.primary0, fontSize: 13, top: 2 }}>Sign up</Text>
+                    <Text style={{ color: colors.info, fontSize: 13, top: 2 }}>Sign up</Text>
                   </TouchableOpacity>
                 </Text>
               </View>

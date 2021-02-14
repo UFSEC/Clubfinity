@@ -1,13 +1,15 @@
 import { StyleSheet } from 'react-native';
+import colors from '../../util/colors';
 
 // Primary Style Guide for entire application
 export const primary = StyleSheet.create({
   container: {
+    flex: 1,
     paddingHorizontal: 10,
     backgroundColor: '#F2F2F7',
   },
   bodyText: {
-    color: '#636e72',
+    color: colors.text,
     fontSize: 13,
   },
   headerText: {
