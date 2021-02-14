@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AsyncStorage, View, Platform } from 'react-native';
+import { AsyncStorage, View } from 'react-native';
 import {
   Button,
   Text,
@@ -26,15 +26,11 @@ export default class ReportBugScr extends Component {
     this.setState({
       processingRequest: true,
     });
-    const { bugDescription } = this.state;
-    const { navigation } = this.props;
-
     const validRequest = this.isRequestValid();
     this.setState({
       processingRequest: false,
       emptyDescription: !validRequest,
     });
-    const userToken = await AsyncStorage.getItem('userToken');
   };
 
   isRequestValid = () => {
