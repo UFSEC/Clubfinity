@@ -28,6 +28,7 @@ import EditEvent from '../screens/EditEvent'
 import EventScr from '../screens/EventScr'
 import AnnouncementScr from '../screens/AnnouncementScr'
 import EditAnnouncement from '../screens/EditAnnouncements'
+import ReportBugScr from '../screens/ReportBugScr'
 import colors from '../util/colors';
 
 const HomeStack = createStackNavigator(
@@ -84,6 +85,7 @@ const ProfileStack = createStackNavigator(
     Settings: SettingScr,
     ClubCreationScr: ClubCreation,
     ClubScr : ClubScr,
+    ReportBugScr : ReportBugScr,
   },
   {
     navigationOptions: {

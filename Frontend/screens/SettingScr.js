@@ -81,6 +81,36 @@ export default class SettingScr extends React.Component {
                 <Ionicons name="md-arrow-dropright" size={30} />
               </View>
             </ListItem>
+            <ListItem
+              button
+              onPress={() => navigation.navigate('ReportBugScr')}
+            >
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  flex: 1,
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  height: '100%',
+                }}
+              >
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                  }}
+                >
+                  <Ionicons
+                    name="md-bug"
+                    size={20}
+                    style={{ paddingRight: '2%' }}
+                  />
+                  <Text>Report a bug</Text>
+                </View>
+                <Ionicons name="md-arrow-dropright" size={30} />
+              </View>
+            </ListItem>
             <ListItem button onPress={() => this.signOut()}>
               <View
                 style={{
