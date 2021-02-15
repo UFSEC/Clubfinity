@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import {
-  AsyncStorage, View, SectionList, Text,
-} from 'react-native';
+import { View, SectionList, Text } from 'react-native';
 
 import AnnouncementsApi from '../api/AnnouncementsApi';
 import Row from '../components/Row';
@@ -19,11 +17,9 @@ class AnnouncementList extends Component {
 
   async componentDidMount() {
     const { navigation } = this.props;
-    const club = navigation.getParam('club', 'NO-CLUB');
-    const bearerToken = await AsyncStorage.getItem('userToken');
+    const clubId = navigation.getParam('clubId', 'NO-CLUB');
     const announcements = await AnnouncementsApi.getForClub(
-      bearerToken,
-      club._id,
+      clubId,
     );
     this.setState({ announcements });
   }

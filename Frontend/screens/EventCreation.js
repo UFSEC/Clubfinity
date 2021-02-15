@@ -67,8 +67,7 @@ export default class EventCreation extends Component {
     } = this.state;
     const parsedDate = combineAndParseDateTime(selectedDate, selectedTime);
 
-    const userToken = await AsyncStorage.getItem('userToken');
-    await EventsApi.create(userToken, {
+    await EventsApi.create({
       club: '99cb91bdc3464f14678934ca',
       name: eventName,
       description: eventDescription,

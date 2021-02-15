@@ -15,16 +15,14 @@ exports.get = async (req, res) => catchErrors(res, async () => {
   return announcementDAO.get(req.params.id);
 });
 
-exports.getByClub = async (req, res) => catchErrors(res, async () => {
-  validateAnnouncementData(req);
-
-  return announcementDAO.getByClubs([req.params.clubId]);
-});
-
-exports.getFollowing = async (req, res) => catchErrors(res, async () => {
-  const user = await getCurrentUser(req);
-
-  return announcementDAO.getByClubs(user.clubs);
+exports.getMultiple = async (req, res) => catchErrors(res, async () => {
+  const { filterBy } = req.query
+  if (filterBy == 'club') {
+    const { clubId } = req.query
+    return announcementDAO.getByClubs([clubId]);
+  } else {
+    throw new Error(`Invalid type ${filterBy}`)
+  }
 });
 
 exports.create = async (req, res) => catchErrors(res, async () => {

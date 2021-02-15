@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-  AsyncStorage,
   View,
   SectionList,
   Text,
@@ -24,10 +23,9 @@ class EventList extends Component {
 
   async componentDidMount() {
     const { navigation } = this.props;
-    const club = navigation.getParam('club', 'NO-CLUB');
-    const bearerToken = await AsyncStorage.getItem('userToken');
+    const clubId = navigation.getParam('clubId', 'NO-CLUB');
 
-    const events = await EventsApi.getForClub(bearerToken, club._id);
+    const events = await EventsApi.getForClub(clubId);
     const now = DateTime.local();
     const pastEvents = events.filter((event) => event.date < now);
     const upcomingEvents = events.filter((event) => event.date > now);

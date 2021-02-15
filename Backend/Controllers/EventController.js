@@ -22,11 +22,13 @@ exports.getMultiple = async (req, res) => catchErrors(res, async () => {
     const { clubId } = req.query
     return eventDAO.getByClubs(clubId)
   } else {
-    throw new Error(`Invalid type ${type}`)
+    throw new Error(`Invalid type ${filterBy}`)
   }
 });
 
-exports.get = async (req, res) => catchErrors(res, async () => eventDAO.get(req.params.id));
+exports.get = async (req, res) => catchErrors(res, async () => {
+  return req.params.id
+})
 
 exports.update = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);

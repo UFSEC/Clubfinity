@@ -2,7 +2,6 @@ import React from 'react';
 import {
   FlatList,
   View,
-  AsyncStorage,
 } from 'react-native';
 import {
   Root,
@@ -51,8 +50,7 @@ export default class AdminList extends React.Component {
       const { navigation } = this.props;
       const { user } = this.context;
       const club = navigation.getParam('club', 'NO-CLUB');
-      const bearerToken = await AsyncStorage.getItem('userToken');
-      const admins = await ClubsApi.getAdmins(bearerToken, club._id);
+      const admins = await ClubsApi.getAdmins(club._id);
       this.setState({ admins });
       if ((admins.map((admin) => admin._id)).includes(user._id)) {
         this.setState({ isAdmin: true });
@@ -76,8 +74,7 @@ export default class AdminList extends React.Component {
     };
 
     handleRemove = async (club) => {
-      const bearerToken = await AsyncStorage.getItem('userToken');
-      const authResponse = await ClubsApi.updateClub(club._id, bearerToken, club);
+      const authResponse = await ClubsApi.updateClub(club._id, club);
       return authResponse;
     }
 

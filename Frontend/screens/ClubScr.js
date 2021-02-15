@@ -5,7 +5,6 @@ import {
   SafeAreaView,
   ScrollView,
   TouchableOpacity,
-  AsyncStorage,
   StyleSheet,
   Linking,
 } from 'react-native';
@@ -73,7 +72,6 @@ export default class ClubScr extends React.Component {
     const { navigation } = this.props;
     const { user } = this.context;
     const club = navigation.getParam('club', 'NO-CLUB');
-    const bearerToken = await AsyncStorage.getItem('userToken');
 
     if (user.clubs.map((currentClub) => currentClub._id).includes(club._id)) {
       this.setState({ isFollowing: true });
@@ -81,7 +79,7 @@ export default class ClubScr extends React.Component {
     if (club.admins.map((admin) => admin._id).includes(user._id)) {
       this.setState({ isAdmin: true });
     }
-    const { events, announcements } = await ClubsApi.getPosts(bearerToken, club._id);
+    const { events, announcements } = await ClubsApi.getPosts(club._id);
     this.setState({ events, announcements });
   };
 
@@ -182,7 +180,7 @@ export default class ClubScr extends React.Component {
 
     const club = navigation.getParam('club', 'NO-CLUB');
     const defaultAdminUrl = 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png';
-
+    
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView showsVerticalScrollIndicator>
@@ -275,7 +273,7 @@ export default class ClubScr extends React.Component {
                 <Text style={{ alignSelf: 'flex-end' }}>Events</Text>
                 {!eventsEmpty && (
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('EventList', { club })}
+                    onPress={() => navigation.navigate('EventList', { clubId: club._id })}
                   >
                     <Text style={{ alignSelf: 'flex-end', color: colors.link }}>
                       View all
@@ -352,7 +350,7 @@ export default class ClubScr extends React.Component {
                 <Text style={{ alignSelf: 'flex-end' }}>Announcements</Text>
 
                 {!announcementsEmpty && (
-                  <TouchableOpacity onPress={() => {}}>
+                  <TouchableOpacity onPress={() => navigation.navigate('AnnouncementList', { clubId: club._id })}>
                     <Text style={{ alignSelf: 'flex-end', color: colors.link }}>
                       View all
                     </Text>

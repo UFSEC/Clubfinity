@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  AsyncStorage, Text, StyleSheet, StatusBar,
+  Text, StyleSheet, StatusBar,
 } from 'react-native';
 import {
   Button,
@@ -120,12 +120,10 @@ export default class EditAnnouncements extends Component {
       processingRequest: { status: true, message: 'Updating...' },
       errors: { arePresent: false, data: validRequest.errors },
     });
-    const bearerToken = await AsyncStorage.getItem('userToken');
     const {
       title, description, id,
     } = this.state;
     const updateAnnouncementResponse = await AnnouncementsApi.update(
-      bearerToken,
       id,
       { title, description },
     );

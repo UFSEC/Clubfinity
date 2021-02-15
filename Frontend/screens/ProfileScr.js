@@ -3,7 +3,6 @@ import {
   View,
   SectionList,
   TouchableOpacity,
-  AsyncStorage,
 } from 'react-native';
 import {
   Card,
@@ -45,8 +44,7 @@ export default class ProfileScr extends React.Component {
   }
 
   async componentDidMount() {
-    const bearerToken = await AsyncStorage.getItem('userToken');
-    const managingClubs = await ClubsApi.getManaging(bearerToken);
+    const managingClubs = await ClubsApi.getManaging();
 
     this.setState({
       managingClubs,
