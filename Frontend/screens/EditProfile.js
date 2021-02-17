@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AsyncStorage, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import {
   Button,
   Text,
@@ -71,21 +71,14 @@ export default class EditProfile extends Component {
       processingRequest: { status: true, message: 'Updating...' },
       errors: { arePresent: false, data: validRequest.errors },
     });
-    const userToken = await AsyncStorage.getItem('userToken');
     const {
       firstName, lastName, major, classYear, username,
     } = this.state;
     const { user, setUser } = this.context;
-
-    // user.username = username;
-    // user.name = { first: firstName, last: lastName };
-    // user.major = major;
-    // user.year = classYear;
-
     const updateUserResponse = await UserApi.updateUser(
-      user._id,
-      userToken,
-      { username, major, year: classYear, name: { first: firstName, last: lastName } },
+      {
+        username, major, year: classYear, name: { first: firstName, last: lastName },
+      },
     );
 
     if (updateUserResponse.error) {

@@ -15,6 +15,7 @@ import colors from '../util/colors';
 import UserContext from '../util/UserContext';
 import ClubsApi from '../api/ClubsApi';
 import buildNavigationsOptions from '../util/navigationOptionsBuilder';
+import DefaultPic from '../assets/images/PlainProfilePicture.png';
 
 export default class AdminList extends React.Component {
     static contextType = UserContext;
@@ -80,7 +81,6 @@ export default class AdminList extends React.Component {
 
     render() {
       const { isAdmin, admins } = this.state;
-      const defaultAdminUrl = 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png';
       return (
         <Root>
           <List style={{ paddingTop: 20, width: '100%' }}>
@@ -113,7 +113,7 @@ export default class AdminList extends React.Component {
                         alignItems: 'center',
                       }}
                     >
-                      <Thumbnail style={{ margin: '2%' }} source={{ uri: defaultAdminUrl }} />
+                      <Thumbnail style={{ margin: '2%' }} source={DefaultPic} />
                       <View
                         style={{
                           marginLeft: '3%',

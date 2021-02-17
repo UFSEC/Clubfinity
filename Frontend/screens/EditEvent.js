@@ -89,7 +89,6 @@ export default class EditEvent extends Component {
       const { navigation } = this.props;
       navigation.pop(2);
     }
-    // Add error feedback
   };
 
   isRequestValid = () => {

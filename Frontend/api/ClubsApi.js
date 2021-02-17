@@ -1,10 +1,9 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import API from './BaseApi';
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 exports.getAllClubs = async () => {
   const bearerToken = await AsyncStorage.getItem('userToken');
-  console.log(bearerToken)
-  const resp = await API.get("/api/clubs?type=all", {
+  const resp = await API.get('/api/clubs?type=all', {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
     },

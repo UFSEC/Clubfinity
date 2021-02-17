@@ -1,8 +1,11 @@
-const { validationResult, body, query, param } = require('express-validator');
+const {
+  validationResult, body, param,
+} = require('express-validator');
 const userDAO = require('../DAO/UserDAO');
 const clubDAO = require('../DAO/ClubDAO');
 const { ValidationError } = require('../util/errors/validationError');
 const { catchErrors } = require('../util/httpUtil');
+const { getLimitedUserData } = require('../util/userUtil');
 const {
   validateName, validatePassword, validateUsername, validateYear,
 } = require('../util/validations/Validations.js');
@@ -14,12 +17,12 @@ const validateData = (req) => {
 
 exports.get = async (req, res) => catchErrors(res, async () => {
   const user = await userDAO.get(req.userId);
-  return { name: user.name, _id: user._id, major: user.major, year: user.year, email: user.email, username: user.username, clubs: user.clubs }
+  return getLimitedUserData(user);
 });
 
 exports.update = async (req, res) => catchErrors(res, async () => {
   validateData(req);
-  
+
   await userDAO.update(req.userId, req.body);
 });
 
@@ -30,7 +33,7 @@ exports.updateClub = async (req, res) => catchErrors(res, async () => {
   const { isFollowing } = req.query;
   const user = await userDAO.get(req.userId);
 
-  if (isFollowing == 'true') {
+  if (isFollowing === 'true') {
     if (!user.clubs.some((club) => club._id.toString() === clubId)) {
       user.clubs.push(clubId);
     }
@@ -40,13 +43,13 @@ exports.updateClub = async (req, res) => catchErrors(res, async () => {
     });
   }
   const updatedUser = await userDAO.update(req.userId, user);
-  return { name: updatedUser.name, _id: updatedUser._id, major: updatedUser.major, year: updatedUser.year, email: updatedUser.email, username: updatedUser.username, clubs: updatedUser.clubs }
+  return getLimitedUserData(updatedUser);
 });
 
 exports.create = async (req, res) => catchErrors(res, async () => {
   validateData(req);
   req.body.clubs = [];
-  return userDAO.create(req.body);
+  return getLimitedUserData(await userDAO.create(req.body));
 });
 
 async function validateClubId(clubId) {
@@ -64,8 +67,8 @@ exports.validate = (type) => {
     body('major', 'Major does not exist or is invalid').exists(),
     body('year', 'Year does not exist or is invalid')
       .exists()
-      .custom((year) => validateYear(year))
-  ]
+      .custom((year) => validateYear(year)),
+  ];
   switch (type) {
     case 'validateBaseUserInfo': {
       return baseUserInfo;
@@ -74,8 +77,8 @@ exports.validate = (type) => {
       return [
         ...baseUserInfo,
         body('email', 'Email does not exist or is invalid')
-        .exists()
-        .isEmail().contains('@ufl.edu'),
+          .exists()
+          .isEmail().contains('@ufl.edu'),
         body('username', 'Username does not exist')
           .exists()
           .custom((username) => validateUsername(username)),

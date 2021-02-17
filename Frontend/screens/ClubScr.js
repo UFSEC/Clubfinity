@@ -102,8 +102,7 @@ export default class ClubScr extends React.Component {
 
   async handleUpdate(apiCall, clubId) {
     const { setUser } = this.context;
-    const bearer = await AsyncStorage.getItem('userToken');
-    const authResponse = await apiCall(clubId, bearer);
+    const authResponse = await apiCall(clubId);
     setUser(authResponse.data.data);
     return authResponse;
   }
@@ -169,6 +168,8 @@ export default class ClubScr extends React.Component {
     );
   };
 
+  // TODO: Fix navigation back to the ClubScr from this stack
+
   render() {
     const { navigation } = this.props;
     const {
@@ -179,8 +180,7 @@ export default class ClubScr extends React.Component {
     const eventsEmpty = events.length === 0;
 
     const club = navigation.getParam('club', 'NO-CLUB');
-    const defaultAdminUrl = 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png';
-    
+
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView showsVerticalScrollIndicator>
@@ -444,7 +444,6 @@ export default class ClubScr extends React.Component {
                             name: `${item.name.first} ${item.name.last}`,
                             year: item.year,
                             major: item.major,
-                            thumbnailUrl: defaultAdminUrl,
                           }}
                           handler={() => {}}
                         />

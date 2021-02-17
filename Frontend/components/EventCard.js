@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Text, View, Image, StyleSheet
+  Text, View, Image, StyleSheet,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { Card } from 'native-base';
@@ -102,7 +102,6 @@ export default class EventCard extends Component {
     this.setState({
       going: !going,
     });
-    const bearerToken = await AsyncStorage.getItem('userToken');
     const { eventID } = this.props;
     if (!going) {
       this.setState({
@@ -118,7 +117,6 @@ export default class EventCard extends Component {
     this.setState({
       interested: !interested,
     });
-    const bearerToken = await AsyncStorage.getItem('userToken');
     const { eventID } = this.props;
     if (!interested) {
       this.setState({

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { AsyncStorage } from 'react-native';
 import {
   Button,
   Container,
@@ -11,6 +10,7 @@ import {
   Text,
   Textarea,
 } from 'native-base';
+
 import { Ionicons } from '@expo/vector-icons';
 import DatePicker from 'react-native-datepicker';
 import colors from '../util/colors';
@@ -31,7 +31,6 @@ export default class EventCreation extends Component {
       location: false,
       facebookLink: false,
       eventDescription: false,
-      createdEvent: false,
     };
     this.state = {
       eventName: '',
@@ -40,7 +39,6 @@ export default class EventCreation extends Component {
       location: '',
       facebookLink: '',
       eventDescription: '',
-      createdEvent: false,
       errors: { arePresent: false, data: errors },
     };
   }
@@ -53,7 +51,6 @@ export default class EventCreation extends Component {
       });
       return;
     }
-    this.setState({ createdEvent: true });
     this.setState({
       errors: { arePresent: false, data: validRequest.errors },
     });
@@ -65,15 +62,18 @@ export default class EventCreation extends Component {
       selectedDate,
       selectedTime,
     } = this.state;
+    const { navigation } = this.props;
     const parsedDate = combineAndParseDateTime(selectedDate, selectedTime);
+    const club = navigation.getParam('club', 'NO-CLUB');
 
     await EventsApi.create({
-      club: '99cb91bdc3464f14678934ca',
+      club: club._id,
       name: eventName,
       description: eventDescription,
       date: parsedDate.toISO(),
       location,
     });
+    navigation.navigate('Club', { club });
   };
 
   isRequestValid = () => {
@@ -104,19 +104,10 @@ export default class EventCreation extends Component {
     const {
       errors,
       eventDescription,
-      createdEvent,
       selectedDate,
       selectedTime,
     } = this.state;
-    if (createdEvent) {
-      return (
-        // Add routing to admin clubName management screen
-        <Text>Successfully created an Event!</Text>
-      );
-    }
-
     const today = new Date();
-
     return (
       <Container>
         <Content>

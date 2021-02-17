@@ -5,17 +5,14 @@ const clubController = require('../Controllers/ClubController');
 const router = express.Router();
 
 router.get('/', passport.authenticate('loggedIn', { session: false }),
-  clubController.getMultiple
-);
+  clubController.getMultiple);
 router.get('/:id', clubController.get);
-router.put('/:id', passport.authenticate('loggedIn', { session: false }), 
+router.put('/:id', passport.authenticate('loggedIn', { session: false }),
   clubController.validate('validateBaseClubInfo'),
-  clubController.update,
-);
+  clubController.update);
 router.post('/', passport.authenticate('loggedIn', { session: false }),
   clubController.validate('validateCreateClubInfo'),
   clubController.validate('validateBaseClubInfo'),
-  clubController.create,
-);
+  clubController.create);
 
 module.exports = router;

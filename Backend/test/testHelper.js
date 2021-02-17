@@ -25,6 +25,13 @@ exports.TestHttp = class {
       .send(body);
   }
 
+  async patch(url, body = {}) {
+    return this.chai.request(this.app)
+      .patch(url)
+      .auth(this.userToken, { type: 'bearer' })
+      .send(body);
+  }
+
   async delete(url) {
     return this.chai.request(this.app)
       .delete(url)

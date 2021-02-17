@@ -1,9 +1,9 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import API from './BaseApi';
 import transformDate from '../util/transform';
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 exports.getFollowing = async () => {
-  const bearerToken = await AsyncStorage.getItem('userToken')
+  const bearerToken = await AsyncStorage.getItem('userToken');
   const resp = await API.get('/api/events?filterBy=userId', {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
@@ -14,7 +14,7 @@ exports.getFollowing = async () => {
 };
 
 exports.getInMonth = async (date) => {
-  const bearerToken = await AsyncStorage.getItem('userToken')
+  const bearerToken = await AsyncStorage.getItem('userToken');
   const resp = await API.get(`/api/events?filterBy=month&date=${date.toISODate()}&filter=following`, {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
@@ -25,7 +25,7 @@ exports.getInMonth = async (date) => {
 };
 
 exports.getForClub = async (clubId) => {
-  const bearerToken = await AsyncStorage.getItem('userToken')
+  const bearerToken = await AsyncStorage.getItem('userToken');
   const resp = await API.get(`/api/events?filterBy=club&clubId=${clubId}`, {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
@@ -36,7 +36,7 @@ exports.getForClub = async (clubId) => {
 };
 
 exports.create = async (eventData) => {
-  const bearerToken = await AsyncStorage.getItem('userToken')
+  const bearerToken = await AsyncStorage.getItem('userToken');
   await API.post('/api/events', eventData, {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
@@ -45,7 +45,7 @@ exports.create = async (eventData) => {
 };
 
 exports.update = async (eventId, event) => {
-  const bearerToken = await AsyncStorage.getItem('userToken')
+  const bearerToken = await AsyncStorage.getItem('userToken');
   const axiosResponse = await API.put(`/api/events/${eventId}`,
     event,
     {
@@ -64,6 +64,7 @@ exports.update = async (eventId, event) => {
 };
 
 exports.updateUsersList = async (eventId, userListType, op) => {
+  const bearerToken = await AsyncStorage.getItem('userToken');
   const axiosResponse = await API.patch(
     `/api/events/${eventId}/${userListType}?op=${op}`, {},
     {
@@ -75,26 +76,14 @@ exports.updateUsersList = async (eventId, userListType, op) => {
   return axiosResponse;
 };
 
-exports.addGoingUser = async (eventId) => {
-  return await exports.updateUsersList(eventId, 'going-users', 'add')
-};
+exports.addGoingUser = async (eventId) => exports.updateUsersList(eventId, 'going-users', 'add');
 
-exports.removeGoingUser = async (eventId) => {
-  return await exports.updateUsersList(eventId, 'going-users', 'remove')
-};
+exports.removeGoingUser = async (eventId) => exports.updateUsersList(eventId, 'going-users', 'remove');
 
-exports.addInterestedUser = async (eventId) => {
-  return await exports.updateUsersList(eventId, 'interested-users', 'add')
-};
+exports.addInterestedUser = async (eventId) => exports.updateUsersList(eventId, 'interested-users', 'add');
 
-exports.removeInterestedUser = async (eventId) => {
-  return await exports.updateUsersList(eventId, 'interested-users', 'remove')
-};
+exports.removeInterestedUser = async (eventId) => exports.updateUsersList(eventId, 'interested-users', 'remove');
 
-exports.addUninterestedUser = async (eventId) => {
-  return await exports.updateUsersList(eventId, 'uninterested-users', 'add')
-};
+exports.addUninterestedUser = async (eventId) => exports.updateUsersList(eventId, 'uninterested-users', 'add');
 
-exports.removeUninterestedUser = async (eventId) => {
-  return await exports.updateUsersList(eventId, 'uninterested-users', 'remove')
-};
+exports.removeUninterestedUser = async (eventId) => exports.updateUsersList(eventId, 'uninterested-users', 'remove');

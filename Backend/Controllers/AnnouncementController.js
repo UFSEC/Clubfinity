@@ -1,7 +1,7 @@
 const { validationResult, body, param } = require('express-validator');
 const { DateTime } = require('luxon');
 const { ValidationError } = require('../util/errors/validationError');
-const { catchErrors, getCurrentUser } = require('../util/httpUtil');
+const { catchErrors } = require('../util/httpUtil');
 const announcementDAO = require('../DAO/AnnouncementDAO');
 
 const validateAnnouncementData = (req) => {
@@ -16,13 +16,12 @@ exports.get = async (req, res) => catchErrors(res, async () => {
 });
 
 exports.getMultiple = async (req, res) => catchErrors(res, async () => {
-  const { filterBy } = req.query
-  if (filterBy == 'club') {
-    const { clubId } = req.query
+  const { filterBy } = req.query;
+  if (filterBy === 'club') {
+    const { clubId } = req.query;
     return announcementDAO.getByClubs([clubId]);
-  } else {
-    throw new Error(`Invalid type ${filterBy}`)
   }
+  throw new Error(`Invalid type ${filterBy}`);
 });
 
 exports.create = async (req, res) => catchErrors(res, async () => {

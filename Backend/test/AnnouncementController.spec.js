@@ -72,22 +72,12 @@ describe('Announcements', () => {
       announcement2.populate('club', () => { });
     });
 
-    it('/club/:clubId returns only announcements from a club', async () => {
-      const resp = await http.get(`/api/announcement/club/${clubId1}`);
+    it('returns only announcements from a club', async () => {
+      const resp = await http.get(`/api/announcements?filterBy=club&clubId=${clubId1}`);
 
       isOk(resp);
       resp.body.data.should.have.length(1);
       resp.body.data[0].title.should.equal('Announcement 1');
-    });
-
-    it('/following returns only announcements from clubs the user is following', async () => {
-      await http.put(`/api/user/follow?clubId=${clubId2}`);
-
-      const resp = await http.get('/api/announcement/following');
-
-      isOk(resp);
-      resp.body.data.should.have.length(1);
-      resp.body.data[0].title.should.equal('Announcement 2');
     });
   });
 
@@ -99,7 +89,7 @@ describe('Announcements', () => {
         club: clubId,
       };
 
-      const resp = await http.post('/api/announcement', announcementParams);
+      const resp = await http.post('/api/announcements', announcementParams);
 
       isOk(resp);
 
@@ -125,7 +115,7 @@ describe('Announcements', () => {
       };
 
       const resp = await http.put(
-        `/api/announcement/${oldAnnouncement._id}`,
+        `/api/announcements/${oldAnnouncement._id}`,
         newAnnouncementParams,
       );
 
@@ -136,7 +126,7 @@ describe('Announcements', () => {
         description: 'Different description',
       });
 
-      const getResp = await http.get(`/api/announcement/${oldAnnouncement._id}`);
+      const getResp = await http.get(`/api/announcements/${oldAnnouncement._id}`);
 
       isOk(getResp);
 
@@ -157,11 +147,11 @@ describe('Announcements', () => {
 
       const announcement = await announcementDAO.create(announcementParams);
 
-      const deleteResp = await http.delete(`/api/announcement/${announcement._id}`);
+      const deleteResp = await http.delete(`/api/announcements/${announcement._id}`);
 
       isOk(deleteResp);
 
-      const getResp = await http.get(`/api/announcement/${announcement._id}`);
+      const getResp = await http.get(`/api/announcements/${announcement._id}`);
 
       isNotOk(getResp, 404);
       getResp.body.error.should.contain('Id not found');

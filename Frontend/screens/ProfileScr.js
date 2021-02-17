@@ -135,7 +135,7 @@ export default class ProfileScr extends React.Component {
     const sectionListData = [];
 
     const filteredManagingClubs = this.filterFollowing(managingClubs);
-    console.log(filteredManagingClubs)
+    console.log(filteredManagingClubs);
     if (filteredManagingClubs.length > 0) {
       sectionListData.push({ title: 'Managing', data: filteredManagingClubs });
     }

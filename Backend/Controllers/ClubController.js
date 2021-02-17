@@ -3,7 +3,7 @@ const clubDAO = require('../DAO/ClubDAO');
 const eventDAO = require('../DAO/EventDAO');
 const announcementDAO = require('../DAO/AnnouncementDAO');
 const { ValidationError } = require('../util/errors/validationError');
-const { catchErrors, getCurrentUser } = require('../util/httpUtil');
+const { catchErrors } = require('../util/httpUtil');
 
 const validateClubData = (req) => {
   const errors = validationResult(req);
@@ -11,29 +11,30 @@ const validateClubData = (req) => {
 };
 
 exports.getMultiple = async (req, res) => catchErrors(res, async () => {
-  const { type } = req.query
-  if (type == 'all') {
-    return clubDAO.getAll()
-  } else if (type == 'fromAdminId') {
-    return clubDAO.getByAdminId(req.userId)
-  } else {
-    throw new Error(`Invalid type ${type}`)
+  const { type } = req.query;
+  if (type === 'all') {
+    return clubDAO.getAll();
+  } if (type === 'fromAdminId') {
+    return clubDAO.getByAdminId(req.userId);
   }
+  throw new Error(`Invalid type ${type}`);
 });
 
 exports.get = async (req, res) => catchErrors(res, async () => {
-  const { select } = req.query
-  const { id: clubId } = req.params
-  if (select == 'all') {
-    return clubDAO.get(clubId)
-  } else if (select == 'admins') {
-    return { admins: (await clubDAO.get(clubId)).admins }
-  } else if (select  == 'posts') {
+  const { select } = req.query;
+  const { id: clubId } = req.params;
+  if (select === 'all') {
+    return clubDAO.get(clubId);
+  } if (select === 'admins') {
+    return { admins: (await clubDAO.get(clubId)).admins };
+  } if (select === 'posts') {
     return {
       events: await eventDAO.getByClubs([clubId]),
-      announcements: await announcementDAO.getByClubs([clubId])
-    }
+      announcements: await announcementDAO.getByClubs([clubId]),
+    };
   }
+
+  throw new Error(`Invalid select ${select}`);
 });
 
 exports.update = async (req, res) => catchErrors(res, async () => {

@@ -44,7 +44,7 @@ export default class DiscoverScr extends Component {
 
   onFocus = async () => {
     try {
-      const data = await ClubsApi.getAllClubs()
+      const data = await ClubsApi.getAllClubs();
       this.setState({
         clubs: data,
         filteredClubs: data,

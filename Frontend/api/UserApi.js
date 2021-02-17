@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import API from './BaseApi';
 
 // TODO:
@@ -21,8 +22,9 @@ exports.createUser = async (name, major, year, username, password, email) => {
   return axiosResponse;
 };
 
-exports.getUser = async (bearerToken) => {
-  const axiosResponse = await API.get(`/api/users/`, {
+exports.getUser = async () => {
+  const bearerToken = await AsyncStorage.getItem('userToken');
+  const axiosResponse = await API.get('/api/users/', {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
     },
@@ -38,9 +40,10 @@ exports.getUser = async (bearerToken) => {
   return axiosResponse;
 };
 
-exports.updateUser = async (userId, bearerToken, user) => {
+exports.updateUser = async (user) => {
+  const bearerToken = await AsyncStorage.getItem('userToken');
   const axiosResponse = await API.put(
-    `/api/users/`,
+    '/api/users/',
     user,
     {
       headers: {
@@ -58,7 +61,8 @@ exports.updateUser = async (userId, bearerToken, user) => {
   return axiosResponse;
 };
 
-exports.updateClub = async (clubId, bearerToken, isFollowing) => {
+exports.updateClub = async (clubId, isFollowing) => {
+  const bearerToken = await AsyncStorage.getItem('userToken');
   const axiosResponse = await API.patch(
     `/api/users/clubs/${clubId}?isFollowing=${isFollowing}`,
     {},
@@ -76,12 +80,8 @@ exports.updateClub = async (clubId, bearerToken, isFollowing) => {
       return { error: 'Unable to follow club' };
     });
   return axiosResponse;
-}
-
-exports.followClub = async (clubId, bearerToken) => {
-  return await exports.updateClub(clubId, bearerToken, true)
 };
 
-exports.unfollowClub = async (clubId, bearerToken) => {
-  return await exports.updateClub(clubId, bearerToken, false)
-};
+exports.followClub = async (clubId) => exports.updateClub(clubId, true);
+
+exports.unfollowClub = async (clubId) => exports.updateClub(clubId, false);

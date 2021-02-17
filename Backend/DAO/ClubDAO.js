@@ -1,5 +1,6 @@
 const Club = require('../Model/Club.js').Model;
 const { NotFoundError } = require('../util/errors/validationError');
+const { limitedUserModelFields } = require('../util/userUtil');
 
 exports.create = async (clubParams) => await new Club(clubParams).save();
 
@@ -7,7 +8,7 @@ exports.getAll = async () => await Club.find({})
   .populate({
     path: 'admins',
     model: 'User',
-    select: { '_id': 1, 'name': 1, 'major': 1, 'year': 1 }
+    select: limitedUserModelFields,
   })
   .exec();
 
@@ -15,9 +16,9 @@ exports.get = async (id) => {
   const club = await Club.findById(id).populate({
     path: 'admins',
     model: 'User',
-    select: { '_id': 1, 'name': 1, 'major': 1, 'year': 1 }
+    select: limitedUserModelFields,
   }).exec();
-  
+
   if (!club) throw new NotFoundError();
 
   return club;
@@ -27,8 +28,8 @@ exports.getByAdminId = async (userId) => Club.find({ admins: userId })
   .populate({
     path: 'admins',
     model: 'User',
-    select: { '_id': 1, 'name': 1, 'major': 1, 'year': 1 }
-  })
+    select: limitedUserModelFields,
+  });
 
 exports.exists = async (id) => {
   try {

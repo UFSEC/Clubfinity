@@ -1,7 +1,6 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const clubDAO = require('../DAO/ClubDAO');
-const userDAO = require('../DAO/UserDAO');
 
 chai.should();
 chai.use(chaiHttp);
@@ -40,29 +39,6 @@ describe('ClubDAO', () => {
 
       const club = await clubDAO.get(newClub._id);
       club.should.deep.include(baseClubParams);
-    });
-  });
-
-  describe('getManagedBy', () => {
-    it('should return all the clubs a user is managing', async () => {
-      const user = await userDAO.create({
-        name: { first: 'Test', last: 'McTester' },
-        major: 'Computer Science',
-        year: 2021,
-        email: 'test@ufl.edu',
-        username: 'tester',
-        password: 'password123',
-      });
-
-      await clubDAO.create({
-        ...baseClubParams,
-        admins: [user._id],
-      });
-
-      const managedClubs = await clubDAO.getManagedBy(user._id);
-
-      managedClubs.should.have.length(1);
-      managedClubs[0].name.should.equal(baseClubParams.name);
     });
   });
 
