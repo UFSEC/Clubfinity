@@ -8,7 +8,7 @@ const { catchErrors } = require('../util/httpUtil');
 const { getLimitedUserData } = require('../util/userUtil');
 const {
   validateName, validatePassword, validateUsername, validateYear,
-} = require('../util/validations/Validations.js');
+} = require('../util/validations/validations.js');
 
 const validateData = (req) => {
   const errors = validationResult(req);
