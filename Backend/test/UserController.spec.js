@@ -212,17 +212,6 @@ describe('Users', () => {
 
   describe('PUT /users', async () => {
     it('should update a user and return the updated version', async () => {
-      // TODO: Compare with oldUser data
-      // const userData = {
-      //   name: { first: 'Test', last: 'McTester' },
-      //   major: 'Computer Science',
-      //   year: 2021,
-      //   email: 'test@ufl.edu',
-      //   username: 'tester',
-      //   password: 'password123',
-      // };
-      // const oldUser = await userDAO.create(userData);
-
       const newUserData = {
         name: { first: 'DifferentFirst', last: 'DifferentLast' },
         major: 'Computer Science',
@@ -230,10 +219,18 @@ describe('Users', () => {
         email: 'different@ufl.edu',
         username: 'diffusrnme',
         password: 'diffpassword',
+        clubs: [],
       };
 
       const resp = await http.put('/api/users/', newUserData);
       isOk(resp);
+
+      const expectedUserData = (await userDAO.getByUsername(newUserData.username)).toObject();
+
+      delete expectedUserData._id;
+      delete expectedUserData.__v;
+
+      newUserData.should.deep.equal(expectedUserData);
     });
   });
 
@@ -252,7 +249,7 @@ describe('Users', () => {
         const club = await clubDAO.create(baseClubParams);
         const jsonClub = JSON.parse(JSON.stringify(club));
 
-        const resp = await http.patch(`/api/users/clubs/${club._id}?isFollowing=true`);
+        const resp = await http.patch(`/api/users/clubs/${club._id}?follow=true`);
         isOk(resp);
         resp.body.data.clubs.should.deep.include(jsonClub);
 
@@ -265,20 +262,20 @@ describe('Users', () => {
         const club = await clubDAO.create(baseClubParams);
         const jsonClub = JSON.parse(JSON.stringify(club));
 
-        const resp = await http.patch(`/api/users/clubs/${club._id}?isFollowing=true`);
+        const resp = await http.patch(`/api/users/clubs/${club._id}?follow=true`);
         console.log(resp.error);
         isOk(resp);
         resp.body.data.clubs.should.have.length(1);
         resp.body.data.clubs.should.deep.include(jsonClub);
 
-        const resp2 = await http.patch(`/api/users/clubs/${club._id}?isFollowing=true`);
+        const resp2 = await http.patch(`/api/users/clubs/${club._id}?follow=true`);
         isOk(resp2);
         resp2.body.data.clubs.should.have.length(1);
         resp2.body.data.clubs.should.deep.include(jsonClub);
       });
 
       it('should return an error if the clubId does not exist', async () => {
-        const resp = await http.patch(`/api/users/clubs/${fakeId}?isFollowing=true`);
+        const resp = await http.patch(`/api/users/clubs/${fakeId}?follow=true`);
         isNotOk(resp, 422);
 
         resp.body.validationErrors.should.have.length(1);
@@ -290,7 +287,7 @@ describe('Users', () => {
         currentUser.clubs.push(club);
         currentUser.save();
 
-        const resp = await http.patch(`/api/users/clubs/${club._id}?isFollowing=false`);
+        const resp = await http.patch(`/api/users/clubs/${club._id}?follow=false`);
         isOk(resp);
         resp.body.data.clubs.should.be.empty;
 
@@ -305,11 +302,11 @@ describe('Users', () => {
         currentUser.clubs.push(clubId);
         currentUser.save();
 
-        const resp = await http.patch(`/api/users/clubs/${clubId}?isFollowing=false`);
+        const resp = await http.patch(`/api/users/clubs/${clubId}?follow=false`);
         isOk(resp);
         resp.body.data.clubs.should.be.empty;
 
-        const resp2 = await http.patch(`/api/users/clubs/${clubId}?isFollowing=false`);
+        const resp2 = await http.patch(`/api/users/clubs/${clubId}?follow=false`);
         isOk(resp2);
         resp2.body.data.clubs.should.be.empty;
       });

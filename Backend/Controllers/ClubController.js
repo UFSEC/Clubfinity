@@ -12,29 +12,30 @@ const validateClubData = (req) => {
 
 exports.getMultiple = async (req, res) => catchErrors(res, async () => {
   const { type } = req.query;
-  if (type === 'all') {
-    return clubDAO.getAll();
-  } if (type === 'fromAdminId') {
-    return clubDAO.getByAdminId(req.userId);
+  switch (type) {
+    case 'all':
+      return clubDAO.getAll();
+    case 'fromAdminId':
+      return clubDAO.getByAdminId(req.userId);
+    default:
+      throw new Error(`Invalid type ${type}`);
   }
-  throw new Error(`Invalid type ${type}`);
 });
 
 exports.get = async (req, res) => catchErrors(res, async () => {
   const { select } = req.query;
   const { id: clubId } = req.params;
-  if (select === 'all') {
-    return clubDAO.get(clubId);
-  } if (select === 'admins') {
-    return { admins: (await clubDAO.get(clubId)).admins };
-  } if (select === 'posts') {
-    return {
-      events: await eventDAO.getByClubs([clubId]),
-      announcements: await announcementDAO.getByClubs([clubId]),
-    };
+  switch (select) {
+    case 'all':
+      return clubDAO.get(clubId);
+    case 'posts':
+      return {
+        events: await eventDAO.getByClubs([clubId]),
+        announcements: await announcementDAO.getByClubs([clubId]),
+      };
+    default:
+      throw new Error(`Invalid select ${select}`);
   }
-
-  throw new Error(`Invalid select ${select}`);
 });
 
 exports.update = async (req, res) => catchErrors(res, async () => {

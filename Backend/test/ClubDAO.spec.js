@@ -1,6 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const clubDAO = require('../DAO/ClubDAO');
+const userDAO = require('../DAO/UserDAO');
 
 chai.should();
 chai.use(chaiHttp);
@@ -76,6 +77,29 @@ describe('ClubDAO', () => {
       await clubDAO.delete(newClub._id);
       const clubs = await clubDAO.getAll();
       clubs.should.have.length(0);
+    });
+  });
+
+  describe('getByAdminId', () => {
+    it('should return all the clubs an admin is managing', async () => {
+      const user = await userDAO.create({
+        name: { first: 'Test', last: 'McTester' },
+        major: 'Computer Science',
+        year: 2021,
+        email: 'test@ufl.edu',
+        username: 'tester',
+        password: 'password123',
+      });
+
+      await clubDAO.create({
+        ...baseClubParams,
+        admins: [user._id],
+      });
+
+      const managedClubs = await clubDAO.getByAdminId(user._id);
+
+      managedClubs.should.have.length(1);
+      managedClubs[0].name.should.equal(baseClubParams.name);
     });
   });
 

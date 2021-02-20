@@ -26,24 +26,26 @@ exports.update = async (req, res) => catchErrors(res, async () => {
   await userDAO.update(req.userId, req.body);
 });
 
-exports.updateClub = async (req, res) => catchErrors(res, async () => {
+exports.updateClubFollowingState = async (req, res) => catchErrors(res, async () => {
   validateData(req);
 
   const { id: clubId } = req.params;
-  const { isFollowing } = req.query;
+  const { follow } = req.query;
   const user = await userDAO.get(req.userId);
-
-  if (isFollowing === 'true') {
-    if (!user.clubs.some((club) => club._id.toString() === clubId)) {
-      user.clubs.push(clubId);
-    }
-  } else {
-    user.clubs.forEach((club, index, clubs) => {
-      if (club._id.toString() === clubId) clubs.splice(index, 1);
-    });
+  switch (follow) {
+    case 'true':
+      if (!user.clubs.some((club) => club._id.toString() === clubId)) {
+        user.clubs.push(clubId);
+      }
+      return getLimitedUserData(await userDAO.update(req.userId, user));
+    case 'false':
+      user.clubs.forEach((club, index, clubs) => {
+        if (club._id.toString() === clubId) clubs.splice(index, 1);
+      });
+      return getLimitedUserData(await userDAO.update(req.userId, user));
+    default:
+      throw new Error(`Invalid value for follow: ${follow}`);
   }
-  const updatedUser = await userDAO.update(req.userId, user);
-  return getLimitedUserData(updatedUser);
 });
 
 exports.create = async (req, res) => catchErrors(res, async () => {

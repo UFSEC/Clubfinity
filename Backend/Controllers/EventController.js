@@ -27,18 +27,23 @@ const getInMonth = async (date, user, filter) => {
 
 exports.getMultiple = async (req, res) => catchErrors(res, async () => {
   const { filterBy } = req.query;
-  if (filterBy === 'userId') {
-    const user = await getCurrentUser(req);
-    return eventDAO.getByClubs(user.clubs);
-  } if (filterBy === 'month') {
-    const user = await getCurrentUser(req);
-    const { date, filter } = req.query;
-    return getInMonth(date, user, filter);
-  } if (filterBy === 'club') {
-    const { clubId } = req.query;
-    return eventDAO.getByClubs(clubId);
+  switch (filterBy) {
+    case 'userId': {
+      const user = await getCurrentUser(req);
+      return eventDAO.getByClubs(user.clubs);
+    }
+    case 'month': {
+      const user = await getCurrentUser(req);
+      const { date, filter } = req.query;
+      return getInMonth(date, user, filter);
+    }
+    case 'club': {
+      const { clubId } = req.query;
+      return eventDAO.getByClubs(clubId);
+    }
+    default:
+      throw new Error(`Invalid type ${filterBy}`);
   }
-  throw new Error(`Invalid type ${filterBy}`);
 });
 
 exports.get = async (req, res) => catchErrors(res, async () => req.params.id);

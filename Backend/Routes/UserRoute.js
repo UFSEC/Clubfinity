@@ -7,6 +7,6 @@ const router = express.Router();
 router.post('/', userController.validate('validateFullUserInfo'), userController.create);
 router.get('/', passport.authenticate('loggedIn', { session: false }), userController.get);
 router.put('/', passport.authenticate('loggedIn', { session: false }), userController.validate('validateBaseUserInfo'), userController.update);
-router.patch('/clubs/:id', passport.authenticate('loggedIn', { session: false }), userController.validate('validateClubId'), userController.updateClub);
+router.patch('/clubs/:id', passport.authenticate('loggedIn', { session: false }), userController.validate('validateClubId'), userController.updateClubFollowingState);
 
 module.exports = router;
