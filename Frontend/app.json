@@ -22,6 +22,11 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "android": {
+      "package": "com.ufsec.clubfinity",
+      "googleServicesFile": "./google-services.json",
+      "useNextNotificationsApi": true
+    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.pablof300.Clubfinity"

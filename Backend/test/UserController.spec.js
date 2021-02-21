@@ -219,6 +219,7 @@ describe('Users', () => {
         email: 'different@ufl.edu',
         username: 'diffusrnme',
         password: 'diffpassword',
+        pushToken: 'INVALID',
         clubs: [],
       };
 
