@@ -46,7 +46,6 @@ class HomeScr extends Component {
       }
       const token = (await Notifications.getExpoPushTokenAsync()).data;
       UserApi.updatePushToken(token)
-      this.setState({ expoPushToken: token });
     } else {
       console.log('Must use physical device for Push Notifications');
     }
@@ -75,7 +74,7 @@ class HomeScr extends Component {
       return;
     }
 
-    const events = await EventsApi.getFollowing(bearerToken);
+    const events = await EventsApi.getFollowing();
     this.setState({
       events,
       isLoading: false,

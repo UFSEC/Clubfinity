@@ -4,6 +4,7 @@ const userDAO = require('../DAO/UserDAO');
 const clubDAO = require('../DAO/ClubDAO');
 const authUtil = require('../util/authUtil');
 const { TestHttp, isOk, isNotOk } = require('./testHelper');
+const { INVALID_TOKEN } = require('../util/notificationUtil')
 
 chai.should();
 const app = require('../app');
@@ -46,8 +47,10 @@ describe('Users', () => {
   });
 
   describe('POST /users', async () => {
-    it('should create a user and return it', async () => {
-      const newUserData = {
+    let newUserData = null;
+
+    beforeEach(async () => {
+      newUserData = {
         name: { first: 'New', last: 'User' },
         major: 'Computer Science',
         year: 2021,
@@ -55,7 +58,9 @@ describe('Users', () => {
         username: 'newusername',
         password: 'password',
       };
+    });
 
+    it('should create a user and return it', async () => {
       const resp = await http.post('/api/users', newUserData);
       isOk(resp);
 
@@ -66,16 +71,15 @@ describe('Users', () => {
       data.should.include.all.keys('_id', 'clubs');
     });
 
-    it('should create a password hash when creating a new user', async () => {
-      const newUserData = {
-        name: { first: 'New', last: 'User' },
-        major: 'Computer Science',
-        year: 2021,
-        email: 'new@ufl.edu',
-        username: 'newusername',
-        password: 'password',
-      };
+    it('should create a user with no pushToken', async () => {
+      const resp = await http.post('/api/users', newUserData);
+      isOk(resp);
 
+      const user = await userDAO.get(resp.body.data._id)
+      user.pushToken.should.equal(INVALID_TOKEN)
+    });
+
+    it('should create a password hash when creating a new user', async () => {
       const resp = await http.post('/api/users', newUserData);
       isOk(resp);
 
@@ -264,7 +268,6 @@ describe('Users', () => {
         const jsonClub = JSON.parse(JSON.stringify(club));
 
         const resp = await http.patch(`/api/users/clubs/${club._id}?follow=true`);
-        console.log(resp.error);
         isOk(resp);
         resp.body.data.clubs.should.have.length(1);
         resp.body.data.clubs.should.deep.include(jsonClub);
@@ -312,5 +315,39 @@ describe('Users', () => {
         resp2.body.data.clubs.should.be.empty;
       });
     });
+  });
+
+  describe('Update pushToken', async () => {
+    describe('PATCH /users/', async () => {
+      let user = null;
+      let testPushToken = null;
+      beforeEach(async () => {
+        testPushToken = 'test_token';
+        const resp = await http.patch(`/api/users?pushToken=${testPushToken}`);
+        isOk(resp)
+
+        user = await userDAO.get(currentUser._id);
+      })
+      it('should update pushToken of logged in user', async () => {;
+        user.pushToken.should.equal(testPushToken)
+      })
+      it('should get userToken from clubId', async () => {
+        const baseClubParams = {
+          name: 'Club Club',
+          admins: [],
+          facebookLink: 'facebook',
+          description: 'This is a club',
+          category: 'Computer Science',
+          events: [],
+        };
+
+        const club = await clubDAO.create(baseClubParams);
+        user.clubs = [club._id]
+        await userDAO.update(user._id, user)
+
+        const updatedPushToken = await userDAO.getPushTokens(club._id)
+        updatedPushToken.should.deep.equal([testPushToken])
+      })
+    })
   });
 });

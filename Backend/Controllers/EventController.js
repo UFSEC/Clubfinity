@@ -58,7 +58,11 @@ exports.create = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);
 
   req.body.date = DateTime.fromISO(req.body.date);
-  return eventDAO.create(req.body);
+  const newEvent = await eventDAO.create(req.body)
+  if (newEvent) {
+    sendNotifications(req.body.club, req.body.title)
+  }
+  return newEvent;
 });
 
 exports.updateGoingUsers = async (req, res) => catchErrors(res, async () => {
