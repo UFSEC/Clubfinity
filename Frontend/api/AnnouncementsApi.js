@@ -4,7 +4,7 @@ import transformDate from '../util/transform';
 
 exports.create = async (params) => {
   const bearerToken = await AsyncStorage.getItem('userToken');
-  await API.post('/api/announcement', params, {
+  await API.post('/api/announcements', params, {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
     },
