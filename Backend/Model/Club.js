@@ -12,6 +12,10 @@ const Schema = new mongoose.Schema({
   description: String,
   category: String,
   thumbnailUrl: String,
+  settings: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'UserSettings',
+  },
   tags: [{
     type: String,
   }],

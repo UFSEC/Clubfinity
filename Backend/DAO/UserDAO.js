@@ -1,4 +1,5 @@
 const User = require('../Model/User.js').Model;
+const UserSettings = require('../Model/UserSettings.js').Model;
 const { NotFoundError } = require('../util/errors/notFoundError');
 const { hashPassword } = require('../util/authUtil');
 const { limitedUserModelFields } = require('../util/userUtil');
