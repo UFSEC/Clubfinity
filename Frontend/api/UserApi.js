@@ -1,9 +1,10 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import API from './BaseApi';
 
 // TODO:
 // Refactor backend to remove username/email
 exports.createUser = async (name, major, year, username, password, email) => {
-  const axiosResponse = await API.post('/api/user', {
+  const axiosResponse = await API.post('/api/users', {
     name,
     major,
     year,
@@ -21,8 +22,9 @@ exports.createUser = async (name, major, year, username, password, email) => {
   return axiosResponse;
 };
 
-exports.getUser = async (bearerToken) => {
-  const axiosResponse = await API.get(`/api/user/${bearerToken}`, {
+exports.getUser = async () => {
+  const bearerToken = await AsyncStorage.getItem('userToken');
+  const axiosResponse = await API.get('/api/users/', {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
     },
@@ -38,9 +40,10 @@ exports.getUser = async (bearerToken) => {
   return axiosResponse;
 };
 
-exports.updateUser = async (userId, bearerToken, user) => {
+exports.updateUser = async (user) => {
+  const bearerToken = await AsyncStorage.getItem('userToken');
   const axiosResponse = await API.put(
-    `/api/user/${userId}`,
+    '/api/users/',
     user,
     {
       headers: {
@@ -58,9 +61,10 @@ exports.updateUser = async (userId, bearerToken, user) => {
   return axiosResponse;
 };
 
-exports.followClub = async (clubId, bearerToken) => {
-  const axiosResponse = await API.put(
-    `/api/user/follow?clubId=${clubId}`,
+exports.updateClub = async (clubId, isFollowing) => {
+  const bearerToken = await AsyncStorage.getItem('userToken');
+  const axiosResponse = await API.patch(
+    `/api/users/clubs/${clubId}?isFollowing=${isFollowing}`,
     {},
     {
       headers: {
@@ -78,31 +82,6 @@ exports.followClub = async (clubId, bearerToken) => {
   return axiosResponse;
 };
 
-exports.unfollowClub = async (clubId, bearerToken) => {
-  const axiosResponse = await API.put(
-    `/api/user/unfollow?clubId=${clubId}`,
-    {},
-    {
-      headers: {
-        Authorization: `Bearer ${bearerToken}`,
-      },
-    },
-  )
-    .then(async (response) => response)
-    .catch((error) => {
-      if (error) {
-        return error;
-      }
-      return { error: 'Unable to unfollow club' };
-    });
-  return axiosResponse;
-};
+exports.followClub = async (clubId) => exports.updateClub(clubId, true);
 
-exports.getAdmin = async (adminId, bearerToken) => {
-  const axiosResponse = await API.get(`/api/user/${adminId}`, {
-    headers: {
-      Authorization: `Bearer ${bearerToken}`,
-    },
-  });
-  return axiosResponse.data.data;
-};
+exports.unfollowClub = async (clubId) => exports.updateClub(clubId, false);

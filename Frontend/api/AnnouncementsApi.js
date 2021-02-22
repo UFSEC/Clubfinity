@@ -1,16 +1,19 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import API from './BaseApi';
 import transformDate from '../util/transform';
 
-exports.create = async (bearerToken, params) => {
-  await API.post('/api/announcement', params, {
+exports.create = async (params) => {
+  const bearerToken = await AsyncStorage.getItem('userToken');
+  await API.post('/api/announcements', params, {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
     },
   });
 };
 
-exports.getForClub = async (bearerToken, clubId) => {
-  const resp = await API.get(`/api/announcement/club/${clubId}`, {
+exports.getForClub = async (clubId) => {
+  const bearerToken = await AsyncStorage.getItem('userToken');
+  const resp = await API.get(`/api/announcements?filterBy=club&clubId=${clubId}`, {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
     },
@@ -19,8 +22,10 @@ exports.getForClub = async (bearerToken, clubId) => {
   return transformDate(resp.data.data);
 };
 
-exports.update = async (bearerToken, announcementId, params) => {
-  const resp = await API.put(`/api/announcement/${announcementId}`, params, {
+exports.update = async (announcementId, params) => {
+  const bearerToken = await AsyncStorage.getItem('userToken');
+
+  const resp = await API.put(`/api/announcements/${announcementId}`, params, {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
     },

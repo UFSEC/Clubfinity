@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Text, View, Image, StyleSheet, AsyncStorage,
+  Text, View, Image, StyleSheet,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { Card } from 'native-base';
@@ -85,7 +85,6 @@ export default class EventCard extends Component {
     this.setState({
       mute: !mute,
     });
-    const bearerToken = await AsyncStorage.getItem('userToken');
     const { eventID } = this.props;
     if (!mute) {
       this.setState(
@@ -94,8 +93,8 @@ export default class EventCard extends Component {
           interested: false,
         },
       );
-      await EventsApi.addUninterestedUser(eventID, bearerToken);
-    } else await EventsApi.removeUninterestedUser(eventID, bearerToken);
+      await EventsApi.addUninterestedUser(eventID);
+    } else await EventsApi.removeUninterestedUser(eventID);
   };
 
   goingHandler = async () => {
@@ -103,15 +102,14 @@ export default class EventCard extends Component {
     this.setState({
       going: !going,
     });
-    const bearerToken = await AsyncStorage.getItem('userToken');
     const { eventID } = this.props;
     if (!going) {
       this.setState({
         mute: false,
         interested: false,
       });
-      await EventsApi.addGoingUser(eventID, bearerToken);
-    } else await EventsApi.removeGoingUser(eventID, bearerToken);
+      await EventsApi.addGoingUser(eventID);
+    } else await EventsApi.removeGoingUser(eventID);
   }
 
   interestedHandler = async () => {
@@ -119,15 +117,14 @@ export default class EventCard extends Component {
     this.setState({
       interested: !interested,
     });
-    const bearerToken = await AsyncStorage.getItem('userToken');
     const { eventID } = this.props;
     if (!interested) {
       this.setState({
         mute: false,
         going: false,
       });
-      await EventsApi.addInterestedUser(eventID, bearerToken);
-    } else await EventsApi.removeInterestedUser(eventID, bearerToken);
+      await EventsApi.addInterestedUser(eventID);
+    } else await EventsApi.removeInterestedUser(eventID);
   }
 
   render() {

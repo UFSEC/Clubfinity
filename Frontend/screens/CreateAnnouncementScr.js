@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, AsyncStorage } from 'react-native';
+import { View } from 'react-native';
 import {
   Button,
   Text,
@@ -14,7 +14,7 @@ import {
 import { DateTime } from 'luxon';
 
 import colors from '../util/colors';
-import AnnouncementApi from '../api/AnnouncementApi';
+import AnnouncementsApi from '../api/AnnouncementsApi';
 import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
 export default class CreateAnnouncementScr extends Component {
@@ -57,8 +57,7 @@ export default class CreateAnnouncementScr extends Component {
     }
     this.setState({ descriptionError: false });
 
-    const bearerToken = await AsyncStorage.getItem('userToken');
-    await AnnouncementApi.create(bearerToken, {
+    await AnnouncementsApi.create({
       title,
       description,
       date: DateTime.local(),

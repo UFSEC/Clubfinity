@@ -3,6 +3,7 @@ import { View, TouchableOpacity } from 'react-native';
 import { Text, Thumbnail } from 'native-base';
 import PropTypes from 'prop-types';
 import colors from '../util/colors';
+import DefaultPic from '../assets/images/ProfilePicture.png';
 
 export default class AdminRow extends Component {
   static propTypes = {
@@ -10,7 +11,7 @@ export default class AdminRow extends Component {
       name: PropTypes.string,
       year: PropTypes.number,
       major: PropTypes.string,
-      thumbnailUrl: PropTypes.string,
+      // thumbnailUrl: PropTypes.string,
     }).isRequired,
     handler: PropTypes.func.isRequired,
   };
@@ -38,7 +39,6 @@ export default class AdminRow extends Component {
         name,
         year,
         major,
-        thumbnailUrl,
       },
       handler,
     } = this.props;
@@ -62,7 +62,7 @@ export default class AdminRow extends Component {
             paddingBottom: '2%',
           }}
         >
-          <Thumbnail style={{ margin: '2%' }} source={{ uri: thumbnailUrl }} />
+          <Thumbnail style={{ margin: '2%' }} source={DefaultPic} />
           <View
             style={{
               marginLeft: '3%',

@@ -1,29 +1,41 @@
 const { validationResult, body } = require('express-validator');
 const clubDAO = require('../DAO/ClubDAO');
+const eventDAO = require('../DAO/EventDAO');
+const announcementDAO = require('../DAO/AnnouncementDAO');
 const { ValidationError } = require('../util/errors/validationError');
-const { catchErrors, getCurrentUser } = require('../util/httpUtil');
+const { catchErrors } = require('../util/httpUtil');
 
 const validateClubData = (req) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) throw new ValidationError(errors.array());
 };
 
-exports.getAll = async (req, res) => catchErrors(res, async () => clubDAO.getAll());
-
-exports.getRandom = async (req, res) => {
-  catchErrors(res, async () => clubDAO.getRandom());
-};
-
-exports.get = async (req, res) => catchErrors(res, async () => clubDAO.get(req.params.id));
-
-exports.getFollowing = async (req, res) => catchErrors(res, async () => {
-  const user = await getCurrentUser(req);
-  return user.clubs;
+exports.getMultiple = async (req, res) => catchErrors(res, async () => {
+  const { type } = req.query;
+  switch (type) {
+    case 'all':
+      return clubDAO.getAll();
+    case 'fromAdminId':
+      return clubDAO.getByAdminId(req.userId);
+    default:
+      throw new Error(`Invalid type ${type}`);
+  }
 });
 
-exports.getManaging = async (req, res) => catchErrors(res, async () => {
-  const user = await getCurrentUser(req);
-  return clubDAO.getManagedBy(user._id);
+exports.get = async (req, res) => catchErrors(res, async () => {
+  const { select } = req.query;
+  const { id: clubId } = req.params;
+  switch (select) {
+    case 'all':
+      return clubDAO.get(clubId);
+    case 'posts':
+      return {
+        events: await eventDAO.getByClubs([clubId]),
+        announcements: await announcementDAO.getByClubs([clubId]),
+      };
+    default:
+      throw new Error(`Invalid select ${select}`);
+  }
 });
 
 exports.update = async (req, res) => catchErrors(res, async () => {

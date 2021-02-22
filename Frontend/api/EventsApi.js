@@ -1,8 +1,10 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import API from './BaseApi';
 import transformDate from '../util/transform';
 
-exports.getFollowing = async (bearerToken) => {
-  const resp = await API.get('/api/event/following', {
+exports.getFollowing = async () => {
+  const bearerToken = await AsyncStorage.getItem('userToken');
+  const resp = await API.get('/api/events?filterBy=userId', {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
     },
@@ -11,8 +13,9 @@ exports.getFollowing = async (bearerToken) => {
   return transformDate(resp.data.data);
 };
 
-exports.getInMonth = async (bearerToken, date) => {
-  const resp = await API.get(`/api/event/inMonth/${date.toISODate()}?filter=following`, {
+exports.getInMonth = async (date) => {
+  const bearerToken = await AsyncStorage.getItem('userToken');
+  const resp = await API.get(`/api/events?filterBy=month&date=${date.toISODate()}&filter=following`, {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
     },
@@ -21,8 +24,9 @@ exports.getInMonth = async (bearerToken, date) => {
   return transformDate(resp.data.data);
 };
 
-exports.getForClub = async (bearerToken, clubId) => {
-  const resp = await API.get(`/api/event/club/${clubId}`, {
+exports.getForClub = async (clubId) => {
+  const bearerToken = await AsyncStorage.getItem('userToken');
+  const resp = await API.get(`/api/events?filterBy=club&clubId=${clubId}`, {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
     },
@@ -31,16 +35,18 @@ exports.getForClub = async (bearerToken, clubId) => {
   return transformDate(resp.data.data);
 };
 
-exports.create = async (bearerToken, eventData) => {
-  await API.post('/api/event', eventData, {
+exports.create = async (eventData) => {
+  const bearerToken = await AsyncStorage.getItem('userToken');
+  await API.post('/api/events', eventData, {
     headers: {
       Authorization: `Bearer ${bearerToken}`,
     },
   });
 };
 
-exports.update = async (eventId, bearerToken, event) => {
-  const axiosResponse = await API.put(`/api/event/${eventId}`,
+exports.update = async (eventId, event) => {
+  const bearerToken = await AsyncStorage.getItem('userToken');
+  const axiosResponse = await API.put(`/api/events/${eventId}`,
     event,
     {
       headers: {
@@ -57,9 +63,10 @@ exports.update = async (eventId, bearerToken, event) => {
   return axiosResponse;
 };
 
-exports.addGoingUser = async (eventId, bearerToken) => {
-  const axiosResponse = await API.post(
-    `/api/event/${eventId}/going-users`, {},
+exports.updateUsersList = async (eventId, userListType, op) => {
+  const bearerToken = await AsyncStorage.getItem('userToken');
+  const axiosResponse = await API.patch(
+    `/api/events/${eventId}/${userListType}?op=${op}`, {},
     {
       headers: {
         Authorization: `Bearer ${bearerToken}`,
@@ -69,65 +76,14 @@ exports.addGoingUser = async (eventId, bearerToken) => {
   return axiosResponse;
 };
 
-exports.removeGoingUser = async (eventId, bearerToken) => {
-  const axiosResponse = await API.delete(
-    `/api/event/${eventId}/going-users`,
-    {
-      headers: {
-        Authorization: `Bearer ${bearerToken}`,
-      },
-    },
-  );
-  return axiosResponse;
-};
+exports.addGoingUser = async (eventId) => exports.updateUsersList(eventId, 'going-users', 'add');
 
-exports.addInterestedUser = async (eventId, bearerToken) => {
-  const axiosResponse = await API.post(
-    `/api/event/${eventId}/interested-users`,
-    {},
-    {
-      headers: {
-        Authorization: `Bearer ${bearerToken}`,
-      },
-    },
-  );
+exports.removeGoingUser = async (eventId) => exports.updateUsersList(eventId, 'going-users', 'remove');
 
-  return axiosResponse;
-};
+exports.addInterestedUser = async (eventId) => exports.updateUsersList(eventId, 'interested-users', 'add');
 
-exports.removeInterestedUser = async (eventId, bearerToken) => {
-  const axiosResponse = await API.delete(
-    `/api/event/${eventId}/interested-users`,
-    {
-      headers: {
-        Authorization: `Bearer ${bearerToken}`,
-      },
-    },
-  );
-  return axiosResponse;
-};
+exports.removeInterestedUser = async (eventId) => exports.updateUsersList(eventId, 'interested-users', 'remove');
 
-exports.addUninterestedUser = async (eventId, bearerToken) => {
-  const axiosResponse = await API.post(
-    `/api/event/${eventId}/uninterested-users`,
-    {},
-    {
-      headers: {
-        Authorization: `Bearer ${bearerToken}`,
-      },
-    },
-  );
-  return axiosResponse;
-};
+exports.addUninterestedUser = async (eventId) => exports.updateUsersList(eventId, 'uninterested-users', 'add');
 
-exports.removeUninterestedUser = async (eventId, bearerToken) => {
-  const axiosResponse = await API.delete(
-    `/api/event/${eventId}/uninterested-users`,
-    {
-      headers: {
-        Authorization: `Bearer ${bearerToken}`,
-      },
-    },
-  );
-  return axiosResponse;
-};
+exports.removeUninterestedUser = async (eventId) => exports.updateUsersList(eventId, 'uninterested-users', 'remove');

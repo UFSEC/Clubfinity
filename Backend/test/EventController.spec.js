@@ -61,7 +61,7 @@ describe('Events', () => {
     http = new TestHttp(chai, app, currentUserToken);
   });
 
-  describe('GET /club/', async () => {
+  describe('GET /clubs/', async () => {
     it('get all events by club', async () => {
       const club = await clubDAO.create(clubParams);
       const event = await eventDAO.create({
@@ -74,7 +74,7 @@ describe('Events', () => {
       // will also have populated event.club
       event.populate('club', (err) => console.log(err));
 
-      const resp = await http.get(`/api/event/club/${club._id}`);
+      const resp = await http.get(`/api/events?filterBy=club&clubId=${club._id}`);
       isOk(resp);
 
       const { data } = resp.body;
@@ -86,7 +86,7 @@ describe('Events', () => {
     });
   });
 
-  describe('GET /inMonth', async () => {
+  describe('GET events for month', async () => {
     beforeEach(async () => {
       const { _id: clubId } = await clubDAO.create(clubParams);
       const { _id: notFollowingClubId } = await clubDAO.create(clubNotFollowingParams);
@@ -139,7 +139,7 @@ describe('Events', () => {
     });
 
     it('should return all events for the given month by default', async () => {
-      const resp = await http.get('/api/event/inMonth/2020-01-01');
+      const resp = await http.get('/api/events?filterBy=month&date=2020-01-01');
       isOk(resp);
 
       const { data } = resp.body;
@@ -153,7 +153,7 @@ describe('Events', () => {
     });
 
     it('should return all events for the given month when filter = all', async () => {
-      const resp = await http.get('/api/event/inMonth/2020-01-01?filter=all');
+      const resp = await http.get('/api/events?filterBy=month&date=2020-01-01&filter=all');
       isOk(resp);
 
       const { data } = resp.body;
@@ -167,7 +167,7 @@ describe('Events', () => {
     });
 
     it('should only return followed events when filter = followed', async () => {
-      const resp = await http.get('/api/event/inMonth/2020-01-01?filter=following');
+      const resp = await http.get('/api/events?filterBy=month&date=2020-01-01&filter=following');
       isOk(resp);
 
       const { data } = resp.body;
@@ -179,7 +179,7 @@ describe('Events', () => {
     });
 
     it('should only return the events the current user marked as going when filter = going', async () => {
-      const resp = await http.get('/api/event/inMonth/2020-01-01?filter=going');
+      const resp = await http.get('/api/events?filterBy=month&date=2020-01-01&filter=going');
       isOk(resp);
 
       const { data } = resp.body;
@@ -190,7 +190,7 @@ describe('Events', () => {
     });
 
     it('should return an error code if the given filter does not exist', async () => {
-      const resp = await http.get('/api/event/inMonth/2020-01-01?filter=doesnotexist');
+      const resp = await http.get('/api/events?filterBy=month&date=2020-01-01&filter=doesnotexist');
       isNotOk(resp, 400);
 
       resp.body.error.should.equal('Filter \'doesnotexist\' does not exist');
@@ -207,7 +207,7 @@ describe('Events', () => {
       });
       await eventDAO.create({ ...baseEventParams, club: clubId });
 
-      const resp = await http.get('/api/event/following');
+      const resp = await http.get('/api/events?filterBy=userId');
       isOk(resp);
 
       const { data } = resp.body;
@@ -223,7 +223,7 @@ describe('Events', () => {
         ...baseEventParams,
         club: clubId,
       };
-      const resp = await http.post('/api/event', eventParams);
+      const resp = await http.post('/api/events', eventParams);
 
       isOk(resp);
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AsyncStorage, View, Platform } from 'react-native';
+import { View, Platform } from 'react-native';
 import {
   Button,
   Text,
@@ -113,9 +113,7 @@ export default class ClubCreation extends Component {
       processingRequest: true,
       errors: { arePresent: false, data: validRequest.errors },
     });
-    const userToken = await AsyncStorage.getItem('userToken');
     const createClubResponse = await ClubsApi.createClub(
-      userToken,
       clubName,
       clubCategory,
       clubDescription,

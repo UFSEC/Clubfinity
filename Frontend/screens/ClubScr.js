@@ -5,7 +5,6 @@ import {
   SafeAreaView,
   ScrollView,
   TouchableOpacity,
-  AsyncStorage,
   StyleSheet,
   Linking,
 } from 'react-native';
@@ -26,8 +25,7 @@ import getTheme from '../native-base-theme/components';
 import colors from '../util/colors';
 import UserContext from '../util/UserContext';
 import UserApi from '../api/UserApi';
-import EventsApi from '../api/EventsApi';
-import AnnouncementsApi from '../api/AnnouncementsApi';
+import ClubsApi from '../api/ClubsApi';
 import AdminRow from '../components/AdminRow';
 import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
@@ -74,7 +72,6 @@ export default class ClubScr extends React.Component {
     const { navigation } = this.props;
     const { user } = this.context;
     const club = navigation.getParam('club', 'NO-CLUB');
-    const bearerToken = await AsyncStorage.getItem('userToken');
 
     if (user.clubs.map((currentClub) => currentClub._id).includes(club._id)) {
       this.setState({ isFollowing: true });
@@ -82,11 +79,7 @@ export default class ClubScr extends React.Component {
     if (club.admins.map((admin) => admin._id).includes(user._id)) {
       this.setState({ isAdmin: true });
     }
-    const events = await EventsApi.getForClub(bearerToken, club._id);
-    const announcements = await AnnouncementsApi.getForClub(
-      bearerToken,
-      club._id,
-    );
+    const { events, announcements } = await ClubsApi.getPosts(club._id);
     this.setState({ events, announcements });
   };
 
@@ -109,8 +102,7 @@ export default class ClubScr extends React.Component {
 
   async handleUpdate(apiCall, clubId) {
     const { setUser } = this.context;
-    const bearer = await AsyncStorage.getItem('userToken');
-    const authResponse = await apiCall(clubId, bearer);
+    const authResponse = await apiCall(clubId);
     setUser(authResponse.data.data);
     return authResponse;
   }
@@ -176,6 +168,8 @@ export default class ClubScr extends React.Component {
     );
   };
 
+  // TODO: Fix navigation back to the ClubScr from this stack
+
   render() {
     const { navigation } = this.props;
     const {
@@ -186,7 +180,6 @@ export default class ClubScr extends React.Component {
     const eventsEmpty = events.length === 0;
 
     const club = navigation.getParam('club', 'NO-CLUB');
-    const defaultAdminUrl = 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png';
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -280,7 +273,7 @@ export default class ClubScr extends React.Component {
                 <Text style={{ alignSelf: 'flex-end' }}>Events</Text>
                 {!eventsEmpty && (
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('EventList', { club })}
+                    onPress={() => navigation.navigate('EventList', { clubId: club._id })}
                   >
                     <Text style={{ alignSelf: 'flex-end', color: colors.link }}>
                       View all
@@ -357,7 +350,7 @@ export default class ClubScr extends React.Component {
                 <Text style={{ alignSelf: 'flex-end' }}>Announcements</Text>
 
                 {!announcementsEmpty && (
-                  <TouchableOpacity onPress={() => {}}>
+                  <TouchableOpacity onPress={() => navigation.navigate('AnnouncementList', { clubId: club._id })}>
                     <Text style={{ alignSelf: 'flex-end', color: colors.link }}>
                       View all
                     </Text>
@@ -451,7 +444,6 @@ export default class ClubScr extends React.Component {
                             name: `${item.name.first} ${item.name.last}`,
                             year: item.year,
                             major: item.major,
-                            thumbnailUrl: defaultAdminUrl,
                           }}
                           handler={() => {}}
                         />

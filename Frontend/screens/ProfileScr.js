@@ -3,7 +3,6 @@ import {
   View,
   SectionList,
   TouchableOpacity,
-  AsyncStorage,
 } from 'react-native';
 import {
   Card,
@@ -45,8 +44,7 @@ export default class ProfileScr extends React.Component {
   }
 
   async componentDidMount() {
-    const bearerToken = await AsyncStorage.getItem('userToken');
-    const managingClubs = await ClubsApi.getManaging(bearerToken);
+    const managingClubs = await ClubsApi.getManaging();
 
     this.setState({
       managingClubs,
@@ -137,6 +135,7 @@ export default class ProfileScr extends React.Component {
     const sectionListData = [];
 
     const filteredManagingClubs = this.filterFollowing(managingClubs);
+    console.log(filteredManagingClubs);
     if (filteredManagingClubs.length > 0) {
       sectionListData.push({ title: 'Managing', data: filteredManagingClubs });
     }

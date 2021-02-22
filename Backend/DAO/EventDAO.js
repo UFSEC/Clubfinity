@@ -61,13 +61,6 @@ exports.getByClubs = async (clubs) => {
   return events;
 };
 
-exports.getGoingUsers = async (id) => {
-  const event = await Event.findById(id);
-  if (!event) throw new NotFoundError();
-
-  return event.goingUsers;
-};
-
 exports.getEventsUserIsGoingTo = async (userId) => await Event.find({ goingUsers: userId }).populate('club').exec();
 
 exports.update = async (id, updatedData) => {

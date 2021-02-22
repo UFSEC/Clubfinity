@@ -20,7 +20,7 @@ module.exports = {
     'react-native',
   ],
   rules: {
-    'max-len': ['error', { code: 115 }],
+    'max-len': ['error', { code: 117 }],
     'no-underscore-dangle': ['off'],
     'no-nested-ternary': ['off'],
     'react/jsx-filename-extension': ['off'],

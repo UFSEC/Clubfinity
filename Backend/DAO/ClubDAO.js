@@ -1,23 +1,35 @@
 const Club = require('../Model/Club.js').Model;
 const { NotFoundError } = require('../util/errors/validationError');
+const { limitedUserModelFields } = require('../util/userUtil');
 
 exports.create = async (clubParams) => await new Club(clubParams).save();
 
-exports.getAll = async () => await Club.find({}).populate('admins').exec();
+exports.getAll = async () => await Club.find({})
+  .populate({
+    path: 'admins',
+    model: 'User',
+    select: limitedUserModelFields,
+  })
+  .exec();
 
-exports.getRandom = async () => {
-  const clubs = await Club.find({});
-  const index = Math.floor(Math.random() * clubs.length);
-  return clubs[index];
-};
 exports.get = async (id) => {
-  const club = await Club.findById(id).populate('admins').exec();
+  const club = await Club.findById(id).populate({
+    path: 'admins',
+    model: 'User',
+    select: limitedUserModelFields,
+  }).exec();
+
   if (!club) throw new NotFoundError();
 
   return club;
 };
 
-exports.getManagedBy = async (userId) => Club.find({ admins: userId }).populate('admins').exec();
+exports.getByAdminId = async (userId) => Club.find({ admins: userId })
+  .populate({
+    path: 'admins',
+    model: 'User',
+    select: limitedUserModelFields,
+  });
 
 exports.exists = async (id) => {
   try {

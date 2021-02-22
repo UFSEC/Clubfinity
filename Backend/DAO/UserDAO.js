@@ -1,6 +1,7 @@
 const User = require('../Model/User.js').Model;
 const { NotFoundError } = require('../util/errors/notFoundError');
 const { hashPassword } = require('../util/authUtil');
+const { limitedUserModelFields } = require('../util/userUtil');
 
 // TODO
 // 1. Add support for a prod/dev config without hardcoded vars
@@ -19,14 +20,13 @@ exports.create = async (userParams) => {
   }).save();
 };
 
-exports.getAll = async () => await User.find({}).exec();
-
 exports.get = async (id) => {
   const user = await User.findById(id).populate({
     path: 'clubs',
     populate: {
       path: 'admins',
       model: 'User',
+      select: limitedUserModelFields,
     },
   }).exec();
   if (!user) throw new NotFoundError();
@@ -40,6 +40,7 @@ exports.getByUsername = async (username) => {
     populate: {
       path: 'admins',
       model: 'User',
+      select: limitedUserModelFields,
     },
   }).exec();
   if (!user) throw new NotFoundError();

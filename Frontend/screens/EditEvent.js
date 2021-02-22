@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { AsyncStorage } from 'react-native';
 import {
   Button,
   Text,
@@ -74,12 +73,11 @@ export default class EditEvent extends Component {
       processingRequest: { status: false, message: 'Updating...' },
       errors: { arePresent: false, data: validRequest.errors.data },
     });
-    const userToken = await AsyncStorage.getItem('userToken');
     const {
       id, eventName, selectedDate, selectedTime, location, eventDescription,
     } = this.state;
     const parsedDate = combineAndParseDateTime(selectedDate, selectedTime);
-    const editedEventResponse = await EventsApi.update(id, userToken, {
+    const editedEventResponse = await EventsApi.update(id, {
       name: eventName,
       description: eventDescription,
       date: parsedDate.toISO(),
@@ -91,7 +89,6 @@ export default class EditEvent extends Component {
       const { navigation } = this.props;
       navigation.pop(2);
     }
-    // Add error feedback
   };
 
   isRequestValid = () => {

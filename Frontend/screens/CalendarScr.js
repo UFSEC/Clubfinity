@@ -1,5 +1,5 @@
 import React from 'react';
-import { AsyncStorage, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { DateTime } from 'luxon';
 import AgendaContainer from '../components/AgendaContainer';
@@ -52,10 +52,9 @@ export default class CalendarScr extends React.Component {
   }
 
   fetchEvents = async (year, month) => {
-    const bearerToken = await AsyncStorage.getItem('userToken');
     const date = DateTime.local(year, month);
 
-    return EventsApi.getInMonth(bearerToken, date);
+    return EventsApi.getInMonth(date);
   }
 
   handleMonthChange = async (date) => {

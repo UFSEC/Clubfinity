@@ -1,5 +1,6 @@
 const passport = require('passport');
 const authUtil = require('../util/authUtil');
+const { getLimitedUserData } = require('../util/userUtil');
 
 exports.authenticate = (request, response) => {
   passport.authenticate('login', { session: false }, (error, user, info) => {
@@ -14,7 +15,8 @@ exports.authenticate = (request, response) => {
         response.send(loginError);
       }
       const token = authUtil.tokanizeUser(user);
-      return response.json({ token, user });
+      const userData = getLimitedUserData(user);
+      return response.json({ token, user: userData });
     });
     return false;
   })(request, response);

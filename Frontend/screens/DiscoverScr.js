@@ -18,7 +18,7 @@ import {
   Left,
   Thumbnail,
 } from 'native-base';
-import API from '../api/BaseApi';
+import ClubsApi from '../api/ClubsApi';
 import ClubfinityLogo from '../assets/images/ClubfinityLogo.png';
 import colors from '../util/colors';
 import buildNavigationsOptions from '../util/navigationOptionsBuilder';
@@ -44,8 +44,7 @@ export default class DiscoverScr extends Component {
 
   onFocus = async () => {
     try {
-      const response = await API.get('/api/club');
-      const { data } = response.data;
+      const data = await ClubsApi.getAllClubs();
       this.setState({
         clubs: data,
         filteredClubs: data,

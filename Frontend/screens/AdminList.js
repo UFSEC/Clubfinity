@@ -2,7 +2,6 @@ import React from 'react';
 import {
   FlatList,
   View,
-  AsyncStorage,
 } from 'react-native';
 import {
   Root,
@@ -15,8 +14,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import colors from '../util/colors';
 import UserContext from '../util/UserContext';
 import ClubsApi from '../api/ClubsApi';
-import UserApi from '../api/UserApi';
 import buildNavigationsOptions from '../util/navigationOptionsBuilder';
+import DefaultPic from '../assets/images/PlainProfilePicture.png';
 
 export default class AdminList extends React.Component {
     static contextType = UserContext;
@@ -52,15 +51,9 @@ export default class AdminList extends React.Component {
       const { navigation } = this.props;
       const { user } = this.context;
       const club = navigation.getParam('club', 'NO-CLUB');
-      const bearerToken = await AsyncStorage.getItem('userToken');
-      const adminIds = await ClubsApi.getAdmins(bearerToken, club._id);
-      const promises = [];
-      for (let i = 0; i < adminIds.length; i += 1) {
-        promises.push(UserApi.getAdmin(adminIds[i], bearerToken));
-      }
-      const admins = await Promise.all(promises);
+      const admins = await ClubsApi.getAdmins(club._id);
       this.setState({ admins });
-      if ((club.admins.map((admin) => admin._id)).includes(user._id)) {
+      if ((admins.map((admin) => admin._id)).includes(user._id)) {
         this.setState({ isAdmin: true });
       }
     }
@@ -82,14 +75,12 @@ export default class AdminList extends React.Component {
     };
 
     handleRemove = async (club) => {
-      const bearerToken = await AsyncStorage.getItem('userToken');
-      const authResponse = await ClubsApi.updateClub(club._id, bearerToken, club);
+      const authResponse = await ClubsApi.updateClub(club._id, club);
       return authResponse;
     }
 
     render() {
       const { isAdmin, admins } = this.state;
-      const defaultAdminUrl = 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png';
       return (
         <Root>
           <List style={{ paddingTop: 20, width: '100%' }}>
@@ -122,7 +113,7 @@ export default class AdminList extends React.Component {
                         alignItems: 'center',
                       }}
                     >
-                      <Thumbnail style={{ margin: '2%' }} source={{ uri: defaultAdminUrl }} />
+                      <Thumbnail style={{ margin: '2%' }} source={DefaultPic} />
                       <View
                         style={{
                           marginLeft: '3%',

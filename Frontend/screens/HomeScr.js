@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
   ActivityIndicator,
-  AsyncStorage,
   FlatList,
   Text,
   View,
@@ -31,9 +30,6 @@ class HomeScr extends Component {
   }
 
   async componentDidMount() {
-    // Fetch list of Events from API
-    const bearerToken = await AsyncStorage.getItem('userToken');
-    // const clubs = await ClubsApi.getFollowing(bearerToken);
     const { user } = this.context;
     const { clubs } = user;
     if (clubs.length === 0) {
@@ -46,7 +42,7 @@ class HomeScr extends Component {
       return;
     }
 
-    const events = await EventsApi.getFollowing(bearerToken);
+    const events = await EventsApi.getFollowing();
     this.setState({
       events,
       isLoading: false,

@@ -9,25 +9,9 @@ const validateEventData = (req) => {
   if (!errors.isEmpty()) throw new ValidationError(errors.array());
 };
 
-exports.getAll = async (req, res) => catchErrors(res, async () => eventDAO.getAll());
-
-exports.get = async (req, res) => catchErrors(res, async () => eventDAO.get(req.params.id));
-
-exports.getByClub = async (req, res) => catchErrors(
-  res, async () => eventDAO.getByClubs([req.params.clubId]),
-);
-
-exports.getFollowing = async (req, res) => catchErrors(res, async () => {
-  const user = await getCurrentUser(req);
-
-  return await eventDAO.getByClubs(user.clubs);
-});
-
-exports.getInMonth = async (req, res) => catchErrors(res, async () => {
-  const searchDate = DateTime.fromISO(req.params.date);
-  const user = await getCurrentUser(req);
-
-  switch (req.query.filter) {
+const getInMonth = async (date, user, filter) => {
+  const searchDate = DateTime.fromISO(date);
+  switch (filter) {
     case undefined:
     case 'all':
     case '':
@@ -37,9 +21,32 @@ exports.getInMonth = async (req, res) => catchErrors(res, async () => {
     case 'going':
       return await eventDAO.getGoingEventsInMonth(searchDate, user);
     default:
-      throw new Error(`Filter '${req.query.filter}' does not exist`);
+      throw new Error(`Filter '${filter}' does not exist`);
+  }
+};
+
+exports.getMultiple = async (req, res) => catchErrors(res, async () => {
+  const { filterBy } = req.query;
+  switch (filterBy) {
+    case 'userId': {
+      const user = await getCurrentUser(req);
+      return eventDAO.getByClubs(user.clubs);
+    }
+    case 'month': {
+      const user = await getCurrentUser(req);
+      const { date, filter } = req.query;
+      return getInMonth(date, user, filter);
+    }
+    case 'club': {
+      const { clubId } = req.query;
+      return eventDAO.getByClubs(clubId);
+    }
+    default:
+      throw new Error(`Invalid type ${filterBy}`);
   }
 });
+
+exports.get = async (req, res) => catchErrors(res, async () => req.params.id);
 
 exports.update = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);
@@ -54,56 +61,51 @@ exports.create = async (req, res) => catchErrors(res, async () => {
   return eventDAO.create(req.body);
 });
 
-exports.getGoingUsers = async (req, res) => catchErrors(res, async () => {
+exports.updateGoingUsers = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);
 
-  return eventDAO.getGoingUsers(req.params.id);
+  const { op } = req.query;
+  if (op === 'add') {
+    eventDAO.update(req.params.id, { $pull: { interestedUsers: req.userId } });
+    eventDAO.update(req.params.id, { $pull: { uninterestedUsers: req.userId } });
+    await eventDAO.update(req.params.id, { $addToSet: { goingUsers: req.userId } });
+  } else if (op === 'remove') {
+    await eventDAO.update(req.params.id, { $pull: { goingUsers: req.userId } });
+  } else {
+    throw new Error(`Invalid operation ${op}`);
+  }
 });
 
-exports.addGoingUser = async (req, res) => catchErrors(res, async () => {
+exports.updateInterestedUsers = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);
 
-  eventDAO.update(req.params.id, { $pull: { interestedUsers: req.userId } });
-  eventDAO.update(req.params.id, { $pull: { uninterestedUsers: req.userId } });
-
-  return eventDAO.update(req.params.id, { $addToSet: { goingUsers: req.userId } });
+  const { op } = req.query;
+  if (op === 'add') {
+    eventDAO.update(req.params.id, { $pull: { uninterestedUsers: req.userId } });
+    eventDAO.update(req.params.id, { $pull: { goingUsers: req.userId } });
+    await eventDAO.update(req.params.id, { $addToSet: { interestedUsers: req.userId } });
+  } else if (op === 'remove') {
+    await eventDAO.update(req.params.id, { $pull: { interestedUsers: req.userId } });
+  } else {
+    throw new Error(`Invalid operation ${op}`);
+  }
 });
 
-exports.removeGoingUser = async (req, res) => catchErrors(res, async () => {
+exports.updateUninterestedUsers = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);
 
-  return eventDAO.update(req.params.id, { $pull: { goingUsers: req.userId } });
+  const { op } = req.query;
+  if (op === 'add') {
+    eventDAO.update(req.params.id, { $pull: { interestedUsers: req.userId } });
+    eventDAO.update(req.params.id, { $pull: { goingUsers: req.userId } });
+    await eventDAO.update(req.params.id, { $addToSet: { uninterestedUsers: req.userId } });
+  } else if (op === 'remove') {
+    await eventDAO.update(req.params.id, { $pull: { uninterestedUsers: req.userId } });
+  } else {
+    throw new Error(`Invalid operation ${op}`);
+  }
 });
 
-exports.addInterestedUser = async (req, res) => catchErrors(res, async () => {
-  validateEventData(req);
-
-  eventDAO.update(req.params.id, { $pull: { uninterestedUsers: req.userId } });
-  eventDAO.update(req.params.id, { $pull: { goingUsers: req.userId } });
-
-  return eventDAO.update(req.params.id, { $addToSet: { interestedUsers: req.userId } });
-});
-
-exports.removeInterestedUser = async (req, res) => catchErrors(res, async () => {
-  validateEventData(req);
-
-  return eventDAO.update(req.params.id, { $pull: { interestedUsers: req.userId } });
-});
-
-exports.addUninterestedUser = async (req, res) => catchErrors(res, async () => {
-  validateEventData(req);
-
-  eventDAO.update(req.params.id, { $pull: { goingUsers: req.userId } });
-  eventDAO.update(req.params.id, { $pull: { interestedUsers: req.userId } });
-
-  return eventDAO.update(req.params.id, { $addToSet: { uninterestedUsers: req.userId } });
-});
-
-exports.removeUninterestedUser = async (req, res) => catchErrors(res, async () => {
-  validateEventData(req);
-
-  return eventDAO.update(req.params.id, { $pull: { uninterestedUsers: req.userId } });
-});
 exports.delete = async (req, res) => catchErrors(res, async () => eventDAO.delete(req.params.id));
 
 async function validateEvent(id) {

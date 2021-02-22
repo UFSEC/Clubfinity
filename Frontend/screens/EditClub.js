@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import {
-  AsyncStorage, View,
-} from 'react-native';
+import { View } from 'react-native';
 import {
   Button,
   Text,
@@ -90,7 +88,6 @@ export default class EditClub extends Component {
       errors: { arePresent: false, data: validRequest.errors },
     });
 
-    const userToken = await AsyncStorage.getItem('userToken');
     const { navigation } = this.props;
     const club = navigation.getParam('club', 'NO-CLUB');
 
@@ -101,7 +98,6 @@ export default class EditClub extends Component {
     club.slackLink = slackLink;
     const editedClubResponse = await ClubsApi.updateClub(
       club._id,
-      userToken,
       club,
     );
     if (editedClubResponse.successfulRequest) {
