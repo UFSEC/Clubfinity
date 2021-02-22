@@ -4,6 +4,7 @@ import {
   FlatList,
   Text,
   View,
+  Platform,
 } from 'react-native';
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
@@ -30,6 +31,27 @@ class HomeScr extends Component {
       isFollowingClubs: true,
       events: [],
     };
+  }
+
+  async componentDidMount() {
+    this.registerForPushNotificationsAsync();
+    const { user } = this.context;
+    const { clubs } = user;
+    if (clubs.length === 0) {
+      this.setState({
+        events: [],
+        isFollowingClubs: false,
+        isLoading: false,
+      });
+
+      return;
+    }
+
+    const events = await EventsApi.getFollowing();
+    this.setState({
+      events,
+      isLoading: false,
+    });
   }
 
   registerForPushNotificationsAsync = async () => {
@@ -59,27 +81,6 @@ class HomeScr extends Component {
       });
     }
   };
-
-  async componentDidMount() {
-    this.registerForPushNotificationsAsync();
-    const { user } = this.context;
-    const { clubs } = user;
-    if (clubs.length === 0) {
-      this.setState({
-        events: [],
-        isFollowingClubs: false,
-        isLoading: false,
-      });
-
-      return;
-    }
-
-    const events = await EventsApi.getFollowing();
-    this.setState({
-      events,
-      isLoading: false,
-    });
-  }
 
   // This has to be a lambda in order to preserve the value of 'this.props'
   navigateToDiscover = async () => {

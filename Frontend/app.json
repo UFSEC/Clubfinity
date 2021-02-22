@@ -24,7 +24,6 @@
     ],
     "android": {
       "package": "com.ufsec.clubfinity",
-      "googleServicesFile": "./google-services.json",
       "useNextNotificationsApi": true
     },
     "ios": {

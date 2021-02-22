@@ -35,7 +35,10 @@ exports.get = async (id) => {
   return user;
 };
 
-exports.getPushTokens = async (clubId) => (await User.find({ clubs: clubId }).select({ pushToken: 1 })).map((data) => data.pushToken);
+exports.getPushTokens = async (clubId) => {
+  const users = await User.find({ clubs: clubId }).select({ pushToken: 1 });
+  return users.map((data) => data.pushToken);
+};
 
 exports.getByUsername = async (username) => {
   const user = await User.findOne({ username }).populate({

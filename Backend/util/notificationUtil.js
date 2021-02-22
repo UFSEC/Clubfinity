@@ -18,12 +18,12 @@ exports.sendNotifications = async (clubId, title) => {
       body: title,
     }));
   const chunks = expo.chunkPushNotifications(messages);
-  for (const chunk of chunks) {
+  chunks.forEach((chunk) => {
     try {
       const ticketChunk = await expo.sendPushNotificationsAsync(chunk);
       console.log(ticketChunk);
     } catch (error) {
       console.error(error);
     }
-  }
+  });
 };

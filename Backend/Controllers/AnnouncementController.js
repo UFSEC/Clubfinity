@@ -3,6 +3,7 @@ const { DateTime } = require('luxon');
 const { ValidationError } = require('../util/errors/validationError');
 const { catchErrors } = require('../util/httpUtil');
 const announcementDAO = require('../DAO/AnnouncementDAO');
+const clubDAO = require('../DAO/ClubDAO');
 const { sendNotifications } = require('../util/notificationUtil');
 
 const validateAnnouncementData = (req) => {
@@ -27,7 +28,9 @@ exports.getMultiple = async (req, res) => catchErrors(res, async () => {
 
 exports.create = async (req, res) => catchErrors(res, async () => {
   validateAnnouncementData(req);
-
+  if (!clubDAO.isAdmin(req.userId)) {
+    throw new Error('Unauthorized');
+  }
   req.body.date = DateTime.fromISO(req.body.date);
   const newAnnouncement = await announcementDAO.create(req.body);
   if (newAnnouncement) {
