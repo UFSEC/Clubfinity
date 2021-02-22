@@ -29,9 +29,9 @@ exports.create = async (req, res) => catchErrors(res, async () => {
   validateAnnouncementData(req);
 
   req.body.date = DateTime.fromISO(req.body.date);
-  const newAnnouncement = await announcementDAO.create(req.body)
+  const newAnnouncement = await announcementDAO.create(req.body);
   if (newAnnouncement) {
-    sendNotifications(req.body.club, req.body.title)
+    sendNotifications(req.body.club, req.body.title);
   }
   return newAnnouncement;
 });

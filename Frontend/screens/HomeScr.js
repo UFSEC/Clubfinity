@@ -45,11 +45,11 @@ class HomeScr extends Component {
         return;
       }
       const token = (await Notifications.getExpoPushTokenAsync()).data;
-      UserApi.updatePushToken(token)
+      UserApi.updatePushToken(token);
     } else {
       console.log('Must use physical device for Push Notifications');
     }
-  
+
     if (Platform.OS === 'android') {
       Notifications.setNotificationChannelAsync('default', {
         name: 'default',

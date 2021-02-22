@@ -101,7 +101,7 @@ exports.updatePushToken = async (pushToken) => {
       return { error: 'Unable to update push token' };
     });
   return axiosResponse;
-}
+};
 
 exports.followClub = async (clubId) => exports.updateClub(clubId, true);
 

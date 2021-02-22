@@ -4,7 +4,7 @@ const userDAO = require('../DAO/UserDAO');
 const clubDAO = require('../DAO/ClubDAO');
 const authUtil = require('../util/authUtil');
 const { TestHttp, isOk, isNotOk } = require('./testHelper');
-const { INVALID_TOKEN } = require('../util/notificationUtil')
+const { INVALID_TOKEN } = require('../util/notificationUtil');
 
 chai.should();
 const app = require('../app');
@@ -75,8 +75,8 @@ describe('Users', () => {
       const resp = await http.post('/api/users', newUserData);
       isOk(resp);
 
-      const user = await userDAO.get(resp.body.data._id)
-      user.pushToken.should.equal(INVALID_TOKEN)
+      const user = await userDAO.get(resp.body.data._id);
+      user.pushToken.should.equal(INVALID_TOKEN);
     });
 
     it('should create a password hash when creating a new user', async () => {
@@ -324,13 +324,13 @@ describe('Users', () => {
       beforeEach(async () => {
         testPushToken = 'test_token';
         const resp = await http.patch(`/api/users?pushToken=${testPushToken}`);
-        isOk(resp)
+        isOk(resp);
 
         user = await userDAO.get(currentUser._id);
-      })
-      it('should update pushToken of logged in user', async () => {;
-        user.pushToken.should.equal(testPushToken)
-      })
+      });
+      it('should update pushToken of logged in user', async () => {
+        user.pushToken.should.equal(testPushToken);
+      });
       it('should get userToken from clubId', async () => {
         const baseClubParams = {
           name: 'Club Club',
@@ -342,12 +342,12 @@ describe('Users', () => {
         };
 
         const club = await clubDAO.create(baseClubParams);
-        user.clubs = [club._id]
-        await userDAO.update(user._id, user)
+        user.clubs = [club._id];
+        await userDAO.update(user._id, user);
 
-        const updatedPushToken = await userDAO.getPushTokens(club._id)
-        updatedPushToken.should.deep.equal([testPushToken])
-      })
-    })
+        const updatedPushToken = await userDAO.getPushTokens(club._id);
+        updatedPushToken.should.deep.equal([testPushToken]);
+      });
+    });
   });
 });

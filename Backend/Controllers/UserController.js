@@ -30,7 +30,7 @@ exports.updatePushToken = async (req, res) => catchErrors(res, async () => {
   validateData(req);
 
   await userDAO.update(req.userId, req.query);
-})
+});
 
 exports.updateClubFollowingState = async (req, res) => catchErrors(res, async () => {
   validateData(req);
@@ -97,8 +97,8 @@ exports.validate = (type) => {
     }
     case 'validatePushToken': {
       return [
-        query('pushToken', 'push token is missing').exists()
-      ]
+        query('pushToken', 'push token is missing').exists(),
+      ];
     }
     case 'validateClubId': {
       return [

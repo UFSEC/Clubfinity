@@ -1,6 +1,6 @@
 import { Types } from 'mongoose';
 import { hashPassword } from '../../../util/authUtil';
-import { INVALID_TOKEN } from '../../../util/notificationUtil'
+import { INVALID_TOKEN } from '../../../util/notificationUtil';
 
 interface User {
   name: { first: string, last: string };

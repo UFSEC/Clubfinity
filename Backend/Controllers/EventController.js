@@ -3,7 +3,7 @@ const { DateTime } = require('luxon');
 const eventDAO = require('../DAO/EventDAO');
 const { ValidationError } = require('../util/errors/validationError');
 const { catchErrors, getCurrentUser } = require('../util/httpUtil');
-const { sendNotifications } = require('../util/notificationUtil')
+const { sendNotifications } = require('../util/notificationUtil');
 
 const validateEventData = (req) => {
   const errors = validationResult(req);
@@ -59,9 +59,9 @@ exports.create = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);
 
   req.body.date = DateTime.fromISO(req.body.date);
-  const newEvent = await eventDAO.create(req.body)
+  const newEvent = await eventDAO.create(req.body);
   if (newEvent) {
-    sendNotifications(req.body.club, req.body.name)
+    sendNotifications(req.body.club, req.body.name);
   }
   return newEvent;
 });
