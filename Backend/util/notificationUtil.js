@@ -18,7 +18,7 @@ exports.sendNotifications = async (clubId, title) => {
       body: title,
     }));
   const chunks = expo.chunkPushNotifications(messages);
-  chunks.forEach((chunk) => {
+  chunks.forEach(async (chunk) => {
     try {
       const ticketChunk = await expo.sendPushNotificationsAsync(chunk);
       console.log(ticketChunk);
