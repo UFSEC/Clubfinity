@@ -12,6 +12,7 @@ import GoingButton from './GoingButton';
 import InterestedButton from './InterestedButton';
 import EventsApi from '../api/EventsApi';
 import { formatToMonthAndDay } from '../util/dateUtil';
+import { scheduleNotification } from '../util/localNotifications';
 
 const styles = StyleSheet.create({
   clubNameText: {
@@ -99,6 +100,7 @@ export default class EventCard extends Component {
 
   goingHandler = async () => {
     const { going } = this.state;
+    const { name, date } = this.props;
     this.setState({
       going: !going,
     });
@@ -109,11 +111,13 @@ export default class EventCard extends Component {
         interested: false,
       });
       await EventsApi.addGoingUser(eventID);
+      scheduleNotification(name, date);
     } else await EventsApi.removeGoingUser(eventID);
   }
 
   interestedHandler = async () => {
     const { interested } = this.state;
+    const { name, date } = this.props;
     this.setState({
       interested: !interested,
     });
@@ -124,6 +128,7 @@ export default class EventCard extends Component {
         going: false,
       });
       await EventsApi.addInterestedUser(eventID);
+      scheduleNotification(name, date);
     } else await EventsApi.removeInterestedUser(eventID);
   }
 
