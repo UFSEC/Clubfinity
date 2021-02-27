@@ -32,7 +32,9 @@
     "react-native-keyboard-aware-scroll-view": "^0.9.1",
     "react-native-picker-select": "^6.5.0",
     "react-native-screens": "^2.11.0",
-    "react-navigation": "^3.0.0"
+    "react-navigation": "^3.0.0",
+    "expo-notifications": "~0.7.2",
+    "expo-permissions": "~9.3.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
