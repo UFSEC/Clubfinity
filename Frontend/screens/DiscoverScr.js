@@ -223,9 +223,9 @@ export default class DiscoverScr extends Component {
                               paddingLeft: '3.8%',
                             }}
                           >
-                           {item.description.length > 40
-                      ? `${item.description.substring(0, 37).trim()}...`
-                        : item.description.trim()}
+                            {item.description.length > 40
+                              ? `${item.description.substring(0, 37).trim()}...`
+                              : item.description.trim()}
                           </Text>
                         </CardItem>
                       </View>

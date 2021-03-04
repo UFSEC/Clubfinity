@@ -211,7 +211,7 @@ export default class ProfileScr extends React.Component {
                       style={{ fontSize: 14, color: colors.grayScale8 }}
                     >
                       {item.description.length > 40
-                      ? `${item.description.substring(0, 37).trim()}...`
+                        ? `${item.description.substring(0, 37).trim()}...`
                         : item.description.trim()}
                     </Text>
                   </CardItem>
