@@ -10,6 +10,7 @@ import EventsApi from '../api/EventsApi';
 import Row from '../components/Row';
 import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
+
 class EventList extends Component {
   static navigationOptions = buildNavigationsOptions('Event List')
 
@@ -17,7 +18,6 @@ class EventList extends Component {
     super(props);
     this.state = {
       pastEvents: [],
-      isAdmin: false,
       upcomingEvents: [],
     };
   }
@@ -33,6 +33,7 @@ class EventList extends Component {
 
     this.setState({ pastEvents, upcomingEvents });
   }
+  
 
   renderSectionHeader = (section) => (
     <Text
@@ -53,7 +54,8 @@ class EventList extends Component {
 
   render() {
     const { navigation } = this.props;
-    const { upcomingEvents, pastEvents, isAdmin } = this.state;
+    const isAdmin = navigation.getParam('isAdmin', '');
+    const { upcomingEvents, pastEvents} = this.state;
 
     const listData = [];
     if (upcomingEvents.length > 0) {
