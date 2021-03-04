@@ -12,7 +12,7 @@ import GoingButton from './GoingButton';
 import InterestedButton from './InterestedButton';
 import EventsApi from '../api/EventsApi';
 import { formatToMonthAndDay } from '../util/dateUtil';
-import { scheduleNotification } from '../util/localNotifications';
+import { cancelNotification, scheduleNotification } from '../util/localNotifications';
 
 const styles = StyleSheet.create({
   clubNameText: {
@@ -78,6 +78,7 @@ export default class EventCard extends Component {
       mute: uninterestedUsers.includes(userId),
       going: goingUsers.includes(userId),
       interested: interestedUsers.includes(userId),
+      notificationID: null,
     };
   }
 
@@ -99,7 +100,7 @@ export default class EventCard extends Component {
   };
 
   goingHandler = async () => {
-    const { going } = this.state;
+    const { going, notificationID } = this.state;
     const { name, date } = this.props;
     this.setState({
       going: !going,
@@ -111,8 +112,12 @@ export default class EventCard extends Component {
         interested: false,
       });
       await EventsApi.addGoingUser(eventID);
-      scheduleNotification(name, date);
-    } else await EventsApi.removeGoingUser(eventID);
+      identifier = scheduleNotification(name,date);
+      this.setState({notificationID: identifier});
+    } else {
+      await EventsApi.removeGoingUser(eventID);
+      cancelNotification(notificationID);
+    }
   }
 
   interestedHandler = async () => {
@@ -128,8 +133,12 @@ export default class EventCard extends Component {
         going: false,
       });
       await EventsApi.addInterestedUser(eventID);
-      scheduleNotification(name, date);
-    } else await EventsApi.removeInterestedUser(eventID);
+      identifier = scheduleNotification(name,date);
+      this.setState({notificationID: identifier});
+    } else {
+      await EventsApi.removeGoingUser(eventID);
+      cancelNotification(notificationID);
+    }
   }
 
   render() {
