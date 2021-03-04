@@ -10,7 +10,6 @@ import EventsApi from '../api/EventsApi';
 import Row from '../components/Row';
 import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
-
 class EventList extends Component {
   static navigationOptions = buildNavigationsOptions('Event List')
 
@@ -33,7 +32,6 @@ class EventList extends Component {
 
     this.setState({ pastEvents, upcomingEvents });
   }
-  
 
   renderSectionHeader = (section) => (
     <Text
@@ -55,7 +53,7 @@ class EventList extends Component {
   render() {
     const { navigation } = this.props;
     const isAdmin = navigation.getParam('isAdmin', '');
-    const { upcomingEvents, pastEvents} = this.state;
+    const { upcomingEvents, pastEvents } = this.state;
 
     const listData = [];
     if (upcomingEvents.length > 0) {
@@ -73,18 +71,18 @@ class EventList extends Component {
           keyExtractor={(event) => event._id}
           renderItem={({ item }) => (
             <Row
-            date={item.date.toFormat('MMMM dd yyyy')}
-            item={item.name}
-            handler={() => {
-              navigation.navigate('EventScr', {
-                id: item._id,
-                title: item.name,
-                description: item.description,
-                location: item.location,
-                date: item.date,
-                isAdmin,
-              });
-            }}
+              date={item.date.toFormat('MMMM dd yyyy')}
+              item={item.name}
+              handler={() => {
+                navigation.navigate('EventScr', {
+                  id: item._id,
+                  title: item.name,
+                  description: item.description,
+                  location: item.location,
+                  date: item.date,
+                  isAdmin,
+                });
+              }}
             />
           )}
           renderSectionHeader={({ section }) => this.renderSectionHeader(section)}
