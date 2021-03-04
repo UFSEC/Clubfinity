@@ -318,12 +318,12 @@ describe('Users', () => {
   });
 
   describe('Update pushToken', async () => {
-    describe('PATCH /users/', async () => {
+    describe('PATCH /users/push-token', async () => {
       let user = null;
       let testPushToken = null;
       beforeEach(async () => {
         testPushToken = 'test_token';
-        const resp = await http.patch(`/api/users?pushToken=${testPushToken}`);
+        const resp = await http.patch(`/api/users/push-token?pushToken=${testPushToken}`);
         isOk(resp);
 
         user = await userDAO.get(currentUser._id);

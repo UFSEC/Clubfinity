@@ -26,6 +26,12 @@ exports.update = async (req, res) => catchErrors(res, async () => {
   await userDAO.update(req.userId, req.body);
 });
 
+exports.updateUserSettings = async (req, res) => catchErrors(res, async () => {
+  validateData(req);
+
+  await userDAO.update(req.userId, req.query);
+});
+
 exports.updatePushToken = async (req, res) => catchErrors(res, async () => {
   validateData(req);
 
@@ -57,7 +63,7 @@ exports.updateClubFollowingState = async (req, res) => catchErrors(res, async ()
 exports.create = async (req, res) => catchErrors(res, async () => {
   validateData(req);
   req.body.clubs = [];
-  return getLimitedUserData(await userDAO.create(req.body));
+  return await userDAO.create(req.body);
 });
 
 async function validateClubId(clubId) {
@@ -94,6 +100,9 @@ exports.validate = (type) => {
           .exists()
           .custom((password) => validatePassword(password)),
       ];
+    }
+    case 'validateUserSettings': {
+      return [];
     }
     case 'validatePushToken': {
       return [

@@ -12,6 +12,10 @@ const Schema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Club',
   }],
+  settings: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'UserSettings',
+  },
 });
 
 exports.Model = mongoose.model('User', Schema);
