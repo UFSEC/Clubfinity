@@ -387,7 +387,9 @@ export default class ClubScr extends React.Component {
                                 numberOfLines={1}
                                 style={{ marginRight: '1%' }}
                               >
-                                {item.title}
+                                {item.title.length > 40
+                      ? `${item.title.substring(0, 37).trim()}...`
+                        : item.title.trim()}
                               </Text>
                               <Ionicons name="md-arrow-dropright" size={30} />
                             </View>
