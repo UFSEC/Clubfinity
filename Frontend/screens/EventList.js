@@ -17,6 +17,7 @@ class EventList extends Component {
     super(props);
     this.state = {
       pastEvents: [],
+      isAdmin: false,
       upcomingEvents: [],
     };
   }
@@ -51,7 +52,8 @@ class EventList extends Component {
   )
 
   render() {
-    const { upcomingEvents, pastEvents } = this.state;
+    const { navigation } = this.props;
+    const { upcomingEvents, pastEvents, isAdmin } = this.state;
 
     const listData = [];
     if (upcomingEvents.length > 0) {
@@ -69,9 +71,18 @@ class EventList extends Component {
           keyExtractor={(event) => event._id}
           renderItem={({ item }) => (
             <Row
-              date={item.date.toFormat('MMM dd yyyy')}
-              text={item.name}
-              handler={() => { }}
+            date={item.date.toFormat('MMMM dd yyyy')}
+            item={item.name}
+            handler={() => {
+              navigation.navigate('EventScr', {
+                id: item._id,
+                title: item.name,
+                description: item.description,
+                location: item.location,
+                date: item.date,
+                isAdmin,
+              });
+            }}
             />
           )}
           renderSectionHeader={({ section }) => this.renderSectionHeader(section)}
