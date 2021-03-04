@@ -112,8 +112,8 @@ export default class EventCard extends Component {
         interested: false,
       });
       await EventsApi.addGoingUser(eventID);
-      identifier = scheduleNotification(name,date);
-      this.setState({notificationID: identifier});
+      const identifier = scheduleNotification(name, date);
+      this.setState({ notificationID: identifier });
     } else {
       await EventsApi.removeGoingUser(eventID);
       cancelNotification(notificationID);
@@ -121,7 +121,7 @@ export default class EventCard extends Component {
   }
 
   interestedHandler = async () => {
-    const { interested } = this.state;
+    const { interested, notificationID } = this.state;
     const { name, date } = this.props;
     this.setState({
       interested: !interested,
@@ -133,8 +133,8 @@ export default class EventCard extends Component {
         going: false,
       });
       await EventsApi.addInterestedUser(eventID);
-      identifier = scheduleNotification(name,date);
-      this.setState({notificationID: identifier});
+      const identifier = scheduleNotification(name, date);
+      this.setState({ notificationID: identifier });
     } else {
       await EventsApi.removeGoingUser(eventID);
       cancelNotification(notificationID);

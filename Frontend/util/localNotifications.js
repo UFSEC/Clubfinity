@@ -42,22 +42,22 @@ export async function scheduleNotification(name, date) {
   const timeDiff = (date - Date.now()) - (1000 * 60 * 60);
   const trigger = new Date(Date.now() + timeDiff);
   trigger.setSeconds(0);
-  notificationID = null;
+  let notificationID = null;
   if (checking) {
-    notifactionID = Notifications.scheduleNotificationAsync({
+    notificationID = Notifications.scheduleNotificationAsync({
       content: {
         title: `Upcoming Event: ${name}`,
         body: 'Event will start in 1 hour!',
       },
-      //trigger: null, for immediate notification
+      // trigger: null, for immediate notification
       trigger,
     });
   }
   return notificationID;
 }
 
-export async function cancelNotification(notificationID){
-  if(notificationID != null){
+export async function cancelNotification(notificationID) {
+  if (notificationID != null) {
     await Notifications.cancelScheduledNotificationAsync(notificationID);
   }
 }
