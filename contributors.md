@@ -25,6 +25,6 @@
 * Camnewb
 * azharbaig171
 * americosp
-* masenrb
+* Masen Beliveau (masenrb)
 * NoahTK7
 * n-norrr
