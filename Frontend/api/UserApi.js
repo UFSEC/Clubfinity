@@ -64,7 +64,7 @@ exports.updateUser = async (user) => {
 exports.updateClub = async (clubId, isFollowing) => {
   const bearerToken = await AsyncStorage.getItem('userToken');
   const axiosResponse = await API.patch(
-    `/api/users/clubs/${clubId}?isFollowing=${isFollowing}`,
+    `/api/users/clubs/${clubId}?follow=${isFollowing}`,
     {},
     {
       headers: {
