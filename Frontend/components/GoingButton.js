@@ -18,7 +18,7 @@ export default class GoingButton extends Component {
         onPress={clickHandler}
         style={isGoing
           ? { borderWidth: 4, borderColor: 'rgba(255, 255, 255, 0.6)' }
-          : { borderWidth: 4, borderStyle: 'hidden', borderColor: 'transparent' }}
+          : { borderWidth: 4, borderColor: 'transparent' }}
       >
         Going
       </Ionicons.Button>
