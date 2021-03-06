@@ -72,10 +72,10 @@ export default class ClubScr extends React.Component {
     const { user } = this.context;
     const club = navigation.getParam('club', 'NO-CLUB');
 
-    if (user.clubs.map(({_id}) => _id).includes(club._id)) {
+    if (user.clubs.map((currentClub) => currentClub._id).includes(club._id)) {
       this.setState({ isFollowing: true });
     }
-    if (club.admins.map(({_id}) => _id).includes(user._id)) {
+    if (club.admins.map((admin) => admin._id).includes(user._id)) {
       this.setState({ isAdmin: true });
     }
     const { events, announcements } = await ClubsApi.getPosts(club._id);
