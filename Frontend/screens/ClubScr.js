@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  FlatList,
   View,
   SafeAreaView,
   ScrollView,
@@ -73,10 +72,10 @@ export default class ClubScr extends React.Component {
     const { user } = this.context;
     const club = navigation.getParam('club', 'NO-CLUB');
 
-    if (user.clubs.map((currentClub) => currentClub._id).includes(club._id)) {
+    if (user.clubs.map(({_id}) => _id).includes(club._id)) {
       this.setState({ isFollowing: true });
     }
-    if (club.admins.map((admin) => admin._id).includes(user._id)) {
+    if (club.admins.map(({_id}) => _id).includes(user._id)) {
       this.setState({ isAdmin: true });
     }
     const { events, announcements } = await ClubsApi.getPosts(club._id);
@@ -285,7 +284,7 @@ export default class ClubScr extends React.Component {
                 <Body style={{ paddingHorizontal: '0%', width: '100%' }}>
                   {!eventsEmpty ? (
                     <List style={{ width: '100%' }}>
-                      <FlatList
+                      <List
                         data={events}
                         style={{ width: '100%' }}
                         renderItem={({ item }) => (
@@ -298,6 +297,7 @@ export default class ClubScr extends React.Component {
                               date: item.date,
                               isAdmin,
                             })}
+                            key={item._id}
                           >
                             <View
                               style={{
@@ -361,7 +361,7 @@ export default class ClubScr extends React.Component {
                 <Body style={{ paddingHorizontal: '0%', width: '100%' }}>
                   {!announcementsEmpty ? (
                     <List style={{ width: '100%' }}>
-                      <FlatList
+                      <List
                         data={announcements}
                         style={{ width: '100%' }}
                         renderItem={({ item }) => (
@@ -435,7 +435,7 @@ export default class ClubScr extends React.Component {
               <CardItem style={{ paddingHorizontal: '0%' }}>
                 <Body style={{ paddingHorizontal: '0%', width: '100%' }}>
                   <List style={{ width: '100%' }}>
-                    <FlatList
+                    <List
                       data={club.admins}
                       style={{ width: '100%' }}
                       renderItem={({ item }) => (

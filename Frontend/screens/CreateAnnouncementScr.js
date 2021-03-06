@@ -93,7 +93,7 @@ export default class CreateAnnouncementScr extends Component {
                   titleError ? colors.error : colors.grayScale10
                 }
                 onChangeText={this.setTitle}
-                maxLength="50"
+                maxLength=50
                 style={{
                   textAlign: 'right',
                 }}

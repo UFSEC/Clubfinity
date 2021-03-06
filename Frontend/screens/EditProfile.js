@@ -136,10 +136,10 @@ export default class EditProfile extends Component {
       classYear,
     } = this.state;
     const majorCategories = Majors.map((s) => (
-      <Picker.Item value={s.value} label={s.label} />
+      <Picker.Item value={s.value} label={s.label} key={s.label}/>
     ));
     const classYearCategories = ClassYears.map((s) => (
-      <Picker.Item value={s.value} label={s.label} />
+      <Picker.Item value={s.value} label={s.label} key={s.label}/>
     ));
     return (
       <Container>
