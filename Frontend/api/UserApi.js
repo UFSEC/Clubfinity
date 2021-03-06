@@ -1,8 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import API from './BaseApi';
 
-// TODO:
-// Refactor backend to remove username/email
 exports.createUser = async (name, major, year, username, password, email) => {
   const axiosResponse = await API.post('/api/users', {
     name,
@@ -61,10 +59,10 @@ exports.updateUser = async (user) => {
   return axiosResponse;
 };
 
-exports.updateClub = async (clubId, isFollowing) => {
+exports.updateClub = async (clubId, follow) => {
   const bearerToken = await AsyncStorage.getItem('userToken');
   const axiosResponse = await API.patch(
-    `/api/users/clubs/${clubId}?follow=${isFollowing}`,
+    `/api/users/clubs/${clubId}?follow=${follow}`,
     {},
     {
       headers: {
