@@ -47,6 +47,7 @@ describe('Announcements', () => {
     await announcementDAO.deleteAll();
 
     currentUser = await userDAO.create(currentUserParams);
+    clubParams.admins = [currentUser._id];
     const currentUserToken = authUtil.tokanizeUser(currentUser);
     http = new TestHttp(chai, app, currentUserToken);
   });
@@ -83,6 +84,7 @@ describe('Announcements', () => {
 
   describe('POST /', async () => {
     it('should be able to create a new announcement', async () => {
+      clubParams.admins = [currentUser._id];
       const { _id: clubId } = await clubDAO.create(clubParams);
       const announcementParams = {
         ...baseAnnouncementParams,

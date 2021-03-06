@@ -22,6 +22,7 @@ describe('ClubDAO', () => {
 
   beforeEach(async () => {
     await clubDAO.deleteAll();
+    await userDAO.deleteAll();
   });
 
   describe('getAll', () => {
@@ -80,9 +81,12 @@ describe('ClubDAO', () => {
     });
   });
 
-  describe('getByAdminId', () => {
-    it('should return all the clubs an admin is managing', async () => {
-      const user = await userDAO.create({
+  describe('admins', () => {
+    let user = null;
+    let club = null;
+
+    beforeEach(async () => {
+      user = await userDAO.create({
         name: { first: 'Test', last: 'McTester' },
         major: 'Computer Science',
         year: 2021,
@@ -90,16 +94,21 @@ describe('ClubDAO', () => {
         username: 'tester',
         password: 'password123',
       });
-
-      await clubDAO.create({
+      club = await clubDAO.create({
         ...baseClubParams,
         admins: [user._id],
       });
+    });
 
+    it('should return all the clubs an admin is managing (getByAdminId)', async () => {
       const managedClubs = await clubDAO.getByAdminId(user._id);
 
       managedClubs.should.have.length(1);
       managedClubs[0].name.should.equal(baseClubParams.name);
+    });
+    it('should return true if user is adminitrator of club (isAdmin)', async () => {
+      const isAdmin = await clubDAO.isAdmin(user._id, club._id);
+      isAdmin.should.be.true;
     });
   });
 

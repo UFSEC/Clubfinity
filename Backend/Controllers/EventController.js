@@ -1,8 +1,10 @@
 const { validationResult, body, param } = require('express-validator');
 const { DateTime } = require('luxon');
 const eventDAO = require('../DAO/EventDAO');
+const clubDAO = require('../DAO/ClubDAO');
 const { ValidationError } = require('../util/errors/validationError');
 const { catchErrors, getCurrentUser } = require('../util/httpUtil');
+const { sendNotifications } = require('../util/notificationUtil');
 
 const validateEventData = (req) => {
   const errors = validationResult(req);
@@ -57,22 +59,32 @@ exports.update = async (req, res) => catchErrors(res, async () => {
 exports.create = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);
 
+  if (!clubDAO.isAdmin(req.userId)) {
+    throw new Error('Unauthorized');
+  }
   req.body.date = DateTime.fromISO(req.body.date);
-  return eventDAO.create(req.body);
+  const newEvent = await eventDAO.create(req.body);
+  if (newEvent) {
+    sendNotifications(req.body.club, req.body.name);
+  }
+  return newEvent;
 });
 
 exports.updateGoingUsers = async (req, res) => catchErrors(res, async () => {
   validateEventData(req);
 
   const { op } = req.query;
-  if (op === 'add') {
-    eventDAO.update(req.params.id, { $pull: { interestedUsers: req.userId } });
-    eventDAO.update(req.params.id, { $pull: { uninterestedUsers: req.userId } });
-    await eventDAO.update(req.params.id, { $addToSet: { goingUsers: req.userId } });
-  } else if (op === 'remove') {
-    await eventDAO.update(req.params.id, { $pull: { goingUsers: req.userId } });
-  } else {
-    throw new Error(`Invalid operation ${op}`);
+  switch (op) {
+    case 'add':
+      eventDAO.update(req.params.id, { $pull: { interestedUsers: req.userId } });
+      eventDAO.update(req.params.id, { $pull: { uninterestedUsers: req.userId } });
+      await eventDAO.update(req.params.id, { $addToSet: { goingUsers: req.userId } });
+      break;
+    case 'remove':
+      await eventDAO.update(req.params.id, { $pull: { goingUsers: req.userId } });
+      break;
+    default:
+      throw new Error(`Invalid operation ${op}`);
   }
 });
 
@@ -80,14 +92,17 @@ exports.updateInterestedUsers = async (req, res) => catchErrors(res, async () =>
   validateEventData(req);
 
   const { op } = req.query;
-  if (op === 'add') {
-    eventDAO.update(req.params.id, { $pull: { uninterestedUsers: req.userId } });
-    eventDAO.update(req.params.id, { $pull: { goingUsers: req.userId } });
-    await eventDAO.update(req.params.id, { $addToSet: { interestedUsers: req.userId } });
-  } else if (op === 'remove') {
-    await eventDAO.update(req.params.id, { $pull: { interestedUsers: req.userId } });
-  } else {
-    throw new Error(`Invalid operation ${op}`);
+  switch (op) {
+    case 'add':
+      eventDAO.update(req.params.id, { $pull: { uninterestedUsers: req.userId } });
+      eventDAO.update(req.params.id, { $pull: { goingUsers: req.userId } });
+      await eventDAO.update(req.params.id, { $addToSet: { interestedUsers: req.userId } });
+      break;
+    case 'remove':
+      await eventDAO.update(req.params.id, { $pull: { interestedUsers: req.userId } });
+      break;
+    default:
+      throw new Error(`Invalid operation ${op}`);
   }
 });
 
@@ -95,14 +110,17 @@ exports.updateUninterestedUsers = async (req, res) => catchErrors(res, async () 
   validateEventData(req);
 
   const { op } = req.query;
-  if (op === 'add') {
-    eventDAO.update(req.params.id, { $pull: { interestedUsers: req.userId } });
-    eventDAO.update(req.params.id, { $pull: { goingUsers: req.userId } });
-    await eventDAO.update(req.params.id, { $addToSet: { uninterestedUsers: req.userId } });
-  } else if (op === 'remove') {
-    await eventDAO.update(req.params.id, { $pull: { uninterestedUsers: req.userId } });
-  } else {
-    throw new Error(`Invalid operation ${op}`);
+  switch (op) {
+    case 'add':
+      eventDAO.update(req.params.id, { $pull: { interestedUsers: req.userId } });
+      eventDAO.update(req.params.id, { $pull: { goingUsers: req.userId } });
+      await eventDAO.update(req.params.id, { $addToSet: { uninterestedUsers: req.userId } });
+      break;
+    case 'remove':
+      await eventDAO.update(req.params.id, { $pull: { uninterestedUsers: req.userId } });
+      break;
+    default:
+      throw new Error(`Invalid operation ${op}`);
   }
 });
 

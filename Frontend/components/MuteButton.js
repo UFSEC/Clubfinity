@@ -17,8 +17,8 @@ export default class NotGoingButton extends Component {
         backgroundColor={colors.error}
         onPress={clickHandler}
         style={isMuted
-          ? { borderWidth: '4%', borderColor: 'rgba(255, 255, 255, 0.6)' }
-          : { borderWidth: '4%', borderStyle: 'hidden', borderColor: 'transparent' }}
+          ? { borderWidth: 4, borderColor: 'rgba(255, 255, 255, 0.6)' }
+          : { borderWidth: 4, borderColor: 'transparent' }}
       >
         Mute
       </Ionicons.Button>

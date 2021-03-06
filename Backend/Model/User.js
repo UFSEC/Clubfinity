@@ -6,6 +6,7 @@ const Schema = new mongoose.Schema({
   year: Number,
   username: String,
   email: String,
+  pushToken: String,
   password: { hash: String, salt: String },
   clubs: [{
     type: mongoose.Schema.Types.ObjectId,
