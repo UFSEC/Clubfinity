@@ -14,6 +14,8 @@ import Roboto_medium from 'native-base/Fonts/Roboto_medium.ttf';
 import Ionicons from 'native-base/Fonts/Ionicons.ttf';
 import UserContext from './util/UserContext';
 import AppNavigator from './navigation/TabNavigator';
+import {LogBox} from 'react-native'
+
 
 LogBox.ignoreAllLogs(true)
 
