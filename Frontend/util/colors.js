@@ -17,10 +17,10 @@ const colors = {
   grayScale11: '#414042',
   grayScale12: '#000000',
 
-  success: '#00C05E',
-  error: '#FC5858',
+  success: '#00c05e',
+  error: '#fc5858',
   warning: '#f28154',
-  info: '#2DADFF',
+  info: '#2dadff',
   link: '#5e95fc',
 };
 

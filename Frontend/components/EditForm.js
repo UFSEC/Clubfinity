@@ -12,25 +12,25 @@ import {
 
 const { width } = Dimensions.get('screen');
 
-const txtFieldBgColor = '#F4F4F4';
+const txtFieldBgColor = '#f4f4f4';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#f2f2f7',
     paddingTop: '20%',
   },
   saveButtonText: {
     fontSize: 15,
-    color: '#FFF',
+    color: '#fff',
     alignSelf: 'center',
   },
   saveButton: {
     padding: 10,
     minWidth: width / 2,
-    backgroundColor: '#ACCBAC',
+    backgroundColor: '#accbac',
     borderWidth: 1,
-    borderColor: '#ACCBAC',
+    borderColor: '#accbac',
     borderRadius: 100,
     marginHorizontal: 10,
 
@@ -42,10 +42,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    backgroundColor: '#E5E4EA',
+    backgroundColor: '#e5e4ea',
     borderWidth: 1,
     borderRadius: 10,
-    borderColor: '#E5E4EA',
+    borderColor: '#e5e4ea',
     marginHorizontal: 10,
     marginVertical: 5,
     paddingHorizontal: 20,

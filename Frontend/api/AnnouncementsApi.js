@@ -39,3 +39,19 @@ exports.update = async (announcementId, params) => {
     });
   return resp;
 };
+
+exports.delete = async (bearerToken, announcementId ) => {
+  const resp = await API.delete(`/api/announcement/${announcementId}`, {
+    headers: {
+      Authorization: `Bearer ${bearerToken}`,
+    },
+  })
+    .then(async (response) => response)
+    .catch((error) => {
+      if (error) {
+        return error;
+      }
+      return { error: 'Unable to delete announcement' };
+    });
+  return resp;
+};
