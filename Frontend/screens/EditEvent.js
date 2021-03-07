@@ -29,7 +29,6 @@ export default class EditEvent extends Component {
     const errors = {
       eventName: false,
       selectedDate: false,
-      selectedTime: false,
       location: false,
       facebookLink: false,
       eventDescription: false
@@ -54,7 +53,7 @@ export default class EditEvent extends Component {
     this.setState({
       id: navigation.getParam('id', ''),
       eventName: navigation.getParam('title', ''),
-      selectedDate: date,
+      selectedDate: new Date(),
       location: navigation.getParam('location', ''),
       facebookLink: '',
       eventDescription: navigation.getParam('description', ''),
@@ -75,7 +74,7 @@ export default class EditEvent extends Component {
       errors: { arePresent: false, data: validRequest.errors.data },
     });
     const {
-      id, eventName, selectedDate, selectedTime, location, eventDescription,
+      id, eventName, selectedDate, location, eventDescription,
     } = this.state;
     const parsedDate = DateTime.fromISO(selectedDate.toISOString());
     const editedEventResponse = await EventsApi.update(id, {
@@ -103,7 +102,6 @@ export default class EditEvent extends Component {
     const errorData = errors.data;
     errorData.eventName = eventName === '' || eventName.length < 3;
     errorData.selectedDate = selectedDate === '';
-    errorData.selectedTime = selectedTime === '';
     errorData.location = location === '' || location.length < 3;
     errorData.facebookLink = !!facebookLink && !isValidFacebookUrl(facebookLink);
     let validRequest = true;
@@ -117,7 +115,7 @@ export default class EditEvent extends Component {
 
   deleteConfirmation = () =>
     Alert.alert(
-      "Delete Announcement?",
+      "Delete Event?",
       "This action cannot be undone.",
       [
         {
@@ -144,40 +142,59 @@ export default class EditEvent extends Component {
     this.setState({selectedDate: currentDate});
   };
 
+  getDateString = () => {
+    if (this.state.selectedDate === undefined) {
+      return ""
+    }
+    return this.state.selectedDate.toString().substring(0,10)
+  }
+
+  getTimeString = () => {
+    if (this.state.selectedDate === undefined) {
+      return ""
+    }
+    var hours = this.state.selectedDate.getHours();
+    var minutes = this.state.selectedDate.getMinutes();
+    var ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+  }
+
+  deleteEvent = async () => {
+    this.setState({
+      processingDelete: { status: true, message: 'Deleting...' },
+    });
+    const { id } = this.state;
+    const deleteEventResponse = await EventsApi.delete(id);
+    if (deleteEventResponse.error) {
+      alert('Unable to delete event');
+      console.log(deleteEventResponse.error);
+      return;
+    }
+    this.setState({
+      processingDelete: { status: true, message: 'Deleted!' },
+    });
+    navigation.navigate('Club');
+  }
+
   render() {
     const {
       processingRequest,
+      processingDelete,
       errors,
       eventName,
       selectedDate,
-      selectedTime,
       location,
       facebookLink,
       eventDescription,
+      showDatePicker,
+      showTimePicker
     } = this.state;
 
     const today = new Date();
-
-    getDateString = () => {
-      if (this.state.selectedDate === undefined) {
-        return ""
-      }
-      return this.state.selectedDate.toString().substring(0,10)
-    }
-
-    getTimeString = () => {
-      if (this.state.selectedDate === undefined) {
-        return ""
-      }
-      var hours = this.state.selectedDate.getHours();
-      var minutes = this.state.selectedDate.getMinutes();
-      var ampm = hours >= 12 ? 'pm' : 'am';
-      hours = hours % 12;
-      hours = hours ? hours : 12; // the hour '0' should be '12'
-      minutes = minutes < 10 ? '0'+minutes : minutes;
-      var strTime = hours + ':' + minutes + ' ' + ampm;
-      return strTime;
-    }
 
     return (
       <Container>
@@ -243,7 +260,7 @@ export default class EditEvent extends Component {
                     : ''
                 }
               >
-                {getDateString()}
+                {this.getDateString()}
               </Text>
               {showDatePicker && 
                 <DatePicker
@@ -315,14 +332,14 @@ export default class EditEvent extends Component {
                     : ''
                 }
               >
-                {getTimeString()}
+                {this.getTimeString()}
               </Text>
               {showTimePicker &&
                 <DatePicker
                   style={{ width: 200 }}
-                  value={selectedTime}
+                  value={selectedDate}
                   mode="time"
-                  placeholder={errors.arePresent && errors.data.selectedTime
+                  placeholder={errors.arePresent && errors.data.selectedDate
                     ? 'Invalid time'
                     : 'Select a Time'}
                   format={TIME_PICKER_FORMAT}
@@ -454,11 +471,12 @@ export default class EditEvent extends Component {
           <Button
             style={{
               alignSelf: 'center',
-              backgroundColor: colors.secondary0,
+              backgroundColor: "#ff807f",
               width: '90%',
               justifyContent: 'center',
               alignItems: 'center',
               marginRight: '1%',
+              marginTop: 12
             }}
             onPress={this.deleteConfirmation}
           >
