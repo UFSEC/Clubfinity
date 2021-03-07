@@ -66,7 +66,6 @@ export default class EventCreation extends Component {
       selectedDate,
     } = this.state;
     const { navigation } = this.props;
-    console.log("selectedDate iso string: " +  selectedDate.toISOString())
     const parsedDate = DateTime.fromISO(selectedDate.toISOString());
     const club = navigation.getParam('club', 'NO-CLUB');
 
@@ -111,11 +110,9 @@ export default class EventCreation extends Component {
   }
 
   onDateTimeChange = (event, newDate) => {
-    console.log("selectedDate: " + this.state.selectedDate)
     this.setState({showDatePicker: false})
     this.setState({showTimePicker: false})
     this.setState({selectedDate: newDate || this.state.selectedDate});
-    console.log("onTimeChange: " + newDate)
   }
 
   render() {
