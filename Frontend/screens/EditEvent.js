@@ -133,26 +133,29 @@ export default class EditEvent extends Component {
     this.setState({ showTimePicker: true });
   };
 
-  onDateTimeChange = (event, newDate) => {
-    const currentDate = newDate || this.state.selectedDate;
+  onDateTimeChange = async (event, newDate) => {
+    const { selectedDate } = this.state;
+    const currentDate = newDate || selectedDate;
     this.setState({ showDatePicker: false });
     this.setState({ showTimePicker: false });
     this.setState({ selectedDate: currentDate });
   };
 
-  getDateString = () => {
-    if (this.state.selectedDate === undefined) {
+  getDateString = async () => {
+    const { selectedDate } = this.state;
+    if (selectedDate === undefined) {
       return '';
     }
-    return this.state.selectedDate.toString().substring(0, 10);
+    return selectedDate.toString().substring(0, 10);
   }
 
   getTimeString = () => {
-    if (this.state.selectedDate === undefined) {
+    const { selectedDate } = this.state
+    if (selectedDate === undefined) {
       return '';
     }
-    let hours = this.state.selectedDate.getHours();
-    let minutes = this.state.selectedDate.getMinutes();
+    let hours = selectedDate.getHours();
+    let minutes = selectedDate.getMinutes();
     const ampm = hours >= 12 ? 'pm' : 'am';
     hours %= 12;
     hours = hours || 12; // the hour '0' should be '12'
