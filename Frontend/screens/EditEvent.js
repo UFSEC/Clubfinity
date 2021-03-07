@@ -150,7 +150,7 @@ export default class EditEvent extends Component {
   }
 
   getTimeString = () => {
-    const { selectedDate } = this.state
+    const { selectedDate } = this.state;
     if (selectedDate === undefined) {
       return '';
     }
