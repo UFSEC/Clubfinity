@@ -51,6 +51,7 @@ class EventList extends Component {
   )
 
   render() {
+    const { navigation, isAdmin } = this.props;
     const { upcomingEvents, pastEvents } = this.state;
 
     const listData = [];
@@ -71,7 +72,14 @@ class EventList extends Component {
             <Row
               date={item.date.toFormat('MMM dd yyyy')}
               text={item.name}
-              handler={() => { }}
+              handler={() => navigation.navigate('EditEvent', {
+                id: item._id,
+                title: item.name,
+                description: item.description,
+                location: item.location,
+                date: item.date,
+                isAdmin,
+              })}
             />
           )}
           renderSectionHeader={({ section }) => this.renderSectionHeader(section)}
