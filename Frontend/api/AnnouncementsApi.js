@@ -40,7 +40,7 @@ exports.update = async (announcementId, params) => {
   return resp;
 };
 
-exports.delete = async (announcementId ) => {
+exports.delete = async (announcementId) => {
   const bearerToken = await AsyncStorage.getItem('userToken');
 
   const resp = await API.delete(`/api/announcement/${announcementId}`, {

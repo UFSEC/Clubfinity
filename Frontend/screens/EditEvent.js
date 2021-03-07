@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert } from 'react-native'
+import { Alert } from 'react-native';
 import {
   Button,
   Text,
@@ -12,12 +12,11 @@ import {
   Textarea,
 } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
-import {DateTimePicker as DatePicker} from '@react-native-community/datetimepicker';
-import { DateTime } from 'luxon'
+import { DateTimePicker as DatePicker } from '@react-native-community/datetimepicker';
+import { DateTime } from 'luxon';
 import colors from '../util/colors';
 import { isValidFacebookUrl } from '../util/validation';
-import { DATE_PICKER_FORMAT, TIME_PICKER_FORMAT,
-} from '../util/dateUtil';
+import { DATE_PICKER_FORMAT, TIME_PICKER_FORMAT } from '../util/dateUtil';
 import EventsApi from '../api/EventsApi';
 import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
@@ -31,7 +30,7 @@ export default class EditEvent extends Component {
       selectedDate: false,
       location: false,
       facebookLink: false,
-      eventDescription: false
+      eventDescription: false,
     };
     this.state = {
       id: '',
@@ -44,7 +43,7 @@ export default class EditEvent extends Component {
       processingDelete: { status: false, message: '' },
       errors: { arePresent: false, data: errors },
       showDatePicker: false,
-      showTimePicker: false
+      showTimePicker: false,
     };
   }
 
@@ -113,53 +112,52 @@ export default class EditEvent extends Component {
     return { valid: validRequest, errors };
   };
 
-  deleteConfirmation = () =>
-    Alert.alert(
-      "Delete Event?",
-      "This action cannot be undone.",
-      [
-        {
-          text: "Cancel",
-          style: "cancel"
-        },
-        { text: "OK", onPress: () => this.deleteEvent() }
-      ],
-      { cancelable: false }
-    );
+  deleteConfirmation = () => Alert.alert(
+    'Delete Event?',
+    'This action cannot be undone.',
+    [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+      { text: 'OK', onPress: () => this.deleteEvent() },
+    ],
+    { cancelable: false },
+  );
 
   setShowDatePicker = () => {
-    this.setState({showDatePicker: true});
+    this.setState({ showDatePicker: true });
   };
 
   setShowTimePicker = () => {
-    this.setState({showTimePicker: true});
+    this.setState({ showTimePicker: true });
   };
 
   onDateTimeChange = (event, newDate) => {
     const currentDate = newDate || this.state.selectedDate;
-    this.setState({showDatePicker: false});
-    this.setState({showTimePicker: false});
-    this.setState({selectedDate: currentDate});
+    this.setState({ showDatePicker: false });
+    this.setState({ showTimePicker: false });
+    this.setState({ selectedDate: currentDate });
   };
 
   getDateString = () => {
     if (this.state.selectedDate === undefined) {
-      return ""
+      return '';
     }
-    return this.state.selectedDate.toString().substring(0,10)
+    return this.state.selectedDate.toString().substring(0, 10);
   }
 
   getTimeString = () => {
     if (this.state.selectedDate === undefined) {
-      return ""
+      return '';
     }
-    var hours = this.state.selectedDate.getHours();
-    var minutes = this.state.selectedDate.getMinutes();
-    var ampm = hours >= 12 ? 'pm' : 'am';
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-    minutes = minutes < 10 ? '0'+minutes : minutes;
-    var strTime = hours + ':' + minutes + ' ' + ampm;
+    let hours = this.state.selectedDate.getHours();
+    let minutes = this.state.selectedDate.getMinutes();
+    const ampm = hours >= 12 ? 'pm' : 'am';
+    hours %= 12;
+    hours = hours || 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? `0${minutes}` : minutes;
+    const strTime = `${hours}:${minutes} ${ampm}`;
     return strTime;
   }
 
@@ -191,7 +189,7 @@ export default class EditEvent extends Component {
       facebookLink,
       eventDescription,
       showDatePicker,
-      showTimePicker
+      showTimePicker,
     } = this.state;
 
     const today = new Date();
@@ -262,7 +260,8 @@ export default class EditEvent extends Component {
               >
                 {this.getDateString()}
               </Text>
-              {showDatePicker && 
+              {showDatePicker
+                && (
                 <DatePicker
                   style={{ width: 200 }}
                   value={selectedDate}
@@ -300,7 +299,7 @@ export default class EditEvent extends Component {
                   }}
                   onChange={this.onDateTimeChange}
                 />
-              }
+                )}
               <Ionicons
                 name="md-arrow-dropdown"
                 size={20}
@@ -334,7 +333,8 @@ export default class EditEvent extends Component {
               >
                 {this.getTimeString()}
               </Text>
-              {showTimePicker &&
+              {showTimePicker
+                && (
                 <DatePicker
                   style={{ width: 200 }}
                   value={selectedDate}
@@ -367,13 +367,13 @@ export default class EditEvent extends Component {
                       fontSize: 17,
                       color:
                       errors.arePresent && errors.data.eventName
-                      ? colors.error
-                      : colors.grayScale10,
+                        ? colors.error
+                        : colors.grayScale10,
                     },
                   }}
                   onChange={this.onDateTimeChange}
                 />
-              }
+                )}
               <Ionicons
                 name="md-arrow-dropdown"
                 size={20}
@@ -471,12 +471,12 @@ export default class EditEvent extends Component {
           <Button
             style={{
               alignSelf: 'center',
-              backgroundColor: "#ff807f",
+              backgroundColor: '#ff807f',
               width: '90%',
               justifyContent: 'center',
               alignItems: 'center',
               marginRight: '1%',
-              marginTop: 12
+              marginTop: 12,
             }}
             onPress={this.deleteConfirmation}
           >
