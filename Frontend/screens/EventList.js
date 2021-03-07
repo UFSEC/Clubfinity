@@ -18,14 +18,11 @@ class EventList extends Component {
     this.state = {
       pastEvents: [],
       upcomingEvents: [],
-      isAdmin: false,
     };
   }
 
   async componentDidMount() {
     const { navigation } = this.props;
-    const { isAdmin } = this.props;
-    this.setState({ isAdmin: isAdmin });
     const clubId = navigation.getParam('clubId', 'NO-CLUB');
 
     const events = await EventsApi.getForClub(clubId);
@@ -55,7 +52,7 @@ class EventList extends Component {
 
   render() {
     const { navigation } = this.props;
-    const { upcomingEvents, pastEvents, isAdmin } = this.state;
+    const { upcomingEvents, pastEvents } = this.state;
 
     const listData = [];
     if (upcomingEvents.length > 0) {
@@ -65,6 +62,7 @@ class EventList extends Component {
     if (pastEvents.length > 0) {
       listData.push({ title: 'Past Events', data: pastEvents });
     }
+    const isAdmin = navigation.getParam('isAdmin', '');
 
     return (
       <View style={{ flex: 1, paddingVertical: 20, paddingHorizontal: 30 }}>
@@ -81,7 +79,7 @@ class EventList extends Component {
                 description: item.description,
                 location: item.location,
                 date: item.date,
-                isAdmin: isAdmin
+                isAdmin,
               })}
             />
           )}
