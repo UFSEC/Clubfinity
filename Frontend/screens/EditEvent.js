@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Alert } from 'react-native'
 import {
   Button,
   Text,
@@ -11,11 +12,11 @@ import {
   Textarea,
 } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
-import DatePicker from 'react-native-datepicker';
+import {DateTimePicker as DatePicker} from '@react-native-community/datetimepicker';
+import { DateTime } from 'luxon'
 import colors from '../util/colors';
 import { isValidFacebookUrl } from '../util/validation';
-import {
-  combineAndParseDateTime, extractDateAndTime, DATE_PICKER_FORMAT, TIME_PICKER_FORMAT,
+import { DATE_PICKER_FORMAT, TIME_PICKER_FORMAT,
 } from '../util/dateUtil';
 import EventsApi from '../api/EventsApi';
 import buildNavigationsOptions from '../util/navigationOptionsBuilder';
@@ -31,29 +32,29 @@ export default class EditEvent extends Component {
       selectedTime: false,
       location: false,
       facebookLink: false,
-      eventDescription: false,
+      eventDescription: false
     };
     this.state = {
       id: '',
       eventName: '',
-      selectedDate: '',
-      selectedTime: '',
+      selectedDate: new Date(),
       location: '',
       facebookLink: '',
       eventDescription: '',
       processingRequest: { status: false, message: '' },
+      processingDelete: { status: false, message: '' },
       errors: { arePresent: false, data: errors },
+      showDatePicker: false,
+      showTimePicker: false
     };
   }
 
   componentDidMount() {
     const { navigation } = this.props;
-    const { date, time } = extractDateAndTime(navigation.getParam('date', ''));
     this.setState({
       id: navigation.getParam('id', ''),
       eventName: navigation.getParam('title', ''),
       selectedDate: date,
-      selectedTime: time,
       location: navigation.getParam('location', ''),
       facebookLink: '',
       eventDescription: navigation.getParam('description', ''),
@@ -76,7 +77,7 @@ export default class EditEvent extends Component {
     const {
       id, eventName, selectedDate, selectedTime, location, eventDescription,
     } = this.state;
-    const parsedDate = combineAndParseDateTime(selectedDate, selectedTime);
+    const parsedDate = DateTime.fromISO(selectedDate.toISOString());
     const editedEventResponse = await EventsApi.update(id, {
       name: eventName,
       description: eventDescription,
@@ -95,7 +96,6 @@ export default class EditEvent extends Component {
     const {
       eventName,
       selectedDate,
-      selectedTime,
       location,
       facebookLink,
       errors,
@@ -115,6 +115,35 @@ export default class EditEvent extends Component {
     return { valid: validRequest, errors };
   };
 
+  deleteConfirmation = () =>
+    Alert.alert(
+      "Delete Announcement?",
+      "This action cannot be undone.",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => this.deleteEvent() }
+      ],
+      { cancelable: false }
+    );
+
+  setShowDatePicker = () => {
+    this.setState({showDatePicker: true});
+  };
+
+  setShowTimePicker = () => {
+    this.setState({showTimePicker: true});
+  };
+
+  onDateTimeChange = (event, newDate) => {
+    const currentDate = newDate || this.state.selectedDate;
+    this.setState({showDatePicker: false});
+    this.setState({showTimePicker: false});
+    this.setState({selectedDate: currentDate});
+  };
+
   render() {
     const {
       processingRequest,
@@ -128,6 +157,27 @@ export default class EditEvent extends Component {
     } = this.state;
 
     const today = new Date();
+
+    getDateString = () => {
+      if (this.state.selectedDate === undefined) {
+        return ""
+      }
+      return this.state.selectedDate.toString().substring(0,10)
+    }
+
+    getTimeString = () => {
+      if (this.state.selectedDate === undefined) {
+        return ""
+      }
+      var hours = this.state.selectedDate.getHours();
+      var minutes = this.state.selectedDate.getMinutes();
+      var ampm = hours >= 12 ? 'pm' : 'am';
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      minutes = minutes < 10 ? '0'+minutes : minutes;
+      var strTime = hours + ':' + minutes + ' ' + ampm;
+      return strTime;
+    }
 
     return (
       <Container>
@@ -183,43 +233,57 @@ export default class EditEvent extends Component {
               >
                 Date
               </Label>
-              <DatePicker
-                style={{ width: 200 }}
-                date={selectedDate}
-                mode="date"
-                placeholder={errors.arePresent && errors.data.selectedDate
-                  ? 'Invalid date'
-                  : 'Select a Date'}
-                format={DATE_PICKER_FORMAT}
-                minDate={today}
-                confirmBtnText="Set Date"
-                cancelBtnText="Cancel"
-                showIcon={false}
-                customStyles={{
-                  dateIcon: {
-                    position: 'absolute',
-                    left: 0,
-                    top: 4,
-                    marginLeft: 0,
-                  },
-                  dateInput: {
-                    marginLeft: 50,
-                    borderColor: 'white',
-                  },
-                  dateText: {
-                    fontSize: 17,
-                    color: colors.grayScale10,
-                  },
-                  placeholderText: {
-                    fontSize: 17,
-                    color:
-                      errors.arePresent && errors.data.eventName
-                        ? colors.error
-                        : colors.grayScale10,
-                  },
-                }}
-                onDateChange={(date) => this.setState({ selectedDate: date })}
-              />
+              <Text
+                style={{ textAlign: 'right' }}
+                height="50%"
+                placeholderTextColor={colors.error}
+                placeholder={
+                  errors.arePresent && errors.data.location
+                    ? 'Invalid event location'
+                    : ''
+                }
+              >
+                {getDateString()}
+              </Text>
+              {showDatePicker && 
+                <DatePicker
+                  style={{ width: 200 }}
+                  value={selectedDate}
+                  mode="date"
+                  placeholder={errors.arePresent && errors.data.selectedDate
+                    ? 'Invalid date'
+                    : 'Select a Date'}
+                  format={DATE_PICKER_FORMAT}
+                  minimumDate={today}
+                  confirmBtnText="Set Date"
+                  cancelBtnText="Cancel"
+                  showIcon={false}
+                  customStyles={{
+                    dateIcon: {
+                      position: 'absolute',
+                      left: 0,
+                      top: 4,
+                      marginLeft: 0,
+                    },
+                    dateInput: {
+                      marginLeft: 50,
+                      borderColor: 'white',
+                    },
+                    dateText: {
+                      fontSize: 17,
+                      color: colors.grayScale10,
+                    },
+                    placeholderText: {
+                      fontSize: 17,
+                      color:
+                        errors.arePresent && errors.data.eventName
+                          ? colors.error
+                          : colors.grayScale10,
+                    },
+                  }}
+                  onChange={this.onDateTimeChange}
+                />
+              }
               <Ionicons
                 name="md-arrow-dropdown"
                 size={20}
@@ -241,44 +305,58 @@ export default class EditEvent extends Component {
               >
                 Time
               </Label>
-              <DatePicker
-                style={{ width: 200 }}
-                date={selectedTime}
-                mode="time"
-                placeholder={errors.arePresent && errors.data.selectedTime
-                  ? 'Invalid time'
-                  : 'Select a Time'}
-                format={TIME_PICKER_FORMAT}
-                confirmBtnText="Set Time"
-                cancelBtnText="Cancel"
-                minuteInterval={10}
-                showIcon={false}
-                minDate={today}
-                customStyles={{
-                  dateIcon: {
-                    position: 'absolute',
-                    left: 0,
-                    top: 4,
-                    marginLeft: 0,
-                  },
-                  dateInput: {
-                    marginLeft: 50,
-                    borderColor: 'white',
-                  },
-                  dateText: {
-                    fontSize: 17,
-                    color: colors.grayScale10,
-                  },
-                  placeholderText: {
-                    fontSize: 17,
-                    color:
+              <Text
+                style={{ textAlign: 'right' }}
+                height="50%"
+                placeholderTextColor={colors.error}
+                placeholder={
+                  errors.arePresent && errors.data.location
+                    ? 'Invalid event location'
+                    : ''
+                }
+              >
+                {getTimeString()}
+              </Text>
+              {showTimePicker &&
+                <DatePicker
+                  style={{ width: 200 }}
+                  value={selectedTime}
+                  mode="time"
+                  placeholder={errors.arePresent && errors.data.selectedTime
+                    ? 'Invalid time'
+                    : 'Select a Time'}
+                  format={TIME_PICKER_FORMAT}
+                  confirmBtnText="Set Time"
+                  cancelBtnText="Cancel"
+                  minuteInterval={10}
+                  showIcon={false}
+                  minimumDate={today}
+                  customStyles={{
+                    dateIcon: {
+                      position: 'absolute',
+                      left: 0,
+                      top: 4,
+                      marginLeft: 0,
+                    },
+                    dateInput: {
+                      marginLeft: 50,
+                      borderColor: 'white',
+                    },
+                    dateText: {
+                      fontSize: 17,
+                      color: colors.grayScale10,
+                    },
+                    placeholderText: {
+                      fontSize: 17,
+                      color:
                       errors.arePresent && errors.data.eventName
-                        ? colors.error
-                        : colors.grayScale10,
-                  },
-                }}
-                onDateChange={(time) => this.setState({ selectedTime: time })}
-              />
+                      ? colors.error
+                      : colors.grayScale10,
+                    },
+                  }}
+                  onChange={this.onDateTimeChange}
+                />
+              }
               <Ionicons
                 name="md-arrow-dropdown"
                 size={20}
@@ -371,6 +449,23 @@ export default class EditEvent extends Component {
               {processingRequest.status
                 ? processingRequest.message
                 : 'Update Event'}
+            </Text>
+          </Button>
+          <Button
+            style={{
+              alignSelf: 'center',
+              backgroundColor: colors.secondary0,
+              width: '90%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginRight: '1%',
+            }}
+            onPress={this.deleteConfirmation}
+          >
+            <Text style={{ alignSelf: 'center' }}>
+              {processingDelete.status
+                ? processingDelete.message
+                : 'Delete Event'}
             </Text>
           </Button>
         </Content>
