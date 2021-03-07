@@ -178,6 +178,7 @@ export default class EditEvent extends Component {
     this.setState({
       processingDelete: { status: true, message: 'Deleted!' },
     });
+    const { navigation } = this.props;
     navigation.navigate('Club');
   }
 
