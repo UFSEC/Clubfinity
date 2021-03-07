@@ -18,11 +18,14 @@ class EventList extends Component {
     this.state = {
       pastEvents: [],
       upcomingEvents: [],
+      isAdmin: false
     };
   }
 
   async componentDidMount() {
     const { navigation } = this.props;
+    const { isAdmin_ } = this.props;
+    this.setState({ isAdmin: isAdmin_ })
     const clubId = navigation.getParam('clubId', 'NO-CLUB');
 
     const events = await EventsApi.getForClub(clubId);
@@ -51,7 +54,7 @@ class EventList extends Component {
   )
 
   render() {
-    const { navigation, isAdmin } = this.props;
+    const { navigation } = this.props;
     const { upcomingEvents, pastEvents } = this.state;
 
     const listData = [];
@@ -78,7 +81,7 @@ class EventList extends Component {
                 description: item.description,
                 location: item.location,
                 date: item.date,
-                isAdmin,
+                isAdmin: false,
               })}
             />
           )}

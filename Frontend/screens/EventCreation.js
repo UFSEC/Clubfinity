@@ -13,11 +13,11 @@ import {
 
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { DateTime } from 'luxon';
 import colors from '../util/colors';
 import { isValidFacebookUrl } from '../util/validation';
 import EventsApi from '../api/EventsApi';
 import { DATE_PICKER_FORMAT, TIME_PICKER_FORMAT } from '../util/dateUtil';
-import { DateTime } from 'luxon'
 import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
 export default class EventCreation extends Component {
@@ -42,7 +42,7 @@ export default class EventCreation extends Component {
       createdEvent: false,
       errors: { arePresent: false, data: errors },
       showDatePicker: false,
-      showTimePicker: false
+      showTimePicker: false,
     };
   }
 
@@ -102,17 +102,18 @@ export default class EventCreation extends Component {
   };
 
   setShowDatePicker = () => {
-    this.setState({showDatePicker: true})
+    this.setState({ showDatePicker: true });
   }
 
   setShowTimePicker = () => {
-    this.setState({showTimePicker: true})
+    this.setState({ showTimePicker: true });
   }
 
-  onDateTimeChange = (event, newDate) => {
-    this.setState({showDatePicker: false})
-    this.setState({showTimePicker: false})
-    this.setState({selectedDate: newDate || this.state.selectedDate});
+  onDateTimeChange = async (event, newDate) => {
+    const { selectedDate } = this.state;
+    this.setState({ showDatePicker: false });
+    this.setState({ showTimePicker: false });
+    this.setState({ selectedDate: newDate || selectedDate });
   }
 
   render() {
@@ -122,7 +123,7 @@ export default class EventCreation extends Component {
       createdEvent,
       selectedDate,
       showDatePicker,
-      showTimePicker
+      showTimePicker,
     } = this.state;
     if (createdEvent) {
       return (
@@ -131,28 +132,28 @@ export default class EventCreation extends Component {
       );
     }
 
-    const today = new Date()
+    const today = new Date();
 
-    getDateString = () => {
-      if (this.state.selectedDate === undefined) {
-        return ""
+    const getDateString = async () => {
+      if (selectedDate === undefined) {
+        return '';
       }
-      return this.state.selectedDate.toString().substring(0,10)
-    }
+      return selectedDate.toString().substring(0, 10);
+    };
 
-    getTimeString = () => {
-      if (this.state.selectedDate === undefined) {
-        return ""
+    const getTimeString = async () => {
+      if (selectedDate === undefined) {
+        return '';
       }
-      var hours = this.state.selectedDate.getHours();
-      var minutes = this.state.selectedDate.getMinutes();
-      var ampm = hours >= 12 ? 'pm' : 'am';
-      hours = hours % 12;
-      hours = hours ? hours : 12; // the hour '0' should be '12'
-      minutes = minutes < 10 ? '0'+minutes : minutes;
-      var strTime = hours + ':' + minutes + ' ' + ampm;
+      let hours = selectedDate.getHours();
+      let minutes = selectedDate.getMinutes();
+      const ampm = hours >= 12 ? 'pm' : 'am';
+      hours %= 12;
+      hours = hours || 12; // the hour '0' should be '12'
+      minutes = minutes < 10 ? `0${minutes}` : minutes;
+      const strTime = `${hours}:${minutes} ${ampm}`;
       return strTime;
-    }
+    };
 
     return (
       <Container>
@@ -219,7 +220,8 @@ export default class EventCreation extends Component {
               >
                 {getDateString()}
               </Text>
-              {showDatePicker &&
+              {showDatePicker
+                && (
                 <DateTimePicker
                   style={{ width: 200 }}
                   value={selectedDate}
@@ -257,7 +259,7 @@ export default class EventCreation extends Component {
                   }}
                   onChange={this.onDateTimeChange}
                 />
-              }
+                )}
               <Ionicons
                 name="md-arrow-dropdown"
                 size={20}
@@ -291,7 +293,8 @@ export default class EventCreation extends Component {
               >
                 {getTimeString()}
               </Text>
-              {showTimePicker && 
+              {showTimePicker
+                && (
                 <DateTimePicker
                   style={{ width: 200 }}
                   value={selectedDate}
@@ -330,7 +333,7 @@ export default class EventCreation extends Component {
                   }}
                   onChange={this.onDateTimeChange}
                 />
-              }
+                )}
               <Ionicons
                 name="md-arrow-dropdown"
                 size={20}

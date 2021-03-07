@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Text, StyleSheet, StatusBar, Alert
+  Text, StyleSheet, StatusBar, Alert,
 } from 'react-native';
 import {
   Button,
@@ -53,10 +53,10 @@ const styles = StyleSheet.create({
   deleteButtonStyle: {
     width: '92%',
     alignSelf: 'center',
-    backgroundColor: "#ff807f",
+    backgroundColor: '#ff807f',
     marginTop: 12,
     marginBottom: 12,
-    color: "black"
+    color: 'black',
   },
   buttonText: {
     color: '#ecf0f1',
@@ -154,12 +154,13 @@ export default class EditAnnouncements extends Component {
     const deleteAnnouncementResponse = await AnnouncementsApi.delete(id);
     if (deleteAnnouncementResponse.error) {
       alert('Unable to delete announcement');
-      console.log(updateAnnouncementResponse.error);
+      console.log(deleteAnnouncementResponse.error);
       return;
     }
     this.setState({
       processingDelete: { status: true, message: 'Deleted!' },
     });
+    const { navigation } = this.props;
     navigation.navigate('Club');
   }
 
@@ -172,39 +173,37 @@ export default class EditAnnouncements extends Component {
     return { valid: validRequest, errors: errorData };
   }
 
-  deleteConfirmation = () =>
-    Alert.alert(
-      "Delete Announcement?",
-      "This action cannot be undone.",
-      [
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-        },
-        { text: "Delete", onPress: () => this.deleteAnnouncement() }
-      ],
-      { cancelable: false }
-    );
-  
-  createTwoButtonAlert = () =>
-    Alert.alert(
-      "Alert Title",
-      "My Alert Msg",
-      [
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-        },
-        { text: "OK", onPress: () => console.log("OK Pressed") }
-      ],
-      { cancelable: false }
-    );
+  deleteConfirmation = () => Alert.alert(
+    'Delete Announcement?',
+    'This action cannot be undone.',
+    [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      { text: 'Delete', onPress: () => this.deleteAnnouncement() },
+    ],
+    { cancelable: false },
+  );
+
+  createTwoButtonAlert = () => Alert.alert(
+    'Alert Title',
+    'My Alert Msg',
+    [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      { text: 'OK', onPress: () => console.log('OK Pressed') },
+    ],
+    { cancelable: false },
+  );
 
   render() {
     const {
-      errors, title, description, processingRequest, processingDelete
+      errors, title, description, processingRequest, processingDelete,
     } = this.state;
     return (
       <Container>
