@@ -29,7 +29,6 @@
     "react-devtools": "^3.6.3",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.0.tar.gz",
     "react-native-calendars": "^1.22.0",
-    "react-native-datepicker": "^1.7.2",
     "react-native-gesture-handler": "^1.8.0",
     "react-native-ionicons": "^4.6.5",
     "react-native-keyboard-aware-scroll-view": "^0.9.1",
