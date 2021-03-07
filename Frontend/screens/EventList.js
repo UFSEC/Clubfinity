@@ -55,7 +55,7 @@ class EventList extends Component {
 
   render() {
     const { navigation } = this.props;
-    const { upcomingEvents, pastEvents } = this.state;
+    const { upcomingEvents, pastEvents, isAdmin } = this.state;
 
     const listData = [];
     if (upcomingEvents.length > 0) {
@@ -81,7 +81,7 @@ class EventList extends Component {
                 description: item.description,
                 location: item.location,
                 date: item.date,
-                isAdmin: false,
+                isAdmin: isAdmin
               })}
             />
           )}
