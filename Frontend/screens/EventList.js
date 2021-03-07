@@ -24,8 +24,8 @@ class EventList extends Component {
 
   async componentDidMount() {
     const { navigation } = this.props;
-    const { isAdmin_ } = this.props;
-    this.setState({ isAdmin: isAdmin_ });
+    const { isAdmin } = this.props;
+    this.setState({ isAdmin: isAdmin });
     const clubId = navigation.getParam('clubId', 'NO-CLUB');
 
     const events = await EventsApi.getForClub(clubId);
