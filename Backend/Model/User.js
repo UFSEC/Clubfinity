@@ -12,6 +12,7 @@ const Schema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Club',
   }],
+  active: { type: Boolean, default: false },
 });
 
 exports.Model = mongoose.model('User', Schema);

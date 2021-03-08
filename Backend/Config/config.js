@@ -8,11 +8,13 @@ const config = {
     users: {
       collection: 'users',
     },
+    sendEmails: true,
   },
   test: {
     port: process.env.PORT || 8080,
     database: 'mongodb://localhost:27017/clubfinity',
     jwtSecret: '4686E7A784E4176F122F7F00D5742225421',
+    sendEmails: false,
   },
   production: {
     port: process.env.PORT || 8080,
@@ -21,11 +23,13 @@ const config = {
     users: {
       collection: 'users',
     },
+    sendEmails: true,
   },
   ci: {
     port: process.env.PORT || 8080,
     jwtSecret: 'testSecret',
     database: 'mongodb://mongo:27017/clubfinity',
+    sendEmails: false,
   },
 };
 

@@ -1,5 +1,6 @@
 exports.TestHttp = class {
-  constructor(chai, app, userToken) {
+
+  constructor(chai, app, userToken = null) {
     this.chai = chai;
     this.app = app;
     this.userToken = userToken;
@@ -12,6 +13,12 @@ exports.TestHttp = class {
   }
 
   async post(url, body = {}) {
+    if (!this.userToken) {
+      return this.chai.request(this.app)
+        .post(url)
+        .send(body);
+    }
+
     return this.chai.request(this.app)
       .post(url)
       .auth(this.userToken, { type: 'bearer' })
