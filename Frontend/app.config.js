@@ -25,7 +25,7 @@ export default {
     package: 'com.ufsec.clubfinity',
     googleServicesFile: './google-services.json',
     useNextNotificationsApi: true,
-    permissions: []
+    permissions: [],
   },
   ios: {
     supportsTablet: true,
