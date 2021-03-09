@@ -5,11 +5,10 @@ import {
   Text,
   View,
   Platform,
+  StyleSheet,
 } from 'react-native';
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
-import { Octicons } from '@expo/vector-icons';
-import { primary, emptyEventList } from '../assets/styles/stylesheet';
 
 import EventCard from '../components/EventCard';
 import EventsApi from '../api/EventsApi';
@@ -18,6 +17,40 @@ import DiscoverButton from '../components/DiscoverButton';
 import UserContext from '../util/UserContext';
 import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 import colors from '../util/colors';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 10,
+    backgroundColor: '#F2F2F7',
+  },
+  bodyText: {
+    color: colors.text,
+    fontSize: 13,
+  },
+  headerText: {
+    fontSize: 15,
+    marginTop: 15,
+    marginBottom: 5,
+    alignSelf: 'center',
+    color: colors.grayScale9,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyContainerText: {
+    fontSize: 25,
+    margin: 10,
+    color: colors.grayScale8,
+  },
+  emptyContainerSubtext: {
+    fontSize: 20,
+    margin: 5,
+    color: colors.grayScale8,
+  },
+});
 
 class HomeScr extends Component {
   static contextType = UserContext;
@@ -37,6 +70,7 @@ class HomeScr extends Component {
     this.registerForPushNotificationsAsync();
     const { user } = this.context;
     const { clubs } = user;
+    const { navigation } = this.props;
     if (clubs.length === 0) {
       this.setState({
         events: [],
@@ -47,6 +81,11 @@ class HomeScr extends Component {
       return;
     }
 
+    navigation.addListener('willFocus', this.onFocus);
+    this.onFocus();
+  }
+
+  onFocus = async () => {
     const events = await EventsApi.getFollowing();
     this.setState({
       events,
@@ -82,7 +121,6 @@ class HomeScr extends Component {
     }
   };
 
-  // This has to be a lambda in order to preserve the value of 'this.props'
   navigateToDiscover = async () => {
     const { navigation } = this.props;
     await navigation.navigate('Discover');
@@ -94,31 +132,44 @@ class HomeScr extends Component {
     </View>
   );
 
-  notFollowingClubsView = () => (
-    <View style={emptyEventList.container}>
-      <Text style={emptyEventList.text}>You are not following any clubs</Text>
-      <DiscoverButton onPress={this.navigateToDiscover} />
-    </View>
-  );
+  notFollowingClubsView = () => {
+    const { emptyContainer, emptyContainerText } = styles;
+    return (
+      <View style={emptyContainer}>
+        <Text style={emptyContainerText}>You are not following any clubs</Text>
+        <DiscoverButton onPress={this.navigateToDiscover} />
+      </View>
+    );
+  };
 
-  noUpcomingEventsView = () => (
-    <View style={emptyEventList.container}>
-      <Text style={emptyEventList.text}>No upcoming events</Text>
-    </View>
-  );
+  noUpcomingEventsView = () => {
+    const { emptyContainer, emptyContainerText, emptyContainerSubtext } = styles;
+    return (
+      <View style={emptyContainer}>
+        <Text style={emptyContainerText}>No upcoming events</Text>
+        <Text style={emptyContainerSubtext}>Find new clubs!</Text>
+      </View>
+    );
+  };
+
+  filterEvents = (events) => {
+    const currentDate = new Date();
+    return events
+      .filter((event) => event.date > currentDate)
+      .sort((eventOne, eventTwo) => eventOne.date - eventTwo.date);
+  }
 
   eventListView() {
     const { events } = this.state;
     const { user } = this.context;
+    const { container, bodyText, headerText } = styles;
     return (
-      <View style={[primary.container, primary.bodyText]}>
-        <Text style={primary.headerText}>
-          Hey Upcoming Events
-          {' '}
-          <Octicons name="megaphone" color={colors.primary0} size={24} />
+      <View style={[container, bodyText]}>
+        <Text style={headerText}>
+          Upcoming Events
         </Text>
         <FlatList
-          data={events.sort((eventOne, eventTwo) => eventTwo.date - eventOne.date)}
+          data={this.filterEvents(events)}
           renderItem={({ item }) => (
             <EventCard
               key={item._id}

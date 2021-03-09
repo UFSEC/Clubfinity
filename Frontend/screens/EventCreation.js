@@ -226,7 +226,8 @@ export default class EventCreation extends Component {
                   : 'Select a Time'}
                 format={TIME_PICKER_FORMAT}
                 confirmBtnText="Set Time"
-                minDate={today}
+                // TODO: Add function to calculate min date
+                // minDate={today}
                 cancelBtnText="Cancel"
                 minuteInterval={10}
                 showIcon={false}
