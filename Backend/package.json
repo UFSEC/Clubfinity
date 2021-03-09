@@ -9,6 +9,7 @@
     "dotenv": "^8.2.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-plugin-jest": "^23.18.2",
+    "expo-server-sdk": "^3.6.0",
     "express": "^4.17.1",
     "express-session": "^1.15.6",
     "express-validator": "^6.2.0",
