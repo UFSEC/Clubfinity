@@ -7,7 +7,7 @@ export default {
     'ios',
     'android',
   ],
-  version: '1.0.5',
+  version: '1.0.6',
   orientation: 'portrait',
   icon: './assets/icon.png',
   splash: {
@@ -25,6 +25,7 @@ export default {
     package: 'com.ufsec.clubfinity',
     googleServicesFile: './google-services.json',
     useNextNotificationsApi: true,
+    permissions: []
   },
   ios: {
     supportsTablet: true,
