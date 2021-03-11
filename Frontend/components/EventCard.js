@@ -78,7 +78,6 @@ export default class EventCard extends Component {
       mute: uninterestedUsers.includes(userId),
       going: goingUsers.includes(userId),
       interested: interestedUsers.includes(userId),
-      notificationID: null,
     };
   }
 
@@ -100,44 +99,44 @@ export default class EventCard extends Component {
   };
 
   goingHandler = async () => {
-    const { going, notificationID } = this.state;
-    const { name, date } = this.props;
+    const { going } = this.state;
+    const {
+      name, date, eventID, userId,
+    } = this.props;
     this.setState({
       going: !going,
     });
-    const { eventID } = this.props;
     if (!going) {
       this.setState({
         mute: false,
         interested: false,
       });
       await EventsApi.addGoingUser(eventID);
-      const identifier = scheduleNotification(name, date);
-      this.setState({ notificationID: identifier });
+      await scheduleNotification(name, date, eventID, userId);
     } else {
-      await EventsApi.removeGoingUser(eventID);
-      cancelNotification(notificationID);
+      await EventsApi.removeGoingUser(eventID, userId);
+      await cancelNotification(eventID, userId);
     }
   }
 
   interestedHandler = async () => {
-    const { interested, notificationID } = this.state;
-    const { name, date } = this.props;
+    const { interested } = this.state;
+    const {
+      name, date, eventID, userId,
+    } = this.props;
     this.setState({
       interested: !interested,
     });
-    const { eventID } = this.props;
     if (!interested) {
       this.setState({
         mute: false,
         going: false,
       });
       await EventsApi.addInterestedUser(eventID);
-      const identifier = scheduleNotification(name, date);
-      this.setState({ notificationID: identifier });
+      scheduleNotification(name, date, eventID, userId);
     } else {
-      await EventsApi.removeGoingUser(eventID);
-      cancelNotification(notificationID);
+      await EventsApi.removeGoingUser(eventID, userId);
+      cancelNotification(eventID, userId);
     }
   }
 
