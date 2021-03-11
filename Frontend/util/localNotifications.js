@@ -26,10 +26,11 @@ export async function askPermissions() {
   return true;
 }
 
-export async function scheduleNotification(name, date) {
+export async function scheduleNotification(name, date, eventID, userID) {
+  const MS_FROM_NOW = (date - Date.now()) - (1000 * 60 * 60);
   // First, set the handler that will cause the notification
   // to show the alert
-  const checking = askPermissions();
+  const notificationsPermitted = askPermissions();
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
       shouldShowAlert: true,
@@ -39,25 +40,28 @@ export async function scheduleNotification(name, date) {
   });
   // Second, call the method
   // set notification time to one hour before the event
-  const timeDiff = (date - Date.now()) - (1000 * 60 * 60);
-  const trigger = new Date(Date.now() + timeDiff);
+  const trigger = new Date(Date.now() + MS_FROM_NOW);
   trigger.setSeconds(0);
-  let notificationID = null;
-  if (checking) {
-    notificationID = Notifications.scheduleNotificationAsync({
+  if (notificationsPermitted) {
+    Notifications.scheduleNotificationAsync({
       content: {
         title: `Upcoming Event: ${name}`,
         body: 'Event will start in 1 hour!',
+        data: { eventID: `${eventID}`, userID: `${userID}` },
       },
       // trigger: null, for immediate notification
       trigger,
     });
   }
-  return notificationID;
 }
 
-export async function cancelNotification(notificationID) {
-  if (notificationID != null) {
-    await Notifications.cancelScheduledNotificationAsync(notificationID);
-  }
+export async function cancelNotification(eventID, userID) {
+  const allNotifications = await Notifications.getAllScheduledNotificationsAsync();
+  let notificationID = null;
+  allNotifications.forEach((notification) => {
+    if (notification.content.data.eventID === `${eventID}` && notification.content.data.userID === `${userID}`) {
+      notificationID = notification.identifier;
+    }
+  });
+  await Notifications.cancelScheduledNotificationAsync(notificationID);
 }
