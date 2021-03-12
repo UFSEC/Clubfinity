@@ -141,29 +141,6 @@ export default class EditEvent extends Component {
     this.setState({ selectedDate: currentDate });
   };
 
-  getDateString = async () => {
-    const { selectedDate } = this.state;
-    if (selectedDate === undefined) {
-      return '';
-    }
-    return selectedDate.toString().substring(0, 10);
-  }
-
-  getTimeString = () => {
-    const { selectedDate } = this.state;
-    if (selectedDate === undefined) {
-      return '';
-    }
-    let hours = selectedDate.getHours();
-    let minutes = selectedDate.getMinutes();
-    const ampm = hours >= 12 ? 'pm' : 'am';
-    hours %= 12;
-    hours = hours || 12; // the hour '0' should be '12'
-    minutes = minutes < 10 ? `0${minutes}` : minutes;
-    const strTime = `${hours}:${minutes} ${ampm}`;
-    return strTime;
-  }
-
   deleteEvent = async () => {
     this.setState({
       processingDelete: { status: true, message: 'Deleting...' },
@@ -197,6 +174,33 @@ export default class EditEvent extends Component {
     } = this.state;
 
     const today = new Date();
+
+    const getDateString = () => {
+      const { selectedDate } = this.state;
+      if (selectedDate === undefined) {
+        return '';
+      }
+      else {
+        return String(selectedDate.toString().substring(0, 10));
+      }
+    }
+
+    const getTimeString = () => {
+      const { selectedDate } = this.state;
+      if (selectedDate === undefined) {
+        return '';
+      }
+      else {
+        let hours = selectedDate.getHours();
+        let minutes = selectedDate.getMinutes();
+        const ampm = hours >= 12 ? 'pm' : 'am';
+        hours %= 12;
+        hours = hours || 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? `0${minutes}` : minutes;
+        const strTime = `${hours}:${minutes} ${ampm}`;
+        return strTime;
+      }
+    }
 
     return (
       <Container>
@@ -262,7 +266,7 @@ export default class EditEvent extends Component {
                     : ''
                 }
               >
-                {this.getDateString()}
+                {getDateString()}
               </Text>
               {showDatePicker
                 && (
@@ -335,7 +339,7 @@ export default class EditEvent extends Component {
                     : ''
                 }
               >
-                {this.getTimeString()}
+                {getTimeString()}
               </Text>
               {showTimePicker
                 && (
