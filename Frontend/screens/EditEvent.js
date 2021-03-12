@@ -179,25 +179,21 @@ export default class EditEvent extends Component {
       if (selectedDate === undefined) {
         return '';
       }
-      else {
-        return String(selectedDate.toString().substring(0, 10));
-      }
+      return String(selectedDate.toString().substring(0, 10));
     };
 
     const getTimeString = () => {
       if (selectedDate === undefined) {
         return '';
       }
-      else {
-        let hours = selectedDate.getHours();
-        let minutes = selectedDate.getMinutes();
-        const ampm = hours >= 12 ? 'pm' : 'am';
-        hours %= 12;
-        hours = hours || 12; // the hour '0' should be '12'
-        minutes = minutes < 10 ? `0${minutes}` : minutes;
-        const strTime = `${hours}:${minutes} ${ampm}`;
-        return strTime;
-      }
+      let hours = selectedDate.getHours();
+      let minutes = selectedDate.getMinutes();
+      const ampm = hours >= 12 ? 'pm' : 'am';
+      hours %= 12;
+      hours = hours || 12; // the hour '0' should be '12'
+      minutes = minutes < 10 ? `0${minutes}` : minutes;
+      const strTime = `${hours}:${minutes} ${ampm}`;
+      return strTime;
     };
 
     return (
