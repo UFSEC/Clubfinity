@@ -176,17 +176,15 @@ export default class EditEvent extends Component {
     const today = new Date();
 
     const getDateString = () => {
-      const { selectedDate } = this.state;
       if (selectedDate === undefined) {
         return '';
       }
       else {
         return String(selectedDate.toString().substring(0, 10));
       }
-    }
+    };
 
     const getTimeString = () => {
-      const { selectedDate } = this.state;
       if (selectedDate === undefined) {
         return '';
       }
@@ -200,7 +198,7 @@ export default class EditEvent extends Component {
         const strTime = `${hours}:${minutes} ${ampm}`;
         return strTime;
       }
-    }
+    };
 
     return (
       <Container>
