@@ -189,8 +189,8 @@ export default class EditClub extends Component {
                 onChangeText={(value) => this.setState({ thumbnailUrl: value })}
                 placeholderTextColor={
                   errors.arePresent && errors.data.thumbnailUrl
-                    ? { color: colors.error }
-                    : { color: colors.grayScale10 }
+                    ? colors.error
+                    : colors.grayScale10
                 }
                 height="50%"
                 placeholder={
