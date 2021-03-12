@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  FlatList,
   View,
   SafeAreaView,
   ScrollView,
@@ -284,7 +285,7 @@ export default class ClubScr extends React.Component {
                 <Body style={{ paddingHorizontal: '0%', width: '100%' }}>
                   {!eventsEmpty ? (
                     <List style={{ width: '100%' }}>
-                      <List
+                      <FlatList
                         data={events}
                         style={{ width: '100%' }}
                         renderItem={({ item }) => (
@@ -361,7 +362,7 @@ export default class ClubScr extends React.Component {
                 <Body style={{ paddingHorizontal: '0%', width: '100%' }}>
                   {!announcementsEmpty ? (
                     <List style={{ width: '100%' }}>
-                      <List
+                      <FlatList
                         data={announcements}
                         style={{ width: '100%' }}
                         renderItem={({ item }) => (
@@ -435,7 +436,7 @@ export default class ClubScr extends React.Component {
               <CardItem style={{ paddingHorizontal: '0%' }}>
                 <Body style={{ paddingHorizontal: '0%', width: '100%' }}>
                   <List style={{ width: '100%' }}>
-                    <List
+                    <FlatList
                       data={club.admins}
                       style={{ width: '100%' }}
                       renderItem={({ item }) => (
