@@ -60,16 +60,6 @@ exports.create = async (req, res) => catchErrors(res, async () => {
   return getLimitedUserData(await userDAO.create(req.body));
 });
 
-// Submit registration ->
-//POST /user - create inactive user, send email
-
-// UI
-// registration screen - (recieves create user respose) -> code verification page ->
-// user inputs code ->
-// if correct -> redirect home
-// otherwise -> display error messsage
-
-
 async function validateClubId(clubId) {
   const clubExists = await clubDAO.exists(clubId);
   if (!clubExists) {

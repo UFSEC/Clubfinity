@@ -1,5 +1,4 @@
 exports.TestHttp = class {
-
   constructor(chai, app, userToken = null) {
     this.chai = chai;
     this.app = app;

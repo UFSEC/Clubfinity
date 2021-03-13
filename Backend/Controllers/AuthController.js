@@ -1,9 +1,8 @@
 const { DateTime } = require('luxon');
+const { validationResult } = require('express-validator');
 
 const { ValidationError } = require('../util/errors/validationError');
 const { catchErrors } = require('../util/httpUtil');
-const { validationResult } = require('express-validator');
-// const config = require('../Config/config');
 
 const userDAO = require('../DAO/UserDAO');
 const emailVerificationCodeDAO = require('../DAO/EmailVerificationCodeDAO');
@@ -26,16 +25,45 @@ const generateRandomCode = () => {
   return code;
 };
 
+// Submit registration ->
+// POST /user - create inactive user, send email
+
+// UI
+// registration screen - (recieves create user respose) -> code verification page ->
+// user inputs code ->
+// if correct -> redirect home
+// otherwise -> display error messsage
+
+// TODO:
+// create validate code endpoint
+// Create frontend screen for validating code
+// In register endpoint, delete inactive users with same email
+
 exports.register = (req, res) => catchErrors(res, async () => {
   validateData(req);
   req.body.clubs = [];
   const user = await userDAO.create(req.body);
 
+  const code = generateRandomCode();
   await emailVerificationCodeDAO.create({
     user: user._id,
-    code: generateRandomCode(),
+    code,
     expirationTimestamp: DateTime.local().plus({ minutes: 15 }),
   });
+
+  await global.emailService.send(
+    user.email,
+    'Clubfinity Email Verification',
+    `
+Hello ${user.name.first} ${user.name.last},
+
+Thanks for joining Clubfinity!
+
+Here is your email verification code:
+
+${code}
+    `,
+  );
 
   return getLimitedUserData(user);
 });

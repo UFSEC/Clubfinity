@@ -10,6 +10,7 @@ const announcementRoutes = require('./Routes/AnnouncementRoutes');
 const authRoute = require('./Routes/AuthRoutes');
 const config = require('./Config/config.js');
 const database = require('./Database/Database.js');
+const { EmailService } = require('./Services/EmailService');
 
 const app = express();
 
@@ -29,6 +30,10 @@ app.use('/api/announcements', announcementRoutes);
 app.use('/auth', authRoute);
 
 database.connect();
+
+if (config.email) {
+  global.emailService = new EmailService();
+}
 
 const server = app.listen(config.port, () => {
   console.log(`Now listening on port ${config.port}`);

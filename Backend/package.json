@@ -24,7 +24,9 @@
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "pbkdf2": "^3.1.1",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "form-data": "^4.0.0",
+    "mailgun.js": "^3.3.0"
   },
   "devDependencies": {
     "@types/luxon": "^1.22.0",
