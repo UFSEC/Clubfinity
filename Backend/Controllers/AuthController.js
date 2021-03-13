@@ -67,3 +67,17 @@ ${code}
 
   return getLimitedUserData(user);
 });
+
+exports.verifyEmailCode = (req, res) => catchErrors(res, async () => {
+  const { code : codeAttempt , userId } = req.body;
+
+  const databaseCodeRecord = await emailVerificationCodeDAO.get(userId);
+
+  if (databaseCodeRecord.expirationTimestamp < DateTime.local()) {
+    throw new Error('Verification code expired');
+  } else if (codeAttempt !== databaseCodeRecord.code) {
+    throw new Error('Invalid verification code');
+  }
+
+  return await userDAO.update(userId, { active : true })
+})
