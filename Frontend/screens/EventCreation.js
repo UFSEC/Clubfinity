@@ -134,14 +134,14 @@ export default class EventCreation extends Component {
 
     const today = new Date();
 
-    const getDateString = async () => {
+    const getDateString = () => {
       if (selectedDate === undefined) {
         return '';
       }
       return selectedDate.toString().substring(0, 10);
     };
 
-    const getTimeString = async () => {
+    const getTimeString = () => {
       if (selectedDate === undefined) {
         return '';
       }
