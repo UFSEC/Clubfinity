@@ -87,3 +87,14 @@ exports.removeInterestedUser = async (eventId) => exports.updateUsersList(eventI
 exports.addUninterestedUser = async (eventId) => exports.updateUsersList(eventId, 'uninterested-users', 'add');
 
 exports.removeUninterestedUser = async (eventId) => exports.updateUsersList(eventId, 'uninterested-users', 'remove');
+
+exports.delete = async (eventId) => {
+  const bearerToken = await AsyncStorage.getItem('userToken');
+
+  return API.delete(`/api/events/${eventId}`, {
+    headers: {
+      Authorization: `Bearer ${bearerToken}`,
+    },
+  })
+    .catch((error) => error || { error: 'Internal server error. Unable to delete event' });
+};

@@ -51,6 +51,7 @@ class EventList extends Component {
   )
 
   render() {
+    const { navigation } = this.props;
     const { upcomingEvents, pastEvents } = this.state;
 
     const listData = [];
@@ -61,6 +62,7 @@ class EventList extends Component {
     if (pastEvents.length > 0) {
       listData.push({ title: 'Past Events', data: pastEvents });
     }
+    const isAdmin = navigation.getParam('isAdmin', '');
 
     return (
       <View style={{ flex: 1, paddingVertical: 20, paddingHorizontal: 30 }}>
@@ -71,7 +73,14 @@ class EventList extends Component {
             <Row
               date={item.date.toFormat('MMM dd yyyy')}
               text={item.name}
-              handler={() => { }}
+              handler={() => navigation.navigate('EditEvent', {
+                id: item._id,
+                title: item.name,
+                description: item.description,
+                location: item.location,
+                date: item.date,
+                isAdmin,
+              })}
             />
           )}
           renderSectionHeader={({ section }) => this.renderSectionHeader(section)}

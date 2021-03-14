@@ -2,7 +2,7 @@ import React from 'react';
 import { TextInput, StyleSheet, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 
-const txtFieldBgColor = '#F4F4F4';
+const txtFieldBgColor = '#f4f4f4';
 const styles = StyleSheet.create({
   iOS: {
     flex: 1,

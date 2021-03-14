@@ -6,7 +6,7 @@ export const primary = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 10,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#f2f2f7',
   },
   bodyText: {
     color: colors.text,
