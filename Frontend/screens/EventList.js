@@ -72,7 +72,7 @@ class EventList extends Component {
           renderItem={({ item }) => (
             <Row
               date={item.date.toFormat('MMMM dd yyyy')}
-              item={item.name}
+              text={item.name}
               handler={() => {
                 navigation.navigate('EventScr', {
                   id: item._id,
