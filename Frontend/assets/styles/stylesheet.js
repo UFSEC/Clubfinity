@@ -13,11 +13,11 @@ export const primary = StyleSheet.create({
     fontSize: 13,
   },
   headerText: {
-    fontSize: 14,
-    fontWeight: '100',
-    margin: 10,
+    fontSize: 15,
+    marginTop: 15,
+    marginBottom: 5,
     alignSelf: 'center',
-    color: '#636e72',
+    color: colors.grayScale9,
   },
 });
 
