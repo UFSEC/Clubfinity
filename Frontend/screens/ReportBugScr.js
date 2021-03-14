@@ -117,7 +117,7 @@ export default class ReportBugScr extends Component {
             onPress={this.submitReport}
           >
             <Text style={{ alignSelf: 'center' }}>
-              {processingRequest ? 'Submitting...' : 'Submit Report'}
+              Submit Report
             </Text>
           </Button>
         </Content>
