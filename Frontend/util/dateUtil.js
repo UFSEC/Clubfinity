@@ -16,3 +16,7 @@ export function formatToMonthAndDay(date) {
   const dateTime = DateTime.fromISO(date);
   return dateTime.toLocaleString({ month: 'short', day: 'numeric' });
 }
+
+export function formatToTime(date) {
+  return DateTime.fromISO(date).toLocaleString(DateTime.TIME_SIMPLE);
+}

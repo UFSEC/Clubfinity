@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import {
+  Button,
+} from 'native-base';
 import PropTypes from 'prop-types';
 import colors from '../util/colors';
 
 const styles = StyleSheet.create({
   button: {
     width: 200,
+    alignSelf: 'center',
     paddingLeft: 0,
   },
   text: {
@@ -25,15 +28,15 @@ export default class DiscoverButton extends Component {
     const { onPress } = this.props;
 
     return (
-      <MaterialIcons.Button
+      <Button
         borderRadius={50}
         backgroundColor={colors.secondary0}
         textAlign="center"
         style={styles.button}
         onPress={onPress}
       >
-        <Text style={styles.text}>Discover</Text>
-      </MaterialIcons.Button>
+        <Text style={styles.text}>Discover Clubs</Text>
+      </Button>
     );
   }
 }
