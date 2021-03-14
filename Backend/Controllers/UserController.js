@@ -1,15 +1,15 @@
-const { validationResult, body, param, query } = require("express-validator");
-const userDAO = require("../DAO/UserDAO");
-const clubDAO = require("../DAO/ClubDAO");
-const { ValidationError } = require("../util/errors/validationError");
-const { catchErrors } = require("../util/httpUtil");
-const { getLimitedUserData } = require("../util/userUtil");
+const { validationResult, body, param, query } = require('express-validator');
+const userDAO = require('../DAO/UserDAO');
+const clubDAO = require('../DAO/ClubDAO');
+const { ValidationError } = require('../util/errors/validationError');
+const { catchErrors } = require('../util/httpUtil');
+const { getLimitedUserData } = require('../util/userUtil');
 const {
   validateName,
   validatePassword,
   validateUsername,
   validateYear,
-} = require("../util/Validations/Validations");
+} = require('../util/Validations/Validations');
 
 const validateData = (req) => {
   const errors = validationResult(req);
@@ -44,12 +44,12 @@ exports.updateClubFollowingState = async (req, res) =>
     const { follow } = req.query;
     const user = await userDAO.get(req.userId);
     switch (follow) {
-      case "true":
+      case 'true':
         if (!user.clubs.some((club) => club._id.toString() === clubId)) {
           user.clubs.push(clubId);
         }
         return getLimitedUserData(await userDAO.update(req.userId, user));
-      case "false":
+      case 'false':
         user.clubs.forEach((club, index, clubs) => {
           if (club._id.toString() === clubId) clubs.splice(index, 1);
         });
@@ -68,47 +68,47 @@ exports.updateClubFollowingState = async (req, res) =>
 async function validateClubId(clubId) {
   const clubExists = await clubDAO.exists(clubId);
   if (!clubExists) {
-    throw new Error("Invalid Club ID. Club does not exist.");
+    throw new Error('Invalid Club ID. Club does not exist.');
   }
   return clubExists;
 }
 
 exports.validate = (type) => {
   const baseUserInfo = [
-    body("name.first", "First name does not exist")
+    body('name.first', 'First name does not exist')
       .exists()
       .custom(validateName),
-    body("name.last", "Last name does not exist").exists().custom(validateName),
-    body("major", "Major does not exist or is invalid").exists(),
-    body("year", "Year does not exist or is invalid")
+    body('name.last', 'Last name does not exist').exists().custom(validateName),
+    body('major', 'Major does not exist or is invalid').exists(),
+    body('year', 'Year does not exist or is invalid')
       .exists()
       .custom((year) => validateYear(year)),
   ];
   switch (type) {
-    case "validateBaseUserInfo": {
+    case 'validateBaseUserInfo': {
       return baseUserInfo;
     }
-    case "validateFullUserInfo": {
+    case 'validateFullUserInfo': {
       return [
         ...baseUserInfo,
-        body("email", "Email does not exist or is invalid")
+        body('email', 'Email does not exist or is invalid')
           .exists()
           .isEmail()
-          .contains("@ufl.edu"),
-        body("username", "Username does not exist")
+          .contains('@ufl.edu'),
+        body('username', 'Username does not exist')
           .exists()
           .custom((username) => validateUsername(username)),
-        body("password", "Password does not exist")
+        body('password', 'Password does not exist')
           .exists()
           .custom((password) => validatePassword(password)),
       ];
     }
-    case "validatePushToken": {
-      return [query("pushToken", "push token is missing").exists()];
+    case 'validatePushToken': {
+      return [query('pushToken', 'push token is missing').exists()];
     }
-    case "validateClubId": {
+    case 'validateClubId': {
       return [
-        param("id", "Club id missing")
+        param('id', 'Club id missing')
           .exists()
           .custom(async (clubId) => {
             await validateClubId(clubId);
@@ -116,7 +116,7 @@ exports.validate = (type) => {
       ];
     }
     default: {
-      throw new Error("Invalid validator");
+      throw new Error('Invalid validator');
     }
   }
 };

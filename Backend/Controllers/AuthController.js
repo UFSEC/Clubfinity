@@ -69,7 +69,7 @@ ${code}
 });
 
 exports.verifyEmailCode = (req, res) => catchErrors(res, async () => {
-  const { code : codeAttempt , userId } = req.body;
+  const { code: codeAttempt, userId } = req.body;
 
   const databaseCodeRecord = await emailVerificationCodeDAO.get(userId);
 
@@ -79,5 +79,5 @@ exports.verifyEmailCode = (req, res) => catchErrors(res, async () => {
     throw new Error('Invalid verification code');
   }
 
-  return await userDAO.update(userId, { active : true })
-})
+  return await userDAO.update(userId, { active: true });
+});

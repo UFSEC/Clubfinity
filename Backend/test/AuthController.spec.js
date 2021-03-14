@@ -31,16 +31,15 @@ describe('AuthController', () => {
   });
 
   const newUserData = {
-      name: { first: 'New', last: 'User' },
-      major: 'Computer Science',
-      year: 2021,
-      email: 'new@ufl.edu',
-      username: 'newusername',
-      password: 'password',
+    name: { first: 'New', last: 'User' },
+    major: 'Computer Science',
+    year: 2021,
+    email: 'new@ufl.edu',
+    username: 'newusername',
+    password: 'password',
   };
 
   describe('registration', async () => {
-
     it('should create an inactive user', async () => {
       const resp = await http.post('/auth/register', newUserData);
       isOk(resp);
@@ -80,19 +79,22 @@ describe('AuthController', () => {
   });
 
   describe('verification', async () => {
-
     let user;
     beforeEach(async () => {
       user = await userDAO.create(newUserData);
     });
 
     it('should activate the user after receiving valid code', async () => {
-      await emailVerificationCodeDAO.create({user : user._id,
-                                             code: "000000",
-                                             expirationTimestamp: DateTime.local().plus({ minutes: 1})})
+      await emailVerificationCodeDAO.create({
+        user: user._id,
+        code: '000000',
+        expirationTimestamp: DateTime.local().plus({ minutes: 1 }),
+      });
 
-      const resp = await http.post('/auth/verify', {userId : user._id,
-                                                    code: "000000"} );
+      const resp = await http.post('/auth/verify', {
+        userId: user._id,
+        code: '000000',
+      });
 
       isOk(resp);
 
@@ -101,12 +103,16 @@ describe('AuthController', () => {
     });
 
     it('should return an error and the user should remain inactive after receiving an invalid code', async () => {
-      await emailVerificationCodeDAO.create({user : user._id,
-                                             code: "000000",
-                                             expirationTimestamp: DateTime.local().plus({ minutes: 1})})
+      await emailVerificationCodeDAO.create({
+        user: user._id,
+        code: '000000',
+        expirationTimestamp: DateTime.local().plus({ minutes: 1 }),
+      });
 
-      const resp = await http.post('/auth/verify', {userId : user._id,
-                                                    code: "999999"} );
+      const resp = await http.post('/auth/verify', {
+        userId: user._id,
+        code: '999999',
+      });
 
       isNotOk(resp, 400);
 
@@ -117,12 +123,16 @@ describe('AuthController', () => {
     });
 
     it('should return an error and the user should remain inactive after receiving an expired code', async () => {
-      await emailVerificationCodeDAO.create({user : user._id,
-                                             code: "000000",
-                                             expirationTimestamp: DateTime.local().minus({ minutes: 1})})
+      await emailVerificationCodeDAO.create({
+        user: user._id,
+        code: '000000',
+        expirationTimestamp: DateTime.local().minus({ minutes: 1 }),
+      });
 
-      const resp = await http.post('/auth/verify', {userId : user._id,
-                                                    code: "000000"} );
+      const resp = await http.post('/auth/verify', {
+        userId: user._id,
+        code: '000000',
+      });
 
       isNotOk(resp, 400);
 
