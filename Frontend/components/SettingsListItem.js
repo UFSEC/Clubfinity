@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Text, ListItem, } from 'native-base';
+import { Text, ListItem } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import PropTypes from 'prop-types';
 
@@ -8,7 +8,7 @@ export default class SettingsListItem extends React.Component {
   static propTypes = {
     onPress: PropTypes.func.isRequired,
     label: PropTypes.string.isRequired,
-    icon: PropTypes.string.isRequired
+    icon: PropTypes.string.isRequired,
   };
 
   render() {
