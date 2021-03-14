@@ -218,6 +218,7 @@ describe('Events', () => {
 
   describe('POST /', async () => {
     it('should be able to create a new event', async () => {
+      clubParams.admins = [currentUser._id];
       const { _id: clubId } = await clubDAO.create(clubParams);
       const eventParams = {
         ...baseEventParams,
