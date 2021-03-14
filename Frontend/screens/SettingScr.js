@@ -6,6 +6,48 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
+class SettingsListItem extends React.Component {
+  static propTypes = {
+    onPress: PropTypes.func.isRequired,
+    label: PropTypes.string.isRequired,
+    icon: PropTypes.string.isRequired 
+  };
+
+  render() {
+    const { onPress, label, icon } = this.props;
+    <ListItem
+      button
+      onPress={onPress}
+    >
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          flex: 1,
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          height: '100%',
+        }}
+      >
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+          }}
+        >
+          <Ionicons
+            name={icon}
+            size={20}
+            style={{ paddingRight: '2%' }}
+          />
+          <Text>{label}</Text>
+        </View>
+        <Ionicons name="md-arrow-dropright" size={30} />
+      </View>
+    </ListItem>
+  }
+}
+
 export default class SettingScr extends React.Component {
   static navigationOptions = buildNavigationsOptions('Settings')
 
@@ -21,123 +63,26 @@ export default class SettingScr extends React.Component {
       <Container>
         <Content>
           <List>
-            <ListItem
-              button
-              onPress={() => navigation.navigate('EditProfileScr')}
-            >
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  flex: 1,
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  height: '100%',
-                }}
-              >
-                <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                  }}
-                >
-                  <Ionicons
-                    name="md-person"
-                    size={20}
-                    style={{ paddingRight: '2%' }}
-                  />
-                  <Text>Edit Profile</Text>
-                </View>
-                <Ionicons name="md-arrow-dropright" size={30} />
-              </View>
-            </ListItem>
-            <ListItem
-              button
+            <SettingsListItem
+              onPress={e => navigation.navigate('EditProfileScr')}
+              label="md-person"
+              icon="Edit Profile"
+            />
+            <SettingsListItem
               onPress={() => navigation.navigate('ClubCreationScr')}
-            >
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  flex: 1,
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  height: '100%',
-                }}
-              >
-                <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                  }}
-                >
-                  <Ionicons
-                    name="md-create"
-                    size={20}
-                    style={{ paddingRight: '2%' }}
-                  />
-                  <Text>Create a Club</Text>
-                </View>
-                <Ionicons name="md-arrow-dropright" size={30} />
-              </View>
-            </ListItem>
-            <ListItem
-              button
+              label="md-create"
+              icon="Create a Club"
+            />
+            <SettingsListItem
               onPress={() => navigation.navigate('ReportBugScr')}
-            >
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  flex: 1,
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  height: '100%',
-                }}
-              >
-                <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                  }}
-                >
-                  <Ionicons
-                    name="md-bug"
-                    size={20}
-                    style={{ paddingRight: '2%' }}
-                  />
-                  <Text>Report a bug</Text>
-                </View>
-                <Ionicons name="md-arrow-dropright" size={30} />
-              </View>
-            </ListItem>
-            <ListItem button onPress={() => this.signOut()}>
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  flex: 1,
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  height: '100%',
-                }}
-              >
-                <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignSelf: 'flex-end',
-                  }}
-                >
-                  <Ionicons
-                    name="md-log-out"
-                    size={20}
-                    style={{ paddingRight: '2%', paddingVertical: '1.5%' }}
-                  />
-                  <Text>Logout</Text>
-                </View>
-              </View>
-            </ListItem>
+              label="md-bug"
+              icon="Report a Bug"
+            />
+            <SettingsListItem
+              onPress={() => this.signOut()}
+              label="md-log-out"
+              icon="Logout"
+            />
           </List>
         </Content>
       </Container>
