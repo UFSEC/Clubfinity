@@ -274,7 +274,7 @@ export default class ClubScr extends React.Component {
                 <Text style={{ alignSelf: 'flex-end' }}>Events</Text>
                 {!eventsEmpty && (
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('EventList', { clubId: club._id })}
+                    onPress={() => navigation.navigate('EventList', { clubId: club._id, isAdmin })}
                   >
                     <Text style={{ alignSelf: 'flex-end', color: colors.link }}>
                       View all
@@ -299,6 +299,7 @@ export default class ClubScr extends React.Component {
                               date: item.date,
                               isAdmin,
                             })}
+                            key={item._id}
                           >
                             <View
                               style={{
@@ -326,7 +327,7 @@ export default class ClubScr extends React.Component {
                         alignSelf: 'center',
                         opacity: 0.7,
                         marginBottom: '5%',
-                        fontSize: '14',
+                        fontSize: 14,
                       }}
                     >
                       There are no events for this club.
@@ -404,7 +405,7 @@ export default class ClubScr extends React.Component {
                         alignSelf: 'center',
                         opacity: 0.7,
                         marginBottom: '5%',
-                        fontSize: '14',
+                        fontSize: 14,
                       }}
                     >
                       There are no announcements for this club.

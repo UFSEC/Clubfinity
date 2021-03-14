@@ -6,18 +6,18 @@ export const primary = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 10,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#f2f2f7',
   },
   bodyText: {
     color: colors.text,
     fontSize: 13,
   },
   headerText: {
-    fontSize: 14,
-    fontWeight: '100',
-    margin: 10,
+    fontSize: 15,
+    marginTop: 15,
+    marginBottom: 5,
     alignSelf: 'center',
-    color: '#636e72',
+    color: colors.grayScale9,
   },
 });
 

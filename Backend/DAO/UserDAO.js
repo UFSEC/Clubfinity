@@ -2,7 +2,7 @@ const User = require('../Model/User.js').Model;
 const { NotFoundError } = require('../util/errors/notFoundError');
 const { hashPassword } = require('../util/authUtil');
 const { limitedUserModelFields } = require('../util/userUtil');
-
+const { INVALID_TOKEN } = require('../util/notificationUtil');
 // TODO
 // 1. Add support for a prod/dev config without hardcoded vars
 // 2. Possible memoization of db connection
@@ -16,6 +16,7 @@ exports.create = async (userParams) => {
 
   return await new User({
     ...userParams,
+    pushToken: INVALID_TOKEN,
     password: passwordHashData,
   }).save();
 };
@@ -32,6 +33,11 @@ exports.get = async (id) => {
   if (!user) throw new NotFoundError();
 
   return user;
+};
+
+exports.getPushTokens = async (clubId) => {
+  const users = await User.find({ clubs: clubId }).select({ pushToken: 1 });
+  return users.map((data) => data.pushToken);
 };
 
 exports.getByUsername = async (username) => {

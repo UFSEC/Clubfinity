@@ -1,5 +1,5 @@
 const {
-  validationResult, body, param,
+  validationResult, body, param, query,
 } = require('express-validator');
 const userDAO = require('../DAO/UserDAO');
 const clubDAO = require('../DAO/ClubDAO');
@@ -24,6 +24,12 @@ exports.update = async (req, res) => catchErrors(res, async () => {
   validateData(req);
 
   await userDAO.update(req.userId, req.body);
+});
+
+exports.updatePushToken = async (req, res) => catchErrors(res, async () => {
+  validateData(req);
+
+  await userDAO.update(req.userId, req.query);
 });
 
 exports.updateClubFollowingState = async (req, res) => catchErrors(res, async () => {
@@ -87,6 +93,11 @@ exports.validate = (type) => {
         body('password', 'Password does not exist')
           .exists()
           .custom((password) => validatePassword(password)),
+      ];
+    }
+    case 'validatePushToken': {
+      return [
+        query('pushToken', 'push token is missing').exists(),
       ];
     }
     case 'validateClubId': {
