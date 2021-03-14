@@ -23,23 +23,23 @@ export default class SettingScr extends React.Component {
           <List>
             <SettingsListItem
               onPress={() => navigation.navigate('EditProfileScr')}
-              label="md-person"
-              icon="Edit Profile"
+              icon="md-person"
+              label="Edit Profile"
             />
             <SettingsListItem
               onPress={() => navigation.navigate('ClubCreationScr')}
-              label="md-create"
-              icon="Create a Club"
+              icon="md-create"
+              label="Create a Club"
             />
             <SettingsListItem
               onPress={() => navigation.navigate('ReportBugScr')}
-              label="md-bug"
-              icon="Report a Bug"
+              icon="md-bug"
+              label="Report a Bug"
             />
             <SettingsListItem
               onPress={() => this.signOut()}
-              label="md-log-out"
-              icon="Logout"
+              icon="md-log-out"
+              label="Logout"
             />
           </List>
         </Content>
