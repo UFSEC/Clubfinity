@@ -298,6 +298,7 @@ export default class ClubScr extends React.Component {
                               date: item.date,
                               isAdmin,
                             })}
+                            key={item._id}
                           >
                             <View
                               style={{
@@ -325,7 +326,7 @@ export default class ClubScr extends React.Component {
                         alignSelf: 'center',
                         opacity: 0.7,
                         marginBottom: '5%',
-                        fontSize: '14',
+                        fontSize: 14,
                       }}
                     >
                       There are no events for this club.
@@ -401,7 +402,7 @@ export default class ClubScr extends React.Component {
                         alignSelf: 'center',
                         opacity: 0.7,
                         marginBottom: '5%',
-                        fontSize: '14',
+                        fontSize: 14,
                       }}
                     >
                       There are no announcements for this club.

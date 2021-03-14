@@ -80,6 +80,27 @@ exports.updateClub = async (clubId, follow) => {
   return axiosResponse;
 };
 
+exports.updatePushToken = async (pushToken) => {
+  const bearerToken = await AsyncStorage.getItem('userToken');
+  const axiosResponse = await API.patch(
+    `/api/users?pushToken=${pushToken}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+      },
+    },
+  )
+    .then(async (response) => response)
+    .catch((error) => {
+      if (error) {
+        return error;
+      }
+      return { error: 'Unable to update push token' };
+    });
+  return axiosResponse;
+};
+
 exports.followClub = async (clubId) => exports.updateClub(clubId, true);
 
 exports.unfollowClub = async (clubId) => exports.updateClub(clubId, false);

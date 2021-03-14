@@ -31,6 +31,11 @@ exports.getByAdminId = async (userId) => Club.find({ admins: userId })
     select: limitedUserModelFields,
   });
 
+exports.isAdmin = async (userId, clubId) => {
+  const clubs = await Club.find({ _id: clubId, admins: userId });
+  return clubs.length === 1;
+};
+
 exports.exists = async (id) => {
   try {
     return await Club.exists({ _id: id });

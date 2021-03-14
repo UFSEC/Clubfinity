@@ -126,7 +126,7 @@ export default class ProfileScr extends React.Component {
   );
 
   renderSectionHeader = (section) => (
-    <Text style={{ paddingLeft: '4%', color: colors.grayScale7, backgroundColor: '#F5F6FA' }}>
+    <Text style={{ paddingLeft: '4%', color: colors.grayScale7, backgroundColor: '#f5f6fa' }}>
       {section.title}
     </Text>
   )
@@ -135,7 +135,6 @@ export default class ProfileScr extends React.Component {
     const sectionListData = [];
 
     const filteredManagingClubs = this.filterFollowing(managingClubs);
-    console.log(filteredManagingClubs);
     if (filteredManagingClubs.length > 0) {
       sectionListData.push({ title: 'Managing', data: filteredManagingClubs });
     }

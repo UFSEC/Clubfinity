@@ -39,3 +39,14 @@ exports.update = async (announcementId, params) => {
     });
   return resp;
 };
+
+exports.delete = async (announcementId) => {
+  const bearerToken = await AsyncStorage.getItem('userToken');
+
+  return API.delete(`/api/announcements/${announcementId}`, {
+    headers: {
+      Authorization: `Bearer ${bearerToken}`,
+    },
+  })
+    .catch((error) => error || { error: 'Unable to delete announcement' });
+};
