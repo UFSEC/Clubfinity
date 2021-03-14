@@ -1,7 +1,7 @@
 import React from 'react';
 import { AsyncStorage } from 'react-native';
 import {
-  Container, Content, List
+  Container, Content, List,
 } from 'native-base';
 import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 import SettingsListItem from '../components/SettingsListItem';

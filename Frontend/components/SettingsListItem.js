@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Text, ListItem } from 'native-base';
+import { Text, ListItem, } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import PropTypes from 'prop-types';
 
