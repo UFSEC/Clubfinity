@@ -35,7 +35,7 @@ export default class ReportBugScr extends Component {
 
   isRequestValid = () => {
     const { bugDescription } = this.state;
-    return bugDescription !== '';
+    return bugDescription.length > 10;
   };
 
   render() {
