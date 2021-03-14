@@ -328,9 +328,11 @@ describe('Users', () => {
 
         user = await userDAO.get(currentUser._id);
       });
+
       it('should update pushToken of logged in user', async () => {
         user.pushToken.should.equal(testPushToken);
       });
+
       it('should get userToken from clubId', async () => {
         const baseClubParams = {
           name: 'Club Club',
@@ -347,6 +349,23 @@ describe('Users', () => {
 
         const updatedPushToken = await userDAO.getPushTokens(club._id);
         updatedPushToken.should.deep.equal([testPushToken]);
+      });
+    });
+  });
+
+  describe('Settings', async () => {
+    describe('PATCH /user-settings', async () => {
+      it.only('should update the user settings', async () => {
+        const resp = await http.patch('/api/users/user-settings?eventNotifications=disabled&announcementNotifications=disabled&eventReminderNotifications=never');
+
+        isOk(resp);
+
+        const userFromDatabase = await userDAO.get(currentUser._id);
+        console.log(userFromDatabase)
+
+        userFromDatabase.settings.eventNotifications.should.equal('disabled');
+        userFromDatabase.settings.announcementNotifications.should.equal('disabled');
+        userFromDatabase.settings.eventReminderNotifications.should.equal('never');
       });
     });
   });
