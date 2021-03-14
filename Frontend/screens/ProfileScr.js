@@ -26,6 +26,8 @@ import colors from '../util/colors';
 import ClubsApi from '../api/ClubsApi';
 import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
+const LINE_CHARACTER_REQ = 40;
+
 export default class ProfileScr extends React.Component {
   static contextType = UserContext;
 
@@ -210,8 +212,8 @@ export default class ProfileScr extends React.Component {
                     <Text
                       style={{ fontSize: 14, color: colors.grayScale8 }}
                     >
-                      {item.description.length > 40
-                        ? `${item.description.substring(0, 37).trim()}...`
+                      {item.description.length > LINE_CHARACTER_REQ
+                        ? `${item.description.substring(0, LINE_CHARACTER_REQ).trim()}...`
                         : item.description.trim()}
                     </Text>
                   </CardItem>

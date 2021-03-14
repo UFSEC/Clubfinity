@@ -29,6 +29,7 @@ import ClubsApi from '../api/ClubsApi';
 import AdminRow from '../components/AdminRow';
 import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
+const LINE_CHARACTER_REQ = 40;
 const styles = StyleSheet.create({
   clubView: {
     display: 'flex',
@@ -387,8 +388,8 @@ export default class ClubScr extends React.Component {
                                 numberOfLines={1}
                                 style={{ marginRight: '1%' }}
                               >
-                                {item.title.length > 40
-                                  ? `${item.title.substring(0, 37).trim()}...`
+                                {item.title.length > LINE_CHARACTER_REQ
+                                  ? `${item.title.substring(0, LINE_CHARACTER_REQ).trim()}...`
                                   : item.title.trim()}
                               </Text>
                               <Ionicons name="md-arrow-dropright" size={30} />
