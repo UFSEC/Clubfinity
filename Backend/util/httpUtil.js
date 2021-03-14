@@ -16,6 +16,8 @@ exports.catchErrors = async (res, f) => {
     } else if (e instanceof NotFoundError) {
       res.status(e.httpErrorCode).send({ ok: false, error: e.message });
     } else {
+      // TODO: We should not catch exceptions that are not input related,
+      //       since they should be returned as 500 errors
       res.status(400).send({ ok: false, error: e.message });
     }
   }

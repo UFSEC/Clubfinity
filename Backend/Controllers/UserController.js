@@ -1,6 +1,14 @@
-const { validationResult, body, param, query } = require('express-validator');
+const {
+  validationResult,
+  body,
+  param,
+  query,
+} = require('express-validator');
+const { DateTime } = require('luxon');
 const userDAO = require('../DAO/UserDAO');
 const clubDAO = require('../DAO/ClubDAO');
+const emailVerificationCodeDAO = require('../DAO/EmailVerificationCodeDAO');
+const { generateRandomCode } = require('../util/authUtil');
 const { ValidationError } = require('../util/errors/validationError');
 const { catchErrors } = require('../util/httpUtil');
 const { getLimitedUserData } = require('../util/userUtil');
@@ -16,54 +24,107 @@ const validateData = (req) => {
   if (!errors.isEmpty()) throw new ValidationError(errors.array());
 };
 
-exports.get = async (req, res) =>
-  catchErrors(res, async () => {
-    const user = await userDAO.get(req.userId);
-    return getLimitedUserData(user);
+// Submit registration ->
+// POST /user - create inactive user, send email
+
+// UI
+// registration screen - (recieves create user respose) -> code verification page ->
+// user inputs code ->
+// if correct -> redirect home
+// otherwise -> display error messsage
+
+// TODO:
+// Create frontend screen for validating code
+// When registering with same email as inactive user:
+//    Delete previous emailVerificationCodes
+//    Update previous user with new information
+// When a user is activated, delete the previous emailVerificationCode record
+// Disallow all userDAO methods to act on users who are flagged as inactive
+// Update seed data with users: active: true
+// When
+// Fix header issue
+
+exports.register = (req, res) => catchErrors(res, async () => {
+  validateData(req);
+  req.body.clubs = [];
+  const user = await userDAO.create(req.body);
+
+  const code = generateRandomCode();
+  await emailVerificationCodeDAO.create({
+    user: user._id,
+    code,
+    expirationTimestamp: DateTime.local().plus({ minutes: 15 }),
   });
 
-exports.update = async (req, res) =>
-  catchErrors(res, async () => {
-    validateData(req);
+  await global.emailService.send(
+    user.email,
+    'Clubfinity Email Verification',
+    `
+Hello ${user.name.first} ${user.name.last},
 
-    await userDAO.update(req.userId, req.body);
-  });
+Thanks for joining Clubfinity!
 
-exports.updatePushToken = async (req, res) =>
-  catchErrors(res, async () => {
-    validateData(req);
+Here is your email verification code:
 
-    await userDAO.update(req.userId, req.query);
-  });
+${code}
+    `,
+  );
 
-exports.updateClubFollowingState = async (req, res) =>
-  catchErrors(res, async () => {
-    validateData(req);
+  return getLimitedUserData(user);
+});
 
-    const { id: clubId } = req.params;
-    const { follow } = req.query;
-    const user = await userDAO.get(req.userId);
-    switch (follow) {
-      case 'true':
-        if (!user.clubs.some((club) => club._id.toString() === clubId)) {
-          user.clubs.push(clubId);
-        }
-        return getLimitedUserData(await userDAO.update(req.userId, user));
-      case 'false':
-        user.clubs.forEach((club, index, clubs) => {
-          if (club._id.toString() === clubId) clubs.splice(index, 1);
-        });
-        return getLimitedUserData(await userDAO.update(req.userId, user));
-      default:
-        throw new Error(`Invalid value for follow: ${follow}`);
-    }
-  });
+exports.verifyEmailCode = (req, res) => catchErrors(res, async () => {
+  const { code: codeAttempt, userId } = req.body;
 
-// exports.create = async (req, res) => catchErrors(res, async () => {
-//   validateData(req);
-//   req.body.clubs = [];
-//   return getLimitedUserData(await userDAO.create(req.body));
-// });
+  const databaseCodeRecord = await emailVerificationCodeDAO.get(userId);
+
+  if (databaseCodeRecord.expirationTimestamp < DateTime.local()) {
+    throw new Error('Verification code expired');
+  } else if (codeAttempt !== databaseCodeRecord.code) {
+    throw new Error('Invalid verification code');
+  }
+
+  return await userDAO.update(userId, { active: true });
+});
+
+exports.get = async (req, res) => catchErrors(res, async () => {
+  const user = await userDAO.get(req.userId);
+  return getLimitedUserData(user);
+});
+
+exports.update = async (req, res) => catchErrors(res, async () => {
+  validateData(req);
+
+  await userDAO.update(req.userId, req.body);
+});
+
+exports.updatePushToken = async (req, res) => catchErrors(res, async () => {
+  validateData(req);
+
+  await userDAO.update(req.userId, req.query);
+});
+
+exports.updateClubFollowingState = async (req, res) => catchErrors(res, async () => {
+  validateData(req);
+
+  const { id: clubId } = req.params;
+  const { follow } = req.query;
+  const user = await userDAO.get(req.userId);
+  switch (follow) {
+    case 'true':
+      if (!user.clubs.some((club) => club._id.toString() === clubId)) {
+        user.clubs.push(clubId);
+      }
+      return getLimitedUserData(await userDAO.update(req.userId, user));
+    case 'false':
+      user.clubs.forEach((club, index, clubs) => {
+        if (club._id.toString() === clubId) clubs.splice(index, 1);
+      });
+      return getLimitedUserData(await userDAO.update(req.userId, user));
+    default:
+      throw new Error(`Invalid value for follow: ${follow}`);
+  }
+});
 
 async function validateClubId(clubId) {
   const clubExists = await clubDAO.exists(clubId);

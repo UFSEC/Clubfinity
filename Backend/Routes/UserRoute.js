@@ -4,7 +4,15 @@ const userController = require('../Controllers/UserController');
 
 const router = express.Router();
 
-// router.post('/', userController.validate('validateFullUserInfo'), userController.create);
+router.post(
+  '/register',
+  userController.validate('validateFullUserInfo'),
+  userController.register,
+);
+router.post(
+  '/verify',
+  userController.verifyEmailCode,
+);
 router.get(
   '/',
   passport.authenticate('loggedIn', { session: false }),

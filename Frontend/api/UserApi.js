@@ -1,24 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import API from './BaseApi';
 
-exports.createUser = async (name, major, year, username, password, email) => {
-  const axiosResponse = await API.post('/api/users', {
-    name,
-    major,
-    year,
-    email,
-    username,
-    password,
-  })
-    .then(async (response) => ({ token: response.data.token }))
-    .catch((error) => {
-      if (error.response) {
-        return { error: error.response.data.error };
-      }
-      return { error: 'Unable to create new user' };
-    });
-  return axiosResponse;
-};
+exports.registerNewUser = async (userData) => API.post('/api/users/register', userData)
+  .then((response) => response.data)
+  .catch((error) => error.response.data || { ok: false, error: error.message });
 
 exports.getUser = async () => {
   const bearerToken = await AsyncStorage.getItem('userToken');

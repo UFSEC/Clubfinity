@@ -1,7 +1,10 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+const sinon = require('sinon');
+const { DateTime } = require('luxon');
 const userDAO = require('../DAO/UserDAO');
 const clubDAO = require('../DAO/ClubDAO');
+const emailVerificationCodeDAO = require('../DAO/EmailVerificationCodeDAO');
 const authUtil = require('../util/authUtil');
 const { TestHttp, isOk, isNotOk } = require('./testHelper');
 const { INVALID_TOKEN } = require('../util/notificationUtil');
@@ -11,16 +14,6 @@ const app = require('../app');
 
 chai.use(chaiHttp);
 
-const currentUserParams = {
-  name: { first: 'Current', last: 'User' },
-  major: 'Computer Science',
-  year: 2021,
-  email: 'current@user.com',
-  username: 'currentuser',
-  password: 'password',
-};
-
-let currentUser = null;
 let http = null;
 
 const fakeId = '5dba44f05b88ed1602589e84';
@@ -28,111 +21,140 @@ const fakeId = '5dba44f05b88ed1602589e84';
 describe('Users', () => {
   beforeEach(async () => {
     await userDAO.deleteAll();
-
-    currentUser = await userDAO.create(currentUserParams);
-    const currentUserToken = authUtil.tokanizeUser(currentUser);
-    http = new TestHttp(chai, app, currentUserToken);
+    await emailVerificationCodeDAO.deleteAll();
+    await clubDAO.deleteAll();
   });
 
-  describe('GET /users/:id', async () => {
-    it('returns a single user by id', async () => {
-      const resp = await http.get('/api/users/');
-      isOk(resp);
-
-      const responseData = resp.body.data;
-      const limitedUserModel = { ...currentUserParams };
-      delete limitedUserModel.password;
-      responseData.should.deep.include(limitedUserModel);
-    });
-  });
-
-  describe('POST /users', async () => {
-    let newUserData = null;
-
+  describe('Account Creation', async () => {
     beforeEach(async () => {
-      newUserData = {
-        name: { first: 'New', last: 'User' },
-        major: 'Computer Science',
-        year: 2021,
-        email: 'new@ufl.edu',
-        username: 'newusername',
-        password: 'password',
-      };
+      // Create mock email service in order to test sending emails without actually sending emails
+      // for account registration endpoint
+      global.emailService = { send: () => {} };
+
+      http = new TestHttp(chai, app);
     });
 
-    it('should create a user and return it', async () => {
-      const resp = await http.post('/api/users', newUserData);
-      isOk(resp);
-
-      const { data } = resp.body;
-      delete newUserData.password;
-
-      data.should.deep.include(newUserData);
-      data.should.include.all.keys('_id', 'clubs');
+    afterEach(async () => {
+      sinon.restore();
     });
 
-    it('should create a user with no pushToken', async () => {
-      const resp = await http.post('/api/users', newUserData);
-      isOk(resp);
+    const newUserData = {
+      name: { first: 'New', last: 'User' },
+      major: 'Computer Science',
+      year: 2021,
+      email: 'new@ufl.edu',
+      username: 'newusername',
+      password: 'password',
+    };
 
-      const user = await userDAO.get(resp.body.data._id);
-      user.pushToken.should.equal(INVALID_TOKEN);
-    });
+    describe('registration', async () => {
+      it('should create an inactive user', async () => {
+        const resp = await http.post('/api/users/register', newUserData);
+        isOk(resp);
 
-    it('should create a password hash when creating a new user', async () => {
-      const resp = await http.post('/api/users', newUserData);
-      isOk(resp);
+        const { data } = resp.body;
+        const newUserFromDatabase = await userDAO.get(data._id);
 
-      const databaseUser = await userDAO.get(resp.body.data._id);
-      databaseUser.password.should.include.all.keys('hash', 'salt');
-    });
+        newUserFromDatabase.name.first.should.equal('New');
+        newUserFromDatabase.name.last.should.equal('User');
+        newUserFromDatabase.active.should.be.false;
+      });
 
-    it('should return an error if username is taken', async () => {
-      const userData = {
-        name: { first: 'Test', last: 'McTester' },
-        major: 'Computer Science',
-        year: 2021,
-        email: 'test@ufl.edu',
-        username: 'testmctester',
-        password: 'password123',
-      };
-      await userDAO.create(userData);
+      it('should create an email validation code and save it to the database', async () => {
+        const resp = await http.post('/api/users/register', newUserData);
 
-      const resp = await http.post('/api/users', userData);
-      isNotOk(resp, 400);
+        const validationCodeRecord = await emailVerificationCodeDAO.get(
+          resp.body.data._id,
+        );
 
-      resp.body.error.should.equal('username already taken');
-    });
+        validationCodeRecord.should.have.property('code').with.lengthOf(6);
+        validationCodeRecord.should.have.property('user');
+        validationCodeRecord.should.have.property('expirationTimestamp');
+      });
 
-    it('should return an error if any field is missing', async () => {
-      const incompleteUserData = {};
+      it('should send an email to the proper recipient', async () => {
+        const mock = sinon.mock(global.emailService);
 
-      const resp = await http.post('/api/users', incompleteUserData);
-      isNotOk(resp, 422);
+        mock.expects('send').once().withArgs(newUserData.email, 'Clubfinity Email Verification');
 
-      const errorMessages = resp.body.validationErrors.map((e) => e.msg);
-      errorMessages.should.have.length(12);
+        await http.post('/api/users/register', newUserData);
 
-      errorMessages.should.include.all.members([
-        'First name does not exist',
-        'Last name does not exist',
-        'Year does not exist or is invalid',
-        'Major does not exist or is invalid',
-        'Email does not exist or is invalid',
-        'Username does not exist',
-        'Password does not exist',
-      ]);
-    });
+        mock.verify();
+      });
 
-    it('should return an error of either the password or username is too short', async () => {
-      const shortUsernameAndPassword = {
-        name: { first: 'Jimmy', last: 'John' },
-        major: 'Computer Science',
-        year: 2021,
-        email: 'jimmy@ufl.edu',
-        username: 'short',
-        password: 'short',
-      };
+      it('should create a user with no pushToken', async () => {
+        const resp = await http.post('/api/users/register', newUserData);
+        isOk(resp);
+
+        const user = await userDAO.get(resp.body.data._id);
+        user.pushToken.should.equal(INVALID_TOKEN);
+      });
+
+      it('should create a password hash when creating a new user', async () => {
+        const resp = await http.post('/api/users/register', newUserData);
+        isOk(resp);
+
+        const databaseUser = await userDAO.get(resp.body.data._id);
+        databaseUser.password.should.include.all.keys('hash', 'salt');
+      });
+
+      it('should return an error if username is taken', async () => {
+        const userData = {
+          name: { first: 'Test', last: 'McTester' },
+          major: 'Computer Science',
+          year: 2021,
+          email: 'test@ufl.edu',
+          username: 'testmctester',
+          password: 'password123',
+        };
+        await userDAO.create(userData);
+
+        const resp = await http.post('/api/users/register', userData);
+        isNotOk(resp, 400);
+
+        resp.body.error.should.equal('username already taken');
+      });
+
+      it('should return an error if any field is missing', async () => {
+        const incompleteUserData = {};
+
+        const resp = await http.post('/api/users/register', incompleteUserData);
+        isNotOk(resp, 422);
+
+        const errorMessages = resp.body.validationErrors.map((e) => e.msg);
+        errorMessages.should.have.length(12);
+
+        errorMessages.should.include.all.members([
+          'First name does not exist',
+          'Last name does not exist',
+          'Year does not exist or is invalid',
+          'Major does not exist or is invalid',
+          'Email does not exist or is invalid',
+          'Username does not exist',
+          'Password does not exist',
+        ]);
+      });
+
+      it('should return an error of either the password or username is too short', async () => {
+        const shortUsernameAndPassword = {
+          name: { first: 'Jimmy', last: 'John' },
+          major: 'Computer Science',
+          year: 2021,
+          email: 'jimmy@ufl.edu',
+          username: 'short',
+          password: 'short',
+        };
+
+        const resp = await http.post('/api/users/register', shortUsernameAndPassword);
+        isNotOk(resp, 422);
+
+        const errorMessages = resp.body.validationErrors.map((e) => e.msg);
+        errorMessages.should.have.length(2);
+        errorMessages.should.include.all.members([
+          'Username is too short (less than 6 characters)',
+          'Password is too short (less than 6 characters)',
+        ]);
+      });
 
       it('should return an error when there are invalid characters in the name', async () => {
         const invalidCharacter = {
@@ -140,213 +162,300 @@ describe('Users', () => {
           major: 'Accounting',
           year: 2024,
           email: 'billy101@ufl.edu',
-          username: 'user3',
+          username: 'username3',
           password: 'password12',
         };
 
-        const resp = await http.post('/api/users', invalidCharacter);
+        const resp = await http.post('/api/users/register', invalidCharacter);
         isNotOk(resp, 422);
 
         resp.body.validationErrors.should.have.length(1);
         resp.body.validationErrors[0].msg.should.equal('Name contains invalid characters');
       });
 
-      const resp = await http.post('/api/users', shortUsernameAndPassword);
-      isNotOk(resp, 422);
+      it('should return an error when the username is too long', async () => {
+        const longUsername = {
+          name: { first: 'Jimmy', last: 'John' },
+          major: 'Computer Science',
+          year: 2021,
+          email: 'jimmy@ufl.edu',
+          username: 'thisusernameiswaytoolong',
+          password: 'password123',
+        };
 
-      const errorMessages = resp.body.validationErrors.map((e) => e.msg);
-      errorMessages.should.have.length(2);
-      errorMessages.should.include.all.members([
-        'Username is too short (less than 6 characters)',
-        'Password is too short (less than 6 characters)',
-      ]);
-    });
-
-    it('should return an error when the username is too long', async () => {
-      const longUsername = {
-        name: { first: 'Jimmy', last: 'John' },
-        major: 'Computer Science',
-        year: 2021,
-        email: 'jimmy@ufl.edu',
-        username: 'thisusernameiswaytoolong',
-        password: 'password123',
-      };
-
-      const resp = await http.post('/api/users', longUsername);
-      isNotOk(resp, 422);
-
-      resp.body.validationErrors.should.have.length(1);
-      resp.body.validationErrors[0].msg.should.equal('Username is too long (more than 20 characters)');
-    });
-
-    it('should return an error when the username has a space', async () => {
-      const spacedUsername = {
-        name: { first: 'Jimmy', last: 'John' },
-        major: 'Computer Science',
-        year: 2021,
-        email: 'jimmy@ufl.edu',
-        username: 'a username',
-        password: 'password123',
-      };
-
-      const resp = await http.post('/api/users', spacedUsername);
-      isNotOk(resp, 422);
-
-      resp.body.validationErrors.should.have.length(1);
-      resp.body.validationErrors[0].msg.should.equal('Username contains a space');
-    });
-
-    it('should return an error when the year is incorrectly formatted', async () => {
-      const incorrectDateFormat = {
-        name: { first: 'Jimmy', last: 'John' },
-        year: 'not a year',
-        major: 'Computer Science',
-        email: 'jimmy@ufl.edu',
-        username: 'ausername',
-        password: 'password123',
-      };
-
-      const resp = await http.post('/api/users', incorrectDateFormat);
-      isNotOk(resp, 422);
-
-      resp.body.validationErrors.should.have.length(1);
-      resp.body.validationErrors[0].msg.should.equal('Year must be a number');
-    });
-  });
-
-  describe('PUT /users', async () => {
-    it('should update a user and return the updated version', async () => {
-      const newUserData = {
-        name: { first: 'DifferentFirst', last: 'DifferentLast' },
-        major: 'Computer Science',
-        year: 2021,
-        email: 'different@ufl.edu',
-        username: 'diffusrnme',
-        password: 'diffpassword',
-        pushToken: 'INVALID',
-        clubs: [],
-      };
-
-      const resp = await http.put('/api/users/', newUserData);
-      isOk(resp);
-
-      const expectedUserData = (await userDAO.getByUsername(newUserData.username)).toObject();
-
-      delete expectedUserData._id;
-      delete expectedUserData.__v;
-
-      newUserData.should.deep.equal(expectedUserData);
-    });
-  });
-
-  describe('Club Operations', async () => {
-    const baseClubParams = {
-      name: 'Club Club',
-      admins: [],
-      facebookLink: 'facebook',
-      description: 'This is a club',
-      category: 'Computer Science',
-      events: [],
-    };
-
-    describe('PATCH /users/clubs', async () => {
-      it('should add a club to the list of followed clubs for the current user', async () => {
-        const club = await clubDAO.create(baseClubParams);
-        const jsonClub = JSON.parse(JSON.stringify(club));
-
-        const resp = await http.patch(`/api/users/clubs/${club._id}?follow=true`);
-        isOk(resp);
-        resp.body.data.clubs.should.deep.include(jsonClub);
-
-        // Re-fetch user info to verify that the change persisted
-        const userResp = await http.get('/api/users');
-        userResp.body.data.clubs.should.deep.include(jsonClub);
-      });
-
-      it('should do nothing if it is called twice with the same club', async () => {
-        const club = await clubDAO.create(baseClubParams);
-        const jsonClub = JSON.parse(JSON.stringify(club));
-
-        const resp = await http.patch(`/api/users/clubs/${club._id}?follow=true`);
-        isOk(resp);
-        resp.body.data.clubs.should.have.length(1);
-        resp.body.data.clubs.should.deep.include(jsonClub);
-
-        const resp2 = await http.patch(`/api/users/clubs/${club._id}?follow=true`);
-        isOk(resp2);
-        resp2.body.data.clubs.should.have.length(1);
-        resp2.body.data.clubs.should.deep.include(jsonClub);
-      });
-
-      it('should return an error if the clubId does not exist', async () => {
-        const resp = await http.patch(`/api/users/clubs/${fakeId}?follow=true`);
+        const resp = await http.post('/api/users/register', longUsername);
         isNotOk(resp, 422);
 
         resp.body.validationErrors.should.have.length(1);
-        resp.body.validationErrors[0].msg.should.equal('Invalid Club ID. Club does not exist.');
+        resp.body.validationErrors[0].msg.should.equal('Username is too long (more than 20 characters)');
       });
 
-      it('should remove a club from the list of followed clubs for the current user', async () => {
-        const club = await clubDAO.create(baseClubParams);
-        currentUser.clubs.push(club);
-        currentUser.save();
+      it('should return an error when the username has a space', async () => {
+        const spacedUsername = {
+          name: { first: 'Jimmy', last: 'John' },
+          major: 'Computer Science',
+          year: 2021,
+          email: 'jimmy@ufl.edu',
+          username: 'a username',
+          password: 'password123',
+        };
 
-        const resp = await http.patch(`/api/users/clubs/${club._id}?follow=false`);
-        isOk(resp);
-        resp.body.data.clubs.should.be.empty;
+        const resp = await http.post('/api/users/register', spacedUsername);
+        isNotOk(resp, 422);
 
-        // Re-fetch user info to verify that the change persisted
-        const userResp = await http.get('/api/users');
-        isOk(userResp);
-        userResp.body.data.clubs.should.be.empty;
+        resp.body.validationErrors.should.have.length(1);
+        resp.body.validationErrors[0].msg.should.equal('Username contains a space');
       });
 
-      it('should do nothing if it is called twice with the same club', async () => {
-        const { _id: clubId } = await clubDAO.create(baseClubParams);
-        currentUser.clubs.push(clubId);
-        currentUser.save();
+      it('should return an error when the year is incorrectly formatted', async () => {
+        const incorrectDateFormat = {
+          name: { first: 'Jimmy', last: 'John' },
+          year: 'not a year',
+          major: 'Computer Science',
+          email: 'jimmy@ufl.edu',
+          username: 'ausername',
+          password: 'password123',
+        };
 
-        const resp = await http.patch(`/api/users/clubs/${clubId}?follow=false`);
+        const resp = await http.post('/api/users/register', incorrectDateFormat);
+        isNotOk(resp, 422);
+
+        resp.body.validationErrors.should.have.length(1);
+        resp.body.validationErrors[0].msg.should.equal('Year must be a number');
+      });
+    });
+
+    describe('verification', async () => {
+      let user;
+
+      beforeEach(async () => {
+        user = await userDAO.create(newUserData);
+      });
+
+      it('should activate the user after receiving valid code', async () => {
+        await emailVerificationCodeDAO.create({
+          user: user._id,
+          code: '000000',
+          expirationTimestamp: DateTime.local().plus({ minutes: 1 }),
+        });
+
+        const resp = await http.post('/api/users/verify', {
+          userId: user._id,
+          code: '000000',
+        });
+
         isOk(resp);
-        resp.body.data.clubs.should.be.empty;
 
-        const resp2 = await http.patch(`/api/users/clubs/${clubId}?follow=false`);
-        isOk(resp2);
-        resp2.body.data.clubs.should.be.empty;
+        const userFromDatabase = await userDAO.get(resp.body.data._id);
+        userFromDatabase.active.should.be.true;
+      });
+
+      it('should return an error and the user should remain inactive after receiving an invalid code', async () => {
+        await emailVerificationCodeDAO.create({
+          user: user._id,
+          code: '000000',
+          expirationTimestamp: DateTime.local().plus({ minutes: 1 }),
+        });
+
+        const resp = await http.post('/api/users/verify', {
+          userId: user._id,
+          code: '999999',
+        });
+
+        isNotOk(resp, 400);
+
+        resp.body.error.should.equal('Invalid verification code');
+
+        const userFromDatabase = await userDAO.get(user._id);
+        userFromDatabase.active.should.be.false;
+      });
+
+      it('should return an error and the user should remain inactive after receiving an expired code', async () => {
+        await emailVerificationCodeDAO.create({
+          user: user._id,
+          code: '000000',
+          expirationTimestamp: DateTime.local().minus({ minutes: 1 }),
+        });
+
+        const resp = await http.post('/api/users/verify', {
+          userId: user._id,
+          code: '000000',
+        });
+
+        isNotOk(resp, 400);
+
+        resp.body.error.should.equal('Verification code expired');
+
+        const userFromDatabase = await userDAO.get(user._id);
+        userFromDatabase.active.should.be.false;
       });
     });
   });
 
-  describe('Update pushToken', async () => {
-    describe('PATCH /users/', async () => {
-      let user = null;
-      let testPushToken = null;
-      beforeEach(async () => {
-        testPushToken = 'test_token';
-        const resp = await http.patch(`/api/users?pushToken=${testPushToken}`);
+  describe('With Authentication', async () => {
+    let currentUser = null;
+
+    const currentUserParams = {
+      name: { first: 'Current', last: 'User' },
+      major: 'Computer Science',
+      year: 2021,
+      email: 'current@user.com',
+      username: 'currentuser',
+      password: 'password',
+    };
+
+    beforeEach(async () => {
+      currentUser = await userDAO.create(currentUserParams);
+      const currentUserToken = authUtil.tokanizeUser(currentUser);
+      http = new TestHttp(chai, app, currentUserToken);
+    });
+
+    describe('GET /users/:id', async () => {
+      it('returns a single user by id', async () => {
+        const resp = await http.get('/api/users/');
         isOk(resp);
 
-        user = await userDAO.get(currentUser._id);
+        const responseData = resp.body.data;
+        const limitedUserModel = { ...currentUserParams };
+        delete limitedUserModel.password;
+        responseData.should.deep.include(limitedUserModel);
       });
-      it('should update pushToken of logged in user', async () => {
-        user.pushToken.should.equal(testPushToken);
-      });
-      it('should get userToken from clubId', async () => {
-        const baseClubParams = {
-          name: 'Club Club',
-          admins: [],
-          facebookLink: 'facebook',
-          description: 'This is a club',
-          category: 'Computer Science',
-          events: [],
+    });
+
+    describe('PUT /users', async () => {
+      it('should update a user and return the updated version', async () => {
+        const newUserData = {
+          name: { first: 'DifferentFirst', last: 'DifferentLast' },
+          major: 'Computer Science',
+          year: 2021,
+          email: 'different@ufl.edu',
+          username: 'diffusrnme',
+          password: 'diffpassword',
+          pushToken: 'INVALID',
+          clubs: [],
         };
 
-        const club = await clubDAO.create(baseClubParams);
-        user.clubs = [club._id];
-        await userDAO.update(user._id, user);
+        const resp = await http.put('/api/users/', newUserData);
+        isOk(resp);
 
-        const updatedPushToken = await userDAO.getPushTokens(club._id);
-        updatedPushToken.should.deep.equal([testPushToken]);
+        const expectedUserData = (await userDAO.getByUsername(newUserData.username)).toObject();
+
+        delete expectedUserData._id;
+        delete expectedUserData.__v;
+
+        ({ ...newUserData, active: false }).should.deep.equal(expectedUserData);
+      });
+    });
+
+    describe('Club Operations', async () => {
+      const baseClubParams = {
+        name: 'Club Club',
+        admins: [],
+        facebookLink: 'facebook',
+        description: 'This is a club',
+        category: 'Computer Science',
+        events: [],
+      };
+
+      describe('PATCH /users/clubs', async () => {
+        it('should add a club to the list of followed clubs for the current user', async () => {
+          const club = await clubDAO.create(baseClubParams);
+          const jsonClub = JSON.parse(JSON.stringify(club));
+
+          const resp = await http.patch(`/api/users/clubs/${club._id}?follow=true`);
+          isOk(resp);
+          resp.body.data.clubs.should.deep.include(jsonClub);
+
+          // Re-fetch user info to verify that the change persisted
+          const userResp = await http.get('/api/users');
+          userResp.body.data.clubs.should.deep.include(jsonClub);
+        });
+
+        it('should do nothing if it is called twice with the same club', async () => {
+          const club = await clubDAO.create(baseClubParams);
+          const jsonClub = JSON.parse(JSON.stringify(club));
+
+          const resp = await http.patch(`/api/users/clubs/${club._id}?follow=true`);
+          isOk(resp);
+          resp.body.data.clubs.should.have.length(1);
+          resp.body.data.clubs.should.deep.include(jsonClub);
+
+          const resp2 = await http.patch(`/api/users/clubs/${club._id}?follow=true`);
+          isOk(resp2);
+          resp2.body.data.clubs.should.have.length(1);
+          resp2.body.data.clubs.should.deep.include(jsonClub);
+        });
+
+        it('should return an error if the clubId does not exist', async () => {
+          const resp = await http.patch(`/api/users/clubs/${fakeId}?follow=true`);
+          isNotOk(resp, 422);
+
+          resp.body.validationErrors.should.have.length(1);
+          resp.body.validationErrors[0].msg.should.equal('Invalid Club ID. Club does not exist.');
+        });
+
+        it('should remove a club from the list of followed clubs for the current user', async () => {
+          const club = await clubDAO.create(baseClubParams);
+          currentUser.clubs.push(club);
+          currentUser.save();
+
+          const resp = await http.patch(`/api/users/clubs/${club._id}?follow=false`);
+          isOk(resp);
+          resp.body.data.clubs.should.be.empty;
+
+          // Re-fetch user info to verify that the change persisted
+          const userResp = await http.get('/api/users');
+          isOk(userResp);
+          userResp.body.data.clubs.should.be.empty;
+        });
+
+        it('should do nothing if it is called twice with the same club', async () => {
+          const { _id: clubId } = await clubDAO.create(baseClubParams);
+          currentUser.clubs.push(clubId);
+          currentUser.save();
+
+          const resp = await http.patch(`/api/users/clubs/${clubId}?follow=false`);
+          isOk(resp);
+          resp.body.data.clubs.should.be.empty;
+
+          const resp2 = await http.patch(`/api/users/clubs/${clubId}?follow=false`);
+          isOk(resp2);
+          resp2.body.data.clubs.should.be.empty;
+        });
+      });
+    });
+
+    describe('Update pushToken', async () => {
+      describe('PATCH /users/', async () => {
+        let user = null;
+        let testPushToken = null;
+        beforeEach(async () => {
+          testPushToken = 'test_token';
+          const resp = await http.patch(`/api/users?pushToken=${testPushToken}`);
+          isOk(resp);
+
+          user = await userDAO.get(currentUser._id);
+        });
+        it('should update pushToken of logged in user', async () => {
+          user.pushToken.should.equal(testPushToken);
+        });
+        it('should get userToken from clubId', async () => {
+          const baseClubParams = {
+            name: 'Club Club',
+            admins: [],
+            facebookLink: 'facebook',
+            description: 'This is a club',
+            category: 'Computer Science',
+            events: [],
+          };
+
+          const club = await clubDAO.create(baseClubParams);
+          user.clubs = [club._id];
+          await userDAO.update(user._id, user);
+
+          const updatedPushToken = await userDAO.getPushTokens(club._id);
+          updatedPushToken.should.deep.equal([testPushToken]);
+        });
       });
     });
   });

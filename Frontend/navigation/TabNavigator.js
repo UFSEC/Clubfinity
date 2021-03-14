@@ -29,6 +29,7 @@ import EventScr from '../screens/EventScr'
 import AnnouncementScr from '../screens/AnnouncementScr'
 import EditAnnouncement from '../screens/EditAnnouncements'
 import colors from '../util/colors';
+import EmailVerificationScr from '../screens/EmailVerificationScr';
 
 const HomeStack = createStackNavigator(
   {
@@ -158,6 +159,7 @@ const AuthStack = createStackNavigator(
   {
     SignIn: SigninScr,
     SignUp: SignupScr,
+    EmailVerification: EmailVerificationScr,
   },
   {
     initialRouteName: 'SignIn',
