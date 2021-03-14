@@ -63,6 +63,7 @@ class EventList extends Component {
     if (pastEvents.length > 0) {
       listData.push({ title: 'Past Events', data: pastEvents });
     }
+    
     const isAdmin = navigation.getParam('isAdmin', '');
 
     return (
