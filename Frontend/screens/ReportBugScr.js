@@ -18,17 +18,12 @@ export default class ReportBugScr extends Component {
     super(props);
     this.state = {
       bugDescription: '',
-      processingRequest: false,
     };
   }
 
   submitReport = async () => {
-    this.setState({
-      processingRequest: true,
-    });
     const validRequest = this.isRequestValid();
     this.setState({
-      processingRequest: false,
       emptyDescription: !validRequest,
     });
   };
@@ -41,7 +36,6 @@ export default class ReportBugScr extends Component {
   render() {
     const {
       emptyDescription,
-      processingRequest,
       bugDescription,
     } = this.state;
     return (
