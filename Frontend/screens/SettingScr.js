@@ -1,52 +1,10 @@
 import React from 'react';
-import { View, AsyncStorage } from 'react-native';
+import { AsyncStorage } from 'react-native';
 import {
-  Text, Container, Content, List, ListItem,
+  Container, Content, List
 } from 'native-base';
-import { Ionicons } from '@expo/vector-icons';
 import buildNavigationsOptions from '../util/navigationOptionsBuilder';
-
-class SettingsListItem extends React.Component {
-  static propTypes = {
-    onPress: PropTypes.func.isRequired,
-    label: PropTypes.string.isRequired,
-    icon: PropTypes.string.isRequired 
-  };
-
-  render() {
-    const { onPress, label, icon } = this.props;
-    <ListItem
-      button
-      onPress={onPress}
-    >
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          flex: 1,
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: '100%',
-        }}
-      >
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-          }}
-        >
-          <Ionicons
-            name={icon}
-            size={20}
-            style={{ paddingRight: '2%' }}
-          />
-          <Text>{label}</Text>
-        </View>
-        <Ionicons name="md-arrow-dropright" size={30} />
-      </View>
-    </ListItem>
-  }
-}
+import SettingsListItem from '../components/SettingsListItem';
 
 export default class SettingScr extends React.Component {
   static navigationOptions = buildNavigationsOptions('Settings')
@@ -64,7 +22,7 @@ export default class SettingScr extends React.Component {
         <Content>
           <List>
             <SettingsListItem
-              onPress={e => navigation.navigate('EditProfileScr')}
+              onPress={() => navigation.navigate('EditProfileScr')}
               label="md-person"
               icon="Edit Profile"
             />
