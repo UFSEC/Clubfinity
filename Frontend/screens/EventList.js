@@ -52,8 +52,8 @@ class EventList extends Component {
 
   render() {
     const { navigation } = this.props;
-    const isAdmin = navigation.getParam('isAdmin', '');
     const { upcomingEvents, pastEvents } = this.state;
+    const isAdmin = navigation.getParam('isAdmin', '');
 
     const listData = [];
     if (upcomingEvents.length > 0) {
