@@ -86,7 +86,7 @@ export default class EventCard extends Component {
     this.setState({
       mute: !mute,
     });
-    const { eventID } = this.props;
+    const { eventID, userId } = this.props;
     if (!mute) {
       this.setState(
         {
@@ -95,6 +95,7 @@ export default class EventCard extends Component {
         },
       );
       await EventsApi.addUninterestedUser(eventID);
+      await cancelNotification(eventID, userId);
     } else await EventsApi.removeUninterestedUser(eventID);
   };
 
@@ -133,10 +134,10 @@ export default class EventCard extends Component {
         going: false,
       });
       await EventsApi.addInterestedUser(eventID);
-      scheduleNotification(name, date, eventID, userId);
+      await scheduleNotification(name, date, eventID, userId);
     } else {
-      await EventsApi.removeGoingUser(eventID, userId);
-      cancelNotification(eventID, userId);
+      await EventsApi.removeInterestedUser(eventID, userId);
+      await cancelNotification(eventID, userId);
     }
   }
 

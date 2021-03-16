@@ -2,6 +2,8 @@ import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 import { Alert, Linking } from 'react-native';
 
+const MS_IN_HOUR = 1000 * 60 * 60;
+
 export async function askPermissions() {
   // See if app already has permission
   const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
@@ -27,9 +29,6 @@ export async function askPermissions() {
 }
 
 export async function scheduleNotification(name, date, eventID, userID) {
-  const MS_FROM_NOW = (date - Date.now()) - (1000 * 60 * 60);
-  // First, set the handler that will cause the notification
-  // to show the alert
   const notificationsPermitted = askPermissions();
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -38,9 +37,8 @@ export async function scheduleNotification(name, date, eventID, userID) {
       shouldSetBadge: false,
     }),
   });
-  // Second, call the method
-  // set notification time to one hour before the event
-  const trigger = new Date(Date.now() + MS_FROM_NOW);
+
+  const trigger = new Date(Date.now() + ((date - Date.now()) - MS_IN_HOUR));
   trigger.setSeconds(0);
   if (notificationsPermitted) {
     Notifications.scheduleNotificationAsync({
@@ -49,7 +47,6 @@ export async function scheduleNotification(name, date, eventID, userID) {
         body: 'Event will start in 1 hour!',
         data: { eventID: `${eventID}`, userID: `${userID}` },
       },
-      // trigger: null, for immediate notification
       trigger,
     });
   }
