@@ -64,7 +64,6 @@ class EventList extends Component {
       listData.push({ title: 'Past Events', data: pastEvents });
     }
 
-
     return (
       <View style={{ flex: 1, paddingVertical: 20, paddingHorizontal: 30 }}>
         <SectionList
