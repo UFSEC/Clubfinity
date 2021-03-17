@@ -37,7 +37,6 @@ const validateData = (req) => {
 // Create frontend screen for validating code
 // When a user is activated, delete the previous emailVerificationCode record
 // Disallow all userDAO methods to act on users who are flagged as inactive
-// Update seed data with users: active: true
 // Fix header issue
 
 async function sendEmailVerificationEmail(user, verificationCode) {

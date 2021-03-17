@@ -11,6 +11,7 @@ interface User {
   pushToken: string;
   password: { hash: string, salt: string };
   clubs: Types.ObjectId[];
+  active: boolean;
   _id: Types.ObjectId
 }
 
@@ -24,6 +25,7 @@ const usersData: User[] = [
     password: hashPassword('123456'),
     pushToken: 'ExponentPushToken[RP16LhFr1lXo-br9-qrLx3]',
     clubs: [new Types.ObjectId('99cb91bdc3464f14678934ca'), new Types.ObjectId('99cd91bdc3464f14678934ca')],
+    active: true,
     _id: new Types.ObjectId('16cb91bdc3464f14678934ca'),
   },
   {
@@ -35,6 +37,7 @@ const usersData: User[] = [
     password: hashPassword('123456'),
     pushToken: INVALID_TOKEN,
     clubs: [new Types.ObjectId('99cb91bdc3464f14678934ca'), new Types.ObjectId('99ce91bdc3464f14678934ca')],
+    active: true,
     _id: new Types.ObjectId('26cb91bdc3464f14678934ca'),
   },
   {
@@ -46,6 +49,7 @@ const usersData: User[] = [
     password: hashPassword('123456'),
     clubs: [],
     pushToken: INVALID_TOKEN,
+    active: true,
     _id: new Types.ObjectId('36cb91bdc3464f14678934ca'),
   },
   {
@@ -57,6 +61,7 @@ const usersData: User[] = [
     password: hashPassword('p@ssw0rd'),
     clubs: [],
     pushToken: INVALID_TOKEN,
+    active: true,
     _id: new Types.ObjectId('46cb91bdc3464f14678934ca'),
   },
   {
@@ -68,6 +73,7 @@ const usersData: User[] = [
     password: hashPassword('Pets2000'),
     clubs: [],
     pushToken: INVALID_TOKEN,
+    active: true,
     _id: new Types.ObjectId('56cb91bdc3464f14678934ca'),
   },
   {
@@ -79,6 +85,7 @@ const usersData: User[] = [
     password: hashPassword('notMyP@ssword'),
     clubs: [],
     pushToken: INVALID_TOKEN,
+    active: true,
     _id: new Types.ObjectId('66cb91bdc3464f14678934ca'),
   },
   {
@@ -90,6 +97,7 @@ const usersData: User[] = [
     password: hashPassword('Eve1998'),
     clubs: [],
     pushToken: INVALID_TOKEN,
+    active: true,
     _id: new Types.ObjectId('76cb91bdc3464f14678934ca'),
   },
   {
@@ -101,6 +109,7 @@ const usersData: User[] = [
     password: hashPassword('ClubFinity15'),
     clubs: [],
     pushToken: INVALID_TOKEN,
+    active: true,
     _id: new Types.ObjectId('86cb91bdc3464f14678934ca'),
   },
   {
@@ -112,6 +121,7 @@ const usersData: User[] = [
     password: hashPassword('se56523'),
     clubs: [],
     pushToken: INVALID_TOKEN,
+    active: true,
     _id: new Types.ObjectId('96cb91bdc3464f14678934ca'),
   },
   {
@@ -123,6 +133,7 @@ const usersData: User[] = [
     password: hashPassword('865542d'),
     clubs: [],
     pushToken: INVALID_TOKEN,
+    active: true,
     _id: new Types.ObjectId('07cb91bdc3464f14678934ca'),
   },
   {
@@ -134,6 +145,7 @@ const usersData: User[] = [
     password: hashPassword('sd5f45a631'),
     clubs: [],
     pushToken: INVALID_TOKEN,
+    active: true,
     _id: new Types.ObjectId('17cb91bdc3464f14678934ca'),
   },
   {
@@ -145,6 +157,7 @@ const usersData: User[] = [
     password: hashPassword('ghf65hf'),
     clubs: [],
     pushToken: INVALID_TOKEN,
+    active: true,
     _id: new Types.ObjectId('27cb91bdc3464f14678934ca'),
   },
   {
@@ -156,6 +169,7 @@ const usersData: User[] = [
     password: hashPassword('PowerRangers36'),
     clubs: [],
     pushToken: INVALID_TOKEN,
+    active: true,
     _id: new Types.ObjectId('37cb91bdc3464f14678934ca'),
   },
   {
@@ -167,6 +181,7 @@ const usersData: User[] = [
     password: hashPassword('CareBear1532'),
     clubs: [],
     pushToken: INVALID_TOKEN,
+    active: true,
     _id: new Types.ObjectId('47cb91bdc3464f14678934ca'),
   },
   {
@@ -178,6 +193,7 @@ const usersData: User[] = [
     password: hashPassword('Jif321f'),
     clubs: [],
     pushToken: INVALID_TOKEN,
+    active: true,
     _id: new Types.ObjectId('57cb91bdc3464f14678934ca'),
   },
   {
@@ -189,6 +205,7 @@ const usersData: User[] = [
     password: hashPassword('sdkljfaj5'),
     clubs: [],
     pushToken: INVALID_TOKEN,
+    active: true,
     _id: new Types.ObjectId('67cb91bdc3464f14678934ca'),
   },
   {
@@ -200,6 +217,7 @@ const usersData: User[] = [
     password: hashPassword('asdfghjkl123'),
     clubs: [],
     pushToken: INVALID_TOKEN,
+    active: true,
     _id: new Types.ObjectId('77cb91bdc3464f14678934ca'),
   },
   {
@@ -211,6 +229,7 @@ const usersData: User[] = [
     password: hashPassword('qwert123'),
     clubs: [],
     pushToken: INVALID_TOKEN,
+    active: true,
     _id: new Types.ObjectId('87cb91bdc3464f14678934ca'),
   },
   {
@@ -222,6 +241,7 @@ const usersData: User[] = [
     password: hashPassword('poiu987'),
     clubs: [],
     pushToken: INVALID_TOKEN,
+    active: true,
     _id: new Types.ObjectId('97cb91bdc3464f14678934ca'),
   },
   {
@@ -233,6 +253,7 @@ const usersData: User[] = [
     password: hashPassword('SUe99f'),
     clubs: [],
     pushToken: INVALID_TOKEN,
+    active: true,
     _id: new Types.ObjectId('08cb91bdc3464f14678934ca'),
   },
   {
@@ -244,6 +265,7 @@ const usersData: User[] = [
     password: hashPassword('TBeense658'),
     clubs: [],
     pushToken: INVALID_TOKEN,
+    active: true,
     _id: new Types.ObjectId('18cb91bdc3464f14678934ca'),
   },
   {
@@ -255,6 +277,7 @@ const usersData: User[] = [
     password: hashPassword('lastMawtow5'),
     clubs: [],
     pushToken: INVALID_TOKEN,
+    active: true,
     _id: new Types.ObjectId('28cb91bdc3464f14678934ca'),
   },
   {
@@ -266,6 +289,7 @@ const usersData: User[] = [
     password: hashPassword('WonderfulIsMyName'),
     clubs: [],
     pushToken: INVALID_TOKEN,
+    active: true,
     _id: new Types.ObjectId('38cb91bdc3464f14678934ca'),
   },
 ];
