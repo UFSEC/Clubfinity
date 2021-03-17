@@ -28,6 +28,24 @@ exports.update = async (req, res) => catchErrors(res, async () => {
 
 exports.updateUserSettings = async (req, res) => catchErrors(res, async () => {
   validateData(req);
+  const settings = req.query;
+  if(req.query.eventNotifications) {
+    if (req.query.eventNotifications != "enabled" && req.query.eventNotifications != "disabled") {
+      throw new Error('Invalid event notification update, tried passing ' + req.query.eventNotifications);
+    }
+  }
+
+  if(req.query.announcementNotifications) {
+    if (req.query.announcementNotifications != "enabled" && req.query.announcementNotifications != "disabled") {
+      throw new Error('Invalid announcement notification update, tried passing ' + req.query.announcementNotifications);
+    }
+  }
+
+  if(req.query.eventReminderNotifications) {
+    if (req.query.eventReminderNotifications != "never" && req.query.eventReminderNotifications != "24" && req.query.eventReminderNotifications != "12" && req.query.eventReminderNotifications != "6" && req.query.eventReminderNotifications != "3" && req.query.eventReminderNotifications != "1") {
+      throw new Error('Invalid event reminder notification update, tried passing ' + req.query.eventReminderNotifications);
+    }
+  }
 
   await userDAO.update(req.userId, req.query);
 });
