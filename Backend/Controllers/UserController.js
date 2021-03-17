@@ -7,7 +7,10 @@ const { ValidationError } = require('../util/errors/validationError');
 const { catchErrors } = require('../util/httpUtil');
 const { getLimitedUserData } = require('../util/userUtil');
 const {
-  validateName, validatePassword, validateUsername, validateYear,
+  validateName,
+  validatePassword,
+  validateUsername,
+  validateYear,
 } = require('../util/Validations/Validations');
 
 const validateData = (req) => {
@@ -28,23 +31,14 @@ exports.update = async (req, res) => catchErrors(res, async () => {
 
 exports.updateUserSettings = async (req, res) => catchErrors(res, async () => {
   validateData(req);
-  const settings = req.query;
-  if(req.query.eventNotifications) {
-    if (req.query.eventNotifications != "enabled" && req.query.eventNotifications != "disabled") {
-      throw new Error('Invalid event notification update, tried passing ' + req.query.eventNotifications);
-    }
-  }
 
-  if(req.query.announcementNotifications) {
-    if (req.query.announcementNotifications != "enabled" && req.query.announcementNotifications != "disabled") {
-      throw new Error('Invalid announcement notification update, tried passing ' + req.query.announcementNotifications);
-    }
-  }
-
-  if(req.query.eventReminderNotifications) {
-    if (req.query.eventReminderNotifications != "never" && req.query.eventReminderNotifications != "24" && req.query.eventReminderNotifications != "12" && req.query.eventReminderNotifications != "6" && req.query.eventReminderNotifications != "3" && req.query.eventReminderNotifications != "1") {
-      throw new Error('Invalid event reminder notification update, tried passing ' + req.query.eventReminderNotifications);
-    }
+  if (Object.keys(req.query).length === 0) {
+    throw new ValidationError([{
+      value: '',
+      param: '',
+      msg: 'No parameters given',
+      location: 'query',
+    }]);
   }
 
   await userDAO.update(req.userId, req.query);
@@ -120,7 +114,11 @@ exports.validate = (type) => {
       ];
     }
     case 'validateUserSettings': {
-      return [];
+      return [
+        query('eventNotifications', 'Invalid event notifications setting').optional().isIn(['enabled', 'disabled']),
+        query('announcementNotifications', 'Invalid announcement notifications setting').optional().isIn(['enabled', 'disabled']),
+        query('eventReminderNotifications', 'Invalid event reminder notifications setting').optional().isIn(['never', '24', '12', '6', '3', '1']),
+      ];
     }
     case 'validatePushToken': {
       return [
@@ -130,7 +128,9 @@ exports.validate = (type) => {
     case 'validateClubId': {
       return [
         param('id', 'Club id missing').exists()
-          .custom(async (clubId) => { await validateClubId(clubId); }),
+          .custom(async (clubId) => {
+            await validateClubId(clubId);
+          }),
       ];
     }
     default: {

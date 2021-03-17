@@ -355,17 +355,37 @@ describe('Users', () => {
 
   describe('Settings', async () => {
     describe('PATCH /user-settings', async () => {
-      it.only('should update the user settings', async () => {
+      it('should update the user settings', async () => {
         const resp = await http.patch('/api/users/user-settings?eventNotifications=disabled&announcementNotifications=disabled&eventReminderNotifications=never');
 
         isOk(resp);
 
         const userFromDatabase = await userDAO.get(currentUser._id);
-        console.log(userFromDatabase)
+        console.log(userFromDatabase);
 
         userFromDatabase.settings.eventNotifications.should.equal('disabled');
         userFromDatabase.settings.announcementNotifications.should.equal('disabled');
         userFromDatabase.settings.eventReminderNotifications.should.equal('never');
+      });
+
+      it('should return an error when the query params are invalid', async () => {
+        const resp = await http.patch('/api/users/user-settings?eventNotifications=enabled&announcementNotifications=invalid');
+
+        isNotOk(resp, 422);
+
+        resp.body.error.should.equal('Input validation failure');
+        resp.body.validationErrors.should.have.lengthOf(1);
+        resp.body.validationErrors[0].msg.should.equal('Invalid announcement notifications setting');
+      });
+
+      it('should return an error if no valid query params are given', async () => {
+        const resp = await http.patch('/api/users/user-settings');
+
+        isNotOk(resp, 422);
+
+        resp.body.error.should.equal('Input validation failure');
+        resp.body.validationErrors.should.have.lengthOf(1);
+        resp.body.validationErrors[0].msg.should.equal('No parameters given');
       });
     });
   });
