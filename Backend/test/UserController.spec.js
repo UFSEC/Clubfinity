@@ -6,7 +6,12 @@ const userDAO = require('../DAO/UserDAO');
 const clubDAO = require('../DAO/ClubDAO');
 const emailVerificationCodeDAO = require('../DAO/EmailVerificationCodeDAO');
 const authUtil = require('../util/authUtil');
-const { TestHttp, isOk, isNotOk } = require('./testHelper');
+const {
+  TestHttp,
+  isOk,
+  isNotOk,
+  hasValidationErrors,
+} = require('./testHelper');
 const { INVALID_TOKEN } = require('../util/notificationUtil');
 
 chai.should();
@@ -82,6 +87,17 @@ describe('Users', () => {
         mock.verify();
       });
 
+      it('should delete existing inactive user and associated verification codes if it shares the same email', async () => {
+        const originalResp = await http.post('/api/users/register', newUserData);
+        const existingInactiveUserId = originalResp.body.data._id;
+
+        const resp = await http.post('/api/users/register', newUserData);
+        isOk(resp);
+
+        (await userDAO.exists(existingInactiveUserId)).should.be.false;
+        (await emailVerificationCodeDAO.exists(existingInactiveUserId)).should.be.false;
+      });
+
       it('should create a user with no pushToken', async () => {
         const resp = await http.post('/api/users/register', newUserData);
         isOk(resp);
@@ -98,6 +114,43 @@ describe('Users', () => {
         databaseUser.password.should.include.all.keys('hash', 'salt');
       });
 
+      it('should prevent a user from attempting to create an active user', async () => {
+        const userData = {
+          name: { first: 'Test', last: 'McTester' },
+          major: 'Computer Science',
+          year: 2021,
+          email: 'test@ufl.edu',
+          username: 'testmctester',
+          password: 'password123',
+          active: true,
+        };
+
+        const resp = await http.post('/api/users/register', userData);
+        isNotOk(resp, 422);
+        hasValidationErrors(resp, 'Cannot set active flag');
+      });
+
+      it('should return an error if email is taken', async () => {
+        const userData = {
+          name: { first: 'Test', last: 'McTester' },
+          major: 'Computer Science',
+          year: 2021,
+          email: 'test@ufl.edu',
+          username: 'testmctester',
+          password: 'password123',
+          active: true,
+        };
+        await userDAO.create(userData);
+
+        const resp = await http.post('/api/users/register', {
+          ...userData,
+          username: 'differentusername',
+        });
+
+        isNotOk(resp, 422);
+        hasValidationErrors(resp, 'Email is already in use');
+      });
+
       it('should return an error if username is taken', async () => {
         const userData = {
           name: { first: 'Test', last: 'McTester' },
@@ -106,13 +159,17 @@ describe('Users', () => {
           email: 'test@ufl.edu',
           username: 'testmctester',
           password: 'password123',
+          active: true,
         };
         await userDAO.create(userData);
 
-        const resp = await http.post('/api/users/register', userData);
-        isNotOk(resp, 400);
+        const resp = await http.post('/api/users/register', {
+          ...userData,
+          email: 'differentemail@ufl.edu',
+        });
 
-        resp.body.error.should.equal('username already taken');
+        isNotOk(resp, 422);
+        hasValidationErrors(resp, 'Username is already in use');
       });
 
       it('should return an error if any field is missing', async () => {
@@ -121,18 +178,15 @@ describe('Users', () => {
         const resp = await http.post('/api/users/register', incompleteUserData);
         isNotOk(resp, 422);
 
-        const errorMessages = resp.body.validationErrors.map((e) => e.msg);
-        errorMessages.should.have.length(12);
-
-        errorMessages.should.include.all.members([
+        hasValidationErrors(resp, ([
           'First name does not exist',
           'Last name does not exist',
           'Year does not exist or is invalid',
           'Major does not exist or is invalid',
-          'Email does not exist or is invalid',
-          'Username does not exist',
-          'Password does not exist',
-        ]);
+          'Email not given, invalid, or already exists',
+          'Username not given, invalid, or already exists',
+          'Password not given',
+        ]));
       });
 
       it('should return an error of either the password or username is too short', async () => {
@@ -148,9 +202,7 @@ describe('Users', () => {
         const resp = await http.post('/api/users/register', shortUsernameAndPassword);
         isNotOk(resp, 422);
 
-        const errorMessages = resp.body.validationErrors.map((e) => e.msg);
-        errorMessages.should.have.length(2);
-        errorMessages.should.include.all.members([
+        hasValidationErrors(resp, [
           'Username is too short (less than 6 characters)',
           'Password is too short (less than 6 characters)',
         ]);
@@ -169,8 +221,7 @@ describe('Users', () => {
         const resp = await http.post('/api/users/register', invalidCharacter);
         isNotOk(resp, 422);
 
-        resp.body.validationErrors.should.have.length(1);
-        resp.body.validationErrors[0].msg.should.equal('Name contains invalid characters');
+        hasValidationErrors(resp, 'Name contains invalid characters');
       });
 
       it('should return an error when the username is too long', async () => {
@@ -186,8 +237,7 @@ describe('Users', () => {
         const resp = await http.post('/api/users/register', longUsername);
         isNotOk(resp, 422);
 
-        resp.body.validationErrors.should.have.length(1);
-        resp.body.validationErrors[0].msg.should.equal('Username is too long (more than 20 characters)');
+        hasValidationErrors(resp, 'Username is too long (more than 20 characters)');
       });
 
       it('should return an error when the username has a space', async () => {
@@ -203,8 +253,7 @@ describe('Users', () => {
         const resp = await http.post('/api/users/register', spacedUsername);
         isNotOk(resp, 422);
 
-        resp.body.validationErrors.should.have.length(1);
-        resp.body.validationErrors[0].msg.should.equal('Username contains a space');
+        hasValidationErrors(resp, 'Username contains a space');
       });
 
       it('should return an error when the year is incorrectly formatted', async () => {
@@ -220,8 +269,7 @@ describe('Users', () => {
         const resp = await http.post('/api/users/register', incorrectDateFormat);
         isNotOk(resp, 422);
 
-        resp.body.validationErrors.should.have.length(1);
-        resp.body.validationErrors[0].msg.should.equal('Year must be a number');
+        hasValidationErrors(resp, 'Year must be a number');
       });
     });
 
@@ -390,8 +438,7 @@ describe('Users', () => {
           const resp = await http.patch(`/api/users/clubs/${fakeId}?follow=true`);
           isNotOk(resp, 422);
 
-          resp.body.validationErrors.should.have.length(1);
-          resp.body.validationErrors[0].msg.should.equal('Invalid Club ID. Club does not exist.');
+          hasValidationErrors(resp, 'Invalid Club ID. Club does not exist.');
         });
 
         it('should remove a club from the list of followed clubs for the current user', async () => {

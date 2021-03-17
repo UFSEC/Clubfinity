@@ -35,27 +35,12 @@ const validateData = (req) => {
 
 // TODO:
 // Create frontend screen for validating code
-// When registering with same email as inactive user:
-//    Delete previous emailVerificationCodes
-//    Update previous user with new information
 // When a user is activated, delete the previous emailVerificationCode record
 // Disallow all userDAO methods to act on users who are flagged as inactive
 // Update seed data with users: active: true
-// When
 // Fix header issue
 
-exports.register = (req, res) => catchErrors(res, async () => {
-  validateData(req);
-  req.body.clubs = [];
-  const user = await userDAO.create(req.body);
-
-  const code = generateRandomCode();
-  await emailVerificationCodeDAO.create({
-    user: user._id,
-    code,
-    expirationTimestamp: DateTime.local().plus({ minutes: 15 }),
-  });
-
+async function sendEmailVerificationEmail(user, verificationCode) {
   await global.emailService.send(
     user.email,
     'Clubfinity Email Verification',
@@ -66,9 +51,33 @@ Thanks for joining Clubfinity!
 
 Here is your email verification code:
 
-${code}
+${verificationCode}
     `,
   );
+}
+
+exports.register = (req, res) => catchErrors(res, async () => {
+  validateData(req);
+
+  const { email } = req.body;
+
+  if (await userDAO.emailTakenByInactiveUser(email)) {
+    const user = await userDAO.getByEmail(email);
+
+    await userDAO.delete(user._id);
+    await emailVerificationCodeDAO.delete(user._id);
+  }
+
+  const user = await userDAO.create(req.body);
+
+  const code = generateRandomCode();
+  await emailVerificationCodeDAO.create({
+    user: user._id,
+    code,
+    expirationTimestamp: DateTime.local().plus({ minutes: 15 }),
+  });
+
+  await sendEmailVerificationEmail(user, code);
 
   return getLimitedUserData(user);
 });
@@ -134,6 +143,18 @@ async function validateClubId(clubId) {
   return clubExists;
 }
 
+async function validateEmailNotTaken(email) {
+  if (await userDAO.emailTakenByActiveUser(email)) {
+    throw new Error('Email is already in use');
+  }
+}
+
+async function validateUsernameNotTaken(username) {
+  if (await userDAO.usernameTakenByActiveUser(username)) {
+    throw new Error('Username is already in use');
+  }
+}
+
 exports.validate = (type) => {
   const baseUserInfo = [
     body('name.first', 'First name does not exist')
@@ -144,6 +165,10 @@ exports.validate = (type) => {
     body('year', 'Year does not exist or is invalid')
       .exists()
       .custom((year) => validateYear(year)),
+    // This is required to prevent users from modifying their own active status
+    body('active', 'Cannot set active flag')
+      .not()
+      .exists(),
   ];
   switch (type) {
     case 'validateBaseUserInfo': {
@@ -152,14 +177,20 @@ exports.validate = (type) => {
     case 'validateFullUserInfo': {
       return [
         ...baseUserInfo,
-        body('email', 'Email does not exist or is invalid')
+        body('email', 'Email not given, invalid, or already exists')
           .exists()
           .isEmail()
-          .contains('@ufl.edu'),
-        body('username', 'Username does not exist')
+          .contains('@ufl.edu')
+          .custom(async (email) => {
+            await validateEmailNotTaken(email);
+          }),
+        body('username', 'Username not given, invalid, or already exists')
           .exists()
-          .custom((username) => validateUsername(username)),
-        body('password', 'Password does not exist')
+          .custom((username) => validateUsername(username))
+          .custom(async (username) => {
+            await validateUsernameNotTaken(username);
+          }),
+        body('password', 'Password not given')
           .exists()
           .custom((password) => validatePassword(password)),
       ];

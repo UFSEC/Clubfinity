@@ -7,11 +7,23 @@ const { INVALID_TOKEN } = require('../util/notificationUtil');
 // 1. Add support for a prod/dev config without hardcoded vars
 // 2. Possible memoization of db connection
 
-exports.create = async (userParams) => {
-  if (await User.exists({ username: userParams.username })) {
-    throw Error('username already taken');
-  }
+const userPopulateConfig = {
+  path: 'clubs',
+  populate: {
+    path: 'admins',
+    model: 'User',
+    select: limitedUserModelFields,
+  },
+};
 
+exports.exists = async (id) => User.exists({ _id: id });
+
+exports.usernameTakenByActiveUser = async (username) => User.exists({ username, active: true });
+
+exports.emailTakenByActiveUser = async (email) => User.exists({ email, active: true });
+exports.emailTakenByInactiveUser = async (email) => User.exists({ email, active: false });
+
+exports.create = async (userParams) => {
   const passwordHashData = hashPassword(userParams.password);
 
   return await new User({
@@ -22,14 +34,7 @@ exports.create = async (userParams) => {
 };
 
 exports.get = async (id) => {
-  const user = await User.findById(id).populate({
-    path: 'clubs',
-    populate: {
-      path: 'admins',
-      model: 'User',
-      select: limitedUserModelFields,
-    },
-  }).exec();
+  const user = await User.findById(id).populate(userPopulateConfig).exec();
   if (!user) throw new NotFoundError();
 
   return user;
@@ -41,14 +46,14 @@ exports.getPushTokens = async (clubId) => {
 };
 
 exports.getByUsername = async (username) => {
-  const user = await User.findOne({ username }).populate({
-    path: 'clubs',
-    populate: {
-      path: 'admins',
-      model: 'User',
-      select: limitedUserModelFields,
-    },
-  }).exec();
+  const user = await User.findOne({ username }).populate(userPopulateConfig).exec();
+  if (!user) throw new NotFoundError();
+
+  return user;
+};
+
+exports.getByEmail = async (email) => {
+  const user = await User.findOne({ email }).populate(userPopulateConfig).exec();
   if (!user) throw new NotFoundError();
 
   return user;

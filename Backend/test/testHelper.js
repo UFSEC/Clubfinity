@@ -55,3 +55,14 @@ exports.isNotOk = (response, expectedStatus) => {
   response.should.have.status(expectedStatus);
   response.body.ok.should.be.false;
 };
+
+exports.hasValidationErrors = (response, expectedValidationErrors) => {
+  response.body.error.should.equal('Input validation failure');
+  const errorMessages = response.body.validationErrors.map((e) => e.msg);
+
+  if (Array.isArray(expectedValidationErrors)) {
+    errorMessages.should.include.all.members(expectedValidationErrors);
+  } else {
+    errorMessages.should.include(expectedValidationErrors);
+  }
+};
