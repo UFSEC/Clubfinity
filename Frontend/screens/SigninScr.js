@@ -79,7 +79,7 @@ export default class SigninScr extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
+      email: '',
       password: '',
       showError: false,
       errorMessage: '',
@@ -90,9 +90,9 @@ export default class SigninScr extends React.Component {
   signIn = async (event) => {
     event.preventDefault();
     const { setUser } = this.context;
-    const { username, password } = this.state;
+    const { email, password } = this.state;
 
-    const authResponse = await AuthApi.authenticate(username, password);
+    const authResponse = await AuthApi.authenticate(email, password);
 
     if (authResponse.token) {
       this.setState({
@@ -117,9 +117,9 @@ export default class SigninScr extends React.Component {
     navigation.navigate('SignUp');
   };
 
-  changeUsername = (input) => {
+  changeEmail = (input) => {
     this.setState({
-      username: input,
+      email: input,
     });
   };
 
@@ -131,7 +131,7 @@ export default class SigninScr extends React.Component {
 
   render() {
     const {
-      username, password, errorMessage, showError,
+      email, password, errorMessage, showError,
     } = this.state;
     return (
       <KeyboardAwareScrollView
@@ -160,12 +160,12 @@ export default class SigninScr extends React.Component {
               <TextInput
                 textAlign="left"
                 style={styles.field}
-                name="username"
+                name="email"
                 placeholderTextColor={colors.grayScale8}
                 returnKeyType="next"
-                onChangeText={this.changeUsername}
+                onChangeText={this.changeEmail}
                 autoCapitalize="none"
-                value={username}
+                value={email}
                 placeholder="E-mail"
               />
               <TextInput

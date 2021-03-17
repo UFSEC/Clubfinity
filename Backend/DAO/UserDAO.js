@@ -54,6 +54,20 @@ exports.getByUsername = async (username) => {
   return user;
 };
 
+exports.getByEmail = async(email) => {
+  const user = await User.findOne({ email }).populate({
+    path: 'clubs',
+    populate: {
+      path: 'admins',
+      model: 'User',
+      select: limitedUserModelFields,
+    },
+  }).exec();
+  if (!user) throw new NotFoundError();
+
+  return user;
+}
+
 exports.update = async (id, updatedData) => {
   await User.findOneAndUpdate({ _id: id }, updatedData, {
     upsert: true,

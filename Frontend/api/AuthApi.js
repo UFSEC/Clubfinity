@@ -1,9 +1,9 @@
 import { AsyncStorage } from 'react-native';
 import API from './BaseApi';
 
-exports.authenticate = async (username, password) => {
+exports.authenticate = async (email, password) => {
   const axiosResponse = await API.post('/auth/login', {
-    username,
+    email,
     password,
   })
     .then(async (response) => {
