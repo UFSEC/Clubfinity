@@ -41,7 +41,11 @@ exports.updateUserSettings = async (req, res) => catchErrors(res, async () => {
     }]);
   }
 
-  await userDAO.update(req.userId, req.query);
+  const settings = {
+    settings: req.query
+  }
+
+  await userDAO.update(req.userId, settings);
 });
 
 exports.updatePushToken = async (req, res) => catchErrors(res, async () => {

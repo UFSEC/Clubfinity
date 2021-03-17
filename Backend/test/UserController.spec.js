@@ -34,13 +34,20 @@ describe('Users', () => {
     http = new TestHttp(chai, app, currentUserToken);
   });
 
-  describe('GET /users/:id', async () => {
-    it('returns a single user by id', async () => {
+  describe('GET /users/', async () => {
+    it('returns current user', async () => {
       const resp = await http.get('/api/users/');
       isOk(resp);
 
       const responseData = resp.body.data;
-      const limitedUserModel = { ...currentUserParams };
+      const limitedUserModel = { 
+        ...currentUserParams, 
+        settings: {
+          eventNotifications: "enabled",
+          announcementNotifications: "enabled",
+          eventReminderNotifications: "1",
+        },
+      };
       delete limitedUserModel.password;
       responseData.should.deep.include(limitedUserModel);
     });
@@ -225,6 +232,7 @@ describe('Users', () => {
         password: 'diffpassword',
         pushToken: 'INVALID',
         clubs: [],
+        settings: { eventNotifications: "enabled", announcementNotifications: "disabled", eventReminderNotifications: "12"}
       };
 
       const resp = await http.put('/api/users/', newUserData);
@@ -361,7 +369,6 @@ describe('Users', () => {
         isOk(resp);
 
         const userFromDatabase = await userDAO.get(currentUser._id);
-        console.log(userFromDatabase);
 
         userFromDatabase.settings.eventNotifications.should.equal('disabled');
         userFromDatabase.settings.announcementNotifications.should.equal('disabled');
