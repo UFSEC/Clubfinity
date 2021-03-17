@@ -296,6 +296,8 @@ describe('Users', () => {
 
         const userFromDatabase = await userDAO.get(resp.body.data._id);
         userFromDatabase.active.should.be.true;
+
+        (await emailVerificationCodeDAO.exists(userFromDatabase._id)).should.be.false;
       });
 
       it('should return an error and the user should remain inactive after receiving an invalid code', async () => {

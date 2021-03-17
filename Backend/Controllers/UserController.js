@@ -35,7 +35,6 @@ const validateData = (req) => {
 
 // TODO:
 // Create frontend screen for validating code
-// When a user is activated, delete the previous emailVerificationCode record
 // Disallow all userDAO methods to act on users who are flagged as inactive
 // Fix header issue
 
@@ -88,9 +87,13 @@ exports.verifyEmailCode = (req, res) => catchErrors(res, async () => {
 
   if (databaseCodeRecord.expirationTimestamp < DateTime.local()) {
     throw new Error('Verification code expired');
-  } else if (codeAttempt !== databaseCodeRecord.code) {
+  }
+
+  if (codeAttempt !== databaseCodeRecord.code) {
     throw new Error('Invalid verification code');
   }
+
+  await emailVerificationCodeDAO.delete(userId);
 
   return await userDAO.update(userId, { active: true });
 });
