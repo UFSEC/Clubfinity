@@ -375,6 +375,24 @@ describe('Users', () => {
         userFromDatabase.settings.eventReminderNotifications.should.equal('never');
       });
 
+      //Problem with updating the settings with not all 3 parameters
+      //If parameter isn't provided it goes back to default setting
+      it.only('should not override unchanged settings', async () => {
+        const resp1 = await http.patch('/api/users/user-settings?eventNotifications=disabled&announcementNotifications=disabled&eventReminderNotifications=never');
+        const userFromDatabase1 = await userDAO.get(currentUser._id);
+        console.log(userFromDatabase1.settings);
+
+        const resp = await http.patch('/api/users/user-settings?eventReminderNotifications=3');
+        isOk(resp);
+
+        const userFromDatabase = await userDAO.get(currentUser._id);
+        console.log(userFromDatabase.settings);
+
+        userFromDatabase.settings.eventNotifications.should.equal('disabled')
+        userFromDatabase.settings.announcementNotifications.should.equal('disabled');
+        userFromDatabase.settings.eventReminderNotifications.should.equal('3');
+      });
+
       it('should return an error when the query params are invalid', async () => {
         const resp = await http.patch('/api/users/user-settings?eventNotifications=enabled&announcementNotifications=invalid');
 
