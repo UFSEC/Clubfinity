@@ -19,17 +19,19 @@ passport.use(
       userDAO
         .getByUsername(username)
         .then((userModel) => {
-          if (userModel) {
-            if (validatePasswordHash(userModel, passwordAttempt)) {
-              return done(null, userModel, {
-                message: 'Logged in successfully',
-              });
-            }
+          if (!userModel) {
+            return done(null, false, { message: 'User not found with that username.' });
+          }
+
+          if (!userModel.active) {
+            return done(null, false, { message: 'User is not active' });
+          }
+
+          if (!validatePasswordHash(userModel, passwordAttempt)) {
             return done(null, false, { message: 'Incorrect password.' });
           }
-          return done(null, false, {
-            message: 'User not found with that username.',
-          });
+
+          return done(null, userModel, { message: 'Logged in successfully' });
         })
         .catch((error) => {
           console.warn(error);

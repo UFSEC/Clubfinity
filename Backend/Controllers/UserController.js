@@ -35,7 +35,6 @@ const validateData = (req) => {
 
 // TODO:
 // Create frontend screen for validating code
-// Disallow all userDAO methods to act on users who are flagged as inactive
 // Fix header issue
 
 async function sendEmailVerificationEmail(user, verificationCode) {
