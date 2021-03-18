@@ -8,8 +8,8 @@ const { INVALID_TOKEN } = require('../util/notificationUtil');
 // 2. Possible memoization of db connection
 
 exports.create = async (userParams) => {
-  if (await User.exists({ username: userParams.username })) {
-    throw Error('username already taken');
+  if (await User.exists({ email: userParams.email })) {
+    throw Error('email already taken');
   }
 
   const passwordHashData = hashPassword(userParams.password);
@@ -38,20 +38,6 @@ exports.get = async (id) => {
 exports.getPushTokens = async (clubId) => {
   const users = await User.find({ clubs: clubId }).select({ pushToken: 1 });
   return users.map((data) => data.pushToken);
-};
-
-exports.getByUsername = async (username) => {
-  const user = await User.findOne({ username }).populate({
-    path: 'clubs',
-    populate: {
-      path: 'admins',
-      model: 'User',
-      select: limitedUserModelFields,
-    },
-  }).exec();
-  if (!user) throw new NotFoundError();
-
-  return user;
 };
 
 exports.getByEmail = async(email) => {

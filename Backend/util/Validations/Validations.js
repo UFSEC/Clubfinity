@@ -13,18 +13,6 @@ exports.validatePassword = function (password) {
   }
   return true;
 };
-exports.validateUsername = function (user) {
-  if (user.length < 6) {
-    throw new Error('Username is too short (less than 6 characters)');
-  }
-  if (user.length > 20) {
-    throw new Error('Username is too long (more than 20 characters)');
-  }
-  if (user.indexOf(' ') !== -1) {
-    throw new Error('Username contains a space');
-  }
-  return true;
-};
 
 exports.validateName = function (name) {
   const regex = /^[a-zA-Z()]+$/;
