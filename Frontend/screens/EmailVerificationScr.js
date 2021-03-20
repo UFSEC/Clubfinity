@@ -127,6 +127,17 @@ export default class EmailVerificationScr extends React.Component {
     await this.login();
   }
 
+  resendEmail = async () => {
+    const { navigation } = this.props;
+    const userId = navigation.getParam('userId', '');
+    await UserApi.resendEmailVerificationCode(userId);
+  }
+
+  goBackToSignUp = () => {
+    const { navigation } = this.props;
+    navigation.pop();
+  }
+
   render() {
     const { code, error, isProcessing } = this.state;
 
@@ -159,13 +170,13 @@ export default class EmailVerificationScr extends React.Component {
             />
             <Text style={styles.sendEmailAgainContainer}>
               Didn&apos;t receive the email?&nbsp;
-              <Text style={styles.sendEmailAgainLink} onPress={() => console.log('TODO')}>Send it again!</Text>
+              <Text style={styles.sendEmailAgainLink} onPress={this.resendEmail}>Send it again!</Text>
             </Text>
           </View>
           <View style={styles.bottomContainer}>
             <Text style={styles.signUpAgainContainer}>
               Incorrect email?&nbsp;
-              <Text style={styles.signUpAgainLink} onPress={() => console.log('TODO')}>Sign up again!</Text>
+              <Text style={styles.signUpAgainLink} onPress={this.goBackToSignUp}>Sign up again!</Text>
             </Text>
           </View>
         </Content>

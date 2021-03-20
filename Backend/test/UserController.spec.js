@@ -340,6 +340,31 @@ describe('Users', () => {
         userFromDatabase.active.should.be.false;
       });
     });
+
+    describe('re-send email', async () => {
+      let user;
+
+      beforeEach(async () => {
+        user = await userDAO.create(newUserData);
+
+        await emailVerificationCodeDAO.create({
+          user: user._id,
+          code: '000000',
+          expirationTimestamp: DateTime.local().plus({ minutes: 1 }),
+        });
+      });
+
+      it('should allow a user to re-send a pre-existing code to the same email', async () => {
+        const mock = sinon.mock(global.emailService);
+
+        mock.expects('send').once().withArgs(newUserData.email, 'Clubfinity Email Verification');
+
+        const resp = await http.post('/api/users/resend', { userId: user._id });
+        isOk(resp);
+
+        mock.verify();
+      });
+    });
   });
 
   describe('With Authentication', async () => {

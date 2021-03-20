@@ -36,7 +36,6 @@ const validateData = (req) => {
 // TODO:
 // Test with new email domain
 // Fix error notification based on designer response
-// Connect both links on frontend page
 
 async function sendEmailVerificationEmail(user, verificationCode) {
   await global.emailService.send(
@@ -78,6 +77,15 @@ exports.register = (req, res) => catchErrors(res, async () => {
   await sendEmailVerificationEmail(user, code);
 
   return getLimitedUserData(user);
+});
+
+exports.resendEmailVerificationCode = (req, res) => catchErrors(res, async () => {
+  const { userId } = req.body;
+
+  const user = await userDAO.get(userId);
+  const emailVerificationCode = await emailVerificationCodeDAO.get(userId);
+
+  await sendEmailVerificationEmail(user, emailVerificationCode.code);
 });
 
 exports.verifyEmailCode = (req, res) => catchErrors(res, async () => {

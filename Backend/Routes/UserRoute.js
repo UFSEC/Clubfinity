@@ -10,6 +10,10 @@ router.post(
   userController.register,
 );
 router.post(
+  '/resend',
+  userController.resendEmailVerificationCode,
+);
+router.post(
   '/verify',
   userController.verifyEmailCode,
 );
