@@ -5,6 +5,10 @@ exports.registerNewUser = async (userData) => API.post('/api/users/register', us
   .then((response) => response.data)
   .catch((error) => error.response.data || { ok: false, error: error.message });
 
+exports.verifyEmailCode = async (userId, code) => API.post('/api/users/verify', { userId, code })
+  .then((response) => response.data)
+  .catch((error) => error.response.data || { ok: false, error: error.message });
+
 exports.getUser = async () => {
   const bearerToken = await AsyncStorage.getItem('userToken');
   const axiosResponse = await API.get('/api/users/', {

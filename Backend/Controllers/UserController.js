@@ -34,8 +34,9 @@ const validateData = (req) => {
 // otherwise -> display error messsage
 
 // TODO:
-// Create frontend screen for validating code
-// Fix header issue
+// Test with new email domain
+// Fix error notification based on designer response
+// Connect both links on frontend page
 
 async function sendEmailVerificationEmail(user, verificationCode) {
   await global.emailService.send(

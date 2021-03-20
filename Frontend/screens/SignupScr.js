@@ -12,7 +12,6 @@ import {
   Input,
 } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
-import AuthApi from '../api/AuthApi';
 import UserApi from '../api/UserApi';
 import colors from '../util/colors';
 import Majors from '../data/Majors';
@@ -109,7 +108,6 @@ export default class SignupScr extends React.Component {
       errors: { arePresent: false, data: validRequest.errors },
     });
 
-    const { setUser } = this.context;
     const {
       firstName,
       lastName,
