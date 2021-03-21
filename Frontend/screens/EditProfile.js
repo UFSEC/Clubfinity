@@ -69,12 +69,12 @@ export default class EditProfile extends Component {
       errors: { arePresent: false, data: validRequest.errors },
     });
     const {
-      firstName, lastName, major, classYear
+      firstName, lastName, major, classYear,
     } = this.state;
     const { user, setUser } = this.context;
     const updateUserResponse = await UserApi.updateUser(
       {
-         major, year: classYear, name: { first: firstName, last: lastName },
+        major, year: classYear, name: { first: firstName, last: lastName },
       },
     );
 
@@ -95,7 +95,7 @@ export default class EditProfile extends Component {
       firstName,
       lastName,
       major,
-      classYear
+      classYear,
     } = this.state;
     const errorsData = { ...errors.data };
     errorsData.firstName = firstName === '' || !/^[a-zA-Z()]+$/.test(firstName);
@@ -147,9 +147,11 @@ export default class EditProfile extends Component {
               paddingBottom: '5%',
             }}
           >
-            
+
             <Item
-              style={{ width: '95%', height: 45, marginBottom: '5%', marginTop: '7%' }}
+              style={{
+                width: '95%', height: 45, marginBottom: '5%', marginTop: '7%',
+              }}
               stackedLabel
             >
               <Label

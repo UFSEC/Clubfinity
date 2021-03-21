@@ -40,7 +40,7 @@ exports.getPushTokens = async (clubId) => {
   return users.map((data) => data.pushToken);
 };
 
-exports.getByEmail = async(email) => {
+exports.getByEmail = async (email) => {
   const user = await User.findOne({ email }).populate({
     path: 'clubs',
     populate: {
@@ -52,7 +52,7 @@ exports.getByEmail = async(email) => {
   if (!user) throw new NotFoundError();
 
   return user;
-}
+};
 
 exports.update = async (id, updatedData) => {
   await User.findOneAndUpdate({ _id: id }, updatedData, {

@@ -98,13 +98,13 @@ describe('Users', () => {
       const resp = await http.post('/api/users', userData);
       isNotOk(resp, 422);
 
-      const errorMessages = resp.body.validationErrors.map((e) => e.msg)
+      const errorMessages = resp.body.validationErrors.map((e) => e.msg);
       errorMessages.should.have.length(2);
       errorMessages.should.include.all.members([
-        
+
         'Email does not exist or is invalid',
-        'Email does not exist or is invalid'
-        
+        'Email does not exist or is invalid',
+
       ]);
     });
 
@@ -122,16 +122,15 @@ describe('Users', () => {
       const resp = await http.post('/api/users', userData);
       isNotOk(resp, 422);
 
-      const errorMessages = resp.body.validationErrors.map((e) => e.msg)
+      const errorMessages = resp.body.validationErrors.map((e) => e.msg);
       errorMessages.should.have.length(2);
       errorMessages.should.include.all.members([
-        
-        'Email does not exist or is invalid',
-        'Email does not exist or is invalid'
-        
-      ]);
 
-    })
+        'Email does not exist or is invalid',
+        'Email does not exist or is invalid',
+
+      ]);
+    });
 
     it('should return an error if any field is missing', async () => {
       const incompleteUserData = {};

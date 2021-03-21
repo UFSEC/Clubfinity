@@ -169,7 +169,7 @@ class HomeScr extends Component {
           Upcoming Events
         </Text>
         <FlatList
-          data={events}
+          data={this.filterEvents(events)}
           renderItem={({ item }) => (
             <EventCard
               key={item._id}
