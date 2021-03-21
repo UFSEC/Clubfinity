@@ -91,7 +91,12 @@ export default class SignupScr extends React.Component {
   redirectToVerificationCodeInput = (userId, username, password, email) => {
     const { navigation } = this.props;
 
-    navigation.navigate('EmailVerification', { userId, username, password, email });
+    navigation.navigate('EmailVerification', {
+      userId,
+      username,
+      password,
+      email,
+    });
   }
 
   signupHandler = async () => {
