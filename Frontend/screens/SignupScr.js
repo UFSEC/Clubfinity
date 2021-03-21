@@ -136,32 +136,6 @@ export default class SignupScr extends React.Component {
 
     console.log(`Successfully created user ${username}`);
     this.redirectToVerificationCodeInput(registerUserResponse.data._id, username, password);
-    // const createUserResponse = await UserApi.createUser(
-    //   { first: firstName, last: lastName },
-    //   major,
-    //   classYear,
-    //   username,
-    //   password,
-    //   email,
-    // );
-
-    // if (createUserResponse.error) {
-    //   alert('Unable to sign up! Please try again later');
-    //   console.log(createUserResponse.error);
-    //   this.setState({ processingRequest: false });
-    //   return;
-    // }
-    // this.setState({ processingRequest: false });
-    // console.log(`Successfully created user ${username}`);
-    //
-    // const authResponse = await AuthApi.authenticate(username, password);
-    // if (authResponse.token) {
-    //   setUser(authResponse.user);
-    //   const { navigation } = this.props;
-    //   await navigation.navigate('App');
-    // } else {
-    //   console.log(authResponse.error);
-    // }
   };
 
   signIn = async () => {

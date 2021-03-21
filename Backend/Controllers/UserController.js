@@ -24,18 +24,6 @@ const validateData = (req) => {
   if (!errors.isEmpty()) throw new ValidationError(errors.array());
 };
 
-// Submit registration ->
-// POST /user - create inactive user, send email
-
-// UI
-// registration screen - (recieves create user respose) -> code verification page ->
-// user inputs code ->
-// if correct -> redirect home
-// otherwise -> display error messsage
-
-// TODO:
-// Test with new email domain
-
 async function sendEmailVerificationEmail(user, verificationCode) {
   await global.emailService.send(
     user.email,
