@@ -9,8 +9,8 @@ const config = {
       collection: 'users',
     },
     email: {
-      domain: 'sandbox1e52eaa57b3e40a0a15b04067684bce6.mailgun.org',
-      from: 'Clubfinity <clubfinity@sandbox1e52eaa57b3e40a0a15b04067684bce6.mailgun.org>',
+      domain: 'mg.vismarket.me',
+      from: 'Clubfinity <clubfinity@vismarket.me>',
       apiKey: process.env.MAILGUN_API_KEY,
       publicKey: process.env.MAILGUN_PUBLIC_KEY,
     },
@@ -28,8 +28,8 @@ const config = {
       collection: 'users',
     },
     email: {
-      domain: 'sandbox1e52eaa57b3e40a0a15b04067684bce6.mailgun.org',
-      from: 'Clubfinity <clubfinity@sandbox1e52eaa57b3e40a0a15b04067684bce6.mailgun.org>',
+      domain: 'mg.vismarket.me',
+      from: 'Clubfinity <clubfinity@vismarket.me>',
       apiKey: process.env.MAILGUN_API_KEY,
       publicKey: process.env.MAILGUN_PUBLIC_KEY,
     },
