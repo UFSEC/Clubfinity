@@ -180,10 +180,10 @@ export default class SignupScr extends React.Component {
       errors, major, classYear, processingRequest,
     } = this.state;
     const majors = Majors.map((s) => (
-      <Picker.Item value={s.value} label={s.label} />
+      <Picker.Item value={s.value} label={s.label} key={s.label} />
     ));
     const classYears = ClassYears.map((s) => (
-      <Picker.Item value={s.value} label={s.label} />
+      <Picker.Item value={s.value} label={s.label} key={s.label} />
     ));
     return (
       <Container>

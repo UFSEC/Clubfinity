@@ -28,6 +28,7 @@ import EditEvent from '../screens/EditEvent'
 import EventScr from '../screens/EventScr'
 import AnnouncementScr from '../screens/AnnouncementScr'
 import EditAnnouncement from '../screens/EditAnnouncements'
+import ReportBugScr from '../screens/ReportBugScr'
 import colors from '../util/colors';
 import EmailVerificationScr from '../screens/EmailVerificationScr';
 
@@ -85,6 +86,7 @@ const ProfileStack = createStackNavigator(
     Settings: SettingScr,
     ClubCreationScr: ClubCreation,
     ClubScr : ClubScr,
+    ReportBugScr : ReportBugScr,
   },
   {
     navigationOptions: {
