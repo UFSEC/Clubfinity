@@ -233,7 +233,8 @@ export default class EmailVerificationScr extends React.Component {
 
   render() {
     const { isProcessing } = this.state;
-    const { email } = this.props;
+    const { navigation } = this.props;
+    const email = navigation.getParam('email', '');
 
     return (
       <Container>
