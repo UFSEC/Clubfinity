@@ -35,7 +35,6 @@ const validateData = (req) => {
 
 // TODO:
 // Test with new email domain
-// Fix error notification based on designer response
 
 async function sendEmailVerificationEmail(user, verificationCode) {
   await global.emailService.send(

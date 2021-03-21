@@ -6,19 +6,43 @@ import {
   TextInput,
 } from 'react-native';
 import { Container, Content } from 'native-base';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 import colors from '../util/colors';
 import PrimaryButton from '../components/PrimaryButton';
-import ErrorText from '../components/ErrorText';
 import UserApi from '../api/UserApi';
 import AuthApi from '../api/AuthApi';
 import UserContext from '../util/UserContext';
+import SlideDownNotification from '../components/SlideDownNotification';
 
 const styles = StyleSheet.create({
   container: {
     textAlign: 'center',
     margin: '7%',
     flex: 1,
+  },
+  resentEmailNotificationContainer: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    width: '92%',
+
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1.5,
+    borderColor: colors.info,
+    borderRadius: 10,
+    backgroundColor: 'white',
+
+    padding: 12,
+
+    shadowColor: 'black',
+    shadowOpacity: 0.15,
+  },
+  resentEmailNotificationText: {
+    color: colors.info,
+    marginLeft: 7,
   },
   header: {
     fontSize: 24,
@@ -43,6 +67,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.grayScale1,
     padding: 13,
     marginBottom: 20,
+  },
+  codeInputError: {
+    borderWidth: 1,
+    borderColor: colors.error,
   },
   sendEmailAgainContainer: {
     textAlign: 'center',
@@ -83,11 +111,12 @@ export default class EmailVerificationScr extends React.Component {
       code: '',
       error: null,
       isProcessing: false,
+      displayResentNotification: false,
     };
   }
 
   changeCode = (code) => {
-    this.setState({ code });
+    this.setState({ code, error: null });
   }
 
   login = async () => {
@@ -118,7 +147,7 @@ export default class EmailVerificationScr extends React.Component {
     this.setState({ isProcessing: false });
 
     if (!resp.ok) {
-      this.setState({ error: resp.error });
+      this.setState({ error: resp.error, code: '' });
       return;
     }
 
@@ -127,10 +156,20 @@ export default class EmailVerificationScr extends React.Component {
     await this.login();
   }
 
+  hideResentNotification = () => {
+    this.setState({ displayResentNotification: false });
+  }
+
   resendEmail = async () => {
     const { navigation } = this.props;
     const userId = navigation.getParam('userId', '');
-    await UserApi.resendEmailVerificationCode(userId);
+    const resp = await UserApi.resendEmailVerificationCode(userId);
+
+    if (resp.ok) {
+      this.setState({
+        displayResentNotification: true,
+      });
+    }
   }
 
   goBackToSignUp = () => {
@@ -138,11 +177,66 @@ export default class EmailVerificationScr extends React.Component {
     navigation.pop();
   }
 
+  clearError = () => {
+    this.setState({ error: null });
+  }
+
+  renderResendNotification = () => {
+    const { displayResentNotification } = this.state;
+
+    if (!displayResentNotification) {
+      return null;
+    }
+
+    const component = (
+      <View style={styles.resentEmailNotificationContainer}>
+        <FontAwesome5 name="check-circle" size={18} color={colors.info} />
+        <Text style={styles.resentEmailNotificationText}>EMAIL RESENT!</Text>
+      </View>
+    );
+
+    return (
+      <SlideDownNotification component={component} onAnimationFinish={this.hideResentNotification} />
+    );
+  }
+
+  renderCodeInput = () => {
+    const { error, code } = this.state;
+
+    if (error) {
+      return (
+        <TextInput
+          style={{ ...styles.codeInput, ...styles.codeInputError }}
+          placeholder={error}
+          placeholderTextColor={colors.error}
+          keyboardType="number-pad"
+          returnKeyType="done"
+          value={code}
+          onChangeText={this.changeCode}
+          onFocus={this.clearError}
+        />
+      );
+    }
+
+    return (
+      <TextInput
+        style={styles.codeInput}
+        placeholder="Code"
+        placeholderTextColor={colors.grayScale7}
+        keyboardType="number-pad"
+        returnKeyType="done"
+        value={code}
+        onChangeText={this.changeCode}
+      />
+    );
+  }
+
   render() {
-    const { code, error, isProcessing } = this.state;
+    const { isProcessing } = this.state;
 
     return (
       <Container>
+        {this.renderResendNotification()}
         <Content contentContainerStyle={styles.container}>
           <View>
             <Text style={styles.header}>
@@ -154,16 +248,8 @@ export default class EmailVerificationScr extends React.Component {
               &nbsp;Please confirm within 48 hours.
             </Text>
 
-            {error && <ErrorText errorMessage={error} />}
+            {this.renderCodeInput()}
 
-            <TextInput
-              style={styles.codeInput}
-              placeholder="Code"
-              keyboardType="number-pad"
-              returnKeyType="done"
-              value={code}
-              onChangeText={this.changeCode}
-            />
             <PrimaryButton
               text={isProcessing ? 'Verifying...' : 'Verify'}
               onPress={this.validateCode}

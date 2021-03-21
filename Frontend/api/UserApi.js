@@ -5,7 +5,8 @@ exports.registerNewUser = async (userData) => API.post('/api/users/register', us
   .then((response) => response.data)
   .catch((error) => error.response.data || { ok: false, error: error.message });
 
-exports.resendEmailVerificationCode = async (userId) => API.post('/api/users/resend', { userId });
+exports.resendEmailVerificationCode = async (userId) => API.post('/api/users/resend', { userId })
+  .then((response) => response.data);
 
 exports.verifyEmailCode = async (userId, code) => API.post('/api/users/verify', { userId, code })
   .then((response) => response.data)
