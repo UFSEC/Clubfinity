@@ -233,6 +233,7 @@ export default class EmailVerificationScr extends React.Component {
 
   render() {
     const { isProcessing } = this.state;
+    const { email } = this.props;
 
     return (
       <Container>
@@ -244,7 +245,7 @@ export default class EmailVerificationScr extends React.Component {
             </Text>
             <Text style={styles.body}>
               An email with a verification code has been sent to&nbsp;
-              <Text style={styles.bold}>email@email.com.</Text>
+              <Text style={styles.bold}>{email}</Text>
               &nbsp;Please confirm within 48 hours.
             </Text>
 

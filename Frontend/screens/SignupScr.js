@@ -88,10 +88,10 @@ export default class SignupScr extends React.Component {
     return { valid: validRequest, errors: errorsData };
   };
 
-  redirectToVerificationCodeInput = (userId, username, password) => {
+  redirectToVerificationCodeInput = (userId, username, password, email) => {
     const { navigation } = this.props;
 
-    navigation.navigate('EmailVerification', { userId, username, password });
+    navigation.navigate('EmailVerification', { userId, username, password, email });
   }
 
   signupHandler = async () => {
@@ -135,7 +135,7 @@ export default class SignupScr extends React.Component {
     }
 
     console.log(`Successfully created user ${username}`);
-    this.redirectToVerificationCodeInput(registerUserResponse.data._id, username, password);
+    this.redirectToVerificationCodeInput(registerUserResponse.data._id, username, password, email);
   };
 
   signIn = async () => {
