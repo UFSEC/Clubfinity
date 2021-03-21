@@ -85,7 +85,7 @@ describe('Users', () => {
       databaseUser.password.should.include.all.keys('hash', 'salt');
     });
 
-    it('should return an error if email does not exist or is invalid', async () => {
+    it('should return an error if email field is an empty string', async () => {
       const userData = {
         name: { first: 'Test', last: 'McTester' },
         major: 'Computer Science',
@@ -96,10 +96,42 @@ describe('Users', () => {
       await userDAO.create(userData);
 
       const resp = await http.post('/api/users', userData);
-      isNotOk(resp, 400);
+      isNotOk(resp, 422);
 
-      resp.body.error.should.equal('Email does not exist or is invalid');
+      const errorMessages = resp.body.validationErrors.map((e) => e.msg)
+      errorMessages.should.have.length(2);
+      errorMessages.should.include.all.members([
+        
+        'Email does not exist or is invalid',
+        'Email does not exist or is invalid'
+        
+      ]);
     });
+
+    it('should return an error is email field does not have @ufl.edu', async () => {
+      const userData = {
+        name: { first: 'Test', last: 'McTester' },
+        major: 'Computer Science',
+        year: 2021,
+        email: 'jakepaul773',
+        password: 'password123',
+      };
+
+      await userDAO.create(userData);
+
+      const resp = await http.post('/api/users', userData);
+      isNotOk(resp, 422);
+
+      const errorMessages = resp.body.validationErrors.map((e) => e.msg)
+      errorMessages.should.have.length(2);
+      errorMessages.should.include.all.members([
+        
+        'Email does not exist or is invalid',
+        'Email does not exist or is invalid'
+        
+      ]);
+
+    })
 
     it('should return an error if any field is missing', async () => {
       const incompleteUserData = {};
@@ -108,8 +140,7 @@ describe('Users', () => {
       isNotOk(resp, 422);
 
       const errorMessages = resp.body.validationErrors.map((e) => e.msg);
-      console.log(errorMessages)
-      errorMessages.should.have.length(12);
+      errorMessages.should.have.length(10);
 
       errorMessages.should.include.all.members([
         'First name does not exist',
@@ -150,7 +181,7 @@ describe('Users', () => {
       isNotOk(resp, 422);
 
       const errorMessages = resp.body.validationErrors.map((e) => e.msg);
-      errorMessages.should.have.length(2);
+      errorMessages.should.have.length(1);
       errorMessages.should.include.all.members([
         'Password is too short (less than 6 characters)',
       ]);
