@@ -1,7 +1,8 @@
-import axios from 'axios';
+import axios from "axios";
+import config from "../Config/config";
 
 const API = axios.create({
-  baseURL: 'http://34.121.184.156:8080/',
+  baseURL: config.url,
   responseType: 'json',
 });
 
