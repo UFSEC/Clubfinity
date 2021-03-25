@@ -219,7 +219,6 @@ const usersData: User[] = [
     major: 'Computer Science',
     year: 2022,
     email: 'tina@ufl.edu',
-    username: 'tina12',
     password: hashPassword('TBeense658'),
     clubs: [],
     pushToken: INVALID_TOKEN,
