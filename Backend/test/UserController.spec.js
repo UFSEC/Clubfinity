@@ -40,12 +40,12 @@ describe('Users', () => {
       isOk(resp);
 
       const responseData = resp.body.data;
-      const limitedUserModel = { 
-        ...currentUserParams, 
+      const limitedUserModel = {
+        ...currentUserParams,
         settings: {
-          eventNotifications: "enabled",
-          announcementNotifications: "enabled",
-          eventReminderNotifications: "1",
+          eventNotifications: 'enabled',
+          announcementNotifications: 'enabled',
+          eventReminderNotifications: '1',
         },
       };
       delete limitedUserModel.password;
@@ -232,7 +232,7 @@ describe('Users', () => {
         password: 'diffpassword',
         pushToken: 'INVALID',
         clubs: [],
-        settings: { eventNotifications: "enabled", announcementNotifications: "disabled", eventReminderNotifications: "12"}
+        settings: { eventNotifications: 'enabled', announcementNotifications: 'disabled', eventReminderNotifications: '12' },
       };
 
       const resp = await http.put('/api/users/', newUserData);
@@ -375,21 +375,14 @@ describe('Users', () => {
         userFromDatabase.settings.eventReminderNotifications.should.equal('never');
       });
 
-      //Problem with updating the settings with not all 3 parameters
-      //If parameter isn't provided it goes back to default setting
-      it.only('should not override unchanged settings', async () => {
-        const resp1 = await http.patch('/api/users/user-settings?eventNotifications=disabled&announcementNotifications=disabled&eventReminderNotifications=never');
-        const userFromDatabase1 = await userDAO.get(currentUser._id);
-        console.log(userFromDatabase1.settings);
-
+      it('should not override unchanged settings', async () => {
         const resp = await http.patch('/api/users/user-settings?eventReminderNotifications=3');
         isOk(resp);
 
         const userFromDatabase = await userDAO.get(currentUser._id);
-        console.log(userFromDatabase.settings);
 
-        userFromDatabase.settings.eventNotifications.should.equal('disabled')
-        userFromDatabase.settings.announcementNotifications.should.equal('disabled');
+        userFromDatabase.settings.eventNotifications.should.equal('enabled');
+        userFromDatabase.settings.announcementNotifications.should.equal('enabled');
         userFromDatabase.settings.eventReminderNotifications.should.equal('3');
       });
 

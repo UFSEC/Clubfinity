@@ -19,7 +19,7 @@ exports.create = async (userParams) => {
     ...userParams,
     pushToken: INVALID_TOKEN,
     password: passwordHashData,
-    settings: (await new UserSettings())
+    settings: (await new UserSettings()),
   }).save();
 };
 
