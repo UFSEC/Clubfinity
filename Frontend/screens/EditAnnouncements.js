@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Text, StyleSheet, StatusBar,
+  Text, StyleSheet, StatusBar, Alert,
 } from 'react-native';
 import {
   Button,
@@ -50,6 +50,14 @@ const styles = StyleSheet.create({
     width: '92%',
     alignSelf: 'center',
   },
+  deleteButtonStyle: {
+    width: '92%',
+    alignSelf: 'center',
+    backgroundColor: '#ff807f',
+    marginTop: 12,
+    marginBottom: 12,
+    color: 'black',
+  },
   buttonText: {
     color: '#ecf0f1',
     fontSize: 18,
@@ -94,6 +102,7 @@ export default class EditAnnouncements extends Component {
       title: '',
       description: '',
       processingRequest: { status: false, message: '' },
+      processingDelete: { status: false, message: 'Deleting...' },
       errors: { arePresent: false, data: defaultError },
     };
   }
@@ -128,13 +137,31 @@ export default class EditAnnouncements extends Component {
       { title, description },
     );
     if (updateAnnouncementResponse.error) {
-      alert('Unable to update user');
+      alert('Unable to update announcement');
       console.log(updateAnnouncementResponse.error);
       return;
     }
     this.setState({
       processingRequest: { status: true, message: 'Saved!' },
     });
+  }
+
+  deleteAnnouncement = async () => {
+    this.setState({
+      processingDelete: { status: true, message: 'Deleting...' },
+    });
+    const { id } = this.state;
+    const deleteAnnouncementResponse = await AnnouncementsApi.delete(id);
+    if (deleteAnnouncementResponse.error) {
+      alert('Unable to delete announcement');
+      console.log(deleteAnnouncementResponse.error);
+      return;
+    }
+    this.setState({
+      processingDelete: { status: true, message: 'Deleted!' },
+    });
+    const { navigation } = this.props;
+    navigation.navigate('Club');
   }
 
   isRequestValid = () => {
@@ -146,9 +173,37 @@ export default class EditAnnouncements extends Component {
     return { valid: validRequest, errors: errorData };
   }
 
+  deleteConfirmation = () => Alert.alert(
+    'Delete Announcement?',
+    'This action cannot be undone.',
+    [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      { text: 'Delete', onPress: () => this.deleteAnnouncement() },
+    ],
+    { cancelable: false },
+  );
+
+  createTwoButtonAlert = () => Alert.alert(
+    'Alert Title',
+    'My Alert Msg',
+    [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      { text: 'OK', onPress: () => console.log('OK Pressed') },
+    ],
+    { cancelable: false },
+  );
+
   render() {
     const {
-      errors, title, description, processingRequest,
+      errors, title, description, processingRequest, processingDelete,
     } = this.state;
     return (
       <Container>
@@ -219,9 +274,20 @@ export default class EditAnnouncements extends Component {
                 : 'Save'}
             </Text>
           </Button>
+          <Button
+            onPress={() => this.deleteConfirmation()}
+            style={styles.deleteButtonStyle}
+            block
+            info
+          >
+            <Text style={styles.buttonText}>
+              {processingDelete.status
+                ? processingDelete.message
+                : 'Delete'}
+            </Text>
+          </Button>
         </Content>
       </Container>
-
     );
   }
 }

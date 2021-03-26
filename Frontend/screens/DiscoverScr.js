@@ -23,6 +23,8 @@ import ClubfinityLogo from '../assets/images/ClubfinityLogo.png';
 import colors from '../util/colors';
 import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
+const LINE_CHARACTER_REQ = 40;
+
 export default class DiscoverScr extends Component {
   static navigationOptions = buildNavigationsOptions('Discover')
 
@@ -223,8 +225,8 @@ export default class DiscoverScr extends Component {
                               paddingLeft: '3.8%',
                             }}
                           >
-                            {item.description.length > 40
-                              ? `${item.description.substring(0, 37).trim()}...`
+                            {item.description.length > LINE_CHARACTER_REQ
+                              ? `${item.description.substring(0, LINE_CHARACTER_REQ).trim()}...`
                               : item.description.trim()}
                           </Text>
                         </CardItem>

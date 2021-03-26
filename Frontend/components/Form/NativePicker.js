@@ -3,7 +3,7 @@ import { StyleSheet, View, Platform } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import PropTypes from 'prop-types';
 
-const txtFieldBgColor = '#F4F4F4';
+const txtFieldBgColor = '#f4f4f4';
 const styles = StyleSheet.create({
   iOS: {
     flex: 1,

@@ -46,7 +46,7 @@ export default {
   buttonUppercaseAndroidText: true,
 
   // Badge
-  badgeBg: '#ED1727',
+  badgeBg: '#ed1727',
   badgeColor: '#fff',
   badgePadding: 0,
 
@@ -122,7 +122,7 @@ export default {
   checkboxTickColor: '#fff',
 
   // Color
-  brandPrimary: '#3F51B5',
+  brandPrimary: '#3f51b5',
   brandInfo: '#62B1F6',
   brandSuccess: '#5cb85c',
   brandDanger: '#d9534f',
@@ -156,7 +156,7 @@ export default {
 
   // Footer
   footerHeight: 55,
-  footerDefaultBg: '#3F51B5',
+  footerDefaultBg: '#3f51b5',
   footerPaddingBottom: 0,
 
   // FooterTab
@@ -165,18 +165,18 @@ export default {
   activeTab: '#fff',
   sTabBarActiveTextColor: '#007aff',
   tabBarActiveTextColor: '#fff',
-  tabActiveBgColor: '#3F51B5',
+  tabActiveBgColor: '#3f51b5',
 
   // Header
   toolbarBtnColor: '#fff',
-  toolbarDefaultBg: '#3F51B5',
+  toolbarDefaultBg: '#3f51b5',
   toolbarHeight: 56,
   toolbarSearchIconSize: 23,
   toolbarInputColor: '#fff',
   searchBarHeight: platform === PLATFORM.IOS ? 30 : 40,
   searchBarInputHeight: platform === PLATFORM.IOS ? 40 : 50,
   toolbarBtnTextColor: '#fff',
-  toolbarDefaultBorder: '#3F51B5',
+  toolbarDefaultBorder: '#3f51b5',
   iosStatusbar: 'light-content',
   get statusBarColor() {
     return color(this.toolbarDefaultBg)
@@ -196,7 +196,7 @@ export default {
 
   // InputGroup
   inputFontSize: 17,
-  inputBorderColor: '#D9D5DC',
+  inputBorderColor: '#d9d5dc',
   inputSuccessBorderColor: '#2b8339',
   inputErrorBorderColor: '#ed2f2f',
   inputHeightBase: 50,
@@ -218,45 +218,45 @@ export default {
   listBg: 'transparent',
   listBorderColor: '#c9c9c9',
   listDividerBg: '#f4f4f4',
-  listBtnUnderlayColor: '#DDD',
+  listBtnUnderlayColor: '#ddd',
   listItemPadding: 12,
   listNoteColor: '#808080',
   listNoteSize: 13,
-  listItemSelected: '#3F51B5',
+  listItemSelected: '#3f51b5',
 
   // Progress Bar
-  defaultProgressColor: '#E4202D',
-  inverseProgressColor: '#1A191B',
+  defaultProgressColor: '#e4202d',
+  inverseProgressColor: '#1a191b',
 
   // Radio Button
   radioBtnSize: 23,
-  radioSelectedColorAndroid: '#3F51B5',
+  radioSelectedColorAndroid: '#3f51b5',
   radioBtnLineHeight: 24,
   get radioColor() {
     return this.brandPrimary;
   },
 
   // Segment
-  segmentBackgroundColor: '#3F51B5',
+  segmentBackgroundColor: '#3f51b5',
   segmentActiveBackgroundColor: '#fff',
   segmentTextColor: '#fff',
-  segmentActiveTextColor: '#3F51B5',
+  segmentActiveTextColor: '#3f51b5',
   segmentBorderColor: '#fff',
-  segmentBorderColorMain: '#3F51B5',
+  segmentBorderColorMain: '#3f51b5',
 
   // Spinner
-  defaultSpinnerColor: '#45D56E',
-  inverseSpinnerColor: '#1A191B',
+  defaultSpinnerColor: '#45d5de',
+  inverseSpinnerColor: '#1a191b',
 
   // Tab
-  tabDefaultBg: '#3F51B5',
+  tabDefaultBg: '#3f51b5',
   topTabBarTextColor: '#b3c7f9',
   topTabBarActiveTextColor: '#fff',
   topTabBarBorderColor: '#fff',
   topTabBarActiveBorderColor: '#fff',
 
   // Tabs
-  tabBgColor: '#F8F8F8',
+  tabBgColor: '#f8f8f8',
   tabFontSize: 15,
 
   // Text
@@ -271,8 +271,8 @@ export default {
   titleFontfamily: 'Roboto',
   titleFontSize: 19,
   subTitleFontSize: 14,
-  subtitleColor: '#FFF',
-  titleFontColor: '#FFF',
+  subtitleColor: '#fff',
+  titleFontColor: '#fff',
 
   // Other
   borderRadiusBase: 2,

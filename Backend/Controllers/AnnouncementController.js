@@ -28,8 +28,8 @@ exports.getMultiple = async (req, res) => catchErrors(res, async () => {
 
 exports.create = async (req, res) => catchErrors(res, async () => {
   validateAnnouncementData(req);
-  if (!clubDAO.isAdmin(req.userId)) {
-    throw new Error('Unauthorized');
+  if (!(await clubDAO.isAdmin(req.userId, req.body.club))) {
+    throw new Error('Only admins of this club can create an announcement');
   }
   req.body.date = DateTime.fromISO(req.body.date);
   const newAnnouncement = await announcementDAO.create(req.body);
