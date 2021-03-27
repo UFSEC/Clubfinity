@@ -15,7 +15,7 @@ exports.authenticate = async (email, password) => {
         return { error: error.response.data.error };
       }
       return {
-        error: 'Invalid user/password!',
+        error: 'Invalid email/password!',
       };
     });
   return axiosResponse;

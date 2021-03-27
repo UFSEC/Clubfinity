@@ -190,9 +190,8 @@ describe('Users', () => {
       const incorrectDateFormat = {
         name: { first: 'Jimmy', last: 'John' },
         year: 'not a year',
+        email: 'jimmyjohn@ufl.edu',
         major: 'Computer Science',
-        email: 'jimmy@ufl.edu',
-        username: 'ausername',
         password: 'password123',
       };
 
