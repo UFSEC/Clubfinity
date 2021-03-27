@@ -28,3 +28,4 @@
 * Masen Beliveau (masenrb)
 * NoahTK7
 * n-norrr
+* Trevor Richardson (TrevorRichardson0480)

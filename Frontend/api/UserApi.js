@@ -82,7 +82,7 @@ exports.updateClub = async (clubId, follow) => {
 exports.updatePushToken = async (pushToken) => {
   const bearerToken = await AsyncStorage.getItem('userToken');
   const axiosResponse = await API.patch(
-    `/api/users?pushToken=${pushToken}`,
+    `/api/users/push-token?pushToken=${pushToken}`,
     {},
     {
       headers: {

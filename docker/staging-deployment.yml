@@ -1,27 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: clubfinity
+  name: clubfinity-staging
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: clubfinity
+      app: clubfinity-staging
   template:
     metadata:
       labels:
-        app: clubfinity
+        app: clubfinity-staging
     spec:
       containers:
-      - name: clubfinity
+      - name: clubfinity-staging
         image: $API_IMAGE_TAG
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
         env:
         - name: DATABASE_URL
-          value: $DATABASE_URL
+          value: $STAGING_DATABASE_URL
         - name: JWT_SECRET
-          value: $JWT_SECRET
+          value: $STAGING_JWT_SECRET
       imagePullSecrets:
-        - name: $API_IMAGE_TAG
+        - name: $STAGING_API_IMAGE_TAG

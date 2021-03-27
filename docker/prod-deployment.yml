@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clubfinity-prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: clubfinity-prod
+  template:
+    metadata:
+      labels:
+        app: clubfinity-prod
+    spec:
+      containers:
+      - name: clubfinity-prod
+        image: $API_IMAGE_TAG
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DATABASE_URL
+          value: $PROD_DATABASE_URL
+        - name: JWT_SECRET
+          value: $PROD_JWT_SECRET
+      imagePullSecrets:
+        - name: $PROD_API_IMAGE_TAG

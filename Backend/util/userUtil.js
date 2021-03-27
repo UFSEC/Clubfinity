@@ -9,4 +9,5 @@ exports.getLimitedUserData = (user) => ({
   year: user.year,
   email: user.email,
   clubs: user.clubs,
+  settings: user.settings,
 });
