@@ -12,6 +12,7 @@ import GoingButton from './GoingButton';
 import InterestedButton from './InterestedButton';
 import EventsApi from '../api/EventsApi';
 import { formatToMonthAndDay, formatToTime } from '../util/dateUtil';
+import { cancelNotification, scheduleNotification } from '../util/localNotifications';
 
 const styles = StyleSheet.create({
   container: {
@@ -115,7 +116,7 @@ export default class EventCard extends Component {
     this.setState({
       mute: !mute,
     });
-    const { eventID } = this.props;
+    const { eventID, userId } = this.props;
     if (!mute) {
       this.setState(
         {
@@ -124,37 +125,50 @@ export default class EventCard extends Component {
         },
       );
       await EventsApi.addUninterestedUser(eventID);
+      await cancelNotification(eventID, userId);
     } else await EventsApi.removeUninterestedUser(eventID);
   };
 
   goingHandler = async () => {
     const { going } = this.state;
+    const {
+      name, date, eventID, userId,
+    } = this.props;
     this.setState({
       going: !going,
     });
-    const { eventID } = this.props;
     if (!going) {
       this.setState({
         mute: false,
         interested: false,
       });
       await EventsApi.addGoingUser(eventID);
-    } else await EventsApi.removeGoingUser(eventID);
+      await scheduleNotification(name, date, eventID, userId);
+    } else {
+      await EventsApi.removeGoingUser(eventID, userId);
+      await cancelNotification(eventID, userId);
+    }
   }
 
   interestedHandler = async () => {
     const { interested } = this.state;
+    const {
+      name, date, eventID, userId,
+    } = this.props;
     this.setState({
       interested: !interested,
     });
-    const { eventID } = this.props;
     if (!interested) {
       this.setState({
         mute: false,
         going: false,
       });
       await EventsApi.addInterestedUser(eventID);
-    } else await EventsApi.removeInterestedUser(eventID);
+      await scheduleNotification(name, date, eventID, userId);
+    } else {
+      await EventsApi.removeInterestedUser(eventID, userId);
+      await cancelNotification(eventID, userId);
+    }
   }
 
   render() {
