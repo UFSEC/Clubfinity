@@ -12,12 +12,12 @@ passport.use(
   'login',
   new LocalStrategy(
     {
-      usernameField: 'username',
+      usernameField: 'email',
       passwordField: 'password',
     },
-    ((username, passwordAttempt, done) => {
+    ((email, passwordAttempt, done) => {
       userDAO
-        .getByUsername(username)
+        .getByEmail(email)
         .then((userModel) => {
           if (userModel) {
             if (validatePasswordHash(userModel, passwordAttempt)) {
@@ -28,13 +28,13 @@ passport.use(
             return done(null, false, { message: 'Incorrect password.' });
           }
           return done(null, false, {
-            message: 'User not found with that username.',
+            message: 'User not found with that email.',
           });
         })
         .catch((error) => {
           console.warn(error);
           done(null, false, {
-            message: 'User not found with that username',
+            message: 'User not found with that email.',
           });
         });
     }),

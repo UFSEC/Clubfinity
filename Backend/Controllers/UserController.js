@@ -9,7 +9,6 @@ const { getLimitedUserData } = require('../util/userUtil');
 const {
   validateName,
   validatePassword,
-  validateUsername,
   validateYear,
 } = require('../util/Validations/Validations');
 
@@ -109,9 +108,6 @@ exports.validate = (type) => {
         body('email', 'Email does not exist or is invalid')
           .exists()
           .isEmail().contains('@ufl.edu'),
-        body('username', 'Username does not exist')
-          .exists()
-          .custom((username) => validateUsername(username)),
         body('password', 'Password does not exist')
           .exists()
           .custom((password) => validatePassword(password)),

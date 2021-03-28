@@ -1,13 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import API from './BaseApi';
 
-exports.createUser = async (name, major, year, username, password, email) => {
+exports.createUser = async (name, major, year, password, email) => {
   const axiosResponse = await API.post('/api/users', {
     name,
     major,
     year,
     email,
-    username,
     password,
   })
     .then(async (response) => ({ token: response.data.token }))

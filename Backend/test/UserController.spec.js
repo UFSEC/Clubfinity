@@ -16,7 +16,6 @@ const currentUserParams = {
   major: 'Computer Science',
   year: 2021,
   email: 'current@user.com',
-  username: 'currentuser',
   password: 'password',
 };
 
@@ -62,7 +61,6 @@ describe('Users', () => {
         major: 'Computer Science',
         year: 2021,
         email: 'new@ufl.edu',
-        username: 'newusername',
         password: 'password',
       };
     });
@@ -94,21 +92,51 @@ describe('Users', () => {
       databaseUser.password.should.include.all.keys('hash', 'salt');
     });
 
-    it('should return an error if username is taken', async () => {
+    it('should return an error if email field is an empty string', async () => {
       const userData = {
         name: { first: 'Test', last: 'McTester' },
         major: 'Computer Science',
         year: 2021,
-        email: 'test@ufl.edu',
-        username: 'testmctester',
+        email: '',
         password: 'password123',
       };
       await userDAO.create(userData);
 
       const resp = await http.post('/api/users', userData);
-      isNotOk(resp, 400);
+      isNotOk(resp, 422);
 
-      resp.body.error.should.equal('username already taken');
+      const errorMessages = resp.body.validationErrors.map((e) => e.msg);
+      errorMessages.should.have.length(2);
+      errorMessages.should.include.all.members([
+
+        'Email does not exist or is invalid',
+        'Email does not exist or is invalid',
+
+      ]);
+    });
+
+    it('should return an error is email field does not have @ufl.edu', async () => {
+      const userData = {
+        name: { first: 'Test', last: 'McTester' },
+        major: 'Computer Science',
+        year: 2021,
+        email: 'jakepaul773',
+        password: 'password123',
+      };
+
+      await userDAO.create(userData);
+
+      const resp = await http.post('/api/users', userData);
+      isNotOk(resp, 422);
+
+      const errorMessages = resp.body.validationErrors.map((e) => e.msg);
+      errorMessages.should.have.length(2);
+      errorMessages.should.include.all.members([
+
+        'Email does not exist or is invalid',
+        'Email does not exist or is invalid',
+
+      ]);
     });
 
     it('should return an error if any field is missing', async () => {
@@ -118,7 +146,7 @@ describe('Users', () => {
       isNotOk(resp, 422);
 
       const errorMessages = resp.body.validationErrors.map((e) => e.msg);
-      errorMessages.should.have.length(12);
+      errorMessages.should.have.length(10);
 
       errorMessages.should.include.all.members([
         'First name does not exist',
@@ -126,18 +154,16 @@ describe('Users', () => {
         'Year does not exist or is invalid',
         'Major does not exist or is invalid',
         'Email does not exist or is invalid',
-        'Username does not exist',
         'Password does not exist',
       ]);
     });
 
-    it('should return an error of either the password or username is too short', async () => {
-      const shortUsernameAndPassword = {
+    it('should return an error if the password is too short', async () => {
+      const shortPassword = {
         name: { first: 'Jimmy', last: 'John' },
         major: 'Computer Science',
         year: 2021,
         email: 'jimmy@ufl.edu',
-        username: 'short',
         password: 'short',
       };
 
@@ -147,7 +173,6 @@ describe('Users', () => {
           major: 'Accounting',
           year: 2024,
           email: 'billy101@ufl.edu',
-          username: 'user3',
           password: 'password12',
         };
 
@@ -158,58 +183,22 @@ describe('Users', () => {
         resp.body.validationErrors[0].msg.should.equal('Name contains invalid characters');
       });
 
-      const resp = await http.post('/api/users', shortUsernameAndPassword);
+      const resp = await http.post('/api/users', shortPassword);
       isNotOk(resp, 422);
 
       const errorMessages = resp.body.validationErrors.map((e) => e.msg);
-      errorMessages.should.have.length(2);
+      errorMessages.should.have.length(1);
       errorMessages.should.include.all.members([
-        'Username is too short (less than 6 characters)',
         'Password is too short (less than 6 characters)',
       ]);
-    });
-
-    it('should return an error when the username is too long', async () => {
-      const longUsername = {
-        name: { first: 'Jimmy', last: 'John' },
-        major: 'Computer Science',
-        year: 2021,
-        email: 'jimmy@ufl.edu',
-        username: 'thisusernameiswaytoolong',
-        password: 'password123',
-      };
-
-      const resp = await http.post('/api/users', longUsername);
-      isNotOk(resp, 422);
-
-      resp.body.validationErrors.should.have.length(1);
-      resp.body.validationErrors[0].msg.should.equal('Username is too long (more than 20 characters)');
-    });
-
-    it('should return an error when the username has a space', async () => {
-      const spacedUsername = {
-        name: { first: 'Jimmy', last: 'John' },
-        major: 'Computer Science',
-        year: 2021,
-        email: 'jimmy@ufl.edu',
-        username: 'a username',
-        password: 'password123',
-      };
-
-      const resp = await http.post('/api/users', spacedUsername);
-      isNotOk(resp, 422);
-
-      resp.body.validationErrors.should.have.length(1);
-      resp.body.validationErrors[0].msg.should.equal('Username contains a space');
     });
 
     it('should return an error when the year is incorrectly formatted', async () => {
       const incorrectDateFormat = {
         name: { first: 'Jimmy', last: 'John' },
         year: 'not a year',
+        email: 'jimmyjohn@ufl.edu',
         major: 'Computer Science',
-        email: 'jimmy@ufl.edu',
-        username: 'ausername',
         password: 'password123',
       };
 
@@ -228,7 +217,6 @@ describe('Users', () => {
         major: 'Computer Science',
         year: 2021,
         email: 'different@ufl.edu',
-        username: 'diffusrnme',
         password: 'diffpassword',
         pushToken: 'INVALID',
         clubs: [],
@@ -238,7 +226,7 @@ describe('Users', () => {
       const resp = await http.put('/api/users/', newUserData);
       isOk(resp);
 
-      const expectedUserData = (await userDAO.getByUsername(newUserData.username)).toObject();
+      const expectedUserData = (await userDAO.getByEmail(newUserData.email)).toObject();
 
       delete expectedUserData._id;
       delete expectedUserData.__v;
