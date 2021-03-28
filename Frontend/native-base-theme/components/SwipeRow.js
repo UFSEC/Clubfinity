@@ -4,7 +4,7 @@ export default () => {
   const swipeRowTheme = {
     'NativeBase.ListItem': {
       '.list': {
-        backgroundColor: '#FFF',
+        backgroundColor: '#fff',
       },
       marginLeft: 0,
     },

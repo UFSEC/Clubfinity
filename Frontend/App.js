@@ -5,6 +5,7 @@ import {
   Platform,
   StatusBar,
   StyleSheet,
+  LogBox,
 } from 'react-native';
 
 import * as Font from 'expo-font';
@@ -15,7 +16,7 @@ import Ionicons from 'native-base/Fonts/Ionicons.ttf';
 import UserContext from './util/UserContext';
 import AppNavigator from './navigation/TabNavigator';
 
-console.disableYellowBox = true; // This is to switch off warning
+LogBox.ignoreAllLogs(true);
 
 const styles = StyleSheet.create({
   container: {

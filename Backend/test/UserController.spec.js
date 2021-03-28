@@ -34,13 +34,20 @@ describe('Users', () => {
     http = new TestHttp(chai, app, currentUserToken);
   });
 
-  describe('GET /users/:id', async () => {
-    it('returns a single user by id', async () => {
+  describe('GET /users/', async () => {
+    it('returns current user', async () => {
       const resp = await http.get('/api/users/');
       isOk(resp);
 
       const responseData = resp.body.data;
-      const limitedUserModel = { ...currentUserParams };
+      const limitedUserModel = {
+        ...currentUserParams,
+        settings: {
+          eventNotifications: 'enabled',
+          announcementNotifications: 'enabled',
+          eventReminderNotifications: '1',
+        },
+      };
       delete limitedUserModel.password;
       responseData.should.deep.include(limitedUserModel);
     });
@@ -225,6 +232,7 @@ describe('Users', () => {
         password: 'diffpassword',
         pushToken: 'INVALID',
         clubs: [],
+        settings: { eventNotifications: 'enabled', announcementNotifications: 'disabled', eventReminderNotifications: '12' },
       };
 
       const resp = await http.put('/api/users/', newUserData);
@@ -318,19 +326,21 @@ describe('Users', () => {
   });
 
   describe('Update pushToken', async () => {
-    describe('PATCH /users/', async () => {
+    describe('PATCH /users/push-token', async () => {
       let user = null;
       let testPushToken = null;
       beforeEach(async () => {
         testPushToken = 'test_token';
-        const resp = await http.patch(`/api/users?pushToken=${testPushToken}`);
+        const resp = await http.patch(`/api/users/push-token?pushToken=${testPushToken}`);
         isOk(resp);
 
         user = await userDAO.get(currentUser._id);
       });
+
       it('should update pushToken of logged in user', async () => {
         user.pushToken.should.equal(testPushToken);
       });
+
       it('should get userToken from clubId', async () => {
         const baseClubParams = {
           name: 'Club Club',
@@ -347,6 +357,53 @@ describe('Users', () => {
 
         const updatedPushToken = await userDAO.getPushTokens(club._id);
         updatedPushToken.should.deep.equal([testPushToken]);
+      });
+    });
+  });
+
+  describe('Settings', async () => {
+    describe('PATCH /user-settings', async () => {
+      it('should update the user settings', async () => {
+        const resp = await http.patch('/api/users/user-settings?eventNotifications=disabled&announcementNotifications=disabled&eventReminderNotifications=never');
+
+        isOk(resp);
+
+        const userFromDatabase = await userDAO.get(currentUser._id);
+
+        userFromDatabase.settings.eventNotifications.should.equal('disabled');
+        userFromDatabase.settings.announcementNotifications.should.equal('disabled');
+        userFromDatabase.settings.eventReminderNotifications.should.equal('never');
+      });
+
+      it('should not override unchanged settings', async () => {
+        const resp = await http.patch('/api/users/user-settings?eventReminderNotifications=3');
+        isOk(resp);
+
+        const userFromDatabase = await userDAO.get(currentUser._id);
+
+        userFromDatabase.settings.eventNotifications.should.equal('enabled');
+        userFromDatabase.settings.announcementNotifications.should.equal('enabled');
+        userFromDatabase.settings.eventReminderNotifications.should.equal('3');
+      });
+
+      it('should return an error when the query params are invalid', async () => {
+        const resp = await http.patch('/api/users/user-settings?eventNotifications=enabled&announcementNotifications=invalid');
+
+        isNotOk(resp, 422);
+
+        resp.body.error.should.equal('Input validation failure');
+        resp.body.validationErrors.should.have.lengthOf(1);
+        resp.body.validationErrors[0].msg.should.equal('Invalid announcement notifications setting');
+      });
+
+      it('should return an error if no valid query params are given', async () => {
+        const resp = await http.patch('/api/users/user-settings');
+
+        isNotOk(resp, 422);
+
+        resp.body.error.should.equal('Input validation failure');
+        resp.body.validationErrors.should.have.lengthOf(1);
+        resp.body.validationErrors[0].msg.should.equal('No parameters given');
       });
     });
   });

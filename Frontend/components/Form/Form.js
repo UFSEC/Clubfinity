@@ -8,7 +8,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 const { height, width } = Dimensions.get('window');
 
-const bgColor = '#FFF';
+const bgColor = '#fff';
 const styles = StyleSheet.create({
   contentContainer: {
     flexGrow: 1,

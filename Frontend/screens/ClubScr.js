@@ -29,6 +29,7 @@ import ClubsApi from '../api/ClubsApi';
 import AdminRow from '../components/AdminRow';
 import buildNavigationsOptions from '../util/navigationOptionsBuilder';
 
+const LINE_CHARACTER_REQ = 40;
 const styles = StyleSheet.create({
   clubView: {
     display: 'flex',
@@ -273,7 +274,7 @@ export default class ClubScr extends React.Component {
                 <Text style={{ alignSelf: 'flex-end' }}>Events</Text>
                 {!eventsEmpty && (
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('EventList', { clubId: club._id })}
+                    onPress={() => navigation.navigate('EventList', { clubId: club._id, isAdmin })}
                   >
                     <Text style={{ alignSelf: 'flex-end', color: colors.link }}>
                       View all
@@ -298,6 +299,7 @@ export default class ClubScr extends React.Component {
                               date: item.date,
                               isAdmin,
                             })}
+                            key={item._id}
                           >
                             <View
                               style={{
@@ -387,7 +389,9 @@ export default class ClubScr extends React.Component {
                                 numberOfLines={1}
                                 style={{ marginRight: '1%' }}
                               >
-                                {item.title}
+                                {item.title.length > LINE_CHARACTER_REQ
+                                  ? `${item.title.substring(0, LINE_CHARACTER_REQ).trim()}...`
+                                  : item.title.trim()}
                               </Text>
                               <Ionicons name="md-arrow-dropright" size={30} />
                             </View>

@@ -4,8 +4,8 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { Card } from 'native-base';
-import { card, primary } from '../assets/styles/stylesheet';
-import MuteButton from './MuteButton';
+import { primary } from '../assets/styles/stylesheet';
+import NotGoingButton from './NotGoingButton';
 import SECIcon from '../assets/images/sec-icon.png';
 import colors from '../util/colors';
 import GoingButton from './GoingButton';
@@ -15,6 +15,33 @@ import { formatToMonthAndDay } from '../util/dateUtil';
 import { cancelNotification, scheduleNotification } from '../util/localNotifications';
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#f5f6fa',
+    padding: 15,
+    marginRight: 5,
+    marginLeft: 5,
+    marginTop: 10,
+    marginBottom: 10,
+    borderColor: '#f5f6fa',
+    borderRadius: 5,
+    borderWidth: 4,
+    elevation: 2,
+  },
+  banner: {
+    flexDirection: 'row',
+    flex: 1,
+    marginBottom: 10,
+  },
+  bannerIcon: {
+    resizeMode: 'center',
+    borderRadius: 25,
+    marginRight: 10,
+    height: 50,
+    width: 50,
+  },
+  body: {
+    flex: 5,
+  },
   clubNameText: {
     color: colors.text,
   },
@@ -25,14 +52,17 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   locationText: {
-    color: colors.text,
     fontWeight: '700',
+  },
+  subtitleText: {
+    color: colors.text,
     marginLeft: '2%',
   },
   bodyText: {
     color: primary.bodyText.color,
     fontSize: primary.bodyText.fontSize,
     marginLeft: '2%',
+    marginTop: 5,
   },
   mutedContainer: {
     backgroundColor: '#c2c3c4',
@@ -152,10 +182,8 @@ export default class EventCard extends Component {
     const { mute, going, interested } = this.state;
     const {
       mutedContainer, bodyText, dateText, clubNameText, titleText, locationText,
+      container, bannerIcon, banner, body, subtitleText,
     } = styles;
-    const {
-      container, bannerIcon, banner, body,
-    } = card;
     const containerStyle = mute ? mutedContainer : container;
 
     return (
@@ -172,8 +200,16 @@ export default class EventCard extends Component {
           <Text style={dateText}>{formatToMonthAndDay(date)}</Text>
         </View>
         <View style={body}>
-          <Text style={locationText}>
-            {location}
+          <Text style={subtitleText}>
+            <Text>
+              {formatToTime(date)}
+              {' '}
+              |
+
+            </Text>
+            <Text style={locationText}>
+              {location}
+            </Text>
           </Text>
           <Text style={bodyText}>{description}</Text>
           <View
@@ -188,7 +224,7 @@ export default class EventCard extends Component {
               clickHandler={this.interestedHandler}
               isInterested={interested}
             />
-            <MuteButton clickHandler={this.muteHandler} isMuted={mute} />
+            <NotGoingButton clickHandler={this.muteHandler} notGoing={mute} />
           </View>
         </View>
       </Card>

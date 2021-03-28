@@ -176,10 +176,10 @@ export default class ClubCreation extends Component {
       clubDescription,
     } = this.state;
     const categories = clubCategories.map((s) => (
-      <Picker.Item value={s.value} label={s.label} />
+      <Picker.Item value={s.value} label={s.label} key={s.label} />
     ));
     const positionList = positions.map((s) => (
-      <Picker.Item value={s.value} label={s.label} />
+      <Picker.Item value={s.value} label={s.label} key={s.label} />
     ));
     return (
       <Container>
