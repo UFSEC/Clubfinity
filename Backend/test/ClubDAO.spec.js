@@ -91,7 +91,6 @@ describe('ClubDAO', () => {
         major: 'Computer Science',
         year: 2021,
         email: 'test@ufl.edu',
-        username: 'tester',
         password: 'password123',
       });
       club = await clubDAO.create({

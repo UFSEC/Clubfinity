@@ -17,6 +17,7 @@ router.post(
   '/verify',
   userController.verifyEmailCode,
 );
+
 router.get(
   '/',
   passport.authenticate('loggedIn', { session: false }),
@@ -33,6 +34,18 @@ router.patch(
   passport.authenticate('loggedIn', { session: false }),
   userController.validate('validatePushToken'),
   userController.updatePushToken,
+);
+router.patch(
+  '/push-token',
+  passport.authenticate('loggedIn', { session: false }),
+  userController.validate('validatePushToken'),
+  userController.updatePushToken,
+);
+router.patch(
+  '/user-settings',
+  passport.authenticate('loggedIn', { session: false }),
+  userController.validate('validateUserSettings'),
+  userController.updateUserSettings,
 );
 router.patch(
   '/clubs/:id',

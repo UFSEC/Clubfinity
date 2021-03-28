@@ -17,7 +17,6 @@ const userParams = {
   year: 2021,
   major: 'Computer Science',
   email: 'current@user.com',
-  username: 'currentuser',
   password: 'password',
 };
 
@@ -32,7 +31,7 @@ describe('Auth', async () => {
     await userDAO.create(userParams);
 
     const resp = await http.post('/auth/login', {
-      username: userParams.username,
+      email: userParams.email,
       password: userParams.password,
     });
 

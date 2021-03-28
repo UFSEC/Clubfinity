@@ -122,10 +122,10 @@ export default class EmailVerificationScr extends React.Component {
   login = async () => {
     const { navigation } = this.props;
 
-    const username = navigation.getParam('username', '');
+    const email = navigation.getParam('email', '');
     const password = navigation.getParam('password', '');
 
-    const authResponse = await AuthApi.authenticate(username, password);
+    const authResponse = await AuthApi.authenticate(email, password);
 
     if (authResponse.user) {
       const { setUser } = this.context;

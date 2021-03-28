@@ -15,7 +15,6 @@ const { getLimitedUserData } = require('../util/userUtil');
 const {
   validateName,
   validatePassword,
-  validateUsername,
   validateYear,
 } = require('../util/Validations/Validations');
 
@@ -104,6 +103,25 @@ exports.update = async (req, res) => catchErrors(res, async () => {
   await userDAO.update(req.userId, req.body);
 });
 
+exports.updateUserSettings = async (req, res) => catchErrors(res, async () => {
+  validateData(req);
+
+  if (Object.keys(req.query).length === 0) {
+    throw new ValidationError([{
+      value: '',
+      param: '',
+      msg: 'No parameters given',
+      location: 'query',
+    }]);
+  }
+
+  const userData = await userDAO.get(req.userId);
+
+  userData.settings = { ...userData.settings, ...req.query };
+
+  await userDAO.update(req.userId, userData);
+});
+
 exports.updatePushToken = async (req, res) => catchErrors(res, async () => {
   validateData(req);
 
@@ -146,12 +164,6 @@ async function validateEmailNotTaken(email) {
   }
 }
 
-async function validateUsernameNotTaken(username) {
-  if (await userDAO.usernameTakenByActiveUser(username)) {
-    throw new Error('Username is already in use');
-  }
-}
-
 exports.validate = (type) => {
   const baseUserInfo = [
     body('name.first', 'First name does not exist')
@@ -181,15 +193,16 @@ exports.validate = (type) => {
           .custom(async (email) => {
             await validateEmailNotTaken(email);
           }),
-        body('username', 'Username not given, invalid, or already exists')
-          .exists()
-          .custom((username) => validateUsername(username))
-          .custom(async (username) => {
-            await validateUsernameNotTaken(username);
-          }),
         body('password', 'Password not given')
           .exists()
           .custom((password) => validatePassword(password)),
+      ];
+    }
+    case 'validateUserSettings': {
+      return [
+        query('eventNotifications', 'Invalid event notifications setting').optional().isIn(['enabled', 'disabled']),
+        query('announcementNotifications', 'Invalid announcement notifications setting').optional().isIn(['enabled', 'disabled']),
+        query('eventReminderNotifications', 'Invalid event reminder notifications setting').optional().isIn(['never', '24', '12', '6', '3', '1']),
       ];
     }
     case 'validatePushToken': {

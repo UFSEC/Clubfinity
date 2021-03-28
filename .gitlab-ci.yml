@@ -2,7 +2,8 @@ stages:
   - dependencies
   - test
   - build
-  - deploy
+  - staging
+  - prod
 
 install dependencies:
   stage: dependencies
@@ -75,30 +76,25 @@ build api:
   only:
     - master
 
-deploy frontend:
-  image: 'patwoz/expo-cli:3'
-  stage: deploy
-  cache:
-    key:
-      files:
-        - package.json
-    paths:
-      - Backend/node_modules
-    policy: pull
-  script:
-    - cd Frontend
-    - expo login -u $EXPO_USERNAME -p $EXPO_PASSWORD
-    - expo publish
-  only:
-    - master
-
-deploy api:
+deploy staging:
   image: 'google/cloud-sdk'
-  stage: deploy
+  stage: staging
   script:
     - echo $GCLOUD_SERVICE_KEY > /gcloud-service-key.json
     - gcloud auth activate-service-account --key-file /gcloud-service-key.json
     - gcloud container clusters get-credentials clubfinity-cluster --zone $ZONE --project $PROJECT_ID
-    - kubectl rollout restart deployment/clubfinity
+    - kubectl rollout restart deployment/clubfinity-staging
+  only:
+    - master
+
+deploy prod:
+  image: 'google/cloud-sdk'
+  stage: prod
+  when: manual
+  script:
+    - echo $GCLOUD_SERVICE_KEY > /gcloud-service-key.json
+    - gcloud auth activate-service-account --key-file /gcloud-service-key.json
+    - gcloud container clusters get-credentials clubfinity-cluster --zone $ZONE --project $PROJECT_ID
+    - kubectl rollout restart deployment/clubfinity-prod
   only:
     - master

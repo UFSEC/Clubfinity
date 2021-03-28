@@ -48,7 +48,6 @@ describe('Users', () => {
       major: 'Computer Science',
       year: 2021,
       email: 'new@ufl.edu',
-      username: 'newusername',
       password: 'password',
     };
 
@@ -120,7 +119,6 @@ describe('Users', () => {
           major: 'Computer Science',
           year: 2021,
           email: 'test@ufl.edu',
-          username: 'testmctester',
           password: 'password123',
           active: true,
         };
@@ -130,46 +128,54 @@ describe('Users', () => {
         hasValidationErrors(resp, 'Cannot set active flag');
       });
 
-      it('should return an error if email is taken', async () => {
+      it.only('should return an error if email is taken', async () => {
         const userData = {
           name: { first: 'Test', last: 'McTester' },
           major: 'Computer Science',
           year: 2021,
           email: 'test@ufl.edu',
-          username: 'testmctester',
           password: 'password123',
           active: true,
         };
         await userDAO.create(userData);
 
-        const resp = await http.post('/api/users/register', {
-          ...userData,
-          username: 'differentusername',
-        });
+        const resp = await http.post('/api/users/register', userData);
 
         isNotOk(resp, 422);
         hasValidationErrors(resp, 'Email is already in use');
       });
 
-      it('should return an error if username is taken', async () => {
+      it('should return an error if email field is an empty string', async () => {
         const userData = {
           name: { first: 'Test', last: 'McTester' },
           major: 'Computer Science',
           year: 2021,
-          email: 'test@ufl.edu',
-          username: 'testmctester',
+          email: '',
           password: 'password123',
-          active: true,
         };
         await userDAO.create(userData);
 
-        const resp = await http.post('/api/users/register', {
-          ...userData,
-          email: 'differentemail@ufl.edu',
-        });
-
+        const resp = await http.post('/api/users/register', userData);
         isNotOk(resp, 422);
-        hasValidationErrors(resp, 'Username is already in use');
+
+        hasValidationErrors(resp, 'Email not given, invalid, or already exists');
+      });
+
+      it('should return an error is email field does not have @ufl.edu', async () => {
+        const userData = {
+          name: { first: 'Test', last: 'McTester' },
+          major: 'Computer Science',
+          year: 2021,
+          email: 'jakepaul773',
+          password: 'password123',
+        };
+
+        await userDAO.create(userData);
+
+        const resp = await http.post('/api/users/register', userData);
+        isNotOk(resp, 422);
+
+        hasValidationErrors(resp, 'Email not given, invalid, or already exists');
       });
 
       it('should return an error if any field is missing', async () => {
@@ -184,26 +190,23 @@ describe('Users', () => {
           'Year does not exist or is invalid',
           'Major does not exist or is invalid',
           'Email not given, invalid, or already exists',
-          'Username not given, invalid, or already exists',
           'Password not given',
         ]));
       });
 
-      it('should return an error of either the password or username is too short', async () => {
-        const shortUsernameAndPassword = {
+      it('should return an error if the password is too short', async () => {
+        const shortPassword = {
           name: { first: 'Jimmy', last: 'John' },
           major: 'Computer Science',
           year: 2021,
           email: 'jimmy@ufl.edu',
-          username: 'short',
           password: 'short',
         };
 
-        const resp = await http.post('/api/users/register', shortUsernameAndPassword);
+        const resp = await http.post('/api/users/register', shortPassword);
         isNotOk(resp, 422);
 
         hasValidationErrors(resp, [
-          'Username is too short (less than 6 characters)',
           'Password is too short (less than 6 characters)',
         ]);
       });
@@ -214,7 +217,6 @@ describe('Users', () => {
           major: 'Accounting',
           year: 2024,
           email: 'billy101@ufl.edu',
-          username: 'username3',
           password: 'password12',
         };
 
@@ -224,45 +226,12 @@ describe('Users', () => {
         hasValidationErrors(resp, 'Name contains invalid characters');
       });
 
-      it('should return an error when the username is too long', async () => {
-        const longUsername = {
-          name: { first: 'Jimmy', last: 'John' },
-          major: 'Computer Science',
-          year: 2021,
-          email: 'jimmy@ufl.edu',
-          username: 'thisusernameiswaytoolong',
-          password: 'password123',
-        };
-
-        const resp = await http.post('/api/users/register', longUsername);
-        isNotOk(resp, 422);
-
-        hasValidationErrors(resp, 'Username is too long (more than 20 characters)');
-      });
-
-      it('should return an error when the username has a space', async () => {
-        const spacedUsername = {
-          name: { first: 'Jimmy', last: 'John' },
-          major: 'Computer Science',
-          year: 2021,
-          email: 'jimmy@ufl.edu',
-          username: 'a username',
-          password: 'password123',
-        };
-
-        const resp = await http.post('/api/users/register', spacedUsername);
-        isNotOk(resp, 422);
-
-        hasValidationErrors(resp, 'Username contains a space');
-      });
-
       it('should return an error when the year is incorrectly formatted', async () => {
         const incorrectDateFormat = {
           name: { first: 'Jimmy', last: 'John' },
           year: 'not a year',
           major: 'Computer Science',
-          email: 'jimmy@ufl.edu',
-          username: 'ausername',
+          email: 'jimmyjohn@ufl.edu',
           password: 'password123',
         };
 
@@ -375,7 +344,6 @@ describe('Users', () => {
       major: 'Computer Science',
       year: 2021,
       email: 'current@user.com',
-      username: 'currentuser',
       password: 'password',
     };
 
@@ -385,13 +353,20 @@ describe('Users', () => {
       http = new TestHttp(chai, app, currentUserToken);
     });
 
-    describe('GET /users/:id', async () => {
-      it('returns a single user by id', async () => {
+    describe('GET /users/', async () => {
+      it('returns current user', async () => {
         const resp = await http.get('/api/users/');
         isOk(resp);
 
         const responseData = resp.body.data;
-        const limitedUserModel = { ...currentUserParams };
+        const limitedUserModel = {
+          ...currentUserParams,
+          settings: {
+            eventNotifications: 'enabled',
+            announcementNotifications: 'enabled',
+            eventReminderNotifications: '1',
+          },
+        };
         delete limitedUserModel.password;
         responseData.should.deep.include(limitedUserModel);
       });
@@ -404,16 +379,16 @@ describe('Users', () => {
           major: 'Computer Science',
           year: 2021,
           email: 'different@ufl.edu',
-          username: 'diffusrnme',
           password: 'diffpassword',
           pushToken: 'INVALID',
           clubs: [],
+          settings: { eventNotifications: 'enabled', announcementNotifications: 'disabled', eventReminderNotifications: '12' },
         };
 
         const resp = await http.put('/api/users/', newUserData);
         isOk(resp);
 
-        const expectedUserData = (await userDAO.getByUsername(newUserData.username)).toObject();
+        const expectedUserData = (await userDAO.getByEmail(newUserData.email)).toObject();
 
         delete expectedUserData._id;
         delete expectedUserData.__v;
@@ -500,19 +475,21 @@ describe('Users', () => {
     });
 
     describe('Update pushToken', async () => {
-      describe('PATCH /users/', async () => {
+      describe('PATCH /users/push-token', async () => {
         let user = null;
         let testPushToken = null;
         beforeEach(async () => {
           testPushToken = 'test_token';
-          const resp = await http.patch(`/api/users?pushToken=${testPushToken}`);
+          const resp = await http.patch(`/api/users/push-token?pushToken=${testPushToken}`);
           isOk(resp);
 
           user = await userDAO.get(currentUser._id);
         });
+
         it('should update pushToken of logged in user', async () => {
           user.pushToken.should.equal(testPushToken);
         });
+
         it('should get userToken from clubId', async () => {
           const baseClubParams = {
             name: 'Club Club',
@@ -529,6 +506,53 @@ describe('Users', () => {
 
           const updatedPushToken = await userDAO.getPushTokens(club._id);
           updatedPushToken.should.deep.equal([testPushToken]);
+        });
+      });
+    });
+
+    describe('Settings', async () => {
+      describe('PATCH /user-settings', async () => {
+        it('should update the user settings', async () => {
+          const resp = await http.patch('/api/users/user-settings?eventNotifications=disabled&announcementNotifications=disabled&eventReminderNotifications=never');
+
+          isOk(resp);
+
+          const userFromDatabase = await userDAO.get(currentUser._id);
+
+          userFromDatabase.settings.eventNotifications.should.equal('disabled');
+          userFromDatabase.settings.announcementNotifications.should.equal('disabled');
+          userFromDatabase.settings.eventReminderNotifications.should.equal('never');
+        });
+
+        it('should not override unchanged settings', async () => {
+          const resp = await http.patch('/api/users/user-settings?eventReminderNotifications=3');
+          isOk(resp);
+
+          const userFromDatabase = await userDAO.get(currentUser._id);
+
+          userFromDatabase.settings.eventNotifications.should.equal('enabled');
+          userFromDatabase.settings.announcementNotifications.should.equal('enabled');
+          userFromDatabase.settings.eventReminderNotifications.should.equal('3');
+        });
+
+        it('should return an error when the query params are invalid', async () => {
+          const resp = await http.patch('/api/users/user-settings?eventNotifications=enabled&announcementNotifications=invalid');
+
+          isNotOk(resp, 422);
+
+          resp.body.error.should.equal('Input validation failure');
+          resp.body.validationErrors.should.have.lengthOf(1);
+          resp.body.validationErrors[0].msg.should.equal('Invalid announcement notifications setting');
+        });
+
+        it('should return an error if no valid query params are given', async () => {
+          const resp = await http.patch('/api/users/user-settings');
+
+          isNotOk(resp, 422);
+
+          resp.body.error.should.equal('Input validation failure');
+          resp.body.validationErrors.should.have.lengthOf(1);
+          resp.body.validationErrors[0].msg.should.equal('No parameters given');
         });
       });
     });

@@ -31,7 +31,6 @@ export default class EditProfile extends Component {
       lastName: '',
       major: '',
       classYear: '',
-      username: '',
       processingRequest: { status: false, message: '' },
       errors: {
         arePresent: false,
@@ -40,7 +39,6 @@ export default class EditProfile extends Component {
           lastName: false,
           major: false,
           classYear: false,
-          username: false,
         },
       },
     };
@@ -50,7 +48,6 @@ export default class EditProfile extends Component {
     const { user } = this.context;
 
     this.setState({
-      username: user.username,
       classYear: user.year,
       firstName: user.name.first,
       lastName: user.name.last,
@@ -72,12 +69,12 @@ export default class EditProfile extends Component {
       errors: { arePresent: false, data: validRequest.errors },
     });
     const {
-      firstName, lastName, major, classYear, username,
+      firstName, lastName, major, classYear,
     } = this.state;
     const { user, setUser } = this.context;
     const updateUserResponse = await UserApi.updateUser(
       {
-        username, major, year: classYear, name: { first: firstName, last: lastName },
+        major, year: classYear, name: { first: firstName, last: lastName },
       },
     );
 
@@ -99,14 +96,12 @@ export default class EditProfile extends Component {
       lastName,
       major,
       classYear,
-      username,
     } = this.state;
     const errorsData = { ...errors.data };
     errorsData.firstName = firstName === '' || !/^[a-zA-Z()]+$/.test(firstName);
     errorsData.lastName = lastName === '' || !/^[a-zA-Z()]+$/.test(lastName);
     errorsData.major = major === '' || major === null;
     errorsData.classYear = classYear === '' || classYear === null || Number.isNaN(Number(classYear));
-    errorsData.username = username === '' || username.length < 6 || username.length > 20;
 
     let validRequest = true;
     Object.keys(errorsData).forEach((input) => {
@@ -131,7 +126,6 @@ export default class EditProfile extends Component {
       errors,
       firstName,
       lastName,
-      username,
       major,
       classYear,
     } = this.state;
@@ -153,33 +147,11 @@ export default class EditProfile extends Component {
               paddingBottom: '5%',
             }}
           >
+
             <Item
               style={{
-                width: '95%',
-                height: 45,
-                marginBottom: '5%',
-                marginTop: '7%',
+                width: '95%', height: 45, marginBottom: '5%', marginTop: '7%',
               }}
-              stackedLabel
-            >
-              <Label
-                style={{
-                  color:
-                    errors.arePresent && errors.data.username
-                      ? colors.error
-                      : colors.grayScale10,
-                }}
-              >
-                Username
-              </Label>
-              <Input
-                onChangeText={(value) => this.setState({ username: value })}
-              >
-                {username}
-              </Input>
-            </Item>
-            <Item
-              style={{ width: '95%', height: 45, marginBottom: '5%' }}
               stackedLabel
             >
               <Label

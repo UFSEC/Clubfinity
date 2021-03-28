@@ -33,7 +33,6 @@ export default class SignupScr extends React.Component {
       lastName: '',
       major: '',
       classYear: '',
-      username: '',
       email: '',
       password: '',
       verifyPassword: '',
@@ -45,7 +44,6 @@ export default class SignupScr extends React.Component {
           lastName: false,
           major: false,
           classYear: false,
-          username: false,
           email: false,
           password: false,
           verifyPassword: false,
@@ -61,7 +59,6 @@ export default class SignupScr extends React.Component {
       lastName,
       major,
       classYear,
-      username,
       email,
       password,
       verifyPassword,
@@ -71,10 +68,6 @@ export default class SignupScr extends React.Component {
     errorsData.lastName = lastName === '' || !/^[a-z ,.-]+$/i.test(lastName);
     errorsData.major = major === '' || major === null;
     errorsData.classYear = classYear === '' || classYear === null || Number.isNaN(Number(classYear));
-    errorsData.username = username === ''
-      || !/^[a-zA-Z0-9]+([_-]?[a-zA-Z0-9])*$/.test(username)
-      || username.length < 6
-      || username.length > 20;
     errorsData.email = email === '' || !email.endsWith('@ufl.edu');
     errorsData.password = password === '' || password < 6;
     errorsData.verifyPassword = verifyPassword === '' || verifyPassword !== password;
@@ -88,14 +81,13 @@ export default class SignupScr extends React.Component {
     return { valid: validRequest, errors: errorsData };
   };
 
-  redirectToVerificationCodeInput = (userId, username, password, email) => {
+  redirectToVerificationCodeInput = (userId, email, password) => {
     const { navigation } = this.props;
 
     navigation.navigate('EmailVerification', {
       userId,
-      username,
-      password,
       email,
+      password,
     });
   }
 
@@ -116,7 +108,6 @@ export default class SignupScr extends React.Component {
     const {
       firstName,
       lastName,
-      username,
       password,
       email,
       major,
@@ -125,7 +116,6 @@ export default class SignupScr extends React.Component {
 
     const registerUserResponse = await UserApi.registerNewUser({
       name: { first: firstName, last: lastName },
-      username,
       password,
       email,
       major,
@@ -139,8 +129,8 @@ export default class SignupScr extends React.Component {
       return;
     }
 
-    console.log(`Successfully created user ${username}`);
-    this.redirectToVerificationCodeInput(registerUserResponse.data._id, username, password, email);
+    console.log(`Successfully created user ${email}`);
+    this.redirectToVerificationCodeInput(registerUserResponse.data._id, email, password);
   };
 
   signIn = async () => {
@@ -166,10 +156,6 @@ export default class SignupScr extends React.Component {
 
   setEmail = (email) => {
     this.setState({ email });
-  };
-
-  setUserName = (username) => {
-    this.setState({ username });
   };
 
   setPassWord = (password) => {
@@ -231,32 +217,6 @@ export default class SignupScr extends React.Component {
                 placeholderTextColor={colors.error}
                 placeholder={
                   errors.arePresent && errors.data.email ? 'Invalid Email' : ''
-                }
-              />
-            </Item>
-
-            <Item
-              fixedLabel
-              style={{ width: '95%', height: 45, marginBottom: '5%' }}
-            >
-              <Label
-                style={{
-                  color:
-                    errors.arePresent && errors.data.username
-                      ? colors.error
-                      : colors.grayScale10,
-                }}
-              >
-                Username
-              </Label>
-              <Input
-                onChangeText={(value) => this.setState({ username: value })}
-                style={{ textAlign: 'right' }}
-                placeholderTextColor={colors.error}
-                placeholder={
-                  errors.arePresent && errors.data.username
-                    ? 'Invalid Username'
-                    : ''
                 }
               />
             </Item>

@@ -12,15 +12,15 @@ passport.use(
   'login',
   new LocalStrategy(
     {
-      usernameField: 'username',
+      usernameField: 'email',
       passwordField: 'password',
     },
-    ((username, passwordAttempt, done) => {
+    ((email, passwordAttempt, done) => {
       userDAO
-        .getByUsername(username)
+        .getByEmail(email)
         .then((userModel) => {
           if (!userModel) {
-            return done(null, false, { message: 'User not found with that username.' });
+            return done(null, false, { message: 'User not found with that email.' });
           }
 
           if (!userModel.active) {
@@ -36,7 +36,7 @@ passport.use(
         .catch((error) => {
           console.warn(error);
           done(null, false, {
-            message: 'User not found with that username',
+            message: 'User not found with that email.',
           });
         });
     }),

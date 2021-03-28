@@ -17,7 +17,6 @@ const currentUserParams = {
   year: 2021,
   major: 'Computer Science',
   email: 'current@user.com',
-  username: 'currentuser',
   password: 'password',
 };
 

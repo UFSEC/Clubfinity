@@ -18,8 +18,6 @@ const userPopulateConfig = {
 
 exports.exists = async (id) => User.exists({ _id: id });
 
-exports.usernameTakenByActiveUser = async (username) => User.exists({ username, active: true });
-
 exports.emailTakenByActiveUser = async (email) => User.exists({ email, active: true });
 exports.emailTakenByInactiveUser = async (email) => User.exists({ email, active: false });
 
@@ -45,8 +43,8 @@ exports.getPushTokens = async (clubId) => {
   return users.map((data) => data.pushToken);
 };
 
-exports.getByUsername = async (username) => {
-  const user = await User.findOne({ username }).populate(userPopulateConfig).exec();
+exports.getByEmail = async (email) => {
+  const user = await User.findOne({ email }).populate(userPopulateConfig).exec();
   if (!user) throw new NotFoundError();
 
   return user;
