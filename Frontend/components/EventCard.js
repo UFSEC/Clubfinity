@@ -11,7 +11,7 @@ import colors from '../util/colors';
 import GoingButton from './GoingButton';
 import InterestedButton from './InterestedButton';
 import EventsApi from '../api/EventsApi';
-import { formatToMonthAndDay } from '../util/dateUtil';
+import { formatToMonthAndDay, formatToTime } from '../util/dateUtil';
 import { cancelNotification, scheduleNotification } from '../util/localNotifications';
 
 const styles = StyleSheet.create({
