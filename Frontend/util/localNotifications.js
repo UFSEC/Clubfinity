@@ -5,15 +5,12 @@ import { Alert, Linking } from 'react-native';
 const MS_IN_HOUR = 1000 * 60 * 60;
 
 export async function askPermissions() {
-  // See if app already has permission
   const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
   let finalStatus = existingStatus;
-  // No existing permisson, ask for it
   if (existingStatus !== 'granted') {
     const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
     finalStatus = status;
   }
-  // Permission denied
   if (finalStatus !== 'granted') {
     Alert.alert(
       'No Notification Permission',
